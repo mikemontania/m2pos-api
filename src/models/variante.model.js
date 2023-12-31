@@ -51,7 +51,7 @@ const Variante = sequelize.define('Variante', {
   },
  
 }, {
-  tableName: 'productos',
+  tableName: 'variantes',
   timestamps: false,
   underscored: true, // Convierte automáticamente a snake_case
 });

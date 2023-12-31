@@ -16,6 +16,7 @@ const dbConnection = async () => {
         if(process.env.DB_INIT == 'true'){
             //destruye y vuelve a crear  
             await sequelize.sync({ force: true });
+            
         }else{
             //solo crea
             await sequelize.sync();

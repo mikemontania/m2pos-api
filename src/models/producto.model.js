@@ -16,10 +16,7 @@ const Producto = sequelize.define('Producto', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  marcaId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
+
   categoriaId: {
     type: DataTypes.INTEGER,
     allowNull: true,
@@ -28,9 +25,12 @@ const Producto = sequelize.define('Producto', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
- 
+  marcaId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
   nombre: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.STRING(100),
     allowNull: false
   }, 
   descripcion: {

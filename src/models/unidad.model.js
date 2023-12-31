@@ -13,6 +13,10 @@ const Unidad = sequelize.define('Unidad', {
     type: DataTypes.INTEGER,
     allowNull: true,
   }, 
+  code: {
+    type: DataTypes.STRING(5),
+    allowNull: false
+  }, 
   descripcion: {
     type: DataTypes.STRING(20),
     allowNull: false

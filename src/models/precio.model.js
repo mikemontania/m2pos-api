@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');   
 const Variante = require('./variante.model');
+const ListaPrecio = require('./listaPrecio.model');
 
 const Precio = sequelize.define('Precio', {
   id: {
