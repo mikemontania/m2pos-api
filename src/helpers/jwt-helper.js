@@ -7,7 +7,7 @@ const generarJWT = async (id) => {
     try {
         const user = await Usuario.findByPk(id, {
             attributes: {
-                exclude: ['password']
+                exclude: ['password','bloqueado','intentos','activo']
             }
         });
 
@@ -18,9 +18,7 @@ const generarJWT = async (id) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: '24h'
         });
-
-        console.log(token)
-
+ 
         return token;
     } catch (error) {
         console.log(error);

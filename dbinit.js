@@ -42,7 +42,7 @@ const populateDB = async () => {
             empresaId: empresa.id,
             sucursalesId: sucursal.id,
             username: 'admin@admin.com',
-            password: Bcryptjs.hashSync('123', salt),
+            password: Bcryptjs.hashSync('123456', salt),
             img: '',
             rol: 'admin', // Puedes ajustar el rol según tus necesidades
             intentos: 0,

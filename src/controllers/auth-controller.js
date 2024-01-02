@@ -35,13 +35,14 @@ const updatePassword = async (req, res = response) => {
 };
 
 const login = async (req, res = response) => {
+    console.log(req.body)
     const { username, password } = req.body;
     console.log('***************')
     try {
         const userDB = await Usuario.findOne({
             where: {
                 username: username,
-                active: true
+                activo: true
             }
         });
 
