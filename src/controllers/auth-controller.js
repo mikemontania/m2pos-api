@@ -62,7 +62,7 @@ const login = async (req, res = response) => {
             });
         }
 
-        const token = await generarJWT(userDB.codUser);
+        const token = await generarJWT(userDB.id);
 
         res.json({
             ok: true,
@@ -81,9 +81,10 @@ const login = async (req, res = response) => {
 const renewToken = async (req, res = response) => {
     try {
         const tokenReq = req.headers.authorization.split(" ")[1];
-        const { Usuario } = jsonwebtoken.verify(tokenReq, process.env.JWT_SECRET);
+        console.log(tokenReq)
+        const { user } = jsonwebtoken.verify(tokenReq, process.env.JWT_SECRET);
 
-        const tokenNew = await generarJWT(Usuario.id);
+        const tokenNew = await generarJWT(user.id);
 
         res.status(200).json({
             ok: true,
