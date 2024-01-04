@@ -42,7 +42,7 @@ const Cliente = sequelize.define('Cliente', {
     allowNull: true
   },
   nroDocumento: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING(30),
     allowNull: true
   },
   direccion: {
@@ -50,7 +50,7 @@ const Cliente = sequelize.define('Cliente', {
     allowNull: true
   },
   telefono: {
-    type: DataTypes.STRING(30),
+    type: DataTypes.STRING(50),
     allowNull: true
   }, 
   email: {
