@@ -21,7 +21,7 @@ const getById = async (req, res) => {
 // Método para buscar todos los Usuarios
 const findAll = async (req, res) => {
   try {
-    const { empresaId } = req.query;
+    const { empresaId  } = req.usuario;
     const condiciones = {};
     if (empresaId) condiciones.empresaId = empresaId;
 

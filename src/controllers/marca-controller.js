@@ -21,7 +21,7 @@ const getById = async (req, res) => {
 // Método para buscar todas las marcas
 const findAll = async (req, res) => {
   try {
-    const { empresaId } = req.query;
+    const { empresaId  } = req.usuario;
     const condiciones = empresaId ? { empresaId } : {};
     const marcas = await Marca.findAll({ where: condiciones });
     res.status(200).json(marcas);

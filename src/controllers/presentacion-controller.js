@@ -21,7 +21,7 @@ const getById = async (req, res) => {
 // Método para buscar todas las presentaciones
 const findAll = async (req, res) => {
   try {
-    const { empresaId } = req.query;
+    const { empresaId  } = req.usuario;
     const condiciones = empresaId ? { empresaId } : {};
     const presentaciones = await Presentacion.findAll({ where: condiciones });
     res.status(200).json(presentaciones);

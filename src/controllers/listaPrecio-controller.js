@@ -20,7 +20,7 @@ const getById = async (req, res) => {
 // Método para buscar todas las listas de precio
 const findAll = async (req, res) => {
   try {
-    const { empresaId } = req.query;
+    const { empresaId  } = req.usuario;
     const condiciones = empresaId ? { empresaId } : {};
     const listasPrecio = await ListaPrecio.findAll({ where: condiciones });
     res.status(200).json(listasPrecio);

@@ -21,7 +21,7 @@ const getById = async (req, res) => {
 // Método para buscar todas las variedades
 const findAll = async (req, res) => {
   try {
-    const { empresaId } = req.query;
+    const { empresaId  } = req.usuario;
     const condiciones = empresaId ? { empresaId } : {};
     const variedades = await Variedad.findAll({ where: condiciones });
     res.status(200).json(variedades);
