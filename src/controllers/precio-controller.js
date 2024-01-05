@@ -21,7 +21,7 @@ const getById = async (req, res) => {
 // Método para buscar todos los precios
 const findAll = async (req, res) => {
   try {
-    const { empresaId, listaPrecioId, prodVarianteId } = req.query;
+    const { empresaId, listaPrecioId, prodVarianteId } = req.params;
     const condiciones = {};
     if (empresaId) condiciones.empresaId = empresaId;
     if (listaPrecioId) condiciones.listaPrecioId = listaPrecioId;

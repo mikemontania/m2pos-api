@@ -37,6 +37,10 @@ const Variante = sequelize.define('Variante', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  img: {
+    type: DataTypes.STRING(100),
+    allowNull: true
+  },
   productoId: {
     type: DataTypes.INTEGER,
     allowNull: true,
@@ -62,17 +66,18 @@ Variante.belongsTo(Empresa, {
 Variante.belongsTo(Producto, {
   foreignKey: 'productoId',
   targetKey: 'id',
+  as: 'producto',
 });
 Variante.belongsTo(Presentacion, {
   foreignKey: 'presentacionId',
-  targetKey: 'id',
+  targetKey: 'id',as: 'presentacion'
 });
 Variante.belongsTo(Variedad, {
   foreignKey: 'variedadId',
-  targetKey: 'id',
+  targetKey: 'id', as: 'variedad'
 });
 Variante.belongsTo(Unidad, {
   foreignKey: 'unidadId',
-  targetKey: 'id',
+  targetKey: 'id', as: 'unidad'
 });
 module.exports = Variante;

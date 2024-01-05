@@ -48,7 +48,7 @@ const anularVenta = async (req, res) => {
 // Listar ventas paginadas y filtradas
 const listarVentas = async (req, res) => {
   try {
-    const { page = 1, pageSize = 10, fecha, clienteId, sucursalId } = req.query;
+    const { page = 1, pageSize = 10, fecha, clienteId, sucursalId } = req.params;
     const condiciones = {
       empresaId: req.empresaId,
     };

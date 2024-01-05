@@ -53,15 +53,15 @@ Producto.belongsTo(Empresa, {
 });
 Producto.belongsTo(Marca, {
   foreignKey: 'marcaId',
-  targetKey: 'id',
+  targetKey: 'id',as: 'marca'
 });
 Producto.belongsTo(Categoria, {
   foreignKey: 'categoriaId',
-  targetKey: 'id',
+  targetKey: 'id',as: 'categoria'
 });
 Producto.belongsTo(SubCategoria, {
   foreignKey: 'subCategoriaId',
-  targetKey: 'id',
+  targetKey: 'id',as: 'subCategoria'
 });
  
 module.exports = Producto;

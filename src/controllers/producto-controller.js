@@ -1,6 +1,9 @@
 const { Op } = require('sequelize');
 const Producto = require('../models/producto.model'); // Asegúrate de que la importación del modelo sea correcta
 const { sequelize } = require('../../dbconfig');
+const Variante = require('../models/variante.model');
+const Presentacion = require('../models/presentacion.model');
+const Variedad = require('../models/variedad.model'); 
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -21,7 +24,7 @@ const getById = async (req, res) => {
 // Método para buscar todos los productos
 const findAll = async (req, res) => {
   try {
-    const { empresaId, marcaId, categoriaId, subCategoriaId } = req.query;
+    const { empresaId, marcaId, categoriaId, subCategoriaId } = req.params;
     const condiciones = {};
     if (empresaId) condiciones.empresaId = empresaId;
     if (marcaId) condiciones.marcaId = marcaId;
@@ -83,10 +86,93 @@ const disable = async (req, res) => {
   }
 };
 
+const findProductosPaginados = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const { page = 1, pageSize = 10, descripcion, marcaId, categoriaId, subCategoriaId } = req.params;
+
+    let condiciones = {
+      empresaId,
+      activo: true
+    }; 
+    if (descripcion) {
+      condiciones[Op.or] = [
+        { codErp: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
+        { codBarra: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
+        { '$producto.nombre$': { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
+        { '$variedad.descripcion$': { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
+        { '$presentacion.descripcion$': { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
+      ];
+    }
+
+    if (marcaId && marcaId != 0) {
+      condiciones['$producto.marcaId$'] = marcaId;
+    }
+
+    if (categoriaId && categoriaId != 0) {
+      condiciones['$producto.categoriaId$'] = categoriaId;
+    }
+
+    if (subCategoriaId && subCategoriaId != 0) {
+      condiciones['$producto.subCategoriaId$'] = subCategoriaId;
+    }
+
+    const { rows: productos, count } = await Variante.findAndCountAll({
+      where: condiciones,
+      include: [ 
+        { 
+          model: Producto,
+          as: 'producto',
+          attributes: ['id', 'nombre','activo', 'marcaId', 'categoriaId', 'subCategoriaId'],
+          where: {  activo:true },
+         /*  include: [
+          
+            { model: Marca, as: 'marca', attributes: ['id', 'descripcion', 'activo'] },
+            { model: Categoria, as: 'categoria', attributes: ['id', 'descripcion', 'activo'] },
+            { model: SubCategoria, as: 'subCategoria', attributes: ['id', 'descripcion', 'activo'] },
+          ], */
+        },
+        { model: Presentacion, as: 'presentacion', attributes: ['id', 'descripcion' ] },
+        { model: Variedad, as: 'variedad', attributes: ['id', 'descripcion', 'color'] }, 
+      ],
+      attributes:[ 'id', 'codBarra','codErp','img',],
+      offset: (page - 1) * pageSize,
+      limit: pageSize,
+    });
+
+    const productosMaps = productos.map((producto) => {
+      return {
+        id:  producto.get("id"),
+        codBarra:  producto.get("codBarra"),
+        codErp:  producto.get("codErp"),
+        img:  producto.get("img"), 
+        producto: producto.producto.get("nombre"),
+        presentacion: producto.presentacion.get("descripcion"),
+        variedad: producto.variedad.get("descripcion"),
+        color: producto.variedad.get("color"),
+        
+      };
+    });
+ 
+ 
+    res.status(200).json({
+      total: count,
+      totalPages: Math.ceil(count / pageSize),
+      page: Number(page),
+      pageSize: Number(pageSize),
+      productosMaps,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al listar los productos' });
+  }
+};
+
 module.exports = {
   getById,
   findAll,
   create,
   update,
   disable,
+  findProductosPaginados
 };

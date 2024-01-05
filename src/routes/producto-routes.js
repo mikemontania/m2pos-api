@@ -5,18 +5,20 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const router = Router();
 
 // Ruta para buscar un producto por ID
-router.get('/producto/:id', validarJWT, productoController.getById);
+router.get('/:id', validarJWT, productoController.getById);
+
+router.get('/paginados/:page/:pageSize/:marcaId/:categoriaId/:subCategoriaId/:descripcion?', validarJWT,productoController.findProductosPaginados);
 
 // Ruta para buscar todos los productos
-router.get('/productos', validarJWT, productoController.findAll);
+router.get('/', validarJWT, productoController.findAll);
 
 // Ruta para crear un nuevo producto
-router.post('/producto', validarJWT, productoController.create);
+router.post('/', validarJWT, productoController.create);
 
 // Ruta para actualizar un producto por ID
-router.put('/producto/:id', validarJWT, productoController.update);
+router.put('/:id', validarJWT, productoController.update);
 
 // Ruta para desactivar un producto (marcar como inactivo)
-router.delete('/producto/:id', validarJWT, productoController.disable);
+router.delete('/:id', validarJWT, productoController.disable);
 
 module.exports = router;

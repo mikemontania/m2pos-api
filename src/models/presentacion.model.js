@@ -17,6 +17,10 @@ const Presentacion = sequelize.define('Presentacion', {
     type: DataTypes.STRING(40),
     allowNull: false
   }, 
+  size: {
+    type: DataTypes.DECIMAL(19, 2),
+    allowNull: false
+  },
   activo: {
     type: DataTypes.BOOLEAN,
     allowNull: false

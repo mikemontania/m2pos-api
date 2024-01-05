@@ -21,7 +21,7 @@ const getById = async (req, res) => {
 // Método para buscar todas las numeraciones
 const findAll = async (req, res) => {
   try {
-    const { empresaId, sucursalId } = req.query;
+    const { empresaId, sucursalId } = req.params;
     const condiciones = {};
     if (empresaId) condiciones.empresaId = empresaId;
     if (sucursalId) condiciones.sucursalId = sucursalId;

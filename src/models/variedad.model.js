@@ -17,6 +17,10 @@ const Variedad = sequelize.define('Variedad', {
     type: DataTypes.STRING(40),
     allowNull: false
   }, 
+  color: {
+    type: DataTypes.STRING(12),
+    allowNull: false
+  }, 
   activo: {
     type: DataTypes.BOOLEAN,
     allowNull: false
