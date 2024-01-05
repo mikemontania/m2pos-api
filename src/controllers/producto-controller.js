@@ -160,7 +160,7 @@ const findProductosPaginados = async (req, res) => {
       totalPages: Math.ceil(count / pageSize),
       page: Number(page),
       pageSize: Number(pageSize),
-      productosMaps,
+      productos:productosMaps,
     });
   } catch (error) {
     console.error(error);

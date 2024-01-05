@@ -71,17 +71,9 @@ const uploadImage = async (type, id, fileName) => {
 }
 const getImage = async (req, res = response) => {
     try {
-        const userId = req.params.id; // Obtener el ID del usuario desde los parámetros de la URL
-        const usuario = await Usuario.findByPk(userId);
-
-        if (!usuario || !usuario.img) {
-            return res.status(404).json({
-                ok: false,
-                msg: 'Imagen no encontrada'
-            });
-        }
-
-        const imagePath = path.join(__dirname, `../uploads/usuarios/${usuario.img}`);
+        const { tipo,foto} = req.params; 
+       
+        const imagePath = path.join(__dirname, `../uploads/${tipo}/${foto}`);
         res.sendFile(imagePath);
 
     } catch (error) {

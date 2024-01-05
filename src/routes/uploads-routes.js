@@ -1,18 +1,16 @@
-const { Router } = require('express');
+const express = require('express');
+const router = express.Router();
 const expressFileUpload = require('express-fileupload');
-
+const controller = require('../controllers/uploads-controller.js');
+ 
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { fileUpload, retornaImagen } = require('../controllers/uploads-controller.js');
-
-const router = Router();
-
+ 
 // Permite cargar el archivo
 router.use(expressFileUpload());
 
 // Ruta para cargar una imagen
-router.put('/:tipo/:id', validarJWT, fileUpload);
-
+router.put('/:tipo/:id', validarJWT, controller.uploadImage);
 // Ruta para obtener una imagen
-router.get('/:tipo/:foto', retornaImagen);
+router.get('/:tipo/:foto', controller.getImage);
 
 module.exports = router;

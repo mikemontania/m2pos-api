@@ -39,7 +39,7 @@ app.use('/M2POS/marcas', require('./src/routes/marca-routes'));
 app.use('/M2POS/subcategorias', require('./src/routes/subCategoria-routes'));
 app.use('/M2POS/numeraciones', require('./src/routes/numeracion-routes'));
 app.use('/M2POS/unidades', require('./src/routes/unidad-routes'));  
-
+app.use('/M2POS/uploads', require('./src/routes/uploads-routes'));  
 
 app.listen( process.env.PORT, () => {
     console.log('Servidor corriendo en puerto ' + process.env.PORT );
