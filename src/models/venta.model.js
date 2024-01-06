@@ -5,6 +5,7 @@ const Sucursal = require('./sucursal.model');
 const Usuario = require('./usuario.model');
 const ListaPrecio = require('./listaPrecio.model');
 const Cliente = require('./cliente.model');
+const moment = require('moment');
 
 const Venta = sequelize.define('Venta', {
   id: {
@@ -44,8 +45,17 @@ const Venta = sequelize.define('Venta', {
   fechaCreacion: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: DataTypes.NOW,
-   },
+    get() {
+      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  fechaModificacion: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    get() {
+      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
   fechaAnulacion: {
     type: DataTypes.DATE,
     allowNull: false,

@@ -3,6 +3,7 @@ const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');   
 const Variante = require('./variante.model');
 const ListaPrecio = require('./listaPrecio.model');
+const moment = require('moment');
 
 const Precio = sequelize.define('Precio', {
   id: {
@@ -19,7 +20,7 @@ const Precio = sequelize.define('Precio', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  prodVarianteId: {
+  varianteId: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
@@ -37,12 +38,18 @@ const Precio = sequelize.define('Precio', {
   },
   
   fechaDesde: {
-    type: DataTypes.DATE,
-    allowNull: false
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    get() {
+      return moment(this.getDataValue('fechaDesde')).format('YYYY-MM-DD');
+    }
   },
   fechaHasta: {
-    type: DataTypes.DATE,
-    allowNull: false
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    get() {
+      return moment(this.getDataValue('fechaHasta')).format('YYYY-MM-DD');
+    }
   },
   precio: {
     type: DataTypes.DECIMAL(19, 2),
@@ -62,11 +69,19 @@ const Precio = sequelize.define('Precio', {
   },
   fechaCreacion: {
     type: DataTypes.DATE,
-    allowNull: true
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    get() {
+      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
   },
   fechaModificacion: {
     type: DataTypes.DATE,
-    allowNull: true
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    get() {
+      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
   }
  
 }, {
@@ -79,7 +94,7 @@ Precio.belongsTo(Empresa, {
   targetKey: 'id',
 });
 Precio.belongsTo(Variante, {
-  foreignKey: 'prodVarianteId',
+  foreignKey: 'varianteId',
   targetKey: 'id',
 });
 Precio.belongsTo(ListaPrecio, {

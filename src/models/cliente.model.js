@@ -3,7 +3,8 @@ const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model'); 
 const ListaPrecio = require('./listaPrecio.model');
 const Usuario = require('./usuario.model');
- 
+const moment = require('moment');
+
 const Cliente = sequelize.define('Cliente', {
   id: {
     type: DataTypes.BIGINT,
@@ -36,7 +37,18 @@ const Cliente = sequelize.define('Cliente', {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
-   },
+    get() {
+      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  fechaModificacion: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    get() {
+      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
   razonSocial: {
     type: DataTypes.STRING(100),
     allowNull: true

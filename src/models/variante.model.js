@@ -68,6 +68,7 @@ Variante.belongsTo(Producto, {
   targetKey: 'id',
   as: 'producto',
 });
+ 
 Variante.belongsTo(Presentacion, {
   foreignKey: 'presentacionId',
   targetKey: 'id',as: 'presentacion'

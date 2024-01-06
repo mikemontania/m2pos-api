@@ -9,6 +9,8 @@ router.get('/precio/:id', validarJWT, precioController.getById);
 
 // Ruta para buscar todos los precios
 router.get('/precios', validarJWT, precioController.findAll);
+// Ruta para buscar todos los precios
+router.get('/vigente/:id/:listaPrecioId', validarJWT, precioController.obtenerPrecioVigente);
 
 // Ruta para crear un nuevo precio
 router.post('/precio', validarJWT, precioController.create);

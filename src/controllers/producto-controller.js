@@ -5,6 +5,7 @@ const Variante = require("../models/variante.model");
 const Presentacion = require("../models/presentacion.model");
 const Variedad = require("../models/variedad.model");
 const Precio = require("../models/precio.model");
+const moment = require('moment');
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -119,8 +120,10 @@ const disable = async (req, res) => {
   }
 };
 
+ 
 const findProductosPaginados = async (req, res) => {
-  const fechaActual = new Date();
+  const fechaActual = moment( new Date()).format('YYYY-MM-DD');
+  console.log(fechaActual)
   try {
     const { empresaId } = req.usuario;
     const {
@@ -207,14 +210,18 @@ const findProductosPaginados = async (req, res) => {
     });
 
     const productosMapsPromises = productos.map(async producto => {
-      const precio = await Precio.findOne({
-        prodVarianteId: producto.get("id"),
+    
+      const condiciones = {
         activo: true,
+        varianteId: producto.get("id"),
         fechaDesde: { [Op.lte]: fechaActual },
         fechaHasta: { [Op.gte]: fechaActual },
         listaPrecioId: 1
-      });
-
+      };
+  
+      const precio = await Precio.findOne({ where: condiciones });
+      console.log('condiciones',condiciones)
+      console.log(precio)
       return {
         id: producto.get("id"),
         codBarra: producto.get("codBarra"),
@@ -241,6 +248,7 @@ const findProductosPaginados = async (req, res) => {
     res.status(500).json({ error: "Error al listar los productos" });
   }
 };
+
 
 module.exports = {
   getById,
