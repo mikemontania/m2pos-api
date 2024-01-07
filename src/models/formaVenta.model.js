@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model'); 
 
-const ListaPrecio = sequelize.define('ListaPrecio', {
+const FormaVenta = sequelize.define('FormaVenta', {
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -30,13 +30,13 @@ const ListaPrecio = sequelize.define('ListaPrecio', {
     allowNull: false
   }, 
 }, {
-  tableName: 'lista_precio',
+  tableName: 'forma_venta',
   timestamps: false,
   underscored: true, // Convierte automáticamente a snake_case
 });
-ListaPrecio.belongsTo(Empresa, {
+FormaVenta.belongsTo(Empresa, {
   foreignKey: 'empresaId',
   targetKey: 'id',
 });
  
-module.exports = ListaPrecio;
+module.exports = FormaVenta;

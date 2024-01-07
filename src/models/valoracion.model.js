@@ -6,6 +6,7 @@ const ListaPrecio = require('./listaPrecio.model');
 const moment = require('moment');
 const Cliente = require('./cliente.model');
 const { REGISTRO, TIPO } = require('./tipos.enum');
+const Sucursal = require('./sucursal.model');
 
 const Valoracion = sequelize.define('Valoracion', {
   id: {
@@ -15,6 +16,10 @@ const Valoracion = sequelize.define('Valoracion', {
     allowNull: false
   },
   empresaId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  sucursalId: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
@@ -109,6 +114,10 @@ Valoracion.belongsTo(Variante, {
 });
 Valoracion.belongsTo(ListaPrecio, {
   foreignKey: 'listaPrecioId',
+  targetKey: 'id',
+});
+Valoracion.belongsTo(Sucursal, {
+  foreignKey: 'sucursalId',
   targetKey: 'id',
 });
 Valoracion.belongsTo(Cliente, {

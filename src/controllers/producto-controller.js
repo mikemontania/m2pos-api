@@ -128,6 +128,8 @@ const findProductosPaginados = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
     const {
+      sucursalId,
+      listaPrecioId,
       page = 1,
       pageSize = 10,
       descripcion,
@@ -211,19 +213,44 @@ const findProductosPaginados = async (req, res) => {
     });
 
     const productosMapsPromises = productos.map(async producto => {
-    
-      const condiciones = {
+    console.log(sucursalId)
+      const condicionesPrecio = {
         activo: true,
         varianteId: producto.get("id"),
         fechaDesde: { [Op.lte]: fechaActual },
         fechaHasta: { [Op.gte]: fechaActual },
-        listaPrecioId: 1,
+        cantDesde: { [Op.gte]: 1 },
+        listaPrecioId:       listaPrecioId, 
         registro: 'PRECIO',
-        tipo: 'IMPORTE'
+        tipo: 'IMPORTE',
+        sucursalId: {
+          [Op.or]: [
+            { [Op.eq]: sucursalId },
+            { [Op.eq]: null },
+          ]}
       };
   
-      const precio = await Valoracion.findOne({ where: condiciones });
-      console.log('condiciones',condiciones)
+      const precio = await Valoracion.findOne({ where: condicionesPrecio });
+      console.log('condiciones',condicionesPrecio)
+      console.log(precio)
+
+      const condicionesDescuento = {
+        activo: true,
+        varianteId: producto.get("id"),
+        fechaDesde: { [Op.lte]: fechaActual },
+        fechaHasta: { [Op.gte]: fechaActual },
+        listaPrecioId:       listaPrecioId, 
+        registro: 'DESCUENTO',
+        tipo: 'PRODUCTO',
+        sucursalId: {
+          [Op.or]: [
+            { [Op.eq]: sucursalId },
+            { [Op.eq]: null },
+          ]}
+      };
+  
+      const descuento = await Valoracion.findOne({ where: condicionesDescuento });
+      console.log('condiciones',condicionesPrecio)
       console.log(precio)
       return {
         id: producto.get("id"),
@@ -234,7 +261,9 @@ const findProductosPaginados = async (req, res) => {
         presentacion: producto.presentacion.get("descripcion"),
         variedad: producto.variedad.get("descripcion"),
         color: producto.variedad.get("color"),
-        precio: precio ? precio.valor : undefined
+        precio: precio ? precio.valor : undefined,
+        descuento: descuento ? descuento.valor : undefined
+ 
       };
     });
 

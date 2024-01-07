@@ -2,8 +2,11 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model'); 
 const ListaPrecio = require('./listaPrecio.model');
+const FormaVenta = require('./formaVenta.model');
+
 const Usuario = require('./usuario.model');
 const moment = require('moment');
+
 
 const Cliente = sequelize.define('Cliente', {
   id: {
@@ -18,7 +21,11 @@ const Cliente = sequelize.define('Cliente', {
   }, 
    listaPrecioId: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
+  }, 
+  formaVentaId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   }, 
   usuarioCreacionId: {
     type: DataTypes.INTEGER,
@@ -113,6 +120,10 @@ Cliente.belongsTo(Empresa, {
 });
 Cliente.belongsTo(ListaPrecio, {
   foreignKey: 'listaPrecioId',
+  targetKey: 'id',
+});
+Cliente.belongsTo(FormaVenta, {
+  foreignKey: 'formaVentaId',
   targetKey: 'id',
 });
 Cliente.belongsTo(Usuario, {

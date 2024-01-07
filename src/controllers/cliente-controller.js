@@ -21,10 +21,8 @@ const getById = async (req, res) => {
 const findPredeterminado = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
-    const condiciones = empresaId
-      ? { empresaId, predeterminado: true }
-      : { predeterminado: true };
-    const clientePredeterminado = await Cliente.findOne({ where: condiciones });
+    const condiciones =   { empresaId, predeterminado: true }
+     const clientePredeterminado = await Cliente.findOne({ where: condiciones });
 
     if (clientePredeterminado) {
       res.status(200).json(clientePredeterminado);

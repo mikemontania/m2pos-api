@@ -1,13 +1,13 @@
 const { Op } = require('sequelize');
-const ListaPrecio = require('../models/listaPrecio.model'); // Asegúrate de que la importación del modelo sea correcta
+const FormaVenta = require('../models/formaVenta.model'); // Asegúrate de que la importación del modelo sea correcta
  
 // Método para buscar por ID
 const getById = async (req, res) => {
   try {
     const { id } = req.params;
-    const listaPrecio = await ListaPrecio.findByPk(id);
-    if (listaPrecio) {
-      res.status(200).json(listaPrecio);
+    const formaVenta = await FormaVenta.findByPk(id);
+    if (formaVenta) {
+      res.status(200).json(formaVenta);
     } else {
       res.status(404).json({ error: 'Lista de precio no encontrada' });
     }
@@ -20,7 +20,7 @@ const findPredeterminado = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
     const condiciones =  { empresaId, predeterminado: true }
-     const predeterminado = await ListaPrecio.findOne({ where: condiciones });
+     const predeterminado = await FormaVenta.findOne({ where: condiciones });
 
     if (predeterminado) {
       res.status(200).json(predeterminado);
@@ -37,7 +37,7 @@ const findAll = async (req, res) => {
   try {
     const { empresaId  } = req.usuario;
     const condiciones = empresaId ? { empresaId } : {};
-    const listasPrecio = await ListaPrecio.findAll({ where: condiciones });
+    const listasPrecio = await FormaVenta.findAll({ where: condiciones });
     res.status(200).json(listasPrecio);
   } catch (error) {
     console.error(error);
@@ -49,8 +49,8 @@ const findAll = async (req, res) => {
 const create = async (req, res) => {
   try {
     const { empresaId, descripcion, activo } = req.body;
-    const listaPrecio = await ListaPrecio.create({ empresaId, descripcion, activo });
-    res.status(201).json(listaPrecio);
+    const formaVenta = await FormaVenta.create({ empresaId, descripcion, activo });
+    res.status(201).json(formaVenta);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al crear la lista de precio' });
@@ -62,10 +62,10 @@ const update = async (req, res) => {
   try {
     const { id } = req.params;
     const { empresaId, descripcion, activo } = req.body;
-    const listaPrecio = await ListaPrecio.findByPk(id);
-    if (listaPrecio) {
-      await listaPrecio.update({ empresaId, descripcion, activo });
-      res.status(200).json(listaPrecio);
+    const formaVenta = await FormaVenta.findByPk(id);
+    if (formaVenta) {
+      await formaVenta.update({ empresaId, descripcion, activo });
+      res.status(200).json(formaVenta);
     } else {
       res.status(404).json({ error: 'Lista de precio no encontrada' });
     }
@@ -79,9 +79,9 @@ const update = async (req, res) => {
 const disable = async (req, res) => {
   try {
     const { id } = req.params;
-    const listaPrecio = await ListaPrecio.findByPk(id);
-    if (listaPrecio) {
-      await listaPrecio.update({ activo: false });
+    const formaVenta = await FormaVenta.findByPk(id);
+    if (formaVenta) {
+      await formaVenta.update({ activo: false });
       res.status(200).json({ message: 'Lista de precio desactivada exitosamente' });
     } else {
       res.status(404).json({ error: 'Lista de precio no encontrada' });
