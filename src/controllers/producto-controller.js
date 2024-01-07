@@ -4,8 +4,9 @@ const { sequelize } = require("../../dbconfig");
 const Variante = require("../models/variante.model");
 const Presentacion = require("../models/presentacion.model");
 const Variedad = require("../models/variedad.model");
-const Precio = require("../models/precio.model");
 const moment = require('moment');
+const Valoracion = require("../models/valoracion.model");
+const { REGISTRO } = require("../models/tipos.enum");
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -216,10 +217,12 @@ const findProductosPaginados = async (req, res) => {
         varianteId: producto.get("id"),
         fechaDesde: { [Op.lte]: fechaActual },
         fechaHasta: { [Op.gte]: fechaActual },
-        listaPrecioId: 1
+        listaPrecioId: 1,
+        registro: 'PRECIO',
+        tipo: 'IMPORTE'
       };
   
-      const precio = await Precio.findOne({ where: condiciones });
+      const precio = await Valoracion.findOne({ where: condiciones });
       console.log('condiciones',condiciones)
       console.log(precio)
       return {
@@ -231,7 +234,7 @@ const findProductosPaginados = async (req, res) => {
         presentacion: producto.presentacion.get("descripcion"),
         variedad: producto.variedad.get("descripcion"),
         color: producto.variedad.get("color"),
-        precio: precio ? precio.precio : undefined
+        precio: precio ? precio.valor : undefined
       };
     });
 

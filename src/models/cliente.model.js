@@ -66,7 +66,7 @@ const Cliente = sequelize.define('Cliente', {
     allowNull: true
   }, 
   email: {
-    type: DataTypes.STRING(100),
+    type: DataTypes.STRING(50),
     allowNull: false
   },
   excentoIva: {
@@ -95,6 +95,10 @@ const Cliente = sequelize.define('Cliente', {
   },
   activo: {
     type: DataTypes.BOOLEAN,
+    allowNull: false
+  }, 
+  puntos: {
+    type: DataTypes.DECIMAL(19, 2),
     allowNull: false
   },
  

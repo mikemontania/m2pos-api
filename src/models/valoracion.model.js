@@ -4,8 +4,10 @@ const Empresa = require('./empresa.model');
 const Variante = require('./variante.model');
 const ListaPrecio = require('./listaPrecio.model');
 const moment = require('moment');
+const Cliente = require('./cliente.model');
+const { REGISTRO, TIPO } = require('./tipos.enum');
 
-const Precio = sequelize.define('Precio', {
+const Valoracion = sequelize.define('Valoracion', {
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -29,11 +31,11 @@ const Precio = sequelize.define('Precio', {
     allowNull: false
   },
   cantDesde: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL(19, 2),
     allowNull: false
   },
   cantHasta: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL(19, 2),
     allowNull: false
   },
   
@@ -51,14 +53,22 @@ const Precio = sequelize.define('Precio', {
       return moment(this.getDataValue('fechaHasta')).format('YYYY-MM-DD');
     }
   },
-  precio: {
+  valor: {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: false
   },
-  codCliente: {
+  clienteId: {
     type: DataTypes.BIGINT,
     allowNull: true
   }, 
+  registro: {
+    type: REGISTRO,
+    allowNull: false
+  },
+  tipo: {
+    type: TIPO,
+    allowNull: false
+  },
   usuarioCreacion: {
     type: DataTypes.BIGINT,
     allowNull: true
@@ -85,22 +95,25 @@ const Precio = sequelize.define('Precio', {
   }
  
 }, {
-  tableName: 'precios',
+  tableName: 'valoraciones',
   timestamps: false,
   underscored: true, // Convierte automáticamente a snake_case
 });
-Precio.belongsTo(Empresa, {
+Valoracion.belongsTo(Empresa, {
   foreignKey: 'empresaId',
   targetKey: 'id',
 });
-Precio.belongsTo(Variante, {
+Valoracion.belongsTo(Variante, {
   foreignKey: 'varianteId',
   targetKey: 'id',
 });
-Precio.belongsTo(ListaPrecio, {
+Valoracion.belongsTo(ListaPrecio, {
   foreignKey: 'listaPrecioId',
   targetKey: 'id',
 });
- 
- 
-module.exports = Precio;
+Valoracion.belongsTo(Cliente, {
+  foreignKey: 'clienteId',
+  targetKey: 'id',
+});
+  
+module.exports = Valoracion;
