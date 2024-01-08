@@ -7,16 +7,16 @@ const getById = async (req, res) => {
   try {
     const { id } = req.params;
     const numeracion = await Numeracion.findByPk(id);
-    if (numeracion) {
+    console.log(numeracion)
       res.status(200).json(numeracion);
-    } else {
-      res.status(404).json({ error: 'Numeración no encontrada' });
-    }
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al buscar la numeración por ID' });
   }
 };
+
+
 
 // Método para buscar todas las numeraciones
 const findAll = async (req, res) => {

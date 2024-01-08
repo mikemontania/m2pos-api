@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');
 const Sucursal = require('./sucursal.model');
+const moment = require("moment");
 
 const Numeracion = sequelize.define('Numeracion', {
   id: {
@@ -20,13 +21,19 @@ const Numeracion = sequelize.define('Numeracion', {
   },
   
   inicioTimbrado: {
-    type: DataTypes.DATE,
-    allowNull: false
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    get() {
+      return moment(this.getDataValue('inicioTimbrado')).format('YYYY-MM-DD');
+    }
   },
 
   finTimbrado: {
-    type: DataTypes.DATE,
-    allowNull: false
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    get() {
+      return moment(this.getDataValue('finTimbrado')).format('YYYY-MM-DD');
+    }
   },
   numeroInicio: {
     type: DataTypes.INTEGER,

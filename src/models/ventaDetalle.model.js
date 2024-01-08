@@ -59,8 +59,8 @@ const VentaDetalle = sequelize.define('VentaDetalle', {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: true
   }, 
-  tipo_descuento: {
-    type: DataTypes.STRING(255),
+  tipoDescuento: {
+    type: DataTypes.STRING(50),
     allowNull: true
   },
 }, {

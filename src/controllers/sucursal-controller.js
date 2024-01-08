@@ -7,13 +7,13 @@ const { sequelize } = require("../../dbconfig");
 const getById = async (req, res) => {
   try {
     const { id} = req.params; 
-     const sucursal  = await Sucursal.findOne({ where: id });
+     const sucursal  = await Sucursal.findByPk(id);
  
       res.status(200).json(sucursal);
     
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar sucursal predeterminado" });
+    res.status(500).json({ error: "Error al buscar sucursal  " });
   }
 };
 

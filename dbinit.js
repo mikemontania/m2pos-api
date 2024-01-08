@@ -14,6 +14,7 @@ const ListaPrecio = require("./src/models/listaPrecio.model");
 const Cliente = require("./src/models/cliente.model");
 const Valoracion = require("./src/models/valoracion.model");
 const FormaVenta = require("./src/models/formaVenta.model");
+const Numeracion = require("./src/models/numeracion.model");
 const populateDB = async () => {
   console.log("populateDB");
   if (process.env.DB_INIT == "true") {
@@ -36,12 +37,46 @@ const populateDB = async () => {
       empresasId: empresa.id,
       email: "sucursal@example.com"
     });
+    const numeracion1 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "011-001",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoTomprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
+
+    const numeracion2 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "012-001",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoTomprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
+ 
+ 
+
+
 
     // Crear usuario asociado a la empresa y sucursal
     const salt = Bcryptjs.genSaltSync();
     const userAdmin = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal.id,
+      numPrefId:numeracion2.id,
       username: "admin@admin.com",
       password: Bcryptjs.hashSync("123456", salt),
       img: "",

@@ -199,7 +199,7 @@ const findProductosPaginados = async (req, res) => {
         {
           model: Presentacion,
           as: "presentacion",
-          attributes: ["id", "descripcion"]
+          attributes: ["id", "descripcion","size"]
         },
         {
           model: Variedad,
@@ -207,7 +207,7 @@ const findProductosPaginados = async (req, res) => {
           attributes: ["id", "descripcion", "color"]
         }
       ],
-      attributes: ["id", "codBarra", "codErp", "img"],
+      attributes: ["id", "codBarra", "codErp","porcIva", "img"],
       offset: (page - 1) * pageSize,
       limit: pageSize
     });
@@ -259,8 +259,10 @@ const findProductosPaginados = async (req, res) => {
         img: producto.get("img"),
         producto: producto.producto.get("nombre"),
         presentacion: producto.presentacion.get("descripcion"),
+        peso: producto.presentacion.get("size"),
         variedad: producto.variedad.get("descripcion"),
         color: producto.variedad.get("color"),
+        porcIva: producto.get("porcIva"),
         precio: precio ? precio.valor : undefined,
         descuento: descuento ? descuento.valor : undefined
  

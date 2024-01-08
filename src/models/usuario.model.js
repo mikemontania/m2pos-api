@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../dbconfig");
 const Empresa = require("./empresa.model");
 const Sucursal = require("./sucursal.model"); 
+const Numeracion = require("./numeracion.model");
 const Usuario = sequelize.define(
   "Usuario",
   {
@@ -16,6 +17,10 @@ const Usuario = sequelize.define(
     },
 
     sucursalId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    numPrefId: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
@@ -65,6 +70,10 @@ const Usuario = sequelize.define(
 
 Usuario.belongsTo(Sucursal, {
   foreignKey: "sucursalId",
+  targetKey: "id"
+});
+Usuario.belongsTo(Numeracion, {
+  foreignKey: "numPrefId",
   targetKey: "id"
 });
 
