@@ -15,7 +15,7 @@ const Usuario = sequelize.define(
       allowNull: true
     },
 
-    sucursalesId: {
+    sucursalId: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
@@ -64,7 +64,7 @@ const Usuario = sequelize.define(
 );
 
 Usuario.belongsTo(Sucursal, {
-  foreignKey: "sucursalesId",
+  foreignKey: "sucursalId",
   targetKey: "id"
 });
 

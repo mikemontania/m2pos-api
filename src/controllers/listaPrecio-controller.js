@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const ListaPrecio = require('../models/listaPrecio.model'); // Asegúrate de que la importación del modelo sea correcta
  
-// Método para buscar por ID
+ 
 const getById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -9,7 +9,7 @@ const getById = async (req, res) => {
     if (listaPrecio) {
       res.status(200).json(listaPrecio);
     } else {
-      res.status(404).json({ error: 'Lista de precio no encontrada' });
+      res.status(404).json({ error: 'listaPrecio no encontrada' });
     }
   } catch (error) {
     console.error(error);

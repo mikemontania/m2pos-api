@@ -41,7 +41,7 @@ const populateDB = async () => {
     const salt = Bcryptjs.genSaltSync();
     const userAdmin = await Usuario.create({
       empresaId: empresa.id,
-      sucursalesId: sucursal.id,
+      sucursalId: sucursal.id,
       username: "admin@admin.com",
       password: Bcryptjs.hashSync("123456", salt),
       img: "",
