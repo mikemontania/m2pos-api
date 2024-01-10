@@ -15,6 +15,8 @@ const Cliente = require("./src/models/cliente.model");
 const Valoracion = require("./src/models/valoracion.model");
 const FormaVenta = require("./src/models/formaVenta.model");
 const Numeracion = require("./src/models/numeracion.model");
+const Banco = require("./src/models/banco.model");
+const MedioPago = require("./src/models/medioPago.model");
 const populateDB = async () => {
   console.log("populateDB");
   if (process.env.DB_INIT == "true") {
@@ -58,6 +60,63 @@ const populateDB = async () => {
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
+
+
+    const banco1 = await Banco.create({descripcion: 'Banco Rio S.A.E.C.A', activo: true, empresaId: empresa.id });
+    const banco2 = await Banco.create({descripcion: 'Solar Banco S.A.E.', activo: true, empresaId: empresa.id });
+    const banco3 = await Banco.create({descripcion: 'Banco Nacional de Fomento (BNF)', activo: true, empresaId: empresa.id });
+    const banco4 = await Banco.create({descripcion: 'Interfisa Banco', activo: true, empresaId: empresa.id });
+    const banco5 = await Banco.create({descripcion: 'Banco Atlas S.A.', activo: true, empresaId: empresa.id });
+    const banco6 = await Banco.create({descripcion: 'BANCOP S.A.', activo: true, empresaId: empresa.id });
+    const banco7 = await Banco.create({descripcion: 'Visión Banco S.A.E.C.A.', activo: true, empresaId: empresa.id });
+    const banco8 = await Banco.create({descripcion: 'Sudameris Bank S.A.E.C.A.', activo: true, empresaId: empresa.id });
+    const banco9 = await Banco.create({descripcion: 'Banco GNB - Paraguay', activo: true, empresaId: empresa.id });
+    const banco10 = await Banco.create({descripcion: 'Banco Itaú Paraguay S.A.', activo: true, empresaId: empresa.id });
+    const banco11 = await Banco.create({descripcion: 'Banco Familiar S.A.E.C.A.', activo: true, empresaId: empresa.id });
+    const banco12 = await Banco.create({descripcion: 'Banco Continental S.A.E.C.A.', activo: true, empresaId: empresa.id });
+    const banco13 = await Banco.create({descripcion: 'Banco BASA', activo: true, empresaId: empresa.id });
+    const banco14 = await Banco.create({descripcion: 'Finexpar S.A.E.C.A.', activo: true, empresaId: empresa.id });
+    const banco15 = await Banco.create({descripcion: 'FINANCIERA FIC S.A.E.C.A.', activo: true, empresaId: empresa.id });
+    const banco16 = await Banco.create({descripcion: 'Tu Financiera', activo: true, empresaId: empresa.id });
+    const banco17 = await Banco.create({descripcion: 'Financiera Paraguayo Japonesa S.A.E.C.A', activo: true, empresaId: empresa.id });
+    const banco18 = await Banco.create({descripcion: 'Financiera Ueno', activo: true, empresaId: empresa.id });
+    const banco19 = await Banco.create({descripcion: 'Coop. del Sur Ltda.', activo: true, empresaId: empresa.id });
+    const banco20 = await Banco.create({descripcion: 'Coop. 21 de Setiembre', activo: true, empresaId: empresa.id });
+    const banco21 = await Banco.create({descripcion: 'Coop. San Ignacio', activo: true, empresaId: empresa.id });
+    const banco22 = await Banco.create({descripcion: 'Coop. Alemán Concordia Ltda.', activo: true, empresaId: empresa.id });
+    const banco23 = await Banco.create({descripcion: 'Coop. Mborayhu Ltda.', activo: true, empresaId: empresa.id });
+    const banco24 = await Banco.create({descripcion: 'Coop. Nazareth Ltda.', activo: true, empresaId: empresa.id });
+    const banco25 = await Banco.create({descripcion: 'Coop. Coodeñe Ltda.', activo: true, empresaId: empresa.id });
+    const banco26 = await Banco.create({descripcion: 'Coop. Ñemby Ltda.', activo: true, empresaId: empresa.id });
+    const banco27 = await Banco.create({descripcion: 'Coop. Judicial Ltda.', activo: true, empresaId: empresa.id });
+    const banco28 = await Banco.create({descripcion: 'Coop. Mercado 4 Ltda.', activo: true, empresaId: empresa.id });
+    const banco29 = await Banco.create({descripcion: 'Coop. Multiactiva 8 de Marzo Ltda.', activo: true, empresaId: empresa.id });
+    const banco30 = await Banco.create({descripcion: 'Coop. San Juan Bautista Ltda.', activo: true, empresaId: empresa.id });
+    const banco31 = await Banco.create({descripcion: 'Coop. Universitaria Ltda.', activo: true, empresaId: empresa.id });
+    const banco32 = await Banco.create({descripcion: 'Coop. Coomecipar Ltda.', activo: true, empresaId: empresa.id });
+    const banco33 = await Banco.create({descripcion: 'COPACONS Ltda.', activo: true, empresaId: empresa.id });
+    const banco34 = await Banco.create({descripcion: 'Coop. Medalla Milagrosa Ltda.', activo: true, empresaId: empresa.id });
+    const banco35 = await Banco.create({descripcion: 'Coop. Mburicao Ltda.', activo: true, empresaId: empresa.id });
+    const banco36 = await Banco.create({descripcion: 'Coop. Lambaré Ltda.', activo: true, empresaId: empresa.id });
+    const banco37 = await Banco.create({descripcion: 'C.O.F.A.N.', activo: true, empresaId: empresa.id });
+    const banco38 = await Banco.create({descripcion: 'Coop. Chortitzer Ltda.', activo: true, empresaId: empresa.id });
+    const banco39 = await Banco.create({descripcion: 'Coop. Neuland Ltda.', activo: true, empresaId: empresa.id });
+    const banco40 = await Banco.create({descripcion: 'Coop. Raúl Peña Ltda.', activo: true, empresaId: empresa.id });
+    const banco41 = await Banco.create({descripcion: 'Coop. Naranjal Ltda.', activo: true, empresaId: empresa.id });
+    const banco42 = await Banco.create({descripcion: 'Coop. Colonias Unidas Ltda.', activo: true, empresaId: empresa.id });
+    const banco43 = await Banco.create({descripcion: 'Coop. Fernheim Ltda.', activo: true, empresaId: empresa.id });
+    
+    const medioPago1 = await MedioPago.create({descripcion: 'EFECTIVO', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:false,tieneTipo:false,esObsequio:false});
+    const medioPago2 = await MedioPago.create({descripcion: 'TARJETA', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:true,tieneTipo:false,esObsequio:false});
+    const medioPago3 = await MedioPago.create({descripcion: 'VALE EMPLEADOS', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:false,tieneTipo:false,esObsequio:false});
+    const medioPago4 = await MedioPago.create({descripcion: 'RETENCION', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:true,tieneTipo:false,esObsequio:false});
+    const medioPago5 = await MedioPago.create({descripcion: 'CHEQUE DIA', activo: true, empresaId: empresa.id ,esCheque:true,tieneBanco:true,tieneRef:true,tieneTipo:false,esObsequio:false});
+    const medioPago6 = await MedioPago.create({descripcion: 'CHEQUE DIFERIDO', activo: true, empresaId: empresa.id ,esCheque:true,tieneBanco:true,tieneRef:true,tieneTipo:false,esObsequio:false});
+    const medioPago7 = await MedioPago.create({descripcion: 'TRANSFERENCIA', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:true,tieneTipo:false,esObsequio:false});
+    const medioPago8 = await MedioPago.create({descripcion: 'OBSEQUIO', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:false,tieneTipo:false,esObsequio:true});
+    const medioPago9 = await MedioPago.create({descripcion: 'BANCARD QR', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:true,tieneTipo:false,esObsequio:false});
+    
+
     const numeracion1 = await Numeracion.create({ 
       empresaId: empresa.id,
       sucursalId: sucursal.id,
@@ -165,11 +224,7 @@ const populateDB = async () => {
       bloqueado: false
     });
 
-    const categoria2 = await Categoria.create({
-      descripcion: "Cuidado de las Prendas",
-      activo: true,
-      empresaId: empresa.id
-    });
+    const categoria2 = await Categoria.create({descripcion: "Cuidado de las Prendas", activo: true, empresaId: empresa.id });
     const categoria3 = await Categoria.create({
       descripcion: "Higiene Personal",
       activo: true,

@@ -27,6 +27,7 @@ dbSetup();
 
  
 app.use('/M2POS/auth', require('./src/routes/auth-routes'));
+app.use('/M2POS/bancos', require('./src/routes/banco-routes'));
 app.use('/M2POS/usuarios', require('./src/routes/usuario-routes'));
 app.use('/M2POS/categorias', require('./src/routes/categoria-routes'));
 app.use('/M2POS/presentaciones', require('./src/routes/presentacion-routes'));
@@ -36,6 +37,7 @@ app.use('/M2POS/productos', require('./src/routes/producto-routes'));
 app.use('/M2POS/valoraciones', require('./src/routes/valoracion.routes'));
 app.use('/M2POS/variantes', require('./src/routes/variante-routes'));
 app.use('/M2POS/lista-precio', require('./src/routes/listaPrecio-routes'));
+app.use('/M2POS/medio-pago', require('./src/routes/medioPago-routes'));
 app.use('/M2POS/ventas', require('./src/routes/venta-routes'));
 app.use('/M2POS/marcas', require('./src/routes/marca-routes'));
 app.use('/M2POS/subcategorias', require('./src/routes/subCategoria-routes'));
