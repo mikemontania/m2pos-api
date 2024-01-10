@@ -4,17 +4,12 @@ const VentaDetalle = require('../models/ventaDetalle.model');
 const { sequelize } = require('../../dbconfig');
  const moment = require('moment');
 const Numeracion = require('../models/numeracion.model');
-
-
-
  
-
-
-
 // Crear una venta con sus detalles
 const createVenta = async (req, res) => {
   const fechaVenta = moment(new Date()).format("YYYY-MM-DD");
   const { id, empresaId } = req.usuario;
+  const t = await sequelize.transaction(); // Inicia la transacción
 
   try {
     const {
@@ -31,7 +26,8 @@ const createVenta = async (req, res) => {
       importeSubtotal,
       importeTotal,
       clienteId,
-      detalles
+      detalles,
+      totalKg
     } = req.body;
 
     // Validar datos
@@ -43,7 +39,7 @@ const createVenta = async (req, res) => {
     }
 
     // Generar número de factura
-    const numeracion = await Numeracion.findByPk(numeracionId);
+    const numeracion = await Numeracion.findByPk(numeracionId, { transaction: t });
     numeracion.ultimoNumero += 1;
     const nroComprobante = `${numeracion.serie}-${numeracion.ultimoNumero.toString().padStart(7, "0")}`;
 
@@ -61,6 +57,7 @@ const createVenta = async (req, res) => {
       fechaInicio: numeracion.inicioTimbrado,
       fechaFin: numeracion.finTimbrado,
       timbrado: numeracion.timbrado,
+      modoEntrega: 'CONTRAENTREGA',
       nroComprobante,
       porcDescuento,
       importeIva5,
@@ -70,22 +67,29 @@ const createVenta = async (req, res) => {
       importeNeto,
       importeSubtotal,
       importeTotal,
-    });
+      totalKg
+    }, { transaction: t });
 
     // Guardar detalles
     await VentaDetalle.bulkCreate(
       detalles.map(detalle => ({
         ventaId: venta.id,
         ...detalle,
-      }))
+      })),
+      { transaction: t }
     );
 
     // Actualizar numeración
-    await numeracion.save();
+    await numeracion.save({ transaction: t });
+
+    // Commit de la transacción si todo fue exitoso
+    await t.commit();
 
     res.status(201).json(venta);
   } catch (error) {
+    // Si hay algún error, realiza un rollback de la transacción
     console.error(error);
+    await t.rollback();
     res.status(500).json({ error: "Error al crear la venta" });
   }
 };
