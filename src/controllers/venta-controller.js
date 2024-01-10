@@ -2,25 +2,91 @@ const { Op } = require('sequelize');
 const Venta = require('../models/venta.model'); // Asegúrate de que la importación del modelo sea correcta
 const VentaDetalle = require('../models/ventaDetalle.model');
 const { sequelize } = require('../../dbconfig');
+ const moment = require('moment');
+const Numeracion = require('../models/numeracion.model');
+
+
+
+ 
+
+
 
 // Crear una venta con sus detalles
 const createVenta = async (req, res) => {
+  const fechaVenta = moment(new Date()).format("YYYY-MM-DD");
+  const { id, empresaId } = req.usuario;
+
   try {
-    const { detalles, ...ventaData } = req.body;
-    const nuevaVenta = await sequelize.transaction(async (t) => {
-      const venta = await Venta.create(ventaData, { transaction: t });
-      const detallesVenta = detalles.map((detalle) => ({
-        ventaId: venta.id,
-        ...detalle,
-      }));
-      await VentaDetalle.bulkCreate(detallesVenta, { transaction: t });
-      return venta;
+    const {
+      sucursalId,
+      numeracionId,
+      listaPrecioId,
+      formaVentaId,
+      porcDescuento,
+      importeIva5,
+      importeIva10,
+      importeIvaExenta,
+      importeDescuento,
+      importeNeto,
+      importeSubtotal,
+      importeTotal,
+      clienteId,
+      detalles
+    } = req.body;
+
+    // Validar datos
+    if (!clienteId) {
+      throw new Error("El campo clienteId es obligatorio");
+    }
+    if (!detalles.length) {
+      throw new Error("Debe haber al menos un detalle");
+    }
+
+    // Generar número de factura
+    const numeracion = await Numeracion.findByPk(numeracionId);
+    numeracion.ultimoNumero += 1;
+    const nroComprobante = `${numeracion.serie}-${numeracion.ultimoNumero.toString().padStart(7, "0")}`;
+
+    // Guardar venta
+    const venta = await Venta.create({
+      empresaId,
+      sucursalId,
+      listaPrecioId,
+      formaVentaId,
+      clienteId,
+      anulado: false,
+      enviado: false,
+      usuarioCreacionId: id,
+      fechaVenta,
+      fechaInicio: numeracion.inicioTimbrado,
+      fechaFin: numeracion.finTimbrado,
+      timbrado: numeracion.timbrado,
+      nroComprobante,
+      porcDescuento,
+      importeIva5,
+      importeIva10,
+      importeIvaExenta,
+      importeDescuento,
+      importeNeto,
+      importeSubtotal,
+      importeTotal,
     });
 
-    res.status(201).json(nuevaVenta);
+    // Guardar detalles
+    await VentaDetalle.bulkCreate(
+      detalles.map(detalle => ({
+        ventaId: venta.id,
+        ...detalle,
+      }))
+    );
+
+    // Actualizar numeración
+    await numeracion.save();
+
+    res.status(201).json(venta);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al crear la venta' });
+    res.status(500).json({ error: "Error al crear la venta" });
   }
 };
 
@@ -83,8 +149,11 @@ const listarVentas = async (req, res) => {
     res.status(500).json({ error: 'Error al listar las ventas' });
   }
 };
+ 
+ 
 
 module.exports = {
+ 
   createVenta,
   anularVenta,
   listarVentas,

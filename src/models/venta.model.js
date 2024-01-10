@@ -51,6 +51,7 @@ const Venta = sequelize.define('Venta', {
   fechaCreacion: {
     type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: DataTypes.NOW,
     get() {
       return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
     }
@@ -58,13 +59,14 @@ const Venta = sequelize.define('Venta', {
   fechaModificacion: {
     type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: DataTypes.NOW,
     get() {
       return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
     }
   },
   fechaAnulacion: {
     type: DataTypes.DATEONLY,
-    allowNull: false,
+    allowNull: true,
     get() {
       return moment(this.getDataValue('fechaAnulacion')).format('YYYY-MM-DD');
     }
@@ -76,8 +78,7 @@ const Venta = sequelize.define('Venta', {
       return moment(this.getDataValue('fechaVenta')).format('YYYY-MM-DD');
     }
    },
-  
-
+   
   fechaInicio: {
     type: DataTypes.DATEONLY,
     allowNull: false,
@@ -85,11 +86,11 @@ const Venta = sequelize.define('Venta', {
       return moment(this.getDataValue('fechaInicio')).format('YYYY-MM-DD');
     }
    },
-   fechaInicio: {
+   fechaFin: {
     type: DataTypes.DATEONLY,
     allowNull: false,
     get() {
-      return moment(this.getDataValue('fechaInicio')).format('YYYY-MM-DD');
+      return moment(this.getDataValue('fechaFin')).format('YYYY-MM-DD');
     }
    },
    timbrado: {

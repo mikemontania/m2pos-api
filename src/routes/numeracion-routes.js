@@ -8,7 +8,7 @@ const router = Router();
 router.get('/:id', validarJWT, numeracionController.getById);
 
 // Ruta para buscar todas las numeraciones
-router.get('/list/:sucursal?', validarJWT, numeracionController.findAll);
+router.get('/list/:sucursalId', validarJWT, numeracionController.findAll);
 
 // Ruta para crear una nueva numeración
 router.post('/', validarJWT, numeracionController.create);

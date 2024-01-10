@@ -6,20 +6,47 @@ const Valoracion = require("../models/valoracion.model");
 //version correcta
 const obtenerValoracionVigente = async (req, res) => {
   try {
-    const { empresaId } = req.usuario;
-    const { id, listaValoracionId } = req.params;
+ 
+    const { id, sucursalId, listaPrecioId } = req.params;
     const fechaActual = moment().format("YYYY-MM-DD");
-    console.log(id);
-    const condiciones = {
-      activo: true,
-      varianteId: id,
-      fechaDesde: { [Op.lte]: fechaActual },
-      fechaHasta: { [Op.gte]: fechaActual }
-    };
 
-    const Valoracion = await Valoracion.findOne({ where: condiciones });
-    console.log(Valoracion);
-    res.status(200).json(Valoracion);
+    const condicionesPrecio = {
+      activo: true,
+      varianteId: detalle.varianteId,
+      fechaDesde: { [Op.lte]: fechaActual },
+      fechaHasta: { [Op.gte]: fechaActual },
+      cantDesde: { [Op.gte]: 1 },
+      listaPrecioId:       listaPrecioId, 
+      registro: 'PRECIO',
+      tipo: 'IMPORTE',
+      sucursalId: {
+        [Op.or]: [
+          { [Op.eq]: sucursalId },
+          { [Op.eq]: null },
+        ]}
+    };
+    const condicionesDescuento = {
+      activo: true,
+      varianteId: detalle.varianteId,
+      fechaDesde: { [Op.lte]: fechaActual },
+      fechaHasta: { [Op.gte]: fechaActual },
+      listaPrecioId:       listaPrecioId, 
+      registro: 'DESCUENTO',
+      tipo: 'PRODUCTO',
+      sucursalId: {
+        [Op.or]: [
+          { [Op.eq]: sucursalId },
+          { [Op.eq]: null },
+        ]}
+    }; 
+    const precio = await Valoracion.findOne({ where: condicionesPrecio }); 
+   
+    const descuento = await Valoracion.findOne({ where: condicionesDescuento });  
+ 
+    res.status(200).json({
+      descuento,
+      precio
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error al buscar cliente predeterminado" });

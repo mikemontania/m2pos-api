@@ -4,7 +4,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
  
-router.get('/vigente/:id/:listaPrecioId/:tabla/:tipo', validarJWT, valoracionController.obtenerValoracionVigente);
+router.get('/vigente/:id/:sucursalId/:listaPrecioId', validarJWT, valoracionController.obtenerValoracionVigente);
  
 
 // Ruta para desactivar un precio (marcar como inactivo)

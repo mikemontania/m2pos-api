@@ -4,8 +4,9 @@ const ventaController = require('../controllers/venta-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 // Rutas para Venta
-router.post('/ventas', validarJWT, ventaController.createVenta);
-router.patch('/ventas/:id/anular', validarJWT, ventaController.anularVenta);
-router.get('/ventas', validarJWT, ventaController.listarVentas);
+router.get('/', validarJWT, ventaController.listarVentas);
+router.post('/', validarJWT, ventaController.createVenta); 
+
+router.patch('/:id/anular', validarJWT, ventaController.anularVenta);
 
 module.exports = router;

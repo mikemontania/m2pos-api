@@ -73,14 +73,72 @@ const populateDB = async () => {
       activo: true
     });
 
-    const numeracion2 = await Numeracion.create({ 
+
+    const numeracion4 = await Numeracion.create({ 
       empresaId: empresa.id,
       sucursalId: sucursal.id,
       inicioTimbrado: "2022-11-21",
       finTimbrado: "9999-12-31",
       numeroInicio: 1,
       numeroFin: 999999999,
+      serie: "011-002",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoTomprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
+    const numeracion2 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal2.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
       serie: "012-001",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoTomprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
+
+    const numeracion5 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal2.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "012-002",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoTomprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
+    const numeracion3 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal3.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "013-001",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoTomprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
+    const numeracion6 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal3.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "013-002",
       timbrado: "16032661",
       ultimoNumero: 0,
       tipoTomprobante: "TICKET",
@@ -4609,6 +4667,37 @@ const populateDB = async () => {
       color: "#45A137",
       predeterminado: true
     });
+
+    const formaVenta2 = await FormaVenta.create({
+      descripcion: "credito 15",
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+    const formaVenta3 = await FormaVenta.create({
+      descripcion: "credito 20",
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+    const formaVenta4 = await FormaVenta.create({
+      descripcion: "credito 25",
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+    const formaVenta5 = await FormaVenta.create({
+      descripcion: "credito 30",
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+
+ 
     const listaPrecio = await ListaPrecio.create({
       descripcion: "showroom",
       activo: true,
@@ -4616,6 +4705,24 @@ const populateDB = async () => {
       color: "#45A137",
       predeterminado: true
     });
+
+
+    const listaPrecio2 = await ListaPrecio.create({
+      descripcion: "empleados",
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+
+    const listaPrecio3 = await ListaPrecio.create({
+      descripcion: "mayorista",
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+
     console.log({
       listaPrecioId: listaPrecio.id,
       varianteId: variante3.id,
