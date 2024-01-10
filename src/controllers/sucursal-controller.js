@@ -23,7 +23,7 @@ const getById = async (req, res) => {
 const findAll = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
-    const condiciones = empresaId ? { empresaId } : {};
+    const condiciones =  { empresaId } ;
     const sucursales = await Sucursal.findAll({ where: condiciones });
     res.status(200).json(sucursales);
   } catch (error) {

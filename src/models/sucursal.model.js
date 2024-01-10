@@ -20,9 +20,9 @@ const Sucursal = sequelize.define('Sucursal', {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  empresasId: {
+  empresaId: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
@@ -37,7 +37,7 @@ const Sucursal = sequelize.define('Sucursal', {
 
 // Definir la relación con la tabla de empresas
 Sucursal.belongsTo(Empresa, {
-  foreignKey: 'empresasId',
+  foreignKey: 'empresaId',
   targetKey: 'id',
 });
 

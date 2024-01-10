@@ -9,11 +9,11 @@ const getById = async (req, res) => {
     if (formaVenta) {
       res.status(200).json(formaVenta);
     } else {
-      res.status(404).json({ error: 'Lista de precio no encontrada' });
+      res.status(404).json({ error: 'FormaVenta no encontrada' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al buscar la lista de precio por ID' });
+    res.status(500).json({ error: 'Error al buscar la FormaVenta por ID' });
   }
 };
 const findPredeterminado = async (req, res) => {
@@ -32,20 +32,20 @@ const findPredeterminado = async (req, res) => {
     res.status(500).json({ error: "Error al buscar cliente predeterminado" });
   }
 };
-// Método para buscar todas las listas de precio
+// Método para buscar todas las FormaVenta
 const findAll = async (req, res) => {
   try {
     const { empresaId  } = req.usuario;
-    const condiciones = empresaId ? { empresaId } : {};
-    const listasPrecio = await FormaVenta.findAll({ where: condiciones });
-    res.status(200).json(listasPrecio);
+    const condiciones =   { empresaId }  ;
+    const formaVenta = await FormaVenta.findAll({ where: condiciones });
+    res.status(200).json(formaVenta);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al buscar listas de precio' });
+    res.status(500).json({ error: 'Error al buscar FormaVenta' });
   }
 };
 
-// Método para crear una nueva lista de precio
+// Método para crear una nueva FormaVenta
 const create = async (req, res) => {
   try {
     const { empresaId, descripcion, activo } = req.body;
@@ -53,11 +53,11 @@ const create = async (req, res) => {
     res.status(201).json(formaVenta);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al crear la lista de precio' });
+    res.status(500).json({ error: 'Error al crear la FormaVenta' });
   }
 };
 
-// Método para actualizar una lista de precio por ID
+// Método para actualizar una FormaVenta por ID
 const update = async (req, res) => {
   try {
     const { id } = req.params;
@@ -67,28 +67,28 @@ const update = async (req, res) => {
       await formaVenta.update({ empresaId, descripcion, activo });
       res.status(200).json(formaVenta);
     } else {
-      res.status(404).json({ error: 'Lista de precio no encontrada' });
+      res.status(404).json({ error: 'FormaVenta no encontrada' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al actualizar la lista de precio' });
+    res.status(500).json({ error: 'Error al actualizar la FormaVenta' });
   }
 };
 
-// Método para desactivar una lista de precio (marcar como inactiva)
+// Método para desactivar una FormaVenta (marcar como inactiva)
 const disable = async (req, res) => {
   try {
     const { id } = req.params;
     const formaVenta = await FormaVenta.findByPk(id);
     if (formaVenta) {
       await formaVenta.update({ activo: false });
-      res.status(200).json({ message: 'Lista de precio desactivada exitosamente' });
+      res.status(200).json({ message: 'FormaVenta desactivada exitosamente' });
     } else {
-      res.status(404).json({ error: 'Lista de precio no encontrada' });
+      res.status(404).json({ error: 'FormaVenta no encontrada' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al desactivar la lista de precio' });
+    res.status(500).json({ error: 'Error al desactivar la FormaVenta' });
   }
 };
 

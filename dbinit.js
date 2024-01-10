@@ -34,7 +34,28 @@ const populateDB = async () => {
       descripcion: "Sucursal Principal",
       direccion: "Dirección de la Sucursal",
       telefono: "987654321",
-      empresasId: empresa.id,
+      empresaId: empresa.id,
+      email: "sucursal@example.com"
+    });
+    const sucursal2 = await Sucursal.create({
+      descripcion: "Sucursal dos",
+      direccion: "Dirección de la Sucursal",
+      telefono: "987654321",
+      empresaId: empresa.id,
+      email: "sucursal@example.com"
+    });
+    const sucursal3 = await Sucursal.create({
+      descripcion: "Sucursal tres",
+      direccion: "Dirección de la Sucursal",
+      telefono: "987654321",
+      empresaId: empresa.id,
+      email: "sucursal@example.com"
+    });
+    const sucursal4 = await Sucursal.create({
+      descripcion: "Sucursal cuatro",
+      direccion: "Dirección de la Sucursal",
+      telefono: "987654321",
+      empresaId: empresa.id,
       email: "sucursal@example.com"
     });
     const numeracion1 = await Numeracion.create({ 
