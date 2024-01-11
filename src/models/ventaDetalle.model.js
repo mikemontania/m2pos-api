@@ -75,6 +75,7 @@ VentaDetalle.belongsTo(Venta, {
 }); 
 VentaDetalle.belongsTo(Variante, {
   foreignKey: 'varianteId',
+  as:'variante',
   targetKey: 'id',
 });
  

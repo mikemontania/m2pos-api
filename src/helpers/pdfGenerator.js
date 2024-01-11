@@ -23,8 +23,8 @@ const createInvoice = (invoice, outputPath) => {
     const detalles =[...factura.venta.detalle]
     generarCabecera(doc);
     generarDatosCliente(doc)
-    console.log(factura.venta)
-    console.log(detalles)
+   // console.log(factura.venta)
+    //console.log(detalles)
   generarDetalles(doc,detalles);
   generarAhorro(doc,factura.venta.importeDescuento);
   generarTotalTexto(doc, factura.venta.importeTotal );

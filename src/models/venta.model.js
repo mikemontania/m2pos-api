@@ -158,19 +158,23 @@ const Venta = sequelize.define('Venta', {
 Venta.belongsTo(Empresa, {
   foreignKey: 'empresaId',
   targetKey: 'id',
+  as:'empresa'
 });
 Venta.belongsTo(Sucursal, {
   foreignKey: 'sucursalId',
   targetKey: 'id',
+  as:'sucursal'
 });
 Venta.belongsTo(Usuario, {
   foreignKey: 'usuarioCreacionId',
   targetKey: 'id',
+  as: 'vendedorCreacion' // Alias para la asociación de usuario de creación
 });
 
 Venta.belongsTo(Usuario, {
   foreignKey: 'usuarioAnulacionId',
   targetKey: 'id',
+  as: 'vendedorAnulacion' // Alias para la asociación de usuario de anulación
 });
 Venta.belongsTo(ListaPrecio, {
   foreignKey: 'listaPrecioId',
@@ -179,9 +183,11 @@ Venta.belongsTo(ListaPrecio, {
 Venta.belongsTo(Cliente, {
   foreignKey: 'clienteId',
   targetKey: 'id',
+  as:'cliente'
 });
 Venta.belongsTo(FormaVenta, {
   foreignKey: 'formaVentaId',
   targetKey: 'id',
+  as:'formaVenta'
 });
 module.exports = Venta;
