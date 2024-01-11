@@ -15,6 +15,22 @@ const Empresa = sequelize.define('Empresa', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  
+  actividad1: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  
+  actividad2: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  
+  actividad3: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  
   ruc: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -27,6 +43,11 @@ const Empresa = sequelize.define('Empresa', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  img: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  
 }, {
   tableName: 'empresas',
   timestamps: false, // Puedes deshabilitar los campos de timestamp si no los necesitas
