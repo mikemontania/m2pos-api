@@ -11,11 +11,7 @@ const Empresa = sequelize.define('Empresa', {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  nombreComercial: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  
+ 
   actividad1: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -47,7 +43,10 @@ const Empresa = sequelize.define('Empresa', {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  
+  web: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
   tableName: 'empresas',
   timestamps: false, // Puedes deshabilitar los campos de timestamp si no los necesitas

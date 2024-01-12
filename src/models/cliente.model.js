@@ -72,6 +72,10 @@ const Cliente = sequelize.define('Cliente', {
     type: DataTypes.STRING(50),
     allowNull: true
   }, 
+  cel: {
+    type: DataTypes.STRING(50),
+    allowNull: true
+  }, 
   email: {
     type: DataTypes.STRING(50),
     allowNull: false

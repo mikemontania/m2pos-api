@@ -4,7 +4,17 @@ const VentaDetalle = require('../models/ventaDetalle.model');
 const { sequelize } = require('../../dbconfig');
  const moment = require('moment');
 const Numeracion = require('../models/numeracion.model');
- 
+const getById = async (req, res) => {
+  const { id } = req.params;
+
+  const venta = await Venta.findByPk(id);
+
+  const detallesVenta = await VentaDetalle.findAll({where: { ventaId: id }  });
+  res.status(200).json({
+    detallesVenta,
+    venta,
+  });
+};
 // Crear una venta con sus detalles
 const createVenta = async (req, res) => {
   const fechaVenta = moment(new Date()).format("YYYY-MM-DD");
@@ -157,7 +167,7 @@ const listarVentas = async (req, res) => {
  
 
 module.exports = {
- 
+  getById,
   createVenta,
   anularVenta,
   listarVentas,

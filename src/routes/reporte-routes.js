@@ -5,7 +5,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const router = Router();
  
 // Ruta para buscar todas las categorías
-router.get('/', validarJWT, report.getPdf);
+router.get('/:id', validarJWT, report.getPdf);
  
 
 module.exports = router;

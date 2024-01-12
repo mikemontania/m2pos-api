@@ -20,6 +20,10 @@ const Sucursal = sequelize.define('Sucursal', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  cel: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   empresaId: {
     type: DataTypes.INTEGER,
     allowNull: false,

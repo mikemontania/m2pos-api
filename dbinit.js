@@ -24,17 +24,23 @@ const populateDB = async () => {
 
     // Crear empresa
     const empresa = await Empresa.create({
-      razonSocial: "Cavallaro",
-      nombreComercial: "Cavallaro",
+      razonSocial: "CAVALLARO S.A.C.e.I", 
       ruc: "5555555-5", // RUC de ejemplo
       telefono: "123456789",
-      email: "cavallaro@example.com"
+      email: "cavallaro@example.com",
+      web: "www.cavallaro.com.py",
+      actividad1:'Fabricación de plásticos y caucho sintético en formas primarias',
+      actividad2:'Fabricación de jabones, detergentes y preparados de limpieza',
+      actividad3:'Fabricación y transformación de productos diversos por cuenta de terceros.',
+      img:'grupocavallaro3.png'
     });
-
+     
+    
     // Crear sucursal asociada a la empresa
     const sucursal = await Sucursal.create({
-      descripcion: "Sucursal Principal",
-      direccion: "Dirección de la Sucursal",
+      descripcion: "Cavallaro Express - Capiatá",
+      direccion: "Ruta 1 Km. 18 - Capiatá.",
+      cel:'0981 627 369',
       telefono: "987654321",
       empresaId: empresa.id,
       email: "sucursal@example.com"
@@ -216,6 +222,7 @@ const populateDB = async () => {
       sucursalId: sucursal.id,
       numPrefId:numeracion2.id,
       username: "admin@admin.com",
+      usuario: "Administrador",
       password: Bcryptjs.hashSync("123456", salt),
       img: "",
       rol: "admin", // Puedes ajustar el rol según tus necesidades
@@ -11280,6 +11287,7 @@ const populateDB = async () => {
       propietario: true
     });
 
+ 
     console.log("Registros creados exitosamente!");
   }
 };

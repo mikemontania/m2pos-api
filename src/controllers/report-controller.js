@@ -1,14 +1,10 @@
 const fs = require("fs");
 const path = require("path"); // Agrega esta línea para requerir el módulo path
-const invoice = require("../data/clients");
 const { createInvoice } = require("../helpers/pdfGenerator");
-const { client } = require("../data/clients");
-const { venta } = require("../data/venta");
 const Venta = require("../models/venta.model");
 const VentaDetalle = require("../models/ventaDetalle.model");
 const Cliente = require("../models/cliente.model");
-const FormaVenta = require("../models/formaVenta.model");
-const ListaPrecio = require("../models/listaPrecio.model");
+const FormaVenta = require("../models/formaVenta.model"); 
 const Sucursal = require("../models/sucursal.model");
 const Empresa = require("../models/empresa.model");
 const Usuario = require("../models/usuario.model");
@@ -19,7 +15,7 @@ const Producto = require("../models/producto.model");
 const Unidad = require("../models/unidad.model");
 
 const getPdf = async (req, res) => {
-  const id = 1;
+  const { id } = req.params;
 
   const venta = await Venta.findByPk(id, {
     include: [
@@ -37,88 +33,102 @@ const getPdf = async (req, res) => {
       {
         model: Sucursal,
         as: "sucursal",
-        attributes: ["descripcion", "direccion", "telefono"]
+        attributes: ["descripcion", "direccion", "telefono", "cel"]
       },
       {
         model: Empresa,
         as: "empresa",
         attributes: [
           "razonSocial",
+          "ruc",
           "actividad1",
           "actividad2",
           "actividad3",
-          "img"
+          "img",
+          "web"
         ]
       }
     ]
   });
 
-  console.log(venta);
   const detallesVenta = await VentaDetalle.findAll({
     where: { ventaId: id },
     include: [
       {
         model: Variante,
-        as: 'variante',  // Asegúrate de usar el alias correcto aquí
+        as: "variante", // Asegúrate de usar el alias correcto aquí
         include: [
           {
             model: Presentacion,
-            as: 'presentacion',  // Asegúrate de usar el alias correcto aquí
-            attributes: ['id', 'descripcion', 'size'],
+            as: "presentacion", // Asegúrate de usar el alias correcto aquí
+            attributes: ["id", "descripcion", "size"]
           },
           {
             model: Variedad,
-            as: 'variedad',  // Asegúrate de usar el alias correcto aquí
-            attributes: ['id', 'descripcion', 'color'],
+            as: "variedad", // Asegúrate de usar el alias correcto aquí
+            attributes: ["id", "descripcion", "color"]
           },
           {
             model: Producto,
-            as: 'producto',  // Asegúrate de usar el alias correcto aquí
-            attributes: ['nombre'],
+            as: "producto", // Asegúrate de usar el alias correcto aquí
+            attributes: ["nombre"]
           },
           {
             model: Unidad,
-            as: 'unidad',  // Asegúrate de usar el alias correcto aquí
-            attributes: ['code'],
-          },
-        ],
-      },
-    ],
+            as: "unidad", // Asegúrate de usar el alias correcto aquí
+            attributes: ["code"]
+          }
+        ]
+      }
+    ]
   });
+/* console.log(venta)
+ */  const cabecera ={
+    ...venta.dataValues,
+   sucursal: {...venta.dataValues.sucursal.dataValues} ,
+   empresa: {...venta.dataValues.empresa.dataValues} ,
+   vendedorCreacion : {...venta.dataValues.vendedorCreacion.dataValues} ,
+   cliente: {...venta.dataValues.cliente.dataValues} ,
+   formaVenta: {...venta.dataValues.formaVenta.dataValues} ,
+
+  }  
+  let detalles = [];
   
   detallesVenta.forEach(detalle => {
-    console.log('VentaDetalle:', detalle.dataValues);
-  
     // Acceder a los datos de Variante
     const variante = detalle.variante;
-    console.log('Variante:', variante.dataValues);
-  
-    // Acceder a los datos de Presentacion
-    const presentacion = variante.presentacion;
-    console.log('Presentacion:', presentacion.dataValues);
-  
-    // Acceder a los datos de Variedad
-    const variedad = variante.variedad;
-    console.log('Variedad:', variedad.dataValues);
-  
-    // Acceder a los datos de Producto
-    const producto = variante.producto;
-    console.log('Producto:', producto.dataValues);
-  
-    // Acceder a los datos de Unidad
-    const unidad = variante.unidad;
-    console.log('Unidad:', unidad.dataValues);
-  
-    console.log('-------------------');
+    detalles.push({
+      cantidad: detalle.dataValues.cantidad,
+      importePrecio: detalle.dataValues.importePrecio,
+      importeIva5: detalle.dataValues.importeIva5,
+      importeIva10: detalle.dataValues.importeIva10,
+      importeIvaExenta: detalle.dataValues.importeIvaExenta,
+      importeDescuento: detalle.dataValues.importeDescuento,
+      importeNeto: detalle.dataValues.importeNeto,
+      importeSubtotal: detalle.dataValues.importeSubtotal,
+      importeTotal: detalle.dataValues.importeTotal,
+      totalKg: detalle.dataValues.totalKg,
+      tipoDescuento: detalle.dataValues.tipoDescuento,
+      variante: variante.dataValues,
+      presentacion: variante.presentacion,
+      variedad: variante.variedad,
+      producto: variante.producto,
+      unidad: variante.unidad
+    })
+   /*  console.log("-------------------");
+    console.log(cabecera);
+    console.log("-------------------");
+    console.log(detalles);
+    console.log("-------------------"); */
   });
 
-  const pdfContent = createInvoice(client);
+  const pdfContent = createInvoice(cabecera, detalles);
 
   // Configurar la respuesta HTTP
   res.setHeader("Content-Type", "application/pdf");
   res.setHeader(
     "Content-Disposition",
-    `inline; filename=invoice-${client.invoice_nr}.pdf`
+    `inline; filename=FE-${cabecera.nroComprobante}.pdf`
   );
 
   // Enviar el contenido del PDF como respuesta
