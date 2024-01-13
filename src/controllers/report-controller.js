@@ -16,7 +16,7 @@ const Unidad = require("../models/unidad.model");
 
 const getPdf = async (req, res) => {
   const { id } = req.params;
-
+try{
   const venta = await Venta.findByPk(id, {
     include: [
       { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
@@ -50,7 +50,9 @@ const getPdf = async (req, res) => {
       }
     ]
   });
-
+  if (!venta) {
+    return res.status(404).json({ error: "Venta not found" });
+  }
   const detallesVenta = await VentaDetalle.findAll({
     where: { ventaId: id },
     include: [
@@ -82,8 +84,12 @@ const getPdf = async (req, res) => {
       }
     ]
   });
+  if (detallesVenta.length === 0) {
+    return res.status(404).json({ error: "No details found for this venta" });
+  }
 /* console.log(venta)
- */  const cabecera ={
+ */ 
+ const cabecera ={
     ...venta.dataValues,
    sucursal: {...venta.dataValues.sucursal.dataValues} ,
    empresa: {...venta.dataValues.empresa.dataValues} ,
@@ -133,6 +139,10 @@ const getPdf = async (req, res) => {
 
   // Enviar el contenido del PDF como respuesta
   pdfContent.pipe(res);
+} catch (error) {
+  console.error("Error in getPdf:", error);
+  res.status(500).json({ error: "Internal Server Error" });
+}
 };
 
 module.exports = {
