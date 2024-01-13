@@ -52,7 +52,7 @@ const createVenta = async (req, res) => {
     const numeracion = await Numeracion.findByPk(numeracionId, { transaction: t });
     numeracion.ultimoNumero += 1;
     const nroComprobante = `${numeracion.serie}-${numeracion.ultimoNumero.toString().padStart(7, "0")}`;
-
+console.log(importeIva10)
     // Guardar venta
     const venta = await Venta.create({
       empresaId,
