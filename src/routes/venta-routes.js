@@ -7,7 +7,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 
 
 router.get('/:id', validarJWT, ventaController.getById);
-router.get('/', validarJWT, ventaController.listarVentas);
+router.get('/:page/:pageSize/:fechaDesde/:fechaHasta/:clienteId/:sucursalId/:formaVentaId/:listaPrecioId/:nroComprobante?', validarJWT, ventaController.listarVentas);
 router.post('/', validarJWT, ventaController.createVenta); 
 
 router.patch('/:id/anular', validarJWT, ventaController.anularVenta);

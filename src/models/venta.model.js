@@ -179,6 +179,7 @@ Venta.belongsTo(Usuario, {
 Venta.belongsTo(ListaPrecio, {
   foreignKey: 'listaPrecioId',
   targetKey: 'id',
+  as:'listaPrecio'
 });
 Venta.belongsTo(Cliente, {
   foreignKey: 'clienteId',

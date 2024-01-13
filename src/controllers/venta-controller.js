@@ -4,6 +4,11 @@ const VentaDetalle = require('../models/ventaDetalle.model');
 const { sequelize } = require('../../dbconfig');
  const moment = require('moment');
 const Numeracion = require('../models/numeracion.model');
+const Cliente = require('../models/cliente.model');
+const Sucursal = require('../models/sucursal.model');
+const FormaVenta = require('../models/formaVenta.model');
+const Usuario = require('../models/usuario.model');
+const ListaPrecio = require('../models/listaPrecio.model');
 const getById = async (req, res) => {
   const { id } = req.params;
 
@@ -127,30 +132,95 @@ const anularVenta = async (req, res) => {
 
 // Listar ventas paginadas y filtradas
 const listarVentas = async (req, res) => {
+  console.log('listarVentas')
   try {
-    const { page = 1, pageSize = 10, fecha, clienteId, sucursalId } = req.params;
+    const {
+      page = 1,
+      pageSize = 10,
+      fechaDesde,
+      fechaHasta,
+      clienteId,
+      sucursalId,
+      listaPrecioId,
+      formaVentaId,
+      nroComprobante
+    } = req.params;
+    const { empresaId } = req.usuario;
+console.log(  page  ,
+  pageSize,
+  fechaDesde,
+  fechaHasta,
+  clienteId,
+  sucursalId,
+  listaPrecioId,
+  formaVentaId,
+  nroComprobante)
     const condiciones = {
-      empresaId: req.empresaId,
+      empresaId 
     };
 
-    if (fecha) {
-      condiciones.fechaVenta = { [Op.gte]: new Date(fecha) };
+ /*   if (fechaDesde && fechaHasta) {
+      condiciones.fechaVenta = {
+        [Op.and]: [
+          { [Op.lte]: new Date(fechaDesde) },
+          { [Op.gte]: new Date(fechaHasta) },
+        ]
+      };
     }
-    if (clienteId) {
+
+    if (clienteId > 0) {
       condiciones.clienteId = clienteId;
     }
-    if (sucursalId) {
+
+    if (sucursalId > 0) {
       condiciones.sucursalId = sucursalId;
     }
+
+    if (listaPrecioId > 0) {
+      condiciones.listaPrecioId = listaPrecioId;
+    }
+
+    if (formaVentaId > 0) {
+      condiciones.formaVentaId = formaVentaId;
+    }*/
+    if (nroComprobante && nroComprobante.length > 2) {
+      condiciones.nroComprobante = {
+        [Op.iLike]: `%${nroComprobante.toLowerCase()}%`
+      };
+    }
+
 
     const offset = (page - 1) * pageSize;
     const { rows: ventas, count } = await Venta.findAndCountAll({
       where: condiciones,
-      include: [{ model: VentaDetalle, as: 'detalles' }],
+      include: [
+        { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
+        {
+          model: Cliente,
+          as: "cliente",
+          attributes: ["nroDocumento", "razonSocial"]
+        },
+        {
+          model: FormaVenta,
+          as: "formaVenta",
+          attributes: ["id", "descripcion"]
+        },
+        {
+          model: ListaPrecio,
+          as: "listaPrecio",
+          attributes: ["id", "descripcion"]
+        },
+        {
+          model: Sucursal,
+          as: "sucursal",
+          attributes: ["descripcion", "direccion", "telefono", "cel"]
+        }
+       
+      ],
       offset,
       limit: pageSize,
-    });
-
+    },);
+   
     res.status(200).json({
       total: count,
       totalPages: Math.ceil(count / pageSize),
@@ -163,9 +233,7 @@ const listarVentas = async (req, res) => {
     res.status(500).json({ error: 'Error al listar las ventas' });
   }
 };
- 
- 
-
+  
 module.exports = {
   getById,
   createVenta,
