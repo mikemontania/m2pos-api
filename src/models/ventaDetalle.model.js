@@ -39,6 +39,14 @@ const VentaDetalle = sequelize.define('VentaDetalle', {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: true
   },
+  porcIva: {
+    type: DataTypes.DECIMAL(19, 2),
+    allowNull: false
+  },
+  porcDescuento: {
+    type: DataTypes.DECIMAL(19, 2),
+    allowNull: false
+  },
   importeDescuento: {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: false
