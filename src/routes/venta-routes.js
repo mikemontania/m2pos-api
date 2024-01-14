@@ -10,6 +10,6 @@ router.get('/:id', validarJWT, ventaController.getById);
 router.get('/:page/:pageSize/:fechaDesde/:fechaHasta/:clienteId/:sucursalId/:formaVentaId/:listaPrecioId/:nroComprobante?', validarJWT, ventaController.listarVentas);
 router.post('/', validarJWT, ventaController.createVenta); 
 
-router.patch('/:id/anular', validarJWT, ventaController.anularVenta);
+router.put('/anular/:id', validarJWT, ventaController.anularVenta);
 
 module.exports = router;

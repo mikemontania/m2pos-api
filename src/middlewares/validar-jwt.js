@@ -19,8 +19,7 @@ const validarJWT = (req, res, next) => {
         // Verificar el token y extraer el usuario
         const {user} = jsonwebtoken.verify(token, process.env.JWT_SECRET);
         // Asignar valores al objeto "req" para usar en rutas posteriores
-        req.usuario = user;
-        //req.empresaId = usuario.empresaId;   
+        req.usuario = user; 
          
         next();
     } catch (error) {

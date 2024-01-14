@@ -9,17 +9,117 @@ const Sucursal = require("../models/sucursal.model");
 const FormaVenta = require("../models/formaVenta.model");
 const Usuario = require("../models/usuario.model");
 const ListaPrecio = require("../models/listaPrecio.model");
-const getById = async (req, res) => {
+const Variante = require("../models/variante.model");
+const Presentacion = require("../models/presentacion.model");
+const Variedad = require("../models/variedad.model");
+const Producto = require("../models/producto.model");
+const Unidad = require("../models/unidad.model");
+ 
+
+
+
+
+const getById  = async (req, res) => {
   const { id } = req.params;
-
-  const venta = await Venta.findByPk(id);
-
-  const detallesVenta = await VentaDetalle.findAll({ where: { ventaId: id } });
-  res.status(200).json({
-    detallesVenta,
-    venta
+try{
+  const venta = await Venta.findByPk(id, {
+    include: [
+      { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
+      { model: Usuario, as: "vendedorAnulacion", attributes: ["usuario"] },
+      { model: ListaPrecio, as: "listaPrecio", attributes: ["descripcion"] },
+      { model: Cliente, as: "cliente", attributes: ["nroDocumento", "razonSocial", "direccion", "telefono","cel","latitud","longitud"]      },
+      { model: FormaVenta,  as: "formaVenta",     attributes: [  "descripcion"]     },
+      { model: Sucursal,    as: "sucursal",attributes: ["descripcion", "direccion", "telefono", "cel"]      },
+       
+    ]
   });
+  if (!venta) {
+    return res.status(404).json({ error: "Venta not found" });
+  }
+  const detallesVenta = await VentaDetalle.findAll({
+    where: { ventaId: id },
+    include: [
+      {
+        model: Variante,
+        as: "variante", // Asegúrate de usar el alias correcto aquí
+        include: [
+          {
+            model: Presentacion,
+            as: "presentacion", // Asegúrate de usar el alias correcto aquí
+            attributes: ["id", "descripcion", "size"]
+          },
+          {
+            model: Variedad,
+            as: "variedad", // Asegúrate de usar el alias correcto aquí
+            attributes: ["id", "descripcion", "color"]
+          },
+          {
+            model: Producto,
+            as: "producto", // Asegúrate de usar el alias correcto aquí
+            attributes: ["nombre"]
+          },
+          {
+            model: Unidad,
+            as: "unidad", // Asegúrate de usar el alias correcto aquí
+            attributes: ["code"]
+          }
+        ]
+      }
+    ]
+  });
+  if (detallesVenta.length === 0) {
+    return res.status(404).json({ error: "No details found for this venta" });
+  }
+/* console.log(venta)
+ 
+ const cabecera ={
+    ...venta.dataValues,
+   sucursal: {...venta.dataValues.sucursal.dataValues} ,
+   empresa: {...venta.dataValues.empresa.dataValues} ,
+   vendedorCreacion : {...venta.dataValues.vendedorCreacion.dataValues} ,
+   cliente: {...venta.dataValues.cliente.dataValues} ,
+   formaVenta: {...venta.dataValues.formaVenta.dataValues} ,
+
+  }  */ 
+ /* let detalles = [];
+  
+  detallesVenta.forEach(detalle => {
+    // Acceder a los datos de Variante
+    const variante = detalle.variante;
+    detalles.push({
+      cantidad: detalle.dataValues.cantidad,
+      importePrecio: detalle.dataValues.importePrecio,
+      importeIva5: detalle.dataValues.importeIva5,
+      importeIva10: detalle.dataValues.importeIva10,
+      importeIvaExenta: detalle.dataValues.importeIvaExenta,
+      importeDescuento: detalle.dataValues.importeDescuento,
+      importeNeto: detalle.dataValues.importeNeto,
+      importeSubtotal: detalle.dataValues.importeSubtotal,
+      importeTotal: detalle.dataValues.importeTotal,
+      totalKg: detalle.dataValues.totalKg,
+      tipoDescuento: detalle.dataValues.tipoDescuento,
+      variante: variante.dataValues,
+      presentacion: variante.presentacion,
+      variedad: variante.variedad,
+      producto: variante.producto,
+      unidad: variante.unidad
+    })
+    
+  });*/
+  res.status(200).json({ 
+    
+    detalles:detallesVenta,venta:venta
+  });
+   
+} catch (error) {
+  console.error("Error in getPdf:", error);
+  res.status(500).json({ error: "Internal Server Error" });
+}
 };
+
+
+
+
 // Crear una venta con sus detalles
 const createVenta = async (req, res) => {
   const fechaVenta = moment(new Date()).format("YYYY-MM-DD");
@@ -125,7 +225,7 @@ const anularVenta = async (req, res) => {
       await venta.update({
         anulado: true,
         fechaAnulacion: new Date(),
-        usuarioAnulacionId: req.empresaId // Asegúrate de tener el usuario actual disponible en req
+        usuarioAnulacionId: req.usuario.id // Asegúrate de tener el usuario actual disponible en req
       });
       res.status(200).json({ message: "Venta anulada exitosamente" });
     } else {
