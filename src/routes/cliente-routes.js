@@ -18,7 +18,7 @@ router.get('/cliente/:id', validarJWT, clienteController.getById);
 router.get('/clientes', validarJWT, clienteController.findAll);
 
 // Ruta para crear un nuevo cliente
-router.post('/cliente', validarJWT, clienteController.create);
+router.post('/', validarJWT, clienteController.create);
 
 // Ruta para actualizar un cliente por ID
 router.put('/cliente/:id', validarJWT, clienteController.update);

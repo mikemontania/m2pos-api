@@ -110,7 +110,8 @@ const Cliente = sequelize.define('Cliente', {
   }, 
   puntos: {
     type: DataTypes.DECIMAL(19, 2),
-    allowNull: false
+    allowNull: false,
+    defaultValue:0
   },
  
 }, {

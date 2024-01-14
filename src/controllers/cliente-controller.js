@@ -108,10 +108,11 @@ const findAll = async (req, res) => {
 // Método para crear un nuevo cliente
 const create = async (req, res) => {
   try {
+    const { empresaId,id } = req.usuario;
     const {
-      empresaId,
+      
       listaPrecioId,
-      usuarioCreacionId,
+      formaVentaId, 
       razonSocial,
       nroDocumento,
       direccion,
@@ -125,10 +126,42 @@ const create = async (req, res) => {
       propietario,
       activo
     } = req.body;
+
+    // Verificar si ya existe un cliente con predeterminado o propietario true
+    if (propietario) {
+      const existingClient = await Cliente.findOne({
+        where: {
+          empresaId,
+          propietario: true,
+       
+        },
+      });
+
+      if (existingClient) {
+        return res.status(400).json({ error: "Ya existe un cliente  propietario ." });
+      }
+    }
+
+    if (predeterminado ) {
+      const existingClient = await Cliente.findOne({
+        where: {
+          empresaId,
+          predeterminado: true,
+        },
+      });
+
+      if (existingClient) {
+        return res.status(400).json({ error: "Ya existe un cliente predeterminado." });
+      }
+    }
+
+
+
+
     const cliente = await Cliente.create({
+      usuarioCreacionId:id,
       empresaId,
-      listaPrecioId,
-      usuarioCreacionId,
+      listaPrecioId, 
       razonSocial,
       nroDocumento,
       direccion,
@@ -140,14 +173,17 @@ const create = async (req, res) => {
       predeterminado,
       empleado,
       propietario,
-      activo
+      activo,
+      formaVentaId, 
     });
+
     res.status(201).json(cliente);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error al crear el cliente" });
   }
 };
+
 
 // Método para actualizar un cliente por ID
 const update = async (req, res) => {
