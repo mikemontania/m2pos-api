@@ -19,9 +19,10 @@ const getById = async (req, res) => {
 
 const findAll = async (req, res) => {
   try {
-    const { empresaId } = req.usuario;
-    const conditions = empresaId ? { empresaId } : {};
-    const bancos = await Banco.findAll({ where: conditions });
+
+    const { empresaId  } = req.usuario;
+    const condiciones =   { empresaId }  ;
+    const bancos = await Banco.findAll({ where: condiciones }); 
     res.status(200).json(bancos);
   } catch (error) {
     console.error(error);

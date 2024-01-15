@@ -2,8 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Banco = require('./banco.model');
 const Cobranza = require('./cobranza.model');
-const MedioPago = require('./medioPago.model');
-const TipoMedioPago = require('./tipoMedioPago.model'); // Assuming you have a "tipoMedioPago" model
+const MedioPago = require('./medioPago.model'); 
 
 const CobranzaDetalle = sequelize.define('CobranzaDetalle', {
   id: {
