@@ -24,6 +24,7 @@ const SubCategoria = sequelize.define('SubCategoria', {
   }, 
   activo: {
     type: DataTypes.BOOLEAN,
+  defaultValue:true,
     allowNull: false
   },
  

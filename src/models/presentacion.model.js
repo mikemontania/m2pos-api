@@ -23,6 +23,7 @@ const Presentacion = sequelize.define('Presentacion', {
   },
   activo: {
     type: DataTypes.BOOLEAN,
+    defaultValue:true,
     allowNull: false
   },
  

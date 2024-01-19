@@ -68,6 +68,7 @@ const Numeracion = sequelize.define('Numeracion', {
 
   activo: {
     type: DataTypes.BOOLEAN,
+    defaultValue:true,
     allowNull: false
   },
  

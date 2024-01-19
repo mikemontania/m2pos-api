@@ -19,6 +19,7 @@ const Marca = sequelize.define('Marca', {
   }, 
   activo: {
     type: DataTypes.BOOLEAN,
+    defaultValue:true,
     allowNull: false
   }, 
 }, {

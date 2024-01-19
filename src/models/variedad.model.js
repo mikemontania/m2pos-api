@@ -23,6 +23,7 @@ const Variedad = sequelize.define('Variedad', {
   }, 
   activo: {
     type: DataTypes.BOOLEAN,
+  defaultValue:true,
     allowNull: false
   },
  

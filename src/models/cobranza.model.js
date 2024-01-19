@@ -42,6 +42,7 @@ const Cobranza = sequelize.define('Cobranza', {
   },
   anulado: {
     type: DataTypes.BOOLEAN,
+    defaultValue:false,
     allowNull: false
   }, 
   usuarioAnulacionId: {

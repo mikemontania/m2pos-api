@@ -21,23 +21,33 @@ const MedioPago = sequelize.define('MedioPago', {
   },
   esCheque: {
     type: DataTypes.BOOLEAN,
+    defaultValue:false,
     allowNull: false
   },
   tieneBanco: {
     type: DataTypes.BOOLEAN,
+    defaultValue:false,
     allowNull: false
   },
   tieneRef: {
     type: DataTypes.BOOLEAN,
+    defaultValue:false,
     allowNull: false
   },
   tieneTipo: {
     type: DataTypes.BOOLEAN,
+    defaultValue:false,
+    allowNull: false
+  },
+  predeterminado: {
+    type: DataTypes.BOOLEAN,
+    defaultValue:false,
     allowNull: false
   },
   esObsequio: {
     type: DataTypes.BOOLEAN,
-    allowNull: true
+    defaultValue:false,
+    allowNull: false
   },
   usuarioCreacionId: {
     type: DataTypes.INTEGER,

@@ -19,6 +19,7 @@ const Banco  = sequelize.define('Banco ', {
   }, 
   activo: {
     type: DataTypes.BOOLEAN,
+    defaultValue:true,
     allowNull: false
   },
  

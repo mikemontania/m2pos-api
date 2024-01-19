@@ -51,6 +51,7 @@ const Variante = sequelize.define('Variante', {
   }, 
   activo: {
     type: DataTypes.BOOLEAN,
+  defaultValue:true,
     allowNull: false
   },
  

@@ -39,6 +39,7 @@ const Producto = sequelize.define('Producto', {
   }, 
   activo: {
     type: DataTypes.BOOLEAN,
+    defaultValue:true,
     allowNull: false
   },
  

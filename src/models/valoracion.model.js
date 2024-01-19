@@ -33,6 +33,7 @@ const Valoracion = sequelize.define('Valoracion', {
   },
   activo: {
     type: DataTypes.BOOLEAN,
+  defaultValue:true,
     allowNull: false
   },
   cantDesde: {

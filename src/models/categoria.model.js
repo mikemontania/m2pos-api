@@ -19,6 +19,7 @@ const Categoria = sequelize.define('Categoria', {
   }, 
   activo: {
     type: DataTypes.BOOLEAN,
+    defaultValue:true,
     allowNull: false
   },
  

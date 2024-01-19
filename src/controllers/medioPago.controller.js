@@ -16,7 +16,22 @@ const getById = async (req, res) => {
     res.status(500).json({ error: 'Error al buscar el medio de pago por ID' });
   }
 };
+const findPredeterminado = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const condiciones =   { empresaId, predeterminado: true }
+     const medioPago = await MedioPago.findOne({ where: condiciones });
 
+    if (medioPago) {
+      res.status(200).json(medioPago);
+    } else {
+      res.status(404).json({ mensaje: "MedioPago predeterminado no encontrado" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al buscar MedioPago predeterminado" });
+  }
+};
 const findAll = async (req, res) => {
   try {
     const { empresaId  } = req.usuario;
@@ -104,4 +119,5 @@ module.exports = {
   create,
   update,
   disable,
+  findPredeterminado
 };

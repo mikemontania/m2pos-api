@@ -23,10 +23,12 @@ const ListaPrecio = sequelize.define('ListaPrecio', {
   }, 
   predeterminado: {
     type: DataTypes.BOOLEAN,
+    defaultValue:false,
     allowNull: false
   },
   activo: {
     type: DataTypes.BOOLEAN,
+    defaultValue:true,
     allowNull: false
   }, 
 }, {

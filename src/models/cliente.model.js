@@ -82,6 +82,7 @@ const Cliente = sequelize.define('Cliente', {
   },
   excentoIva: {
     type: DataTypes.BOOLEAN,
+    defaultValue:false,
     allowNull: false
   }, 
   latitud: {
@@ -94,19 +95,23 @@ const Cliente = sequelize.define('Cliente', {
   },
   predeterminado: {
     type: DataTypes.BOOLEAN,
-    allowNull: true
+    defaultValue:false,
+    allowNull: false
   },
   empleado: {
     type: DataTypes.BOOLEAN,
-    allowNull: true
+    defaultValue:false,
+    allowNull: false 
   },
   propietario: {
     type: DataTypes.BOOLEAN,
-    allowNull: true
+    defaultValue:false,
+    allowNull: false
   },
   activo: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
+    defaultValue:false,
+    allowNull: true
   }, 
   puntos: {
     type: DataTypes.DECIMAL(19, 2),
