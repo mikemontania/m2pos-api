@@ -1,8 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');
-const Usuario = require('./usuario.model');
-const Documento = require('./documento.model'); // Assuming you have a "documento" model
+const Usuario = require('./usuario.model'); 
 const Sucursal = require('./sucursal.model');
 
 const Cobranza = sequelize.define('Cobranza', {

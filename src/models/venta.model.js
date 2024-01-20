@@ -7,6 +7,7 @@ const ListaPrecio = require('./listaPrecio.model');
 const Cliente = require('./cliente.model');
 const moment = require('moment');
 const FormaVenta = require('./formaVenta.model');
+const Cobranza = require('./cobranza.model');
 
 const Venta = sequelize.define('Venta', {
   id: {
@@ -30,6 +31,10 @@ const Venta = sequelize.define('Venta', {
   formaVentaId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+  }, 
+  cobranzaId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   }, 
   anulado: {
     type: DataTypes.BOOLEAN,
@@ -170,7 +175,11 @@ Venta.belongsTo(Usuario, {
   targetKey: 'id',
   as: 'vendedorCreacion' // Alias para la asociación de usuario de creación
 });
-
+Venta.belongsTo(Cobranza, {
+  foreignKey: 'cobranzaId',
+  targetKey: 'id',
+  as: 'cobranza' // Alias para la asociación de usuario de creación
+}); 
 Venta.belongsTo(Usuario, {
   foreignKey: 'usuarioAnulacionId',
   targetKey: 'id',
