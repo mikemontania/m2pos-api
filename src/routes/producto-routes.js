@@ -6,6 +6,7 @@ const router = Router();
 
 // Ruta para buscar un producto por ID
 router.get('/:id', validarJWT, productoController.getById);
+router.get('/paginados/simple/:page/:pageSize/:descripcion?', validarJWT,productoController.findSearchPaginadosSimple);
 
 router.get('/paginados/:sucursalId/:listaPrecioId/:page/:pageSize/:marcaId/:categoriaId/:subCategoriaId/:descripcion?', validarJWT,productoController.findProductosPaginados);
 

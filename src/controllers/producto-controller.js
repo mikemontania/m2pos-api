@@ -4,9 +4,12 @@ const { sequelize } = require("../../dbconfig");
 const Variante = require("../models/variante.model");
 const Presentacion = require("../models/presentacion.model");
 const Variedad = require("../models/variedad.model");
-const moment = require('moment');
+const moment = require("moment");
 const Valoracion = require("../models/valoracion.model");
 const { REGISTRO } = require("../models/tipos.enum");
+const Marca = require("../models/marca.model");
+const Categoria = require("../models/categoria.model");
+const SubCategoria = require("../models/subCategoria.model");
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -121,10 +124,64 @@ const disable = async (req, res) => {
   }
 };
 
- 
+const findSearchPaginadosSimple = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const { page = 1, pageSize = 10, descripcion } = req.params;
+
+    let condiciones = {
+      empresaId
+    };
+    if (descripcion) {
+      condiciones[Op.or] = [
+        { nombre: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
+        { descripcion: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
+        
+        {
+          "$categoria.descripcion$": {
+            [Op.iLike]: `%${descripcion.toLowerCase()}%`
+          }
+        },
+        {
+          "$subCategoria.descripcion$": {
+            [Op.iLike]: `%${descripcion.toLowerCase()}%`
+          }
+        },
+        {
+          "$marca.descripcion$": {
+            [Op.iLike]: `%${descripcion.toLowerCase()}%`
+          }
+        }
+      ];
+    }
+
+    const { rows: productos, count } = await Producto.findAndCountAll({
+      where: condiciones,
+      include: [
+        { model: Marca, as: 'marca',  },
+            { model: Categoria, as: 'categoria',   },
+            { model: SubCategoria, as: 'subCategoria',   },
+      ],
+      offset: (page - 1) * pageSize,
+      limit: pageSize
+    });
+
+    
+    res.status(200).json({
+      total: count,
+      totalPages: Math.ceil(count / pageSize),
+      page: Number(page),
+      pageSize: Number(pageSize),
+      productos
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al listar los productos" });
+  }
+};
 const findProductosPaginados = async (req, res) => {
-  const fechaActual = moment( new Date()).format('YYYY-MM-DD');
-  console.log(fechaActual)
+  const fechaActual = moment(new Date()).format("YYYY-MM-DD");
+  console.log(fechaActual);
   try {
     const { empresaId } = req.usuario;
     const {
@@ -199,7 +256,7 @@ const findProductosPaginados = async (req, res) => {
         {
           model: Presentacion,
           as: "presentacion",
-          attributes: ["id", "descripcion","size"]
+          attributes: ["id", "descripcion", "size"]
         },
         {
           model: Variedad,
@@ -207,51 +264,49 @@ const findProductosPaginados = async (req, res) => {
           attributes: ["id", "descripcion", "color"]
         }
       ],
-      attributes: ["id", "codBarra", "codErp","porcIva", "img"],
+      attributes: ["id", "codBarra", "codErp", "porcIva", "img"],
       offset: (page - 1) * pageSize,
       limit: pageSize
     });
 
     const productosMapsPromises = productos.map(async producto => {
-    console.log(sucursalId)
+      console.log(sucursalId);
       const condicionesPrecio = {
         activo: true,
         varianteId: producto.get("id"),
         fechaDesde: { [Op.lte]: fechaActual },
         fechaHasta: { [Op.gte]: fechaActual },
         cantDesde: { [Op.gte]: 1 },
-        listaPrecioId:       listaPrecioId, 
-        registro: 'PRECIO',
-        tipo: 'IMPORTE',
+        listaPrecioId: listaPrecioId,
+        registro: "PRECIO",
+        tipo: "IMPORTE",
         sucursalId: {
-          [Op.or]: [
-            { [Op.eq]: sucursalId },
-            { [Op.eq]: null },
-          ]}
+          [Op.or]: [{ [Op.eq]: sucursalId }, { [Op.eq]: null }]
+        }
       };
-  
+
       const precio = await Valoracion.findOne({ where: condicionesPrecio });
-      console.log('condiciones',condicionesPrecio)
-      console.log(precio)
+      console.log("condiciones", condicionesPrecio);
+      console.log(precio);
 
       const condicionesDescuento = {
         activo: true,
         varianteId: producto.get("id"),
         fechaDesde: { [Op.lte]: fechaActual },
         fechaHasta: { [Op.gte]: fechaActual },
-        listaPrecioId:       listaPrecioId, 
-        registro: 'DESCUENTO',
-        tipo: 'PRODUCTO',
+        listaPrecioId: listaPrecioId,
+        registro: "DESCUENTO",
+        tipo: "PRODUCTO",
         sucursalId: {
-          [Op.or]: [
-            { [Op.eq]: sucursalId },
-            { [Op.eq]: null },
-          ]}
+          [Op.or]: [{ [Op.eq]: sucursalId }, { [Op.eq]: null }]
+        }
       };
-  
-      const descuento = await Valoracion.findOne({ where: condicionesDescuento });
-      console.log('condiciones',condicionesPrecio)
-      console.log(precio)
+
+      const descuento = await Valoracion.findOne({
+        where: condicionesDescuento
+      });
+      console.log("condiciones", condicionesPrecio);
+      console.log(precio);
       return {
         id: producto.get("id"),
         codBarra: producto.get("codBarra"),
@@ -265,7 +320,6 @@ const findProductosPaginados = async (req, res) => {
         porcIva: producto.get("porcIva"),
         precio: precio ? precio.valor : undefined,
         descuento: descuento ? descuento.valor : undefined
- 
       };
     });
 
@@ -283,12 +337,12 @@ const findProductosPaginados = async (req, res) => {
   }
 };
 
-
 module.exports = {
   getById,
   findAll,
   create,
   update,
   disable,
-  findProductosPaginados
+  findProductosPaginados,
+  findSearchPaginadosSimple
 };
