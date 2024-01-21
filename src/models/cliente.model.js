@@ -31,6 +31,10 @@ const Cliente = sequelize.define('Cliente', {
     type: DataTypes.INTEGER,
     allowNull: true,
   }, 
+  usuarioModificacionId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  }, 
   fechaModif: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -131,14 +135,19 @@ Cliente.belongsTo(Empresa, {
 Cliente.belongsTo(ListaPrecio, {
   foreignKey: 'listaPrecioId',
   targetKey: 'id',
+  as:'listaPrecio'
 });
 Cliente.belongsTo(FormaVenta, {
   foreignKey: 'formaVentaId',
   targetKey: 'id',
+  as:'formaVenta'
 });
 Cliente.belongsTo(Usuario, {
   foreignKey: 'usuarioCreacionId',
   targetKey: 'id',
 });
- 
+Cliente.belongsTo(Usuario, {
+  foreignKey: 'usuarioModificacionId',
+  targetKey: 'id',
+});
 module.exports = Cliente;

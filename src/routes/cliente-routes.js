@@ -12,7 +12,7 @@ router.get('/propietario',validarJWT, clienteController.findPropietario);
 // Ruta para buscar clientes paginados
 router.get('/paginados/:page/:pageSize/:searchTerm?', validarJWT,clienteController.findClientesPaginados);
 // Ruta para buscar un cliente por ID
-router.get('/cliente/:id', validarJWT, clienteController.getById);
+router.get('/:id', validarJWT, clienteController.getById);
 
 // Ruta para buscar todos los clientes
 router.get('/clientes', validarJWT, clienteController.findAll);
@@ -21,7 +21,7 @@ router.get('/clientes', validarJWT, clienteController.findAll);
 router.post('/', validarJWT, clienteController.create);
 
 // Ruta para actualizar un cliente por ID
-router.put('/cliente/:id', validarJWT, clienteController.update);
+router.put('/:id', validarJWT, clienteController.update);
 
 // Ruta para desactivar un cliente por ID
 router.put('/clientedesactivar/:id', validarJWT, clienteController.disable);

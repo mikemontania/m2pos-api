@@ -1,6 +1,8 @@
 const { Op } = require("sequelize");
 const Cliente = require("../models/cliente.model"); // Asegúrate de que la importación del modelo sea correcta
 const { sequelize } = require("../../dbconfig");
+const FormaVenta = require("../models/formaVenta.model");
+const ListaPrecio = require("../models/listaPrecio.model");
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -74,19 +76,27 @@ const findClientesPaginados = async (req, res) => {
         }
       ];
     }
+    const offset = (page - 1) * pageSize;
     // Realizar la consulta paginada
-    const { count, rows } = await Cliente.findAndCountAll({
+    const { count, rows:clientes } = await Cliente.findAndCountAll({
       where: condiciones,
+      include: [
+        { model: FormaVenta, as: "formaVenta", attributes: ["descripcion"] },
+        { model: ListaPrecio, as: "listaPrecio", attributes: ["descripcion"] },
+      ],
       limit: pageSize,
-      offset: (page - 1) * pageSize
-    });
-
+      offset,
+    }); 
     // Calcular el número total de páginas
     const totalPages = Math.ceil(count / pageSize);
 
-    res
-      .status(200)
-      .json({ count, totalPages, currentPage: parseInt(page), rows });
+    res.status(200).json({
+      total: count,
+      totalPages: Math.ceil(count / pageSize),
+      page: Number(page),
+      pageSize: Number(pageSize),
+      clientes
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error al buscar clientes paginados" });
@@ -117,6 +127,7 @@ const create = async (req, res) => {
       nroDocumento,
       direccion,
       telefono,
+      cel,
       email,
       excentoIva,
       latitud,
@@ -166,6 +177,7 @@ const create = async (req, res) => {
       nroDocumento,
       direccion,
       telefono,
+      cel,
       email,
       excentoIva,
       latitud,
@@ -184,19 +196,18 @@ const create = async (req, res) => {
   }
 };
 
-
-// Método para actualizar un cliente por ID
 const update = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { empresaId, id: usuarioId } = req.usuario;
     const {
-      empresaId,
+      id,
       listaPrecioId,
-      usuarioCreacionId,
+      formaVentaId,
       razonSocial,
       nroDocumento,
       direccion,
       telefono,
+      cel,
       email,
       excentoIva,
       latitud,
@@ -204,34 +215,53 @@ const update = async (req, res) => {
       predeterminado,
       empleado,
       propietario,
-      activo
+      activo,
     } = req.body;
-    const cliente = await Cliente.findByPk(id);
-    if (cliente) {
-      await cliente.update({
+  // Verificar si el cliente existe
+  if (propietario || predeterminado) {
+    const existingClient = await Cliente.findA({
+      where: {
         empresaId,
-        listaPrecioId,
-        usuarioCreacionId,
-        razonSocial,
-        nroDocumento,
-        direccion,
-        telefono,
-        email,
-        excentoIva,
-        latitud,
-        longitud,
-        predeterminado,
-        empleado,
-        propietario,
-        activo
-      });
-      res.status(200).json(cliente);
-    } else {
-      res.status(404).json({ error: "Cliente no encontrado" });
+        [propietario ? 'propietario' : 'predeterminado']: true,
+       },
+    });
+
+    if (existingClient && existingClient.id != id) {
+      return res.status(400).json({ error: `Ya existe un cliente ${propietario ? 'propietario' : 'predeterminado'}.` });
     }
+  }
+ 
+    // Verificar si el cliente existe
+    let existingClient = await Cliente.findByPk(id);
+    if (!existingClient) {
+      return res.status(404).json({ error: "El cliente no existe." });
+    }
+
+    // Actualizar los datos del cliente
+    existingClient.listaPrecioId = listaPrecioId;
+    existingClient.formaVentaId = formaVentaId;
+    existingClient.razonSocial = razonSocial;
+    existingClient.nroDocumento = nroDocumento;
+    existingClient.direccion = direccion;
+    existingClient.telefono = telefono;
+    existingClient.cel = cel;
+    existingClient.email = email;
+    existingClient.excentoIva = excentoIva;
+    existingClient.latitud = latitud;
+    existingClient.longitud = longitud;
+    existingClient.predeterminado = predeterminado;
+    existingClient.empleado = empleado;
+    existingClient.propietario = propietario;
+    existingClient.activo = activo;
+
+    // Guardar los cambios en la base de datos
+    await existingClient.save();
+
+    // Responder con el cliente actualizado
+    res.status(200).json(existingClient);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al actualizar el cliente" });
+    res.status(500).json({ error: "Error al actualizar el cliente." });
   }
 };
 
