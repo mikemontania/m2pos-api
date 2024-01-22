@@ -36,6 +36,7 @@ app.use('/M2POS/forma-venta', require('./src/routes/formaVenta-routes'));
 app.use('/M2POS/productos', require('./src/routes/producto-routes'));
 app.use('/M2POS/valoraciones', require('./src/routes/valoracion.routes'));
 app.use('/M2POS/variantes', require('./src/routes/variante-routes'));
+app.use('/M2POS/variedades', require('./src/routes/variedad-routes'));
 app.use('/M2POS/lista-precio', require('./src/routes/listaPrecio-routes'));
 app.use('/M2POS/medio-pago', require('./src/routes/medioPago-routes'));
 app.use('/M2POS/ventas', require('./src/routes/venta-routes'));

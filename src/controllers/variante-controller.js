@@ -1,6 +1,10 @@
 const { Op } = require('sequelize');
 const Variante = require('../models/variante.model'); // Asegúrate de que la importación del modelo sea correcta
 const { sequelize } = require('../../dbconfig');
+const Unidad = require('../models/unidad.model');
+const Variedad = require('../models/variedad.model');
+const Presentacion = require('../models/presentacion.model');
+const Producto = require('../models/producto.model');
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -17,7 +21,43 @@ const getById = async (req, res) => {
     res.status(500).json({ error: 'Error al buscar la Variante por ID' });
   }
 };
-
+const findAllByProducto = async (req, res) => {
+  try {
+    const { productoId  } = req.params;
+    const condiciones = {};
+   condiciones.productoId = productoId; 
+    const variantes = await Variante.findAll({
+      where: condiciones,
+      include: [ 
+        {
+          model: Presentacion,
+          as: "presentacion",
+       
+        },
+        {
+          model: Variedad,
+          as: "variedad",
+        
+        },
+        {
+          model: Unidad,
+          as: "unidad",
+           
+        },
+        {
+          model: Producto,
+          as: "producto",
+          attributes: ["id", "nombre" ]
+        }
+      ],  
+    });
+ 
+    res.status(200).json(variantes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al buscar Variantes' });
+  }
+};
 // Método para buscar todas las Variantes
 const findAll = async (req, res) => {
   try {
@@ -82,6 +122,7 @@ const disable = async (req, res) => {
 
 module.exports = {
   getById,
+  findAllByProducto,
   findAll,
   create,
   update,

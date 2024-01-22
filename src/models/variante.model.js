@@ -78,8 +78,11 @@ Variante.belongsTo(Variedad, {
   foreignKey: 'variedadId',
   targetKey: 'id', as: 'variedad'
 });
+ 
 Variante.belongsTo(Unidad, {
   foreignKey: 'unidadId',
-  targetKey: 'id', as: 'unidad'
+  targetKey: 'id',
+  as: 'unidad',
 });
+
 module.exports = Variante;
