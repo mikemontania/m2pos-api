@@ -1,80 +1,90 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { response } = require('express');
-const Usuario = require('../models/usuario.model');
-const Producto = require('../models/producto.model');
-const Empresa = require('../models/empresa.model');
-
+const { v4: uuidv4 } = require('uuid');
+const { actualizarImagen } = require('../helpers/actualizar-imagen');
+ 
  
 
-const borrarImagen = (path) => {
-    if (fs.existsSync(path)) {
-        // Borrar la imagen anterior
-        fs.unlinkSync(path);
+
+const fileUpload = ( req, res = response ) => {
+
+    const tipo = req.params.tipo;
+    const id   = req.params.id;
+
+    // Validar tipo
+    const tiposValidos = ['productos','empresas','usuarios'];
+    if ( !tiposValidos.includes(tipo) ){
+        return res.status(400).json({
+            ok: false,
+            msg: 'No es un producto, empresa u usuario (tipo)'
+        });
     }
-}
 
-const uploadImage = async (type, id, fileName) => {
-    try {
-        let oldPath = '';
+    // Validar que exista un archivo
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No hay ningún archivo'
+        });
+    }
 
-        switch (type) {
-            case 'porductos':
-                const q = await Producto.findByPk(id);
-                if (!q) {
-                    console.log('No es una pregunta por id');
-                    return false;
-                }
+    // Procesar la imagen...
+    const file = req.files.imagen;
 
-                oldPath = `./uploads/porductos/${q.img}`;
-                deleteImage(oldPath);
-                q.img = fileName;
-                await q.save();
-                return true;
+    const nombreCortado = file.name.split('.'); // wolverine.1.3.jpg
+    const extensionArchivo = nombreCortado[ nombreCortado.length - 1 ];
+    
+    // Validar extension
+    const extensionesValidas = ['png','jpg','jpeg','gif'];
+    if ( !extensionesValidas.includes( extensionArchivo ) ) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No es una extensión permitida'
+        });
+    }
 
-            case 'empresas':
-                const option = await Empresa.findByPk(id);
-                if (!option) {
-                    console.log('No es una opción por id');
-                    return false;
-                }
+    // Generar el nombre del archivo
+    const nombreArchivo = `${ uuidv4() }.${ extensionArchivo }`;
 
-                oldPath = `./uploads/empresas/${option.img}`;
-                deleteImage(oldPath);
-                option.img = fileName;
-                await option.save();
-                return true;
+    // Path para guardar la imagen
+    const path = `./uploads/${ tipo }/${ nombreArchivo }`;
 
-            case 'usuarios':
-                const user = await Usuario.findByPk(id);
-                if (!user) {
-                    console.log('No es un usuario por id');
-                    return false;
-                }
-
-                oldPath = `./uploads/usuarios/${user.img}`;
-                deleteImage(oldPath);
-                user.img = fileName;
-                await user.save();
-                return true;
-            
-            // Agregar más casos según sea necesario para otros tipos de actualizaciones
-
-            default:
-                console.log('Tipo no válido');
-                return false;
+    // Mover la imagen
+    file.mv( path , (err) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({
+                ok: false,
+                msg: 'Error al mover la imagen'
+            });
         }
-    } catch (error) {
-        console.log(error);
-        return false;
-    }
+
+        // Actualizar base de datos
+        actualizarImagen( tipo, id, nombreArchivo );
+
+        res.json({
+            ok: true,
+            msg: 'Archivo subido',
+            nombreArchivo
+        });
+    });
+
 }
+
+  
 const getImage = async (req, res = response) => {
     try {
         const { tipo,foto} = req.params; 
        
         const imagePath = path.join(__dirname, `../uploads/${tipo}/${foto}`);
-        res.sendFile(imagePath);
+           // imagen por defecto
+    if ( fs.existsSync( pathImg ) ) {
+        res.sendFile( pathImg );
+    } else {
+        const pathImg = path.join( __dirname, `../uploads/no-img.jpg` );
+        res.sendFile( pathImg );
+    }
 
     } catch (error) {
         console.log(error);
@@ -86,8 +96,7 @@ const getImage = async (req, res = response) => {
 };
 
 module.exports = {
-    uploadImage,
-    borrarImagen,
+    fileUpload,
     getImage
 };    
 

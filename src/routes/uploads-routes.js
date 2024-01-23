@@ -9,7 +9,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 router.use(expressFileUpload());
 
 // Ruta para cargar una imagen
-router.put('/:tipo/:id', validarJWT, controller.uploadImage);
+router.put('/:tipo/:id', validarJWT, controller.fileUpload);
 // Ruta para obtener una imagen
 router.get('/:tipo/:foto', controller.getImage);
 
