@@ -1,10 +1,9 @@
-const fs = require('fs').promises;
 const path = require('path');
 const { response } = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { actualizarImagen } = require('../helpers/actualizar-imagen');
  
- 
+const fs = require('fs');
 
 
 const fileUpload = ( req, res = response ) => {
@@ -48,8 +47,8 @@ const fileUpload = ( req, res = response ) => {
     const nombreArchivo = `${ uuidv4() }.${ extensionArchivo }`;
 
     // Path para guardar la imagen
-    const path = `./uploads/${ tipo }/${ nombreArchivo }`;
-
+    const path = `./src/uploads/${ tipo }/${ nombreArchivo }`;
+console.log(path)
     // Mover la imagen
     file.mv( path , (err) => {
         if (err){
@@ -76,8 +75,7 @@ const fileUpload = ( req, res = response ) => {
 const getImage = async (req, res = response) => {
     try {
         const { tipo,foto} = req.params; 
-       
-        const imagePath = path.join(__dirname, `../uploads/${tipo}/${foto}`);
+        const pathImg = path.join(__dirname, `../uploads/${tipo}/${foto}`);
            // imagen por defecto
     if ( fs.existsSync( pathImg ) ) {
         res.sendFile( pathImg );

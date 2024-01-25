@@ -17,7 +17,7 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
     
     switch( tipo ) {
         case 'productos':
-            const variante = await Variante.findById(id);
+            const variante = await Variante.findByPk(id);
             if ( !variante ) {
                 console.log('No es un productos por id');
                 return false;
@@ -33,7 +33,7 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
         break;
         
         case 'empresas':
-            const empresa = await Empresa.findById(id);
+            const empresa = await Empresa.findByPk(id);
             if ( !empresa ) {
                 console.log('No es un empresa por id');
                 return false;
@@ -50,7 +50,7 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
         
         case 'usuarios':
 
-            const usuario = await Usuario.findById(id);
+            const usuario = await Usuario.findByPk(id);
             if ( !usuario ) {
                 console.log('No es un usuario por id');
                 return false;

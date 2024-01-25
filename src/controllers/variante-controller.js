@@ -89,10 +89,10 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { porcIva, empresaId, presentacionId, variedadId, productoId, unidadId, activo } = req.body;
+    const { porcIva, empresaId,codBarra,codErp, presentacionId, variedadId, productoId, unidadId, activo } = req.body;
     const varianteActualizada = await Variante.findByPk(id);
     if (varianteActualizada) {
-      await varianteActualizada.update({ porcIva, empresaId, presentacionId, variedadId, productoId, unidadId, activo });
+      await varianteActualizada.update({ porcIva,codBarra,codErp, empresaId, presentacionId, variedadId, productoId, unidadId, activo });
       res.status(200).json(varianteActualizada);
     } else {
       res.status(404).json({ error: 'Variante no encontrada' });
