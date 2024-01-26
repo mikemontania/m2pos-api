@@ -76,8 +76,8 @@ const findAll = async (req, res) => {
 // Método para crear una nueva Variante
 const create = async (req, res) => {
   try {
-    const { porcIva, empresaId, presentacionId, variedadId, productoId, unidadId, activo } = req.body;
-    const nuevaVariante = await Variante.create({ porcIva, empresaId, presentacionId, variedadId, productoId, unidadId, activo });
+    const { porcIva, empresaId,codBarra,codErp, presentacionId, variedadId, productoId, unidadId, activo } = req.body;
+    const nuevaVariante = await Variante.create({ porcIva, empresaId,codBarra,codErp, presentacionId, variedadId, productoId, unidadId, activo });
     res.status(201).json(nuevaVariante);
   } catch (error) {
     console.error(error);
