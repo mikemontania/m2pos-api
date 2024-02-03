@@ -67,7 +67,8 @@ CobranzaDetalle.belongsTo(Cobranza, {
 });
 CobranzaDetalle.belongsTo(MedioPago, {
   foreignKey: 'medioPagoId',
-  targetKey: 'id'
+  targetKey: 'id',
+  as:'medioPago'
 });
  
 

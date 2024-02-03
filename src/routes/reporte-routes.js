@@ -6,6 +6,6 @@ const router = Router();
  
 // Ruta para buscar todas las categorías
 router.get('/:id', validarJWT, report.getPdf);
+router.get('/reportecobranza/:fechaDesde/:fechaHasta/:sucursalId/:medioPagoId', validarJWT, report.getReporteCobranza);
  
-
 module.exports = router;

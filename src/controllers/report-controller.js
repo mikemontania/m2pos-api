@@ -16,100 +16,10 @@ const Unidad = require("../models/unidad.model");
 const Cobranza = require("../models/cobranza.model");
 const CobranzaDetalle = require("../models/cobranzaDetalle.model");
 const MedioPago = require("../models/medioPago.model");
+const { Op } = require("sequelize");
 
-const getTopVendedoresPorTotalKg = async (req, res) => {
-  try {
-    // Consulta para obtener el top de vendedores por totalKg
-    const topVendedores = await Venta.findAll({
-      attributes: [
-        'usuarioCreacionId', // Selecciona el ID del vendedor
-        [sequelize.fn('SUM', sequelize.col('totalKg')), 'totalKgSum'], // Suma totalKg y le asigna un alias
-      ],
-      group: ['usuarioCreacionId'], // Agrupa por el ID del vendedor
-      order: [[sequelize.literal('totalKgSum'), 'DESC']], // Ordena por la suma totalKg de forma descendente
-      include: [
-        {
-          model: Usuario, // Asocia el modelo Usuario
-          as: 'vendedorCreacion', // Alias para la asociación de usuario de creación
-        },
-      ],
-      limit: 10, // Limita los resultados a los 10 primeros vendedores
-    });
+const moment = require("moment");
 
-    // Responde con el resultado
-    res.status(200).json({
-      message: 'Top de vendedores por totalKg',
-      data: topVendedores,
-    });
-  } catch (error) {
-    // Maneja los errores
-    console.error(error);
-    res.status(500).json({ error: 'Error al obtener el top de vendedores por totalKg' });
-  }
-};
-const getTopVariantesPorTotalKg = async (req, res) => {
-  try {
-    const topVariantes = await VentaDetalle.findAll({
-      attributes: [
-        'varianteId',
-        [sequelize.fn('SUM', sequelize.col('totalKg')), 'totalKgSum'],
-      ],
-      group: ['varianteId'],
-      order: [[sequelize.literal('totalKgSum'), 'DESC']],
-      include: [
-        {
-          model: Variante,
-          as: 'variante',
-        },
-      ],
-      limit: 10, // Puedes ajustar el límite según tus necesidades
-    });
-
-    res.status(200).json({
-      message: 'Top de variantes por totalKg',
-      data: topVariantes,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error al obtener el top de variantes por totalKg' });
-  }
-};
-const getInformeMediosDePago = async (req, res) => {
-  try {
-    const { fechaDesde, fechaHasta } = req.params;
-
-    const query = `
-      SELECT
-        mp.id AS medioPagoId,
-        mp.descripcion AS medioPagoDescripcion,
-        SUM(cd.importeCobrado) AS totalImporteCobrado
-      FROM
-        medio_pago mp
-      LEFT JOIN
-        cobranzas_detalle cd ON mp.id = cd.medioPagoId
-      LEFT JOIN
-        cobranzas c ON cd.cobranzaId = c.id
-      WHERE
-        c.fechaCobranza BETWEEN :fechaDesde AND :fechaHasta
-      GROUP BY
-        mp.id, mp.descripcion
-    `;
-
-    const resultados = await sequelize.query(query, {
-      replacements: { fechaDesde, fechaHasta },
-      type: sequelize.QueryTypes.SELECT,
-    });
-
-    // Estructurar y enviar la respuesta
-    res.status(200).json({
-      message: `Informe de medios de pago para el periodo ${fechaDesde} - ${fechaHasta}`,
-      data: resultados,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al obtener el informe de medios de pago" });
-  }
-};
 const getReporteCobranza = async (req, res) => {
   console.log("getReporteCobranza");
   try {
@@ -144,7 +54,13 @@ const getReporteCobranza = async (req, res) => {
 
     const ventas = await Venta.findAll({
       where: condiciones,
-      attributes: ["id", "fechaVenta", "nroComprobante", "importeTotal"],
+      attributes: [
+        "id",
+        "fechaVenta",
+        "nroComprobante",
+        "importeTotal",
+        "cobranzaId"
+      ],
       include: [
         {
           model: Cliente,
@@ -154,25 +70,27 @@ const getReporteCobranza = async (req, res) => {
         { model: Sucursal, as: "sucursal", attributes: ["descripcion"] }
       ]
     });
-    //buscar cobranza y mediopago
+
     let detalles = [];
 
     for (const venta of ventas) {
       condiciones2.cobranzaId = venta.cobranzaId;
 
-      const cobranzaDetalles = await Promise.all(
-        CobranzaDetalle.findAll({
-          where: condiciones2,
-          attributes: ["importeCobrado", "nroRef"],
-          include: [
-            { model: MedioPago, as: "medioPago", attributes: ["descripcion"] }
-          ]
-        })
+      const cobranzaDetallesArray = await CobranzaDetalle.findAll({
+        where: condiciones2,
+        attributes: ["importeCobrado", "nroRef"],
+        include: [
+          { model: MedioPago, as: "medioPago", attributes: ["descripcion"] }
+        ]
+      });
+
+      const cobranzaDetalles = cobranzaDetallesArray.map(detalle =>
+        detalle.toJSON()
       );
 
       for (const primerCobranzaDetalle of cobranzaDetalles) {
         detalles.push({
-          ...venta,
+          ...venta.toJSON(), // Aplicar toJSON() a la venta
           importeCobrado: primerCobranzaDetalle.importeCobrado,
           nroRef: primerCobranzaDetalle.nroRef,
           medioPago: primerCobranzaDetalle.medioPago.descripcion
@@ -191,7 +109,7 @@ const getReporteCobranza = async (req, res) => {
       }
 
       acumulador[medioPago].cantidadCobranza++;
-      acumulador[medioPago].importeTotal += importeCobrado;
+      acumulador[medioPago].importeTotal += parseFloat(importeCobrado); // Convertir a número y sumar
 
       return acumulador;
     }, {});
@@ -213,7 +131,107 @@ const getReporteCobranza = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Error al listar las ventas" });
   }
-}; 
+};
+const getTopVendedoresPorTotalKg = async (req, res) => {
+  try {
+    // Consulta para obtener el top de vendedores por totalKg
+    const topVendedores = await Venta.findAll({
+      attributes: [
+        "usuarioCreacionId", // Selecciona el ID del vendedor
+        [sequelize.fn("SUM", sequelize.col("totalKg")), "totalKgSum"] // Suma totalKg y le asigna un alias
+      ],
+      group: ["usuarioCreacionId"], // Agrupa por el ID del vendedor
+      order: [[sequelize.literal("totalKgSum"), "DESC"]], // Ordena por la suma totalKg de forma descendente
+      include: [
+        {
+          model: Usuario, // Asocia el modelo Usuario
+          as: "vendedorCreacion" // Alias para la asociación de usuario de creación
+        }
+      ],
+      limit: 10 // Limita los resultados a los 10 primeros vendedores
+    });
+
+    // Responde con el resultado
+    res.status(200).json({
+      message: "Top de vendedores por totalKg",
+      data: topVendedores
+    });
+  } catch (error) {
+    // Maneja los errores
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Error al obtener el top de vendedores por totalKg" });
+  }
+};
+const getTopVariantesPorTotalKg = async (req, res) => {
+  try {
+    const topVariantes = await VentaDetalle.findAll({
+      attributes: [
+        "varianteId",
+        [sequelize.fn("SUM", sequelize.col("totalKg")), "totalKgSum"]
+      ],
+      group: ["varianteId"],
+      order: [[sequelize.literal("totalKgSum"), "DESC"]],
+      include: [
+        {
+          model: Variante,
+          as: "variante"
+        }
+      ],
+      limit: 10 // Puedes ajustar el límite según tus necesidades
+    });
+
+    res.status(200).json({
+      message: "Top de variantes por totalKg",
+      data: topVariantes
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Error al obtener el top de variantes por totalKg" });
+  }
+};
+const getInformeMediosDePago = async (req, res) => {
+  try {
+    const { fechaDesde, fechaHasta } = req.params;
+
+    const query = `
+      SELECT
+        mp.id AS medioPagoId,
+        mp.descripcion AS medioPagoDescripcion,
+        SUM(cd.importeCobrado) AS totalImporteCobrado
+      FROM
+        medio_pago mp
+      LEFT JOIN
+        cobranzas_detalle cd ON mp.id = cd.medioPagoId
+      LEFT JOIN
+        cobranzas c ON cd.cobranzaId = c.id
+      WHERE
+        c.fechaCobranza BETWEEN :fechaDesde AND :fechaHasta
+      GROUP BY
+        mp.id, mp.descripcion
+    `;
+
+    const resultados = await sequelize.query(query, {
+      replacements: { fechaDesde, fechaHasta },
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    // Estructurar y enviar la respuesta
+    res.status(200).json({
+      message: `Informe de medios de pago para el periodo ${fechaDesde} - ${fechaHasta}`,
+      data: resultados
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Error al obtener el informe de medios de pago" });
+  }
+};
+
 const getTopClientes = async (req, res) => {
   try {
     const { fechaDesde, fechaHasta, topN } = req.params;
@@ -243,13 +261,13 @@ const getTopClientes = async (req, res) => {
 
     const resultados = await sequelize.query(query, {
       replacements: { fechaDesde, fechaHasta, topN },
-      type: sequelize.QueryTypes.SELECT,
+      type: sequelize.QueryTypes.SELECT
     });
 
     // Estructurar y enviar la respuesta
     res.status(200).json({
       message: `Top ${topN} clientes más compradores para el periodo ${fechaDesde} - ${fechaHasta}`,
-      data: resultados,
+      data: resultados
     });
   } catch (error) {
     console.error(error);
@@ -282,13 +300,13 @@ const getTopVariantes = async (req, res) => {
 
     const resultados = await sequelize.query(query, {
       replacements: { fechaDesde, fechaHasta, topN },
-      type: sequelize.QueryTypes.SELECT,
+      type: sequelize.QueryTypes.SELECT
     });
 
     // Estructurar y enviar la respuesta
     res.status(200).json({
       message: `Top ${topN} variantes más vendidas para el periodo ${fechaDesde} - ${fechaHasta}`,
-      data: resultados,
+      data: resultados
     });
   } catch (error) {
     console.error(error);
@@ -322,19 +340,21 @@ const getReporteVentasPorSucursal = async (req, res) => {
 
     const resultados = await sequelize.query(query, {
       replacements: { fechaDesde, fechaHasta, sucursalId },
-      type: sequelize.QueryTypes.SELECT,
+      type: sequelize.QueryTypes.SELECT
     });
 
     // Estructurar y enviar la respuesta
     res.status(200).json({
       message: `Reporte de ventas por sucursal para el periodo ${fechaDesde} - ${fechaHasta}`,
-      data: resultados,
+      data: resultados
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al obtener el reporte de ventas por sucursal" });
+    res
+      .status(500)
+      .json({ error: "Error al obtener el reporte de ventas por sucursal" });
   }
-}; 
+};
 const getPdf = async (req, res) => {
   const { id } = req.params;
   try {
@@ -467,5 +487,6 @@ const getPdf = async (req, res) => {
 };
 
 module.exports = {
-  getPdf
+  getPdf,
+  getReporteCobranza
 };
