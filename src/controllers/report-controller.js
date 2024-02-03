@@ -19,6 +19,7 @@ const MedioPago = require("../models/medioPago.model");
 const { Op } = require("sequelize");
 
 const moment = require("moment");
+const { sequelize } = require("../../dbconfig");
 
 const getReporteCobranza = async (req, res) => {
   console.log("getReporteCobranza");
@@ -132,97 +133,79 @@ const getReporteCobranza = async (req, res) => {
     res.status(500).json({ error: "Error al listar las ventas" });
   }
 };
-const getTopVendedoresPorTotalKg = async (req, res) => {
+ 
+const getVendedoresPorTotal = async (req, res) => {
   try {
-    // Consulta para obtener el top de vendedores por totalKg
-    const topVendedores = await Venta.findAll({
-      attributes: [
-        "usuarioCreacionId", // Selecciona el ID del vendedor
-        [sequelize.fn("SUM", sequelize.col("totalKg")), "totalKgSum"] // Suma totalKg y le asigna un alias
-      ],
-      group: ["usuarioCreacionId"], // Agrupa por el ID del vendedor
-      order: [[sequelize.literal("totalKgSum"), "DESC"]], // Ordena por la suma totalKg de forma descendente
-      include: [
-        {
-          model: Usuario, // Asocia el modelo Usuario
-          as: "vendedorCreacion" // Alias para la asociación de usuario de creación
-        }
-      ],
-      limit: 10 // Limita los resultados a los 10 primeros vendedores
-    });
-
-    // Responde con el resultado
-    res.status(200).json({
-      message: "Top de vendedores por totalKg",
-      data: topVendedores
-    });
-  } catch (error) {
-    // Maneja los errores
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "Error al obtener el top de vendedores por totalKg" });
-  }
-};
-const getTopVariantesPorTotalKg = async (req, res) => {
-  try {
-    const topVariantes = await VentaDetalle.findAll({
-      attributes: [
-        "varianteId",
-        [sequelize.fn("SUM", sequelize.col("totalKg")), "totalKgSum"]
-      ],
-      group: ["varianteId"],
-      order: [[sequelize.literal("totalKgSum"), "DESC"]],
-      include: [
-        {
-          model: Variante,
-          as: "variante"
-        }
-      ],
-      limit: 10 // Puedes ajustar el límite según tus necesidades
-    });
-
-    res.status(200).json({
-      message: "Top de variantes por totalKg",
-      data: topVariantes
-    });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "Error al obtener el top de variantes por totalKg" });
-  }
-};
-const getInformeMediosDePago = async (req, res) => {
-  try {
-    const { fechaDesde, fechaHasta } = req.params;
-
+    const { fechaDesde, fechaHasta, sucursalId } = req.params;
+    const sucursalCondition = sucursalId !== '0' ? "AND v.sucursal_id = :sucursalId" : "";
+ 
+    // Realizar la consulta a la base de datos para obtener las variantes más vendidas
     const query = `
       SELECT
-        mp.id AS medioPagoId,
-        mp.descripcion AS medioPagoDescripcion,
-        SUM(cd.importeCobrado) AS totalImporteCobrado
-      FROM
-        medio_pago mp
-      LEFT JOIN
-        cobranzas_detalle cd ON mp.id = cd.medioPagoId
-      LEFT JOIN
-        cobranzas c ON cd.cobranzaId = c.id
+        u.id,
+        u.usuario as vendedor, 
+        COUNT(v.id) as cantidad,
+        SUM(v.total_kg) / 1000 AS peso,
+        SUM(v.importe_total) total
+      FROM ventas v  
+      JOIN usuarios u ON u.id = v.usuario_creacion_id
       WHERE
-        c.fechaCobranza BETWEEN :fechaDesde AND :fechaHasta
-      GROUP BY
-        mp.id, mp.descripcion
+        v.anulado = false
+        AND v.fecha_Venta BETWEEN :fechaDesde AND :fechaHasta
+        ${sucursalCondition}
+      GROUP BY u.id, vendedor ORDER BY total  DESC 
     `;
 
     const resultados = await sequelize.query(query, {
-      replacements: { fechaDesde, fechaHasta },
+      replacements: { fechaDesde, fechaHasta, sucursalId },
+      type: sequelize.QueryTypes.SELECT
+    });
+
+   
+ 
+    // Estructurar y enviar la respuesta
+    res.status(200).json({
+      resultados: resultados
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener getVendedoresPorTotal" });
+  }
+};
+ 
+
+const getInformeMediosDePago = async (req, res) => {
+  try {
+    const { fechaDesde, fechaHasta , sucursalId} = req.params;
+    const sucursalCondition = sucursalId !== '0' ? "AND c.sucursal_id = :sucursalId" : "";
+
+    const query = `
+      SELECT
+        mp.id AS id,
+        mp.descripcion AS medioPago ,
+        SUM(cd.importe_cobrado) AS totalImporteCobrado,
+        COUNT( mp.id) AS cantidad
+      FROM
+        medio_pago mp
+      LEFT JOIN
+        cobranzas_detalle cd ON mp.id = cd.medio_pago_id
+      LEFT JOIN
+        cobranzas c ON cd.cobranza_id = c.id
+      WHERE
+        c.fecha_cobranza BETWEEN :fechaDesde AND :fechaHasta
+        AND c.tipo = 'VENTA'
+        AND c.anulado = false
+        ${sucursalCondition}
+      GROUP BY mp.id, mp.descripcion    `;
+
+    const resultados = await sequelize.query(query, {
+      replacements: { fechaDesde, fechaHasta, sucursalId },
       type: sequelize.QueryTypes.SELECT
     });
 
     // Estructurar y enviar la respuesta
     res.status(200).json({
-      message: `Informe de medios de pago para el periodo ${fechaDesde} - ${fechaHasta}`,
-      data: resultados
+      resultados
     });
   } catch (error) {
     console.error(error);
@@ -234,40 +217,41 @@ const getInformeMediosDePago = async (req, res) => {
 
 const getTopClientes = async (req, res) => {
   try {
-    const { fechaDesde, fechaHasta, topN } = req.params;
-
+    const { fechaDesde, fechaHasta, sucursalId } = req.params;
+    const sucursalCondition = sucursalId !== '0' ? "AND v.sucursal_id = :sucursalId" : "";
     // Realizar la consulta a la base de datos para obtener los clientes más compradores
     const query = `
       SELECT
-        c.nroDocumento,
-        c.razonSocial,
-        SUM(v.importeTotal) AS totalImporte,
+        c.nro_documento as doc,
+        c.razon_social as razonSocial,
+        SUM(v.importe_total) AS totalImporte,
         COUNT(v.id) AS totalFacturas
       FROM
         ventas v
       JOIN
-        clientes c ON v.clienteId = c.id
+        clientes c ON v.cliente_id = c.id
       WHERE
         v.anulado = false
         AND c.predeterminado = false
         AND c.propietario = false
-        AND v.fechaVenta BETWEEN :fechaDesde AND :fechaHasta
+        AND v.fecha_venta BETWEEN :fechaDesde AND :fechaHasta
+        ${sucursalCondition}
+
       GROUP BY
-        c.id, c.nroDocumento, c.razonSocial
+      doc, razonSocial 
       ORDER BY
-        totalImporte DESC
-      LIMIT :topN;
+      totalImporte DESC
+      LIMIT 10;
     `;
 
     const resultados = await sequelize.query(query, {
-      replacements: { fechaDesde, fechaHasta, topN },
+      replacements: { fechaDesde, fechaHasta,   sucursalId  },
       type: sequelize.QueryTypes.SELECT
     });
 
     // Estructurar y enviar la respuesta
     res.status(200).json({
-      message: `Top ${topN} clientes más compradores para el periodo ${fechaDesde} - ${fechaHasta}`,
-      data: resultados
+      resultados
     });
   } catch (error) {
     console.error(error);
@@ -276,37 +260,50 @@ const getTopClientes = async (req, res) => {
 };
 const getTopVariantes = async (req, res) => {
   try {
-    const { fechaDesde, fechaHasta, topN } = req.params;
-
+    const { fechaDesde, fechaHasta, sucursalId } = req.params;
+    const sucursalCondition = sucursalId !== '0' ? "AND v.sucursal_id = :sucursalId" : "";
     // Realizar la consulta a la base de datos para obtener las variantes más vendidas
     const query = `
       SELECT
-        v.varianteId,
-        COUNT(vd.id) AS totalVentas,
-        SUM(vd.importeTotal) AS totalImporte
+        va.id,
+        va.cod_erp as codErp,
+        pro.nombre as producto,
+        var.descripcion as variedad,
+        pre.descripcion as presentacion,
+        SUM(vd.cantidad) AS vendidos,
+        SUM(vd.total_kg) / 1000 AS peso,
+        SUM(vd.importe_total) AS totalImporte
       FROM
         ventas_detalle vd
       JOIN
-        ventas v ON vd.ventaId = v.id
+        ventas v ON vd.venta_id = v.id
+      JOIN variantes va ON va.id = vd.variante_id
+      JOIN productos pro ON va.producto_id = pro.id
+      JOIN presentaciones pre ON va.presentacion_id = pre.id
+      JOIN variedades var ON va.variedad_id = var.id
       WHERE
         v.anulado = false
-        AND v.fechaVenta BETWEEN :fechaDesde AND :fechaHasta
+        AND v.fecha_Venta BETWEEN :fechaDesde AND :fechaHasta
+        ${sucursalCondition}
       GROUP BY
-        v.varianteId
+      va.id,
+      codErp,
+      producto,
+      variedad,
+      presentacion
       ORDER BY
-        totalImporte DESC
-      LIMIT :topN;
+        vendidos DESC
+      LIMIT 10;
     `;
 
     const resultados = await sequelize.query(query, {
-      replacements: { fechaDesde, fechaHasta, topN },
+      replacements: { fechaDesde, fechaHasta, sucursalId  },
       type: sequelize.QueryTypes.SELECT
     });
 
     // Estructurar y enviar la respuesta
     res.status(200).json({
-      message: `Top ${topN} variantes más vendidas para el periodo ${fechaDesde} - ${fechaHasta}`,
-      data: resultados
+       resultados
     });
   } catch (error) {
     console.error(error);
@@ -316,37 +313,42 @@ const getTopVariantes = async (req, res) => {
 const getReporteVentasPorSucursal = async (req, res) => {
   try {
     const { fechaDesde, fechaHasta, sucursalId } = req.params;
+    const { empresaId } = req.usuario;
+
+    // Ajustar la condición para la sucursal
+    const sucursalCondition = sucursalId !== 0 ? "AND s.id = :sucursalId" : "";
 
     // Realizar la consulta a la base de datos para obtener la cantidad de ventas y totales por sucursal
     const query = `
       SELECT
         s.id AS sucursalId,
-        s.nombre AS sucursalNombre,
+        s.descripcion AS sucursalNombre,
         COUNT(v.id) AS totalVentas,
-        SUM(v.importeTotal) AS totalImporte
+        SUM(v.importe_total) AS totalImporte
       FROM
         ventas v
       JOIN
-        sucursales s ON v.sucursalId = s.id
+        sucursales s ON v.sucursal_id = s.id
       WHERE
         v.anulado = false
-        AND v.fechaVenta BETWEEN :fechaDesde AND :fechaHasta
-        AND s.id = :sucursalId
+        AND v.empresa_id = :empresaId
+        AND v.fecha_venta BETWEEN :fechaDesde AND :fechaHasta
+        ${sucursalCondition}
       GROUP BY
-        s.id, s.nombre
+        s.id, s.descripcion
       ORDER BY
         totalImporte DESC;
     `;
 
     const resultados = await sequelize.query(query, {
-      replacements: { fechaDesde, fechaHasta, sucursalId },
+      replacements: { fechaDesde, fechaHasta, empresaId, sucursalId  },
       type: sequelize.QueryTypes.SELECT
     });
 
     // Estructurar y enviar la respuesta
     res.status(200).json({
-      message: `Reporte de ventas por sucursal para el periodo ${fechaDesde} - ${fechaHasta}`,
-      data: resultados
+     
+      resultados
     });
   } catch (error) {
     console.error(error);
@@ -488,5 +490,9 @@ const getPdf = async (req, res) => {
 
 module.exports = {
   getPdf,
-  getReporteCobranza
+  getReporteCobranza,
+  getReporteVentasPorSucursal ,
+  getTopVariantes,
+  getTopClientes,
+  getInformeMediosDePago,  getVendedoresPorTotal
 };
