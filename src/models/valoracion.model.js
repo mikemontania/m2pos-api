@@ -112,18 +112,22 @@ Valoracion.belongsTo(Empresa, {
 Valoracion.belongsTo(Variante, {
   foreignKey: 'varianteId',
   targetKey: 'id',
+  as:'variante'
 });
 Valoracion.belongsTo(ListaPrecio, {
   foreignKey: 'listaPrecioId',
   targetKey: 'id',
+  as:'listaPrecio'
 });
 Valoracion.belongsTo(Sucursal, {
   foreignKey: 'sucursalId',
   targetKey: 'id',
+  as:'sucursal'
 });
 Valoracion.belongsTo(Cliente, {
   foreignKey: 'clienteId',
   targetKey: 'id',
+  as: 'cliente',
 });
   
 module.exports = Valoracion;

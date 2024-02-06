@@ -21,6 +21,78 @@ const getById = async (req, res) => {
     res.status(500).json({ error: 'Error al buscar la Variante por ID' });
   }
 };
+const findAllDesc = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const { page = 1, pageSize = 10, descripcion } = req.params;
+
+    let condiciones = {
+      empresaId
+    };
+    if (descripcion) {
+      condiciones[Op.or] = [
+        { codErp: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } }, 
+        {
+          "$producto.nombre$": {
+            [Op.iLike]: `%${descripcion.toLowerCase()}%`
+          }
+        },
+        {
+          "$variedad.descripcion$": {
+            [Op.iLike]: `%${descripcion.toLowerCase()}%`
+          }
+        },
+        {
+          "$presentacion.descripcion$": {
+            [Op.iLike]: `%${descripcion.toLowerCase()}%`
+          }
+        }
+      ];
+    }
+
+    const { rows: variantes, count } = await Variante.findAndCountAll({
+      where: condiciones,
+      attributes: ["id", "codErp"],
+      include: [
+        {
+          model: Presentacion,
+          as: "presentacion",
+          attributes: ["descripcion"]
+        },
+        {
+          model: Variedad,
+          as: "variedad",
+          attributes: ["descripcion"]
+        },
+        {
+          model: Producto,
+          as: "producto",
+          attributes: ["nombre"]
+        }
+      ],
+      offset: (page - 1) * pageSize,
+      limit: pageSize
+    });
+    const variantesMap = variantes.map(variante => ({
+      id: variante.id,
+      concat: `${variante.codErp} - ${variante.producto.nombre} ${variante.variedad.descripcion} ${variante.presentacion.descripcion}`
+    }));
+    
+    res.status(200).json({
+      total: count,
+      totalPages: Math.ceil(count / pageSize),
+      page: Number(page),
+      pageSize: Number(pageSize),
+      variantes:variantesMap
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al listar los productos" });
+  }
+};
+ 
+
+
 const findAllByProducto = async (req, res) => {
   try {
     const { productoId  } = req.params;
@@ -127,4 +199,5 @@ module.exports = {
   create,
   update,
   disable,
+  findAllDesc
 };
