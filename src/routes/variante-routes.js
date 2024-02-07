@@ -4,6 +4,7 @@ const varianteController = require('../controllers/variante-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 // Rutas para Variante con validación de JWT 
+router.get('/descripcion', validarJWT,varianteController.findDescripcion); 
 router.get('/findAllDesc/:page/:pageSize/:descripcion?', validarJWT,varianteController.findAllDesc); 
 router.get('/:id', validarJWT, varianteController.getById);
 router.get('/producto/:productoId', validarJWT, varianteController.findAllByProducto);

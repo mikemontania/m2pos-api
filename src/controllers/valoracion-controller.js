@@ -158,10 +158,10 @@ const obtenerValoraciones = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
     // Extraer parámetros de la solicitud
-    const { fechaDesde, fechaHasta, registro, tipo } = req.params;
+    const { fechaDesde,  registro, tipo } = req.params;
     const whereConditions = {
       fechaDesde: { [Op.lte]:  fechaDesde  },
-      fechaHasta: { [Op.gte]:  fechaHasta }, 
+      fechaHasta: { [Op.gte]:  fechaDesde }, 
       empresaId
     };
     if (registro != 'xxxxxx') {

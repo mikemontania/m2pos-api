@@ -21,6 +21,38 @@ const getById = async (req, res) => {
     res.status(500).json({ error: 'Error al buscar la Variante por ID' });
   }
 };
+
+
+
+const findDescripcion = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;  
+    const query = ` 
+    select 
+    x.id as id , 
+    concat(x.cod_erp,' ',INITCAP(p.nombre) , ' ',v.descripcion ,' ',p2.descripcion  ) as concat  
+    from  variantes x join productos p 
+    on x.producto_id = p.id join variedades v 
+    on x.variedad_id = v.id join presentaciones p2 
+    on x.presentacion_id = p2.id 
+    where x.empresa_id =:empresaId  
+    `; 
+    const resultados = await sequelize.query(query, {      replacements: { empresaId},      type: sequelize.QueryTypes.SELECT    });
+
+    // Estructurar y enviar la respuesta
+    res.status(200).json({
+      resultados: resultados
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener descripciones" });
+  }
+};
+
+
+
+
+
 const findAllDesc = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
@@ -199,5 +231,6 @@ module.exports = {
   create,
   update,
   disable,
-  findAllDesc
+  findAllDesc,
+  findDescripcion
 };

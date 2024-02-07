@@ -136,6 +136,8 @@ const getReporteCobranza = async (req, res) => {
  
 const getVendedoresPorTotal = async (req, res) => {
   try {
+    const { empresaId } = req.usuario;
+
     const { fechaDesde, fechaHasta, sucursalId } = req.params;
     const sucursalCondition = sucursalId !== '0' ? "AND v.sucursal_id = :sucursalId" : "";
  
@@ -150,14 +152,14 @@ const getVendedoresPorTotal = async (req, res) => {
       FROM ventas v  
       JOIN usuarios u ON u.id = v.usuario_creacion_id
       WHERE
-        v.anulado = false
+        v.anulado = false   AND v.empresa_id = :empresaId
         AND v.fecha_Venta BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
       GROUP BY u.id, vendedor ORDER BY total  DESC 
     `;
 
     const resultados = await sequelize.query(query, {
-      replacements: { fechaDesde, fechaHasta, sucursalId },
+      replacements: { fechaDesde, fechaHasta, sucursalId,empresaId },
       type: sequelize.QueryTypes.SELECT
     });
 
@@ -176,9 +178,10 @@ const getVendedoresPorTotal = async (req, res) => {
 
 const getInformeMediosDePago = async (req, res) => {
   try {
+    const { empresaId } = req.usuario;
     const { fechaDesde, fechaHasta , sucursalId} = req.params;
     const sucursalCondition = sucursalId !== '0' ? "AND c.sucursal_id = :sucursalId" : "";
-
+  
     const query = `
       SELECT
         mp.id AS id,
@@ -195,11 +198,12 @@ const getInformeMediosDePago = async (req, res) => {
         c.fecha_cobranza BETWEEN :fechaDesde AND :fechaHasta
         AND c.tipo = 'VENTA'
         AND c.anulado = false
+        AND c.empresa_id = :empresaId
         ${sucursalCondition}
       GROUP BY mp.id, mp.descripcion    `;
 
     const resultados = await sequelize.query(query, {
-      replacements: { fechaDesde, fechaHasta, sucursalId },
+      replacements: { fechaDesde, fechaHasta, sucursalId, empresaId },
       type: sequelize.QueryTypes.SELECT
     });
 
@@ -217,6 +221,7 @@ const getInformeMediosDePago = async (req, res) => {
 
 const getTopClientes = async (req, res) => {
   try {
+    const { empresaId } = req.usuario;
     const { fechaDesde, fechaHasta, sucursalId } = req.params;
     const sucursalCondition = sucursalId !== '0' ? "AND v.sucursal_id = :sucursalId" : "";
     // Realizar la consulta a la base de datos para obtener los clientes más compradores
@@ -231,7 +236,7 @@ const getTopClientes = async (req, res) => {
       JOIN
         clientes c ON v.cliente_id = c.id
       WHERE
-        v.anulado = false
+        v.anulado = false AND v.empresa_id = :empresaId
         AND c.predeterminado = false
         AND c.propietario = false
         AND v.fecha_venta BETWEEN :fechaDesde AND :fechaHasta
@@ -245,7 +250,7 @@ const getTopClientes = async (req, res) => {
     `;
 
     const resultados = await sequelize.query(query, {
-      replacements: { fechaDesde, fechaHasta,   sucursalId  },
+      replacements: { fechaDesde, fechaHasta, empresaId,  sucursalId  },
       type: sequelize.QueryTypes.SELECT
     });
 
@@ -260,6 +265,7 @@ const getTopClientes = async (req, res) => {
 };
 const getTopVariantes = async (req, res) => {
   try {
+    const { empresaId } = req.usuario;
     const { fechaDesde, fechaHasta, sucursalId } = req.params;
     const sucursalCondition = sucursalId !== '0' ? "AND v.sucursal_id = :sucursalId" : "";
     // Realizar la consulta a la base de datos para obtener las variantes más vendidas
@@ -281,8 +287,7 @@ const getTopVariantes = async (req, res) => {
       JOIN productos pro ON va.producto_id = pro.id
       JOIN presentaciones pre ON va.presentacion_id = pre.id
       JOIN variedades var ON va.variedad_id = var.id
-      WHERE
-        v.anulado = false
+      WHERE v.anulado = false AND v.empresa_id = :empresaId
         AND v.fecha_Venta BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
       GROUP BY
@@ -297,7 +302,7 @@ const getTopVariantes = async (req, res) => {
     `;
 
     const resultados = await sequelize.query(query, {
-      replacements: { fechaDesde, fechaHasta, sucursalId  },
+      replacements: { fechaDesde, fechaHasta, sucursalId,empresaId  },
       type: sequelize.QueryTypes.SELECT
     });
 
