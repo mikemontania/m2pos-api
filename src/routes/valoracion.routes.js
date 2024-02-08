@@ -7,8 +7,9 @@ const router = Router();
 router.get('/vigente/:id/:sucursalId/:listaPrecioId', validarJWT, valoracionController.obtenerValoracionVigente);
 router.get('/findall/:fechaDesde/:registro/:tipo/:sucursalId/:listaPrecioId', validarJWT, valoracionController.obtenerValoraciones);
 router.post('/', validarJWT, valoracionController.create);
-router.put('/', validarJWT, valoracionController.update);
+router.put('/:id', validarJWT, valoracionController.update);
 // Ruta para desactivar un precio (marcar como inactivo)
-router.delete('/precio/:id', validarJWT, valoracionController.disable);
+router.put('/precio/:id', validarJWT, valoracionController.disable);
+router.delete('/:id', validarJWT, valoracionController.deletebyId); 
 
 module.exports = router; 

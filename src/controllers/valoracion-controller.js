@@ -51,7 +51,7 @@ const obtenerValoracionVigente = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar cliente predeterminado" });
+    res.status(500).json({ error: "Error al  obtenerValoracionVigente" });
   }
 };
 const create = async (req, res) => {
@@ -154,6 +154,31 @@ const update = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar la valoración." });
   }
 };
+
+
+
+const deletebyId = async (req, res) =>{
+  const { id  } = req.params;
+  try {
+    const valoracion = await Valoracion.findByPk(id);
+
+    if (!valoracion) {
+      throw new Error('No se encontró la valoración con el ID proporcionado');
+    }
+
+    await valoracion.destroy();
+
+    res.status(200).json({ok:true})
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ ok:false,error: "Error al actualizar la valoración." });
+  }
+}
+
+
+
+
+
 const obtenerValoraciones = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
@@ -233,5 +258,6 @@ module.exports = {
   obtenerValoracionVigente,
   obtenerValoraciones,
   create,
-  update
+  update,
+  deletebyId
 };
