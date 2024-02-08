@@ -158,20 +158,28 @@ const obtenerValoraciones = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
     // Extraer parámetros de la solicitud
-    const { fechaDesde,  registro, tipo } = req.params;
+    const { fechaDesde, registro, tipo, sucursalId, listaPrecioId } = req.params;
     const whereConditions = {
-      fechaDesde: { [Op.lte]:  fechaDesde  },
-      fechaHasta: { [Op.gte]:  fechaDesde }, 
+      fechaDesde: { [Op.lte]: fechaDesde },
+      fechaHasta: { [Op.gte]: fechaDesde },
       empresaId
     };
-    if (registro != 'xxxxxx') {
-      whereConditions.registro =registro;
-    }
-    
-if (tipo != 'xxxxxx') {
-  whereConditions.tipo =tipo;
-}
 
+    if (sucursalId != 0) {
+      whereConditions.sucursalId = sucursalId;
+    }
+
+    if (listaPrecioId != 0) {
+      whereConditions.listaPrecioId = listaPrecioId;
+    } 
+
+    if (registro != "xxxxxx") {
+      whereConditions.registro = registro;
+    }
+
+    if (tipo != "xxxxxx") {
+      whereConditions.tipo = tipo;
+    }
 
     // Consultar la base de datos con las condiciones de filtro
     const valoraciones = await Valoracion.findAll({
@@ -184,14 +192,10 @@ if (tipo != 'xxxxxx') {
           include: [
             { model: Producto, as: "producto", attributes: ["nombre"] },
             { model: Variedad, as: "variedad", attributes: ["descripcion"] },
-            { model: Presentacion,        as: "presentacion",        attributes: ["descripcion"]            }
+            { model: Presentacion, as: "presentacion", attributes: ["descripcion"]   }
           ]
         },
-        {
-          model: ListaPrecio,
-          as: "listaPrecio",
-          attributes: ["descripcion"]
-        },
+        { model: ListaPrecio, as: "listaPrecio", attributes: ["descripcion"] },
         { model: Sucursal, as: "sucursal", attributes: ["descripcion"] },
         {
           model: Cliente,
