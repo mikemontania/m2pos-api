@@ -74,10 +74,12 @@ const create = async (req, res) => {
       usuarioCreacion
     } = req.body;
 
+    
+
     // Crear la nueva valoración en la base de datos
     const nuevaValoracion = await Valoracion.create({
       empresaId,
-      sucursalId,
+      sucursalId:sucursalId == 0 ? null : sucursalId,
       listaPrecioId,
       varianteId,
       activo,
@@ -91,6 +93,7 @@ const create = async (req, res) => {
       tipo,
       usuarioCreacion
     });
+    if (nuevaValoracion.sucursalId == null) nuevaValoracion.sucursalId = 0;
 
     // Enviar la nueva valoración como respuesta
     res.json(nuevaValoracion);
@@ -129,10 +132,12 @@ const update = async (req, res) => {
       return res.status(404).json({ error: "Valoración no encontrada." });
     }
 
+    const sucursal_id = sucursalId == 0 ? null : sucursalId;
+
     // Actualizar la valoración con los nuevos datos
     await valoracionExistente.update({
       empresaId,
-      sucursalId,
+      sucursalId:sucursalId == 0 ? null : sucursalId,
       listaPrecioId,
       varianteId,
       activo,
@@ -146,6 +151,8 @@ const update = async (req, res) => {
       tipo,
       usuarioModificacion
     });
+    if (valoracionExistente.sucursalId == null)
+      valoracionExistente.sucursalId = 0;
 
     // Enviar la valoración actualizada como respuesta
     res.json(valoracionExistente);
@@ -155,35 +162,37 @@ const update = async (req, res) => {
   }
 };
 
-
-
-const deletebyId = async (req, res) =>{
-  const { id  } = req.params;
+const deletebyId = async (req, res) => {
+  const { id } = req.params;
   try {
     const valoracion = await Valoracion.findByPk(id);
 
     if (!valoracion) {
-      throw new Error('No se encontró la valoración con el ID proporcionado');
+      throw new Error("No se encontró la valoración con el ID proporcionado");
     }
 
     await valoracion.destroy();
 
-    res.status(200).json({ok:true})
+    res.status(200).json({ ok: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ ok:false,error: "Error al actualizar la valoración." });
+    res
+      .status(500)
+      .json({ ok: false, error: "Error al actualizar la valoración." });
   }
-}
-
-
-
-
+};
 
 const obtenerValoraciones = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
     // Extraer parámetros de la solicitud
-    const { fechaDesde, registro, tipo, sucursalId, listaPrecioId } = req.params;
+    const {
+      fechaDesde,
+      registro,
+      tipo,
+      sucursalId,
+      listaPrecioId
+    } = req.params;
     const whereConditions = {
       fechaDesde: { [Op.lte]: fechaDesde },
       fechaHasta: { [Op.gte]: fechaDesde },
@@ -196,7 +205,7 @@ const obtenerValoraciones = async (req, res) => {
 
     if (listaPrecioId != 0) {
       whereConditions.listaPrecioId = listaPrecioId;
-    } 
+    }
 
     if (registro != "xxxxxx") {
       whereConditions.registro = registro;
@@ -217,7 +226,11 @@ const obtenerValoraciones = async (req, res) => {
           include: [
             { model: Producto, as: "producto", attributes: ["nombre"] },
             { model: Variedad, as: "variedad", attributes: ["descripcion"] },
-            { model: Presentacion, as: "presentacion", attributes: ["descripcion"]   }
+            {
+              model: Presentacion,
+              as: "presentacion",
+              attributes: ["descripcion"]
+            }
           ]
         },
         { model: ListaPrecio, as: "listaPrecio", attributes: ["descripcion"] },
@@ -229,6 +242,8 @@ const obtenerValoraciones = async (req, res) => {
         }
       ]
     });
+    // Ordenar las valoraciones por el campo 'id'
+    valoraciones.sort((a, b) => a.id - b.id);
 
     res.json(valoraciones);
   } catch (error) {
