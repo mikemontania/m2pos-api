@@ -9,7 +9,34 @@ const Cliente = require("../models/cliente.model");
 const Producto = require("../models/producto.model");
 const Variedad = require("../models/variedad.model");
 const Presentacion = require("../models/presentacion.model");
+const obtenerDescuentoImporte = async (req, res) => {
+  try {
+    const {  sucursalId, listaPrecioId } = req.params;
+    const fechaActual = moment().format("YYYY-MM-DD"); 
+    const { empresaId } = req.usuario;
+    const condicionesDescuento = {
+      empresaId,
+      activo: true, 
+      fechaDesde: { [Op.lte]: fechaActual },
+      fechaHasta: { [Op.gte]: fechaActual },
+      listaPrecioId: listaPrecioId,
+      registro: "DESCUENTO",
+      tipo: "IMPORTE",
+      sucursalId: {
+        [Op.or]: [{ [Op.eq]: sucursalId }, { [Op.eq]: null }]
+      }
+    };
+     
+    const descuentos = await Valoracion.findAll({ where: condicionesDescuento });
 
+    res.status(200).json({
+      descuentos
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al  obtenerDescuentoImporte" });
+  }
+};
 //version correcta
 const obtenerValoracionVigente = async (req, res) => {
   try {
@@ -20,8 +47,7 @@ const obtenerValoracionVigente = async (req, res) => {
       activo: true,
       varianteId: detalle.varianteId,
       fechaDesde: { [Op.lte]: fechaActual },
-      fechaHasta: { [Op.gte]: fechaActual },
-      cantDesde: { [Op.gte]: 1 },
+      fechaHasta: { [Op.gte]: fechaActual }, 
       listaPrecioId: listaPrecioId,
       registro: "PRECIO",
       tipo: "IMPORTE",
@@ -274,5 +300,6 @@ module.exports = {
   obtenerValoraciones,
   create,
   update,
-  deletebyId
+  deletebyId,
+  obtenerDescuentoImporte
 };
