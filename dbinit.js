@@ -198,29 +198,25 @@ const populateDB = async () => {
     });
     const numeracion6 = await Numeracion.create({ 
       empresaId: empresa.id,
-      sucursalId: sucursal3.id,
+      sucursalId: sucursal4.id,
       inicioTimbrado: "2022-11-21",
       finTimbrado: "9999-12-31",
       numeroInicio: 1,
       numeroFin: 999999999,
-      serie: "013-002",
+      serie: "014-001",
       timbrado: "16032661",
       ultimoNumero: 0,
       tipoTomprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
     });
- 
- 
-
-
-
+  
     // Crear usuario asociado a la empresa y sucursal
     const salt = Bcryptjs.genSaltSync();
     const userAdmin = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal.id,
-      numPrefId:numeracion2.id,
+      numPrefId:numeracion1.id,
       username: "admin@admin.com",
       usuario: "Miguel Montania",
       password: Bcryptjs.hashSync("123456", salt),
@@ -230,6 +226,64 @@ const populateDB = async () => {
       activo: true,
       bloqueado: false
     });
+
+     
+    const cajeroSuc1 = await Usuario.create({
+      empresaId: empresa.id,
+      sucursalId: sucursal.id,
+      numPrefId:numeracion4.id,
+      username: "suc1@cajero.com",
+      usuario: "Cajero sucursal1",
+      password: Bcryptjs.hashSync("123456", salt),
+      img: "",
+      rol: "cajero", // Puedes ajustar el rol según tus necesidades
+      intentos: 0,
+      activo: true,
+      bloqueado: false
+    });
+
+    const cajeroSuc2 = await Usuario.create({
+      empresaId: empresa.id,
+      sucursalId: sucursal2.id,
+      numPrefId:numeracion2.id,
+      username: "suc2@cajero.com",
+      usuario: "Cajero sucursal2",
+      password: Bcryptjs.hashSync("123456", salt),
+      img: "",
+      rol: "cajero", // Puedes ajustar el rol según tus necesidades
+      intentos: 0,
+      activo: true,
+      bloqueado: false
+    });
+
+    const cajeroSuc3 = await Usuario.create({
+      empresaId: empresa.id,
+      sucursalId: sucursal3.id,
+      numPrefId:numeracion3.id,
+      username: "suc3@cajero.com",
+      usuario: "Cajero sucursal3",
+      password: Bcryptjs.hashSync("123456", salt),
+      img: "",
+      rol: "cajero", // Puedes ajustar el rol según tus necesidades
+      intentos: 0,
+      activo: true,
+      bloqueado: false
+    });
+ 
+    const cajeroSuc4 = await Usuario.create({
+      empresaId: empresa.id,
+      sucursalId: sucursal4.id,
+      numPrefId:numeracion6.id,
+      username: "suc4@cajero.com",
+      usuario: "Cajero sucursal4",
+      password: Bcryptjs.hashSync("123456", salt),
+      img: "",
+      rol: "cajero", // Puedes ajustar el rol según tus necesidades
+      intentos: 0,
+      activo: true,
+      bloqueado: false
+    });
+ 
 
     const categoria2 = await Categoria.create({descripcion: "Cuidado de las Prendas", activo: true, empresaId: empresa.id });
     const categoria3 = await Categoria.create({
@@ -7801,6 +7855,58 @@ const populateDB = async () => {
       activo: true,
       empresaId: empresa.id
     });
+
+
+
+    const descImporte1 = await Valoracion.create({
+      listaPrecioId: listaPrecio.id,
+       
+      cantDesde: 20000,
+      cantHasta: 50000,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "DESCUENTO",
+      tipo: "IMPORTE",
+      valor: 10,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const descImporte2 = await Valoracion.create({
+      listaPrecioId: listaPrecio.id, 
+      cantDesde: 50001,
+      cantHasta: 300000,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "DESCUENTO",
+      tipo: "IMPORTE",
+      valor: 15,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const descImporte3 = await Valoracion.create({
+      listaPrecioId: listaPrecio.id, 
+      cantDesde: 300001,
+      cantHasta: 500000,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "DESCUENTO",
+      tipo: "IMPORTE",
+      valor: 20,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const descImporte4 = await Valoracion.create({
+      listaPrecioId: listaPrecio.id, 
+      cantDesde: 500001,
+      cantHasta: 999999999,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "DESCUENTO",
+      tipo: "IMPORTE",
+      valor: 25,
+      activo: true,
+      empresaId: empresa.id
+    }); 
 
     const descuento02 = await Valoracion.create({
       listaPrecioId: listaPrecio.id,
