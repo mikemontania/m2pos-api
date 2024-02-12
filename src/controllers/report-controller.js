@@ -319,9 +319,9 @@ const getReporteVentasPorSucursal = async (req, res) => {
   try {
     const { fechaDesde, fechaHasta, sucursalId } = req.params;
     const { empresaId } = req.usuario;
-
+console.log(sucursalId)
     // Ajustar la condición para la sucursal
-    const sucursalCondition = sucursalId !== 0 ? "AND s.id = :sucursalId" : "";
+    const sucursalCondition = sucursalId !== '0' ? "AND s.id = :sucursalId" : "";
 
     // Realizar la consulta a la base de datos para obtener la cantidad de ventas y totales por sucursal
     const query = `

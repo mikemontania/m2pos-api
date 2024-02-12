@@ -193,7 +193,8 @@ const createVenta = async (req, res) => {
         importeNeto,
         importeSubtotal,
         importeTotal,
-        totalKg
+        totalKg: (totalKg) ? Number((totalKg / 1000).toFixed(2)) : 0,
+ 
       },
       { transaction: t }
     );
@@ -202,7 +203,8 @@ const createVenta = async (req, res) => {
     await VentaDetalle.bulkCreate(
       detalles.map(detalle => ({
         ventaId: venta.id,
-        ...detalle
+        ...detalle,
+        totalKg: (detalle.totalKg) ? Number((detalle.totalKg / 1000).toFixed(2)) : 0, 
       })),
       { transaction: t }
     );

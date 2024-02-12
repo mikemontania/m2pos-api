@@ -38,12 +38,12 @@ const Valoracion = sequelize.define('Valoracion', {
   },
   cantDesde: {
     type: DataTypes.DECIMAL(19, 2),
-    allowNull: false,
+    allowNull: true,
     defaultValue:1
   },
   cantHasta: {
     type: DataTypes.DECIMAL(19, 2),
-    allowNull: false,
+    allowNull: true,
     defaultValue:999999999
   },
   
