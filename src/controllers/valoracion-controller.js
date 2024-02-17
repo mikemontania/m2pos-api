@@ -45,7 +45,7 @@ const obtenerValoracionVigente = async (req, res) => {
 
     const condicionesPrecio = {
       activo: true,
-      varianteId: detalle.varianteId,
+      varianteId: id,
       fechaDesde: { [Op.lte]: fechaActual },
       fechaHasta: { [Op.gte]: fechaActual }, 
       listaPrecioId: listaPrecioId,
@@ -57,7 +57,7 @@ const obtenerValoracionVigente = async (req, res) => {
     };
     const condicionesDescuento = {
       activo: true,
-      varianteId: detalle.varianteId,
+      varianteId: id,
       fechaDesde: { [Op.lte]: fechaActual },
       fechaHasta: { [Op.gte]: fechaActual },
       listaPrecioId: listaPrecioId,
