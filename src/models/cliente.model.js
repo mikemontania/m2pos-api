@@ -16,9 +16,9 @@ const Cliente = sequelize.define(
       autoIncrement: true,
       allowNull: false
     },
-    empresaId: {
+     empresaId: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
     listaPrecioId: {
       type: DataTypes.INTEGER,
@@ -50,7 +50,7 @@ const Cliente = sequelize.define(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       get() {
-        return moment(this.getDataValue("createdAt")).format(
+        return moment(this.getDataValue("fechaCreacion")).format(
           "YYYY-MM-DD HH:mm:ss"
         );
       }
@@ -60,7 +60,7 @@ const Cliente = sequelize.define(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       get() {
-        return moment(this.getDataValue("createdAt")).format(
+        return moment(this.getDataValue("fechaModificacion")).format(
           "YYYY-MM-DD HH:mm:ss"
         );
       }

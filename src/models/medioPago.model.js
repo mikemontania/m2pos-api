@@ -62,7 +62,7 @@ const MedioPago = sequelize.define('MedioPago', {
     allowNull: false,
     defaultValue: DataTypes.NOW,
     get() {
-      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+      return moment(this.getDataValue('fechaCreacion')).format('YYYY-MM-DD HH:mm:ss');
     }
   },
   fechaModificacion: {
@@ -70,7 +70,7 @@ const MedioPago = sequelize.define('MedioPago', {
     allowNull: false,
     defaultValue: DataTypes.NOW,
     get() {
-      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+      return moment(this.getDataValue('fechaModificacion')).format('YYYY-MM-DD HH:mm:ss');
     }
   },
 }, {

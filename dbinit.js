@@ -4777,7 +4777,7 @@ const populateDB = async () => {
       empresaId: empresa.id
     });
     const formaVenta = await FormaVenta.create({
-      descripcion: "contado",
+      descripcion: "contado",dias:0,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",
@@ -4785,28 +4785,28 @@ const populateDB = async () => {
     });
 
     const formaVenta2 = await FormaVenta.create({
-      descripcion: "credito 15",
+      descripcion: "credito 15",dias:15,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",
       predeterminado: false
     });
     const formaVenta3 = await FormaVenta.create({
-      descripcion: "credito 20",
+      descripcion: "credito 20",dias:20,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",
       predeterminado: false
     });
     const formaVenta4 = await FormaVenta.create({
-      descripcion: "credito 25",
+      descripcion: "credito 25",dias:25,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",
       predeterminado: false
     });
     const formaVenta5 = await FormaVenta.create({
-      descripcion: "credito 30",
+      descripcion: "credito 30",dias:30,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",

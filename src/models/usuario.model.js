@@ -11,9 +11,9 @@ const Usuario = sequelize.define(
       autoIncrement: true,
       primaryKey: true
     },
-    empresaId: {
+     empresaId: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
 
     sucursalId: {

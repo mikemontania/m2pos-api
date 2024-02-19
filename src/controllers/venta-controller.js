@@ -16,6 +16,7 @@ const Presentacion = require("../models/presentacion.model");
 const Variedad = require("../models/variedad.model");
 const Producto = require("../models/producto.model");
 const Unidad = require("../models/unidad.model");
+const Credito = require('../models/credito.model');
 
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -127,7 +128,11 @@ const createVenta = async (req, res) => {
     if (!detalles.length) {
       throw new Error("Debe haber al menos un detalle");
     }
-    if (cobranza) {
+    const formaVenta = await FormaVenta.findByPk(formaVentaId, {
+      transaction: t
+    });
+
+    if (cobranza && formaVenta.dias == 0) {
       const {importeAbonado,fechaCobranza, importeCobrado,saldo,tipo} = cobranza; 
      const cobranzaNew = await Cobranza.create(
       {
@@ -158,6 +163,10 @@ const createVenta = async (req, res) => {
       cobranzaId = cobranzaNew.id;
     }
 
+  
+
+
+
     // Generar número de factura
     const numeracion = await Numeracion.findByPk(numeracionId, {
       transaction: t
@@ -167,6 +176,21 @@ const createVenta = async (req, res) => {
       .toString()
       .padStart(7, "0")}`;
     console.log(importeIva10);
+    if (formaVenta && formaVenta.dias > 0) {
+      const nuevoCredito = await Credito.create({
+        empresaId,
+        sucursalId,
+        formaVentaId,
+        cobranzaId: null,
+        pagado: false,
+        usuarioCreacionId: id, 
+        fechaVencimiento: moment(fechaVenta).add(formaVenta.dias, 'days').format("YYYY-MM-DD"), // Calcula fecha de vencimiento
+        fecha: fechaVenta,
+        observacion: nroComprobante,
+        importeTotal,
+        clienteId,
+      });
+    }
     // Guardar venta
     const venta = await Venta.create(
       {
@@ -211,6 +235,11 @@ const createVenta = async (req, res) => {
 
     // Actualizar numeración
     await numeracion.save({ transaction: t });
+
+
+
+    
+
 
     // Commit de la transacción si todo fue exitoso
     await t.commit();

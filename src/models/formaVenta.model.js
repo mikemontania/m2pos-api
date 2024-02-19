@@ -17,6 +17,10 @@ const FormaVenta = sequelize.define('FormaVenta', {
     type: DataTypes.STRING(20),
     allowNull: false
   },
+  dias: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   color: {
     type: DataTypes.STRING(12),
     allowNull: false
