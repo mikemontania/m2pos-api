@@ -69,9 +69,10 @@ const findAll = async (req, res) => {
 
 // Método para crear una nueva numeración
 const create = async (req, res) => {
+  const { empresaId } = req.usuario; 
   try {
-    const { empresaId, sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoTomprobante, ultimoNumero, tipoImpresion, activo } = req.body;
-    const numeracion = await Numeracion.create({ empresaId, sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoTomprobante, ultimoNumero, tipoImpresion, activo });
+    const {   sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo } = req.body;
+    const numeracion = await Numeracion.create({ empresaId, sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo });
     res.status(201).json(numeracion);
   } catch (error) {
     console.error(error);
@@ -81,12 +82,13 @@ const create = async (req, res) => {
 
 // Método para actualizar una numeración por ID
 const update = async (req, res) => {
+  const { empresaId } = req.usuario; 
   try {
     const { id } = req.params;
-    const { empresaId, sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoTomprobante, ultimoNumero, tipoImpresion, activo } = req.body;
+    const { sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo } = req.body;
     const numeracion = await Numeracion.findByPk(id);
     if (numeracion) {
-      await numeracion.update({ empresaId, sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoTomprobante, ultimoNumero, tipoImpresion, activo });
+      await numeracion.update({ empresaId, sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo });
       res.status(200).json(numeracion);
     } else {
       res.status(404).json({ error: 'Numeración no encontrada' });
