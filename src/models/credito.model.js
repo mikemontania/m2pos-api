@@ -7,6 +7,7 @@ const Cliente = require("./cliente.model");
 const moment = require("moment");
 const FormaVenta = require("./formaVenta.model");
 const Cobranza = require("./cobranza.model");
+const Venta = require("./venta.model");
 
 const Credito = sequelize.define(
   "Credito",
@@ -33,6 +34,10 @@ const Credito = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true
     },
+    ventaId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    }, 
     pagado: {
       type: DataTypes.BOOLEAN,
       allowNull: false
@@ -110,6 +115,10 @@ Credito.belongsTo(Sucursal, {
   foreignKey: "sucursalId",
   targetKey: "id",
   as: "sucursal"
+});
+Credito.belongsTo(Venta, {
+  foreignKey: "ventaId",
+  targetKey: "id", 
 });
 Credito.belongsTo(Usuario, {
   foreignKey: "usuarioCreacionId",

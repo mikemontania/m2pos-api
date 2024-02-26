@@ -52,7 +52,7 @@ const Numeracion = sequelize.define('Numeracion', {
     type: DataTypes.STRING(20),
     allowNull: false
   },
-  tipoTomprobante: {
+  tipoComprobante: {
     type: DataTypes.STRING(255),
     allowNull: false
   },
@@ -84,5 +84,6 @@ Numeracion.belongsTo(Empresa, {
 Numeracion.belongsTo(Sucursal, {
   foreignKey: 'sucursalId',
   targetKey: 'id',
+  as :'sucursal'
 });
 module.exports = Numeracion;

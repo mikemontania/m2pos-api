@@ -133,7 +133,7 @@ const populateDB = async () => {
       serie: "011-001",
       timbrado: "16032661",
       ultimoNumero: 0,
-      tipoTomprobante: "TICKET",
+      tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
     });
@@ -149,7 +149,7 @@ const populateDB = async () => {
       serie: "011-002",
       timbrado: "16032661",
       ultimoNumero: 0,
-      tipoTomprobante: "TICKET",
+      tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
     });
@@ -163,7 +163,7 @@ const populateDB = async () => {
       serie: "012-001",
       timbrado: "16032661",
       ultimoNumero: 0,
-      tipoTomprobante: "TICKET",
+      tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
     });
@@ -178,7 +178,7 @@ const populateDB = async () => {
       serie: "012-002",
       timbrado: "16032661",
       ultimoNumero: 0,
-      tipoTomprobante: "TICKET",
+      tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
     });
@@ -192,7 +192,7 @@ const populateDB = async () => {
       serie: "013-001",
       timbrado: "16032661",
       ultimoNumero: 0,
-      tipoTomprobante: "TICKET",
+      tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
     });
@@ -206,7 +206,7 @@ const populateDB = async () => {
       serie: "014-001",
       timbrado: "16032661",
       ultimoNumero: 0,
-      tipoTomprobante: "TICKET",
+      tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
     });

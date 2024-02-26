@@ -7,6 +7,9 @@ const router = Router();
 // Ruta para buscar una numeración por ID
 router.get('/:id', validarJWT, numeracionController.getById);
 
+
+router.get('/paginados/:page/:pageSize?', validarJWT,numeracionController.findNumeracionesPaginados);
+
 // Ruta para buscar todas las numeraciones
 router.get('/list/:sucursalId', validarJWT, numeracionController.findAll);
 

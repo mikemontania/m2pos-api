@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
-const Venta = require("../models/venta.model");  
-const Cobranza = require("../models/cobranza.model"); 
+const Venta = require("../models/venta.model");
+const Cobranza = require("../models/cobranza.model");
 const VentaDetalle = require("../models/ventaDetalle.model");
 const CobranzaDetalle = require("../models/cobranzaDetalle.model");
 const { sequelize } = require("../../dbconfig");
@@ -16,7 +16,7 @@ const Presentacion = require("../models/presentacion.model");
 const Variedad = require("../models/variedad.model");
 const Producto = require("../models/producto.model");
 const Unidad = require("../models/unidad.model");
-const Credito = require('../models/credito.model');
+const Credito = require("../models/credito.model");
 
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -133,39 +133,41 @@ const createVenta = async (req, res) => {
     });
 
     if (cobranza && formaVenta.dias == 0) {
-      const {importeAbonado,fechaCobranza, importeCobrado,saldo,tipo} = cobranza; 
-     const cobranzaNew = await Cobranza.create(
-      {
-        id:null,
-        empresaId ,
-        sucursalId ,
-        usuarioCreacionId:id,
-        fechaCobranza ,
-        importeAbonado ,
-        importeCobrado ,
-        saldo  , 
-        tipo 
-      },
-      { transaction: t }
-    );
+      const {
+        importeAbonado,
+        fechaCobranza,
+        importeCobrado,
+        saldo,
+        tipo
+      } = cobranza;
+      const cobranzaNew = await Cobranza.create(
+        {
+          id: null,
+          empresaId,
+          sucursalId,
+          usuarioCreacionId: id,
+          fechaCobranza,
+          importeAbonado,
+          importeCobrado,
+          saldo,
+          tipo
+        },
+        { transaction: t }
+      );
 
-    if (!cobranza.detalle || cobranza.detalle.length < 1) {
-      throw new Error("detalle de cobranza es obligatorio");
-    }
-    await CobranzaDetalle.bulkCreate(
-      cobranza.detalle.map(d => ({
-        ...d,
-        cobranzaId: cobranzaNew.id,
-        id: null,
-      })),
-      { transaction: t }
-    );
+      if (!cobranza.detalle || cobranza.detalle.length < 1) {
+        throw new Error("detalle de cobranza es obligatorio");
+      }
+      await CobranzaDetalle.bulkCreate(
+        cobranza.detalle.map(d => ({
+          ...d,
+          cobranzaId: cobranzaNew.id,
+          id: null
+        })),
+        { transaction: t }
+      );
       cobranzaId = cobranzaNew.id;
     }
-
-  
-
-
 
     // Generar número de factura
     const numeracion = await Numeracion.findByPk(numeracionId, {
@@ -183,12 +185,14 @@ const createVenta = async (req, res) => {
         formaVentaId,
         cobranzaId: null,
         pagado: false,
-        usuarioCreacionId: id, 
-        fechaVencimiento: moment(fechaVenta).add(formaVenta.dias, 'days').format("YYYY-MM-DD"), // Calcula fecha de vencimiento
+        usuarioCreacionId: id,
+        fechaVencimiento: moment(fechaVenta)
+          .add(formaVenta.dias, "days")
+          .format("YYYY-MM-DD"), // Calcula fecha de vencimiento
         fecha: fechaVenta,
         observacion: nroComprobante,
         importeTotal,
-        clienteId,
+        clienteId
       });
     }
     // Guardar venta
@@ -208,7 +212,7 @@ const createVenta = async (req, res) => {
         timbrado: numeracion.timbrado,
         modoEntrega: "CONTRAENTREGA",
         nroComprobante,
-        cobranzaId:cobranzaId,
+        cobranzaId: cobranzaId,
         porcDescuento,
         importeIva5,
         importeIva10,
@@ -217,8 +221,7 @@ const createVenta = async (req, res) => {
         importeNeto,
         importeSubtotal,
         importeTotal,
-        totalKg: (totalKg) ? Number((totalKg / 1000).toFixed(2)) : 0,
- 
+        totalKg: totalKg ? Number((totalKg / 1000).toFixed(2)) : 0
       },
       { transaction: t }
     );
@@ -228,18 +231,15 @@ const createVenta = async (req, res) => {
       detalles.map(detalle => ({
         ventaId: venta.id,
         ...detalle,
-        totalKg: (detalle.totalKg) ? Number((detalle.totalKg / 1000).toFixed(2)) : 0, 
+        totalKg: detalle.totalKg
+          ? Number((detalle.totalKg / 1000).toFixed(2))
+          : 0
       })),
       { transaction: t }
     );
 
     // Actualizar numeración
     await numeracion.save({ transaction: t });
-
-
-
-    
-
 
     // Commit de la transacción si todo fue exitoso
     await t.commit();
@@ -253,9 +253,6 @@ const createVenta = async (req, res) => {
   }
 };
 
-
- 
-
 // Anular una venta por ID
 const anularVenta = async (req, res) => {
   try {
@@ -265,14 +262,22 @@ const anularVenta = async (req, res) => {
       await venta.update({
         anulado: true,
         fechaAnulacion: new Date(),
-        usuarioAnulacionId: req.usuario.id 
+        usuarioAnulacionId: req.usuario.id
       });
+
+      //si el tipo de venta es  credito  debo eliminar el item del listado
+      const formaVenta = await FormaVenta.findByPk(venta.formaVentaId);
+      if (formaVenta && formaVenta.dias > 0) {
+        const creditoAgregado = await Credito.findOne({ ventaId: venta.id });
+        await creditoAgregado.destroy();
+      }
+
       if (venta.cobranzaId) {
         const cobranza = await Cobranza.findByPk(venta.cobranzaId);
         await cobranza.update({
           anulado: true,
           fechaAnulacion: new Date(),
-          usuarioAnulacionId: req.usuario.id 
+          usuarioAnulacionId: req.usuario.id
         });
       }
       res.status(200).json({ message: "Venta anulada exitosamente" });

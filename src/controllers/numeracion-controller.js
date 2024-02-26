@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const Numeracion = require('../models/numeracion.model'); // Asegúrate de que la importación del modelo sea correcta
 const { sequelize } = require('../../dbconfig');
+const Sucursal = require('../models/sucursal.model');
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -16,7 +17,37 @@ const getById = async (req, res) => {
   }
 };
 
+const findNumeracionesPaginados = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const { page = 1, pageSize = 10  } = req.params;
+    const condiciones = { empresaId };
+    
+    const offset = (page - 1) * pageSize;
+    // Realizar la consulta paginada
+    const { count, rows:numeraciones } = await Numeracion.findAndCountAll({
+      where: condiciones,
+      include: [
+        { model: Sucursal, as: "sucursal",  }, 
+      ],
+      limit: pageSize,
+      offset,
+    }); 
+    // Calcular el número total de páginas
+    const totalPages = Math.ceil(count / pageSize);
 
+    res.status(200).json({
+      total: count,
+      totalPages: Math.ceil(count / pageSize),
+      page: Number(page),
+      pageSize: Number(pageSize),
+      numeraciones
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al buscar numeraciones paginados" });
+  }
+};
 
 // Método para buscar todas las numeraciones
 const findAll = async (req, res) => {
@@ -89,4 +120,5 @@ module.exports = {
   create,
   update,
   disable,
+  findNumeracionesPaginados
 };

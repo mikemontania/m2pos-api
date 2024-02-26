@@ -42,6 +42,7 @@ const login = async (req, res = response) => {
         const userDB = await Usuario.findOne({
             where: {
                 username: username,
+                bloqueado:false,
                 activo: true
             }
         });

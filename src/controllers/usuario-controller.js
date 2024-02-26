@@ -37,7 +37,7 @@ const findAll = async (req, res) => {
 const create = async (req, res) => {
   try {
     const { empresaId, sucursalId, username, usuario, img, rol, activo, bloqueado } = req.body;
-    const nuevoUsuario = await Usuario.create({ empresaId, sucursalId, username, usuario, img, rol, activo, bloqueado });
+    const nuevoUsuario = await Usuario.create({ empresaId, sucursalId, username, usuario, img, rol, activo,   });
     res.status(201).json(nuevoUsuario);
   } catch (error) {
     console.error(error);
