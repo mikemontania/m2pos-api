@@ -49,15 +49,18 @@ const Usuario = sequelize.define(
 
     intentos: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      defaultValue:0
     },
     activo: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      defaultValue:true
     },
     bloqueado: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      defaultValue:false
     }
   },
   {
@@ -70,11 +73,13 @@ const Usuario = sequelize.define(
 
 Usuario.belongsTo(Sucursal, {
   foreignKey: "sucursalId",
-  targetKey: "id"
+  targetKey: "id",
+  as:'sucursal'
 });
 Usuario.belongsTo(Numeracion, {
   foreignKey: "numPrefId",
-  targetKey: "id"
+  targetKey: "id",
+  as:'numeracion'
 });
 
 Usuario.belongsTo(Empresa, {

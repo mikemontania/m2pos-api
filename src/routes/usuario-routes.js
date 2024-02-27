@@ -10,6 +10,8 @@ RUTA  /api/usuarios
 */
 router.get('/',validarJWT,  usuarioController.findAll);
 router.get('/:id',validarJWT, usuarioController.getById);
+router.get('/paginados/:page/:pageSize/:searchTerm?', validarJWT,usuarioController.findPaginados);
+
 router.put('/:id',
     [ validarJWT,
         check('username', 'El username es obligatorio').isEmail(),
