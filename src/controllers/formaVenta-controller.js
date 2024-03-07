@@ -25,7 +25,7 @@ const findPredeterminado = async (req, res) => {
     if (predeterminado) {
       res.status(200).json(predeterminado);
     } else {
-      res.status(404).json({ mensaje: "Lista Precio predeterminado no encontrado" });
+      res.status(404).json({ error: "Lista Precio predeterminado no encontrado" });
     }
   } catch (error) {
     console.error(error);

@@ -25,7 +25,7 @@ const findPredeterminado = async (req, res) => {
     if (medioPago) {
       res.status(200).json(medioPago);
     } else {
-      res.status(404).json({ mensaje: "MedioPago predeterminado no encontrado" });
+      res.status(404).json({ error: "MedioPago predeterminado no encontrado" });
     }
   } catch (error) {
     console.error(error);

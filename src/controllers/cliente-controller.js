@@ -29,7 +29,7 @@ const findPredeterminado = async (req, res) => {
     if (clientePredeterminado) {
       res.status(200).json(clientePredeterminado);
     } else {
-      res.status(404).json({ mensaje: "Cliente predeterminado no encontrado" });
+      res.status(404).json({ error: "Cliente predeterminado no encontrado" });
     }
   } catch (error) {
     console.error(error);
@@ -48,7 +48,7 @@ const findPropietario = async (req, res) => {
     if (clientePropietario) {
       res.status(200).json(clientePropietario);
     } else {
-      res.status(404).json({ mensaje: "Cliente propietario no encontrado" });
+      res.status(404).json({ error: "Cliente propietario no encontrado" });
     }
   } catch (error) {
     console.error(error);

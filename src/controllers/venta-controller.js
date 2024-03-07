@@ -91,7 +91,7 @@ const getById = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in getPdf:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error!!!" });
   }
 };
 

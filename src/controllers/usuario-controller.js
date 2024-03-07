@@ -95,6 +95,7 @@ const create = async (req, res) => {
 
 // Método para actualizar un Usuario por ID
 const update = async (req, res) => {
+  console.log('update');
   try {
     const { id } = req.params;
     const { empresaId, sucursalId, username, usuario, img, rol, activo, bloqueado } = req.body;
