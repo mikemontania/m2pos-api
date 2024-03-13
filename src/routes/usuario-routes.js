@@ -15,16 +15,15 @@ router.get('/paginados/:page/:pageSize/:searchTerm?', validarJWT,usuarioControll
 router.put('/:id',
     [ validarJWT,
         check('id', 'El id es obligatorio').not().isEmpty(),
-        check('username', 'El username es obligatorio').isEmail(),
-        check('password', 'El password es obligatorio').not().isEmpty(),
-        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        check('username', 'El username es obligatorio').isEmail(), 
+        check('usuario', 'El usuario es obligatorio').not().isEmpty(),
         validarCampos
     ], usuarioController.update);
 router.post('/',
     [ validarJWT,
         check('username', 'El username es obligatorio').isEmail(),
         check('password', 'El password es obligatorio').not().isEmpty(),
-        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        check('usuario', 'El usuario es obligatorio').not().isEmpty(),
         validarCampos
     ], usuarioController.create);
 router.delete('/:id/disable',validarJWT,  usuarioController.disable);

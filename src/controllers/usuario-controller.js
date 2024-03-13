@@ -84,7 +84,8 @@ const findAll = async (req, res) => {
 // Método para crear un nuevo Usuario
 const create = async (req, res) => {
   try {
-    const { empresaId, sucursalId, username, usuario, img, rol, activo, bloqueado } = req.body;
+    const { empresaId  } = req.usuario;
+    const {   sucursalId, username, usuario, img, rol, activo, bloqueado } = req.body;
     const nuevoUsuario = await Usuario.create({ empresaId, sucursalId, username, usuario, img, rol, activo,   });
     res.status(201).json(nuevoUsuario);
   } catch (error) {
@@ -95,13 +96,14 @@ const create = async (req, res) => {
 
 // Método para actualizar un Usuario por ID
 const update = async (req, res) => {
-  console.log('update');
   try {
     const { id } = req.params;
-    const { empresaId, sucursalId, username, usuario, img, rol, activo, bloqueado } = req.body;
+    const { empresaId  } = req.usuario;
+    const {  sucursalId, username, usuario, img, rol, activo, bloqueado } = req.body;
     const usuarioActualizado = await Usuario.findByPk(id);
+    console.log('update');
     if (usuarioActualizado) {
-      await usuarioActualizado.update({ empresaId, sucursalId, username, usuario, img, rol, activo, bloqueado });
+      await usuarioActualizado.update({ ...usuarioActualizado,empresaId, sucursalId, username, usuario, img, rol, activo, bloqueado });
       res.status(200).json(usuarioActualizado);
     } else {
       res.status(404).json({ error: 'Usuario no encontrado' });
