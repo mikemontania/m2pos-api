@@ -8,7 +8,7 @@ const validarCampos = (req, res, next) => {
     if (!errores.isEmpty()) {
         return res.status(400).json({
             ok: false,
-            errores: errores.mapped() // Mapear los errores para una mejor estructura
+            error: errores.mapped() // Mapear los errores para una mejor estructura
         });
     }
 

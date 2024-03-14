@@ -233,7 +233,7 @@ const populateDB = async () => {
       sucursalId: sucursal.id,
       numPrefId:numeracion4.id,
       username: "suc1@cajero.com",
-      usuario: "Cajero sucursal1",
+      usuario: "Cajero1",
       password: Bcryptjs.hashSync("123456", salt),
       img: "",
       rol: "cajero", // Puedes ajustar el rol según tus necesidades
@@ -247,7 +247,7 @@ const populateDB = async () => {
       sucursalId: sucursal2.id,
       numPrefId:numeracion2.id,
       username: "suc2@cajero.com",
-      usuario: "Cajero sucursal2",
+      usuario: "Cajero2",
       password: Bcryptjs.hashSync("123456", salt),
       img: "",
       rol: "cajero", // Puedes ajustar el rol según tus necesidades
@@ -261,7 +261,7 @@ const populateDB = async () => {
       sucursalId: sucursal3.id,
       numPrefId:numeracion3.id,
       username: "suc3@cajero.com",
-      usuario: "Cajero sucursal3",
+      usuario: "Cajero3",
       password: Bcryptjs.hashSync("123456", salt),
       img: "",
       rol: "cajero", // Puedes ajustar el rol según tus necesidades
@@ -296,6 +296,7 @@ const populateDB = async () => {
       activo: true,
       empresaId: empresa.id
     });
+    
     const subCategoria1 = await SubCategoria.create({
       descripcion: "Bolsas para residuos",
       categoriaId: categoria1.id,
