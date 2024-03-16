@@ -53,14 +53,24 @@ const findNumeracionesPaginados = async (req, res) => {
 const findAll = async (req, res) => {
   try {
     const { empresaId } = req.usuario; 
-    const {   sucursalId } = req.params;
-  const condiciones={
-    empresaId,
-    sucursalId
-   } ;
-     const numeraciones = await Numeracion.findAll({ where: condiciones });
-    console.log(numeraciones)
-    res.status(200).json(numeraciones);
+    const { sucursalId } = req.params;
+    const condiciones = {
+      empresaId,
+      sucursalId
+    };
+
+    const numeraciones = await Numeracion.findAll({ where: condiciones });
+
+    // Mapear los datos y convertir los IDs a números
+    const mapeado = await Promise.all(numeraciones.map(async numeracion => {
+      return {
+        ...numeracion.dataValues, // Accede a los valores de la instancia de Sequelize
+        id: +numeracion.id // Convierte el ID a número
+      };
+    }));
+
+    console.log(mapeado);
+    res.status(200).json(mapeado);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al buscar numeraciones' });
