@@ -35,38 +35,48 @@ const populateDB = async () => {
       img:'grupocavallaro3.png'
     });
      
-    
-    // Crear sucursal asociada a la empresa
     const sucursal = await Sucursal.create({
-      descripcion: "Cavallaro Express - Capiatá",
-      direccion: "Ruta 1 Km. 18 - Capiatá.",
-      cel:'0981 627 369',
-      telefono: "987654321",
-      empresaId: empresa.id,
-      email: "sucursal@example.com"
-    });
-    const sucursal2 = await Sucursal.create({
-      descripcion: "Sucursal dos",
-      direccion: "Dirección de la Sucursal",
-      telefono: "987654321",
-      empresaId: empresa.id,
-      email: "sucursal@example.com"
-    });
-    const sucursal3 = await Sucursal.create({
-      descripcion: "Sucursal tres",
-      direccion: "Dirección de la Sucursal",
-      telefono: "987654321",
-      empresaId: empresa.id,
-      email: "sucursal@example.com"
-    });
-    const sucursal4 = await Sucursal.create({
-      descripcion: "Sucursal cuatro",
-      direccion: "Dirección de la Sucursal",
-      telefono: "987654321",
+      descripcion: "CAPIATA",
+      direccion: "RUTA DEPARTAMENTAL D027 (EX RUTA 1 ) E/ISRAEL",
+      cel: "(0981) 627-369",
+      telefono: "0981 627 369",
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
 
+    const sucursal1 = await Sucursal.create({
+      descripcion: "LUQUE",
+      direccion: "AVENIDA, AVDA.GRAL. ELIZARDO AQUINO ENTRE MCAL SUCRE Y SAN MARTIN",
+      telefono: "(0981) 223 162",
+      empresaId: empresa.id,
+      email: "sucursal@example.com"
+    });
+    
+    const sucursal2 = await Sucursal.create({
+      descripcion: "MARIANO ROQUE ALONSO",
+      direccion: "RUTA TRANSCHACO C/ HERNANDARIAS 714",
+      telefono: "(0981) 277-318",
+      empresaId: empresa.id,
+      email: "sucursal@example.com"
+    });
+    
+    const sucursal3 = await Sucursal.create({
+      descripcion: "JULIO CORREA",
+      direccion: "JULIO CORREA 485 ENTRE TTE CESAR VELAZQUEZ Y DOMINGO PORTILLO",
+      telefono: "(0986) 133-183",
+      empresaId: empresa.id,
+      email: "sucursal@example.com"
+    });
+    
+    const sucursal4 = await Sucursal.create({
+      descripcion: "MBURUCUYA",
+      direccion: "AVENIDA, AVDA. SANTISIMA TRINIDAD E/ DR. RAMON ZUBIZARRETA",
+      telefono: "(0981) 390-050",
+      empresaId: empresa.id,
+      email: "sucursal@example.com"
+    });
+    
+ 
 
     const banco1 = await Banco.create({descripcion: 'Banco Rio S.A.E.C.A', activo: true, empresaId: empresa.id });
     const banco2 = await Banco.create({descripcion: 'Solar Banco S.A.E.', activo: true, empresaId: empresa.id });
@@ -137,9 +147,65 @@ const populateDB = async () => {
       tipoImpresion: "TICKET",
       activo: true
     });
+ 
+    const numeracion2 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal1.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "012-001",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoComprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
 
-
+    const numeracion3 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal2.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "013-001",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoComprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
     const numeracion4 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal3.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "014-001",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoComprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
+    const numeracion5 = await Numeracion.create({ 
+      empresaId: empresa.id,
+      sucursalId: sucursal4.id,
+      inicioTimbrado: "2022-11-21",
+      finTimbrado: "9999-12-31",
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "015-001",
+      timbrado: "16032661",
+      ultimoNumero: 0,
+      tipoComprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
+    const numeracion6 = await Numeracion.create({ 
       empresaId: empresa.id,
       sucursalId: sucursal.id,
       inicioTimbrado: "2022-11-21",
@@ -153,24 +219,10 @@ const populateDB = async () => {
       tipoImpresion: "TICKET",
       activo: true
     });
-    const numeracion2 = await Numeracion.create({ 
+  
+    const numeracion7 = await Numeracion.create({ 
       empresaId: empresa.id,
-      sucursalId: sucursal2.id,
-      inicioTimbrado: "2022-11-21",
-      finTimbrado: "9999-12-31",
-      numeroInicio: 1,
-      numeroFin: 999999999,
-      serie: "012-001",
-      timbrado: "16032661",
-      ultimoNumero: 0,
-      tipoComprobante: "TICKET",
-      tipoImpresion: "TICKET",
-      activo: true
-    });
-
-    const numeracion5 = await Numeracion.create({ 
-      empresaId: empresa.id,
-      sucursalId: sucursal2.id,
+      sucursalId: sucursal1.id,
       inicioTimbrado: "2022-11-21",
       finTimbrado: "9999-12-31",
       numeroInicio: 1,
@@ -182,35 +234,21 @@ const populateDB = async () => {
       tipoImpresion: "TICKET",
       activo: true
     });
-    const numeracion3 = await Numeracion.create({ 
+
+    const numeracion8 = await Numeracion.create({ 
       empresaId: empresa.id,
-      sucursalId: sucursal3.id,
+      sucursalId: sucursal2.id,
       inicioTimbrado: "2022-11-21",
       finTimbrado: "9999-12-31",
       numeroInicio: 1,
       numeroFin: 999999999,
-      serie: "013-001",
+      serie: "013-002",
       timbrado: "16032661",
       ultimoNumero: 0,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
     });
-    const numeracion6 = await Numeracion.create({ 
-      empresaId: empresa.id,
-      sucursalId: sucursal4.id,
-      inicioTimbrado: "2022-11-21",
-      finTimbrado: "9999-12-31",
-      numeroInicio: 1,
-      numeroFin: 999999999,
-      serie: "014-001",
-      timbrado: "16032661",
-      ultimoNumero: 0,
-      tipoComprobante: "TICKET",
-      tipoImpresion: "TICKET",
-      activo: true
-    });
-  
     // Crear usuario asociado a la empresa y sucursal
     const salt = Bcryptjs.genSaltSync();
     const userAdmin = await Usuario.create({
@@ -228,57 +266,69 @@ const populateDB = async () => {
     });
 
      
-    const cajeroSuc1 = await Usuario.create({
+    const vendedorCapiata = await Usuario.create({
+      empresaId: empresa.id,
+      sucursalId: sucursal.id,
+      numPrefId:numeracion1.id,
+      username: "vendedor@capiata.com",
+      usuario: "Capiata",
+      password: Bcryptjs.hashSync("123456", salt),
+      img: "",
+      rol: "vendedor", // Puedes ajustar el rol según tus necesidades
+      intentos: 0,
+      activo: true,
+      bloqueado: false
+    });
+
+    const vendedorLuque = await Usuario.create({
+      empresaId: empresa.id,
+      sucursalId: sucursal.id,
+      numPrefId:numeracion2.id,
+      username: "vendedor@luque.com",
+      usuario: "Luque",
+      password: Bcryptjs.hashSync("123456", salt),
+      img: "",
+      rol: "vendedor", // Puedes ajustar el rol según tus necesidades
+      intentos: 0,
+      activo: true,
+      bloqueado: false
+    });
+
+    const vendedorMra = await Usuario.create({
+      empresaId: empresa.id,
+      sucursalId: sucursal.id,
+      numPrefId:numeracion3.id,
+      username: "vendedor@mra.com",
+      usuario: "Mariano R. Alonso",
+      password: Bcryptjs.hashSync("123456", salt),
+      img: "",
+      rol: "vendedor", // Puedes ajustar el rol según tus necesidades
+      intentos: 0,
+      activo: true,
+      bloqueado: false
+    });
+    const vendedorJCorrea = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal.id,
       numPrefId:numeracion4.id,
-      username: "suc1@cajero.com",
-      usuario: "Cajero1",
+      username: "vendedor@jc.com",
+      usuario: "Julio Correa",
       password: Bcryptjs.hashSync("123456", salt),
       img: "",
-      rol: "cajero", // Puedes ajustar el rol según tus necesidades
+      rol: "vendedor", // Puedes ajustar el rol según tus necesidades
       intentos: 0,
       activo: true,
       bloqueado: false
     });
-
-    const cajeroSuc2 = await Usuario.create({
+    const vendedorMburucuya = await Usuario.create({
       empresaId: empresa.id,
-      sucursalId: sucursal2.id,
-      numPrefId:numeracion2.id,
-      username: "suc2@cajero.com",
-      usuario: "Cajero2",
+      sucursalId: sucursal.id,
+      numPrefId:numeracion5.id,
+      username: "vendedor@mburucuya.com",
+      usuario: "Mburucuya",
       password: Bcryptjs.hashSync("123456", salt),
       img: "",
-      rol: "cajero", // Puedes ajustar el rol según tus necesidades
-      intentos: 0,
-      activo: true,
-      bloqueado: false
-    });
-
-    const cajeroSuc3 = await Usuario.create({
-      empresaId: empresa.id,
-      sucursalId: sucursal3.id,
-      numPrefId:numeracion3.id,
-      username: "suc3@cajero.com",
-      usuario: "Cajero3",
-      password: Bcryptjs.hashSync("123456", salt),
-      img: "",
-      rol: "cajero", // Puedes ajustar el rol según tus necesidades
-      intentos: 0,
-      activo: true,
-      bloqueado: false
-    });
- 
-    const cajeroSuc4 = await Usuario.create({
-      empresaId: empresa.id,
-      sucursalId: sucursal4.id,
-      numPrefId:numeracion6.id,
-      username: "suc4@cajero.com",
-      usuario: "Cajero sucursal4",
-      password: Bcryptjs.hashSync("123456", salt),
-      img: "",
-      rol: "cajero", // Puedes ajustar el rol según tus necesidades
+      rol: "vendedor", // Puedes ajustar el rol según tus necesidades
       intentos: 0,
       activo: true,
       bloqueado: false
@@ -5928,7 +5978,7 @@ const populateDB = async () => {
       fechaHasta: "9999-12-31",
       registro: "PRECIO",
       tipo: "IMPORTE",
-      valor: 25,
+      valor: 2500,
       activo: true,
       empresaId: empresa.id
     });

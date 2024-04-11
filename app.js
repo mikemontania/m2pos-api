@@ -33,6 +33,7 @@ app.use('/M2POS/categorias', require('./src/routes/categoria-routes'));
 app.use('/M2POS/presentaciones', require('./src/routes/presentacion-routes'));
 app.use('/M2POS/clientes', require('./src/routes/cliente-routes'));
 app.use('/M2POS/creditos', require('./src/routes/credito-routes'));
+app.use('/M2POS/empresas', require('./src/routes/empresa-routes'));
 app.use('/M2POS/forma-venta', require('./src/routes/formaVenta-routes'));
 app.use('/M2POS/productos', require('./src/routes/producto-routes'));
 app.use('/M2POS/valoraciones', require('./src/routes/valoracion.routes'));

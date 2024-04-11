@@ -106,11 +106,11 @@ const Cliente = sequelize.define(
     },
     latitud: {
       type: DataTypes.DECIMAL(18, 15),
-      allowNull: true
+      allowNull: true,    defaultValue:0
     },
     longitud: {
       type: DataTypes.DECIMAL(18, 15),
-      allowNull: true
+      allowNull: true,    defaultValue:0
     },
     predeterminado: {
       type: DataTypes.BOOLEAN,
