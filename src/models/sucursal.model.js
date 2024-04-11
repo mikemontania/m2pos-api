@@ -32,6 +32,11 @@ const Sucursal = sequelize.define('Sucursal', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  activo: {
+    type: DataTypes.BOOLEAN,
+    defaultValue:true,
+    allowNull: false
+  }, 
  
 }, {
   tableName: 'sucursales',

@@ -36,7 +36,7 @@ const findPredeterminado = async (req, res) => {
 const findAll = async (req, res) => {
   try {
     const { empresaId  } = req.usuario;
-    const condiciones =   { empresaId } ;
+    const condiciones =   { empresaId, activo: true } ;
     const listasPrecio = await ListaPrecio.findAll({ where: condiciones });
     res.status(200).json(listasPrecio);
   } catch (error) {
