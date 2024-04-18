@@ -147,7 +147,7 @@ const getVendedoresPorTotal = async (req, res) => {
         u.id,
         u.usuario as vendedor, 
         COUNT(v.id) as cantidad,
-        SUM(v.total_kg) / 1000 AS peso,
+        SUM(v.total_kg) AS peso,
         SUM(v.importe_total) total
       FROM ventas v  
       JOIN usuarios u ON u.id = v.usuario_creacion_id
@@ -277,7 +277,7 @@ const getTopVariantes = async (req, res) => {
         var.descripcion as variedad,
         pre.descripcion as presentacion,
         SUM(vd.cantidad) AS vendidos,
-        SUM(vd.total_kg) / 1000 AS peso,
+        SUM(vd.total_kg) AS peso,
         SUM(vd.importe_total) AS totalImporte
       FROM
         ventas_detalle vd
