@@ -48,8 +48,9 @@ const findAll = async (req, res) => {
 // Método para crear un nuevo producto
 const create = async (req, res) => {
   try {
+    const { empresaId } = req.usuario;
+
     const {
-      empresaId,
       marcaId,
       categoriaId,
       subCategoriaId,
@@ -77,8 +78,9 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
+    const { empresaId } = req.usuario;
+
     const {
-      empresaId,
       marcaId,
       categoriaId,
       subCategoriaId,
@@ -136,7 +138,7 @@ const findSearchPaginadosSimple = async (req, res) => {
       condiciones[Op.or] = [
         { nombre: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
         { descripcion: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
-        
+
         {
           "$categoria.descripcion$": {
             [Op.iLike]: `%${descripcion.toLowerCase()}%`
@@ -158,15 +160,14 @@ const findSearchPaginadosSimple = async (req, res) => {
     const { rows: productos, count } = await Producto.findAndCountAll({
       where: condiciones,
       include: [
-        { model: Marca, as: 'marca',  },
-            { model: Categoria, as: 'categoria',   },
-            { model: SubCategoria, as: 'subCategoria',   },
+        { model: Marca, as: "marca" },
+        { model: Categoria, as: "categoria" },
+        { model: SubCategoria, as: "subCategoria" }
       ],
       offset: (page - 1) * pageSize,
       limit: pageSize
     });
 
-    
     res.status(200).json({
       total: count,
       totalPages: Math.ceil(count / pageSize),
@@ -275,7 +276,7 @@ const findProductosPaginados = async (req, res) => {
         activo: true,
         varianteId: producto.get("id"),
         fechaDesde: { [Op.lte]: fechaActual },
-        fechaHasta: { [Op.gte]: fechaActual }, 
+        fechaHasta: { [Op.gte]: fechaActual },
         listaPrecioId: listaPrecioId,
         registro: "PRECIO",
         tipo: "IMPORTE",

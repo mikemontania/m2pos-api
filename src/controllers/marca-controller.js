@@ -34,7 +34,8 @@ const findAll = async (req, res) => {
 // Método para crear una nueva marca
 const create = async (req, res) => {
   try {
-    const { empresaId, descripcion, activo } = req.body;
+    const { empresaId  } = req.usuario;
+    const {   descripcion, activo } = req.body;
     const marca = await Marca.create({ empresaId, descripcion, activo });
     res.status(201).json(marca);
   } catch (error) {
@@ -47,7 +48,8 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { empresaId, descripcion, activo } = req.body;
+    const { empresaId  } = req.usuario;
+    const {   descripcion, activo } = req.body;
     const marca = await Marca.findByPk(id);
     if (marca) {
       await marca.update({ empresaId, descripcion, activo });

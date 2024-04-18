@@ -34,8 +34,9 @@ const findAll = async (req, res) => {
 // Método para crear una nueva presentación
 const create = async (req, res) => {
   try {
-    const { empresaId, descripcion, activo } = req.body;
-    const presentacion = await Presentacion.create({ empresaId, descripcion, activo });
+    const { empresaId  } = req.usuario;
+    const {   descripcion, size,activo } = req.body;
+    const presentacion = await Presentacion.create({ empresaId, descripcion,size, activo });
     res.status(201).json(presentacion);
   } catch (error) {
     console.error(error);
@@ -46,11 +47,12 @@ const create = async (req, res) => {
 // Método para actualizar una presentación por ID
 const update = async (req, res) => {
   try {
+    const { empresaId  } = req.usuario;
     const { id } = req.params;
-    const { empresaId, descripcion, activo } = req.body;
+    const {   descripcion,size, activo } = req.body;
     const presentacion = await Presentacion.findByPk(id);
     if (presentacion) {
-      await presentacion.update({ empresaId, descripcion, activo });
+      await presentacion.update({ empresaId, descripcion,size, activo });
       res.status(200).json(presentacion);
     } else {
       res.status(404).json({ error: 'Presentación no encontrada' });

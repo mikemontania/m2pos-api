@@ -1,6 +1,6 @@
-const { Op } = require('sequelize');
-const Unidad = require('../models/unidad.model'); // Asegúrate de que la importación del modelo sea correcta
-const { sequelize } = require('../../dbconfig');
+const { Op } = require("sequelize");
+const Unidad = require("../models/unidad.model"); // Asegúrate de que la importación del modelo sea correcta
+const { sequelize } = require("../../dbconfig");
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -10,18 +10,18 @@ const getById = async (req, res) => {
     if (unidad) {
       res.status(200).json(unidad);
     } else {
-      res.status(404).json({ error: 'Unidad no encontrada' });
+      res.status(404).json({ error: "Unidad no encontrada" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al buscar la Unidad por ID' });
+    res.status(500).json({ error: "Error al buscar la Unidad por ID" });
   }
 };
 
 // Método para buscar todas las Unidades
 const findAll = async (req, res) => {
   try {
-    const { empresaId  } = req.usuario;
+    const { empresaId } = req.usuario;
     const condiciones = {};
     if (empresaId) condiciones.empresaId = empresaId;
 
@@ -29,19 +29,20 @@ const findAll = async (req, res) => {
     res.status(200).json(unidades);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al buscar Unidades' });
+    res.status(500).json({ error: "Error al buscar Unidades" });
   }
 };
 
 // Método para crear una nueva Unidad
 const create = async (req, res) => {
   try {
-    const { empresaId, descripcion, activo } = req.body;
-    const nuevaUnidad = await Unidad.create({ empresaId, descripcion, activo });
+    const { empresaId } = req.usuario;
+    const { descripcion, code,activo } = req.body;
+    const nuevaUnidad = await Unidad.create({ empresaId, descripcion,code, activo });
     res.status(201).json(nuevaUnidad);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al crear la Unidad' });
+    res.status(500).json({ error: "Error al crear la Unidad" });
   }
 };
 
@@ -49,17 +50,18 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { empresaId, descripcion, activo } = req.body;
+    const { empresaId } = req.usuario;
+    const { descripcion, code,activo } = req.body;
     const unidadActualizada = await Unidad.findByPk(id);
     if (unidadActualizada) {
-      await unidadActualizada.update({ empresaId, descripcion, activo });
+      await unidadActualizada.update({ empresaId, descripcion, code,activo });
       res.status(200).json(unidadActualizada);
     } else {
-      res.status(404).json({ error: 'Unidad no encontrada' });
+      res.status(404).json({ error: "Unidad no encontrada" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al actualizar la Unidad' });
+    res.status(500).json({ error: "Error al actualizar la Unidad" });
   }
 };
 
@@ -70,13 +72,13 @@ const disable = async (req, res) => {
     const unidad = await Unidad.findByPk(id);
     if (unidad) {
       await unidad.update({ activo: false });
-      res.status(200).json({ message: 'Unidad desactivada exitosamente' });
+      res.status(200).json({ message: "Unidad desactivada exitosamente" });
     } else {
-      res.status(404).json({ error: 'Unidad no encontrada' });
+      res.status(404).json({ error: "Unidad no encontrada" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al desactivar la Unidad' });
+    res.status(500).json({ error: "Error al desactivar la Unidad" });
   }
 };
 
@@ -85,5 +87,5 @@ module.exports = {
   findAll,
   create,
   update,
-  disable,
+  disable
 };

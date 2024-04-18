@@ -36,7 +36,8 @@ const findAll = async (req, res) => {
 // Método para crear una nueva SubCategoria
 const create = async (req, res) => {
   try {
-    const { empresaId, descripcion, activo } = req.body;
+    const { empresaId  } = req.usuario;
+    const {  descripcion, activo } = req.body;
     const nuevaSubCategoria = await SubCategoria.create({ empresaId, descripcion, activo });
     res.status(201).json(nuevaSubCategoria);
   } catch (error) {
@@ -48,8 +49,9 @@ const create = async (req, res) => {
 // Método para actualizar una SubCategoria por ID
 const update = async (req, res) => {
   try {
+    const { empresaId  } = req.usuario;
     const { id } = req.params;
-    const { empresaId, descripcion, activo } = req.body;
+    const {  descripcion, activo } = req.body;
     const subCategoriaActualizada = await SubCategoria.findByPk(id);
     if (subCategoriaActualizada) {
       await subCategoriaActualizada.update({ empresaId, descripcion, activo });

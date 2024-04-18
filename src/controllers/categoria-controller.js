@@ -34,7 +34,8 @@ const findAll = async (req, res) => {
 // Método para crear una nueva categoría
 const create = async (req, res) => {
   try {
-    const { empresaId, descripcion, activo } = req.body;
+    const { empresaId  } = req.usuario;
+    const {   descripcion, activo } = req.body;
     const categoria = await Categoria.create({ empresaId, descripcion, activo });
     res.status(201).json(categoria);
   } catch (error) {
@@ -46,8 +47,9 @@ const create = async (req, res) => {
 // Método para actualizar una categoría por ID
 const update = async (req, res) => {
   try {
+    const { empresaId  } = req.usuario;
     const { id } = req.params;
-    const { empresaId, descripcion, activo } = req.body;
+    const {  descripcion, activo } = req.body;
     const categoria = await Categoria.findByPk(id);
     if (categoria) {
       await categoria.update({ empresaId, descripcion, activo });

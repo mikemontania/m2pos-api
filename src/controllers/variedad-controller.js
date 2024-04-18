@@ -34,8 +34,9 @@ const findAll = async (req, res) => {
 // Método para crear una nueva variedad
 const create = async (req, res) => {
   try {
-    const { empresaId, descripcion, activo } = req.body;
-    const variedad = await Variedad.create({ empresaId, descripcion, activo });
+    const { empresaId  } = req.usuario;
+    const {   descripcion,color, activo } = req.body;
+    const variedad = await Variedad.create({ empresaId, descripcion,color, activo });
     res.status(201).json(variedad);
   } catch (error) {
     console.error(error);
@@ -47,10 +48,11 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { empresaId, descripcion, activo } = req.body;
+    const { empresaId  } = req.usuario;
+    const {  descripcion,color, activo } = req.body;
     const variedad = await Variedad.findByPk(id);
     if (variedad) {
-      await variedad.update({ empresaId, descripcion, activo });
+      await variedad.update({ empresaId, descripcion,color, activo });
       res.status(200).json(variedad);
     } else {
       res.status(404).json({ error: 'Variedad no encontrada' });
