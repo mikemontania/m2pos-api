@@ -184,6 +184,7 @@ const update = async (req, res) => {
     res.json(valoracionExistente);
   } catch (error) {
     console.error(error);
+    res.locals.msg ="Error al actualizar la valoración."
     res.status(500).json({ error: "Error al actualizar la valoración." });
   }
 };
