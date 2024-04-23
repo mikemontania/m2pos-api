@@ -4,6 +4,7 @@ const router = Router();
 const {login, renewToken, updatePassword} = require('../controllers/auth-controller.js'); 
 const { validarCampos} = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
+const { auditMiddleware } = require('../middlewares/auditMiddleware');
 
 router.post('/login',[
     check('username','El username es obligatorio').isEmail(),
@@ -17,7 +18,7 @@ router.put('/reset',[
 ],updatePassword);
 
 router.get( '/renew',
-    validarJWT,
+    validarJWT,  auditMiddleware,
     renewToken
 )
 module.exports =router;
