@@ -8,14 +8,9 @@ const auditMiddleware = async (req, res, next) => {
 
         // Capturar la IP del cliente
         const ipCliente = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-
-        // Capturar el tiempo de inicio de la solicitud
-        const inicioSolicitud = Date.now();
-
-  
         // Listener para capturar el estado final de la respuesta y otros detalles
         res.on('finish', async () => {
-            const finSolicitud = Date.now();
+     
             const { statusCode ,statusMessage} = res;
 
             try {
@@ -24,14 +19,10 @@ const auditMiddleware = async (req, res, next) => {
                     usuarioId: usuario.id,
                     metodo: method,
                     path: originalUrl,
-                    entidadId: params.id,
-                    headers: { ...headers },
                     detalles: { ...body },
                      status: statusCode,
                      mensaje: statusMessage,
                      ipCliente,
-                    inicioSolicitud,
-                    finSolicitud
                 });
             } catch (error) {
                 console.error("Error al guardar en la tabla de auditoría:", error);

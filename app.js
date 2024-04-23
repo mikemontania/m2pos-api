@@ -6,7 +6,9 @@ const { dbConnection } = require('./dbconfig');
 const { populateDB } = require('./dbinit');
 const morgan = require('morgan');
  // const { json } = require('express/lib/response');
+ const { loggerPos } = require('./logger');
 
+ 
 // Crear el servidor de express
 const app = express();
 //middlewares
@@ -14,7 +16,7 @@ app.use( morgan('dev'));
 app.use( express.json());
 // Configurar CORS
 app.use(cors()); 
-
+loggerPos();
 
 // Base de datos
 const dbSetup = async ()=>{
@@ -25,7 +27,7 @@ const dbSetup = async ()=>{
 }
 dbSetup();
 
- 
+
 app.use('/M2POS/auth', require('./src/routes/auth-routes'));
 app.use('/M2POS/bancos', require('./src/routes/banco-routes'));
 app.use('/M2POS/usuarios', require('./src/routes/usuario-routes'));

@@ -6,7 +6,9 @@ const sequelize = new Sequelize(process.env.DB_CNN, {
         max: 5,
         idle: 30000,
         require: 60000,
-    }
+    },
+    logQueryParameters: true,
+
 });
 
 const dbConnection = async () => {

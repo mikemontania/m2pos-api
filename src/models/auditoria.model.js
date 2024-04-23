@@ -2,7 +2,8 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model'); 
 const Usuario = require('./usuario.model');
- 
+const moment = require('moment');
+
 const Auditoria = sequelize.define('Auditoria', {
   id: {
     type: DataTypes.BIGINT,
@@ -42,17 +43,7 @@ const Auditoria = sequelize.define('Auditoria', {
     type: DataTypes.STRING(100),
     allowNull: false
   }, 
-  
-  entidadId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },  
   detalles: {
-    type: DataTypes.JSONB,  
-    allowNull: true
-  }, 
- 
-  headers: {
     type: DataTypes.JSONB,  
     allowNull: true
   }, 
@@ -68,17 +59,7 @@ const Auditoria = sequelize.define('Auditoria', {
     type: DataTypes.STRING(45), // IPv4 o IPv6
     allowNull: true
   },
-  inicioSolicitud: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW
-  },
-  finSolicitud: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW
-  }
- 
+  
 }, {
   tableName: 'auditorias',
   timestamps: false,
