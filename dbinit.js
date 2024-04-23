@@ -282,7 +282,7 @@ const populateDB = async () => {
 
     const vendedorLuque = await Usuario.create({
       empresaId: empresa.id,
-      sucursalId: sucursal.id,
+      sucursalId: sucursal1.id,
       numPrefId:numeracion2.id,
       username: "vendedor@luque.com",
       usuario: "Luque",
@@ -296,7 +296,7 @@ const populateDB = async () => {
 
     const vendedorMra = await Usuario.create({
       empresaId: empresa.id,
-      sucursalId: sucursal.id,
+      sucursalId: sucursal2.id,
       numPrefId:numeracion3.id,
       username: "vendedor@mra.com",
       usuario: "Mariano R. Alonso",
@@ -309,7 +309,7 @@ const populateDB = async () => {
     });
     const vendedorJCorrea = await Usuario.create({
       empresaId: empresa.id,
-      sucursalId: sucursal.id,
+      sucursalId: sucursal3.id,
       numPrefId:numeracion4.id,
       username: "vendedor@jc.com",
       usuario: "Julio Correa",
@@ -322,7 +322,7 @@ const populateDB = async () => {
     });
     const vendedorMburucuya = await Usuario.create({
       empresaId: empresa.id,
-      sucursalId: sucursal.id,
+      sucursalId: sucursal4.id,
       numPrefId:numeracion5.id,
       username: "vendedor@mburucuya.com",
       usuario: "Mburucuya",
