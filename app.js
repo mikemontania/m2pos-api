@@ -27,7 +27,7 @@ const dbSetup = async ()=>{
 }
 dbSetup();
 
-
+app.use('/M2POS/auditorias', require('./src/routes/auditoria-routes'));
 app.use('/M2POS/auth', require('./src/routes/auth-routes'));
 app.use('/M2POS/bancos', require('./src/routes/banco-routes'));
 app.use('/M2POS/usuarios', require('./src/routes/usuario-routes'));

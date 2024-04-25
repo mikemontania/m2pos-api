@@ -3,6 +3,7 @@ const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model'); 
 const Usuario = require('./usuario.model');
 const moment = require('moment');
+const Sucursal = require('./sucursal.model');
 
 const Auditoria = sequelize.define('Auditoria', {
   id: {
@@ -14,6 +15,10 @@ const Auditoria = sequelize.define('Auditoria', {
   empresaId: {
     type: DataTypes.INTEGER,
     allowNull: true,
+  },
+  sucursalId: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   },
   fecha: {
     type: DataTypes.DATEONLY,
@@ -68,6 +73,11 @@ const Auditoria = sequelize.define('Auditoria', {
 Auditoria.belongsTo(Empresa, {
   foreignKey: 'empresaId',
   targetKey: 'id',
+});
+Auditoria.belongsTo(Sucursal, {
+  foreignKey: "sucursalId",
+  targetKey: "id",
+  as:'sucursalUsuario'
 });
 Auditoria.belongsTo(Usuario, {
   foreignKey: 'usuarioId',

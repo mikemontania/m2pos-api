@@ -87,9 +87,7 @@ const findClientesPaginados = async (req, res) => {
       limit: pageSize,
       offset,
     }); 
-    // Calcular el número total de páginas
-    const totalPages = Math.ceil(count / pageSize);
-
+     
     res.status(200).json({
       total: count,
       totalPages: Math.ceil(count / pageSize),
