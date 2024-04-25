@@ -452,6 +452,7 @@ const getPdf = async (req, res) => {
       // Acceder a los datos de Variante
       const variante = detalle.variante;
       detalles.push({
+        porcIva:detalle.porcIva,
         cantidad: detalle.dataValues.cantidad,
         importePrecio: detalle.dataValues.importePrecio,
         importeIva5: detalle.dataValues.importeIva5,

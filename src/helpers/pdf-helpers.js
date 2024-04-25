@@ -281,7 +281,7 @@ const generarDetalles = (doc, detalles, top) => {
       )
       .text(
         new Intl.NumberFormat("es-PY").format(detalle.importeTotal),
-        importeTotalColumna(detalle.variante.porcIva),
+        importeTotalColumna(detalle.porcIva),
         rowTop,
         { width: 56, align: "center" }
       );
@@ -402,7 +402,7 @@ console.log(venta)
       top + 5
     );
 
-  doc
+ /*  doc
     .font("Helvetica-Bold")
     .fontSize(7)
     .text(
@@ -410,7 +410,7 @@ console.log(venta)
         new Intl.NumberFormat("es-PY").format(venta.importeIvaExenta),
       left + 350,
       top + 5
-    );
+    ); */
 
   const total = +venta.importeIva5 + +venta.importeIva10 + +venta.importeIvaExenta;
   doc
