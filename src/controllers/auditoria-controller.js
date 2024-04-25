@@ -1,8 +1,9 @@
-const { Op } = require("sequelize");
+const { Sequelize,Op } = require("sequelize");
 const Auditoria = require("../models/auditoria.model");
 const Usuario = require("../models/usuario.model");
 const Sucursal = require("../models/sucursal.model");
-
+const moment = require("moment");
+const {sequelize} = require("../../dbconfig");
 
 const getListPaginado = async (req, res) => {
   try {
@@ -21,7 +22,7 @@ const getListPaginado = async (req, res) => {
     console.log(fechaDesde);
     console.log(desde);
     if (desde && hasta) {
-      condiciones.fechaVenta = {
+      condiciones.fecha = {
         [Op.lte]: desde,
         [Op.gte]: hasta
       };
@@ -35,15 +36,15 @@ const getListPaginado = async (req, res) => {
           }
         },
         {
-          type: {
+          metodo: {
             [Op.iLike]: `%${searchTerm.toLowerCase()}%` // Convertir a minúsculas
           }
         },
-        {
+       /*  {
           detalles: {
             [Op.iLike]: `%${searchTerm.toLowerCase()}%` // Convertir a minúsculas
           }
-        },
+        }, */
         {
           status: {
             [Op.iLike]: `%${searchTerm.toLowerCase()}%` // Convertir a minúsculas
@@ -56,14 +57,16 @@ const getListPaginado = async (req, res) => {
         },
         {
           "$usuario.username$": {
-            [Op.iLike]: `%${descripcion.toLowerCase()}%`
+            [Op.iLike]: `%${searchTerm.toLowerCase()}%`
           }
         },
         {
           "$usuario.usuario$": {
-            [Op.iLike]: `%${descripcion.toLowerCase()}%`
+            [Op.iLike]: `%${searchTerm.toLowerCase()}%`
           }
-        }
+        },
+        Sequelize.literal(`"detalles"::text ILIKE '%${searchTerm.toLowerCase()}%'`)
+
       ];
     }
     const offset = (page - 1) * pageSize;
@@ -95,7 +98,7 @@ const getListPaginado = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar clientes paginados" });
+    res.status(500).json({ error: "Error al buscar auditados paginados" });
   }
 };
 const deletebyId = async (req, res) => {

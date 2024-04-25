@@ -16,6 +16,7 @@ const auditMiddleware = async (req, res, next) => {
       try {
         await Auditoria.create({
           empresaId: usuario.empresaId,
+          sucursalId: usuario.sucursalId,
           usuarioId: usuario.id,
           metodo: method,
           path: originalUrl,
