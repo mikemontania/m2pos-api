@@ -7,7 +7,7 @@ const validarCampos = (req, res, next) => {
     // Si hay errores, responder con un código de estado 400 y los errores en formato JSON
     if (!errores.isEmpty()) {
         return res.status(400).json({
-            ok: false,
+           
             error: errores.mapped() // Mapear los errores para una mejor estructura
         });
     }

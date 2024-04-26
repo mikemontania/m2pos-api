@@ -14,7 +14,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al buscar la categoría por ID' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar la categoría por ID' });
   }
 };
 
@@ -27,7 +27,7 @@ const findAll = async (req, res) => {
     res.status(200).json(categorias);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al buscar categorías' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar categorías' });
   }
 };
 
@@ -40,7 +40,7 @@ const create = async (req, res) => {
     res.status(201).json(categoria);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al crear la categoría' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al crear la categoría' });
   }
 };
 
@@ -59,7 +59,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al actualizar la categoría' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar la categoría' });
   }
 };
 
@@ -76,7 +76,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al desactivar la categoría' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al desactivar la categoría' });
   }
 };
 

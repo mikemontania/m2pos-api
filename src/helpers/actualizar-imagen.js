@@ -27,8 +27,8 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             borrarImagen( pathViejo );
 
             variante.img = nombreArchivo;
-            await variante.save();
-            return true;
+         const newdataa =   await variante.save();
+            return newdataa;
 
         break;
         
@@ -43,8 +43,9 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             borrarImagen( pathViejo );
 
             empresa.img = nombreArchivo;
-            await empresa.save();
-            return true;
+            const newdatab =   await empresa.save();
+            console.log(newdatab)
+            return newdatab;
 
         break;
         
@@ -60,8 +61,8 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             borrarImagen( pathViejo );
 
             usuario.img = nombreArchivo;
-            await usuario.save();
-            return true;
+            const newdatac =   await usuario.save();
+            return newdatac;
 
         break;
     }

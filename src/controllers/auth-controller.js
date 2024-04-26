@@ -25,12 +25,12 @@ const updatePassword = async (req, res = response) => {
     await user.save();
 
     res.status(200).json({
-      ok: true,
+     
       user: user
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Error al actualizar la contraseña" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar la contraseña" });
   }
 };
 
@@ -57,7 +57,7 @@ const login = async (req, res = response) => {
     if (userDB.bloqueado) {
       console.log("Usuario bloqueado. Se han realizado varios intentos");
       return res.status(401).json({
-        ok: false,
+       
         error: "Usuario bloqueado. Se han realizado varios intentos"
       });
     }
@@ -71,7 +71,7 @@ const login = async (req, res = response) => {
 
       console.log("Contraseña o usuario no valido");
       return res.status(400).json({
-        ok: false,
+       
         error: "Contraseña o usuario no valido"
       });
     }
@@ -80,7 +80,7 @@ const login = async (req, res = response) => {
     const token = await generarJWT(userDB.id);
 
     res.json({
-      ok: true,
+     
       token: token
     });
   } catch (error) {
@@ -100,7 +100,7 @@ const renewToken = async (req, res = response) => {
     const tokenNew = await generarJWT(user.id);
 
     res.status(200).json({
-      ok: true,
+     
       token: tokenNew
     });
   } catch (error) {

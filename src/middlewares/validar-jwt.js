@@ -10,7 +10,7 @@ const validarJWT = (req, res, next) => {
 
     if (!token) {
         return res.status(401).json({
-            ok: false,
+           
             msg: 'No token found in the request'
         });
     }
@@ -24,7 +24,7 @@ const validarJWT = (req, res, next) => {
         next();
     } catch (error) {
         return res.status(401).json({
-            ok: false,
+           
             msg: 'Invalid token'
         });
     }

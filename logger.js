@@ -22,14 +22,15 @@ const getLogFilePath = () => {
   return path.join(logDir, `${dateString}_log.log`); // Combina la ruta del directorio de logs con el nombre del archivo de log
 };
 
+
 // Función asincrónica para escribir en el archivo de log
 const writeLog = async (logFilePath, message) => {
   try {
     const now = new Date().toISOString(); // Obtiene la fecha y hora actual en formato ISO
     // Filtra caracteres especiales del mensaje y agrega la fecha actual al formato de log
-    const sanitizedMessage = message.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+   // const sanitizedMessage = message.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
     // Agrega el mensaje al archivo de log especificado
-    await fs.promises.appendFile(logFilePath, `[${now}] ${sanitizedMessage}\n`);
+    await fs.promises.appendFile(logFilePath, `[${now}] ${cleanLogText(message)}\n`);
   } catch (error) {
     console.error('Error writing to log file:', error); // Imprime un mensaje de error si ocurre un problema al escribir en el archivo de log
     throw error; // Rechaza la promesa para manejar el error en el bloque catch de loggerPos
@@ -53,5 +54,11 @@ const loggerPos = async () => {
     console.error('Error setting up logger:', error); // Imprime un mensaje de error si ocurre un problema al configurar el logger
   }
 };
-
+const cleanLogText = (logText) => {
+  // Expresión regular para encontrar códigos ANSI
+  const ansiRegex = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+  
+  // Reemplazar los códigos ANSI por caracteres de control
+  return logText.replace(ansiRegex, '');
+};
 module.exports = { loggerPos }; // Exporta la función loggerPos para su uso en otros módulos

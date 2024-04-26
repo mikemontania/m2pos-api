@@ -48,7 +48,11 @@ const Auditoria = sequelize.define('Auditoria', {
     type: DataTypes.STRING(100),
     allowNull: false
   }, 
-  detalles: {
+  oldValue: {
+    type: DataTypes.JSONB,  
+    allowNull: true
+  }, 
+  newValue: {
     type: DataTypes.JSONB,  
     allowNull: true
   }, 

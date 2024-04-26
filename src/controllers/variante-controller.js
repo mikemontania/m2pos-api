@@ -18,7 +18,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar la Variante por ID" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar la Variante por ID" });
   }
 };
 
@@ -46,7 +46,7 @@ const findDescripcion = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al obtener descripciones" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al obtener descripciones" });
   }
 };
 
@@ -117,7 +117,7 @@ const findAllDesc = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al listar los productos" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al listar los productos" });
   }
 };
 
@@ -152,7 +152,7 @@ const findAllByProducto = async (req, res) => {
     res.status(200).json(variantes);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar Variantes" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar Variantes" });
   }
 };
 // Método para buscar todas las Variantes
@@ -166,7 +166,7 @@ const findAll = async (req, res) => {
     res.status(200).json(variantes);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar Variantes" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar Variantes" });
   }
 };
 
@@ -198,7 +198,7 @@ const create = async (req, res) => {
     res.status(201).json(nuevaVariante);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al crear la Variante" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al crear la Variante" });
   }
 };
 
@@ -236,7 +236,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al actualizar la Variante" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar la Variante" });
   }
 };
 
@@ -253,7 +253,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al desactivar la Variante" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al desactivar la Variante" });
   }
 };
 

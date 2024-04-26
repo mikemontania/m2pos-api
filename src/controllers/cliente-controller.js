@@ -16,7 +16,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar el cliente por ID" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar el cliente por ID" });
   }
 };
 
@@ -33,7 +33,7 @@ const findPredeterminado = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar cliente predeterminado" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar cliente predeterminado" });
   }
 };
 
@@ -52,7 +52,7 @@ const findPropietario = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar cliente propietario" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar cliente propietario" });
   }
 };
 
@@ -97,7 +97,7 @@ const findClientesPaginados = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar clientes paginados" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar clientes paginados" });
   }
 };
 // Método para buscar todos los clientes
@@ -109,7 +109,7 @@ const findAll = async (req, res) => {
     res.status(200).json(clientes);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar clientes" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar clientes" });
   }
 };
 
@@ -169,6 +169,7 @@ const create = async (req, res) => {
 
     const cliente = await Cliente.create({
       usuarioCreacionId:id,
+      usuarioModificacionId:id,
       empresaId,
       listaPrecioId, 
       razonSocial,
@@ -190,7 +191,7 @@ const create = async (req, res) => {
     res.status(201).json(cliente);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al crear el cliente" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al crear el cliente" });
   }
 };
 
@@ -236,6 +237,7 @@ const update = async (req, res) => {
     }
 
     // Actualizar los datos del cliente
+    existingClient.usuarioModificacionId=usuarioId;
     existingClient.listaPrecioId = listaPrecioId;
     existingClient.formaVentaId = formaVentaId;
     existingClient.razonSocial = razonSocial;
@@ -259,7 +261,7 @@ const update = async (req, res) => {
     res.status(200).json(existingClient);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al actualizar el cliente." });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar el cliente." });
   }
 };
 
@@ -276,7 +278,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al desactivar el cliente" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al desactivar el cliente" });
   }
 };
 

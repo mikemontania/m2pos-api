@@ -98,7 +98,7 @@ const getListPaginado = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar auditados paginados" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar auditados paginados" });
   }
 };
 const deletebyId = async (req, res) => {
@@ -117,7 +117,7 @@ const deletebyId = async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ ok: false, error: "Error al eliminar la auditoria." });
+      .json({ error:   error?.original?.detail || error?.errors[0].message  || "Error al eliminar la auditoria." });
   }
 };
 

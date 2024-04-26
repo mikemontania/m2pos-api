@@ -34,7 +34,7 @@ const obtenerDescuentoImporte = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al  obtenerDescuentoImporte" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al  obtenerDescuentoImporte" });
   }
 };
 //version correcta
@@ -77,13 +77,13 @@ const obtenerValoracionVigente = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al  obtenerValoracionVigente" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al  obtenerValoracionVigente" });
   }
 };
 const create = async (req, res) => {
   try {
     // Extraer
-    const { empresaId } = req.usuario;
+    const { empresaId ,id} = req.usuario;
     const {
       sucursalId,
       listaPrecioId,
@@ -96,8 +96,7 @@ const create = async (req, res) => {
       valor,
       clienteId,
       registro,
-      tipo,
-      usuarioCreacion
+      tipo 
     } = req.body;
 
     
@@ -117,7 +116,7 @@ const create = async (req, res) => {
       clienteId,
       registro,
       tipo,
-      usuarioCreacion
+      usuarioCreacion:id
     });
     if (nuevaValoracion.sucursalId == null) nuevaValoracion.sucursalId = 0;
 
@@ -125,12 +124,12 @@ const create = async (req, res) => {
     res.json(nuevaValoracion);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al crear la valoración." });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al crear la valoración." });
   }
 };
 const update = async (req, res) => {
   try {
-    const { empresaId } = req.usuario;
+    const { empresaId ,id:userID} = req.usuario;
     // Extraer datos de la solicitud
     const {
       sucursalId,
@@ -144,8 +143,7 @@ const update = async (req, res) => {
       valor,
       clienteId,
       registro,
-      tipo,
-      usuarioModificacion
+      tipo, 
     } = req.body;
 
     // Obtener el ID de la valoración desde los parámetros de la ruta
@@ -175,7 +173,7 @@ const update = async (req, res) => {
       clienteId,
       registro,
       tipo,
-      usuarioModificacion
+      usuarioModificacion:userID
     });
     if (valoracionExistente.sucursalId == null)
       valoracionExistente.sucursalId = 0;
@@ -184,8 +182,8 @@ const update = async (req, res) => {
     res.json(valoracionExistente);
   } catch (error) {
     console.error(error);
-    res.locals.msg ="Error al actualizar la valoración."
-    res.status(500).json({ error: "Error al actualizar la valoración." });
+    
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar la valoración." });
   }
 };
 
@@ -205,7 +203,7 @@ const deletebyId = async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ ok: false, error: "Error al actualizar la valoración." });
+      .json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar la valoración." });
   }
 };
 
@@ -275,7 +273,7 @@ const obtenerValoraciones = async (req, res) => {
     res.json(valoraciones);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al obtener las valoraciones." });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al obtener las valoraciones." });
   }
 };
 // Método para desactivar un Valoracion (marcar como inactivo)
@@ -291,7 +289,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al desactivar el Valoracion" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al desactivar el Valoracion" });
   }
 };
 

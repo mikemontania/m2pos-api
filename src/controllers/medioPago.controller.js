@@ -13,7 +13,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar el medio de pago por ID" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar el medio de pago por ID" });
   }
 };
 const findPredeterminado = async (req, res) => {
@@ -29,7 +29,7 @@ const findPredeterminado = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar MedioPago predeterminado" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar MedioPago predeterminado" });
   }
 };
 const findAll = async (req, res) => {
@@ -41,7 +41,7 @@ const findAll = async (req, res) => {
     res.status(200).json(mediosPago);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al buscar medios de pago" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar medios de pago" });
   }
 };
 
@@ -68,7 +68,7 @@ const create = async (req, res) => {
     res.status(201).json(medioPago);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al crear el medio de pago" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al crear el medio de pago" });
   }
 };
 
@@ -101,7 +101,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al actualizar el medio de pago" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar el medio de pago" });
   }
 };
 
@@ -119,7 +119,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al desactivar el medio de pago" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al desactivar el medio de pago" });
   }
 };
 
