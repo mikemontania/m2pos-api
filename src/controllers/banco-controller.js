@@ -13,7 +13,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar el banco por ID' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar el banco por ID' });
   }
 };
 
@@ -26,7 +26,7 @@ const findAll = async (req, res) => {
     res.status(200).json(bancos);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar bancos' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar bancos' });
   }
 };
 
@@ -37,7 +37,7 @@ const create= async (req, res) => {
     res.status(201).json(banco);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al crear el banco' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al crear el banco' });
   }
 };
 
@@ -54,7 +54,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar el banco' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar el banco' });
   }
 };
 
@@ -70,7 +70,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al desactivar el banco' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al desactivar el banco' });
   }
 };
 

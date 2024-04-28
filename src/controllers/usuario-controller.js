@@ -17,7 +17,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar el Usuario por ID' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar el Usuario por ID' });
   }
 };
 
@@ -64,7 +64,7 @@ const findPaginados = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar usuarios paginados" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar usuarios paginados" });
   }
 };
 // Método para buscar todos los Usuarios
@@ -78,7 +78,7 @@ const findAll = async (req, res) => {
     res.status(200).json(usuarios);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar Usuarios' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar Usuarios' });
   }
 };
 
@@ -93,7 +93,7 @@ const create = async (req, res) => {
     res.status(201).json(nuevoUsuario);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al crear el Usuario' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al crear el Usuario' });
   }
 };
 
@@ -123,7 +123,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar el Usuario' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar el Usuario' });
   }
 };
 // Método para desactivar un Usuario (marcar como inactivo)
@@ -139,7 +139,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al desactivar el Usuario' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al desactivar el Usuario' });
   }
 };
 

@@ -14,7 +14,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar la marca por ID' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar la marca por ID' });
   }
 };
 
@@ -27,7 +27,7 @@ const findAll = async (req, res) => {
     res.status(200).json(marcas);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar marcas' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar marcas' });
   }
 };
 
@@ -40,7 +40,7 @@ const create = async (req, res) => {
     res.status(201).json(marca);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al crear la marca' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al crear la marca' });
   }
 };
 
@@ -59,7 +59,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar la marca' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar la marca' });
   }
 };
 
@@ -76,7 +76,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al desactivar la marca' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al desactivar la marca' });
   }
 };
 

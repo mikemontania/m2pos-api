@@ -13,7 +13,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar el empresa por ID' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar el empresa por ID' });
   }
 };
  
@@ -40,7 +40,7 @@ const update= async (req, res) => {
   } catch (error) {
     // Si ocurre un error durante el proceso, responder con un error 500
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar la empresa' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar la empresa' });
   }
 };
  
