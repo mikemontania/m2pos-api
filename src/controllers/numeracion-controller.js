@@ -13,7 +13,7 @@ const getById = async (req, res) => {
     
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar la numeración por ID' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar la numeración por ID' });
   }
 };
 
@@ -45,7 +45,7 @@ const findNumeracionesPaginados = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar numeraciones paginados" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar numeraciones paginados" });
   }
 };
 
@@ -73,7 +73,7 @@ const findAll = async (req, res) => {
     res.status(200).json(mapeado);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar numeraciones' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar numeraciones' });
   }
 };
 
@@ -86,7 +86,7 @@ const create = async (req, res) => {
     res.status(201).json(numeracion);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al crear la numeración' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al crear la numeración' });
   }
 };
 
@@ -105,7 +105,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar la numeración' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar la numeración' });
   }
 };
 
@@ -122,7 +122,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al desactivar la numeración' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al desactivar la numeración' });
   }
 };
 

@@ -23,7 +23,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar el producto por ID" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar el producto por ID" });
   }
 };
 
@@ -41,7 +41,7 @@ const findAll = async (req, res) => {
     res.status(200).json(productos);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar productos" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar productos" });
   }
 };
 
@@ -70,7 +70,7 @@ const create = async (req, res) => {
     res.status(201).json(producto);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al crear el producto" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al crear el producto" });
   }
 };
 
@@ -105,7 +105,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al actualizar el producto" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar el producto" });
   }
 };
 
@@ -122,7 +122,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al desactivar el producto" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al desactivar el producto" });
   }
 };
 
@@ -177,7 +177,7 @@ const findSearchPaginadosSimple = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al listar los productos" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al listar los productos" });
   }
 };
 const findProductosPaginados = async (req, res) => {
@@ -333,7 +333,7 @@ const findProductosPaginados = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al listar los productos" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al listar los productos" });
   }
 };
 

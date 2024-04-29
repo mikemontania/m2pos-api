@@ -23,8 +23,8 @@ const getListPaginado = async (req, res) => {
     console.log(desde);
     if (desde && hasta) {
       condiciones.fecha = {
-        [Op.lte]: desde,
-        [Op.gte]: hasta
+        [Op.gte]: desde, // Mayor o igual que la fecha desde
+        [Op.lte]: hasta  // Menor o igual que la fecha hasta
       };
     }
     // Añadir condiciones para búsqueda por nroDocumento o razonSocial
@@ -98,7 +98,7 @@ const getListPaginado = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar auditados paginados" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar auditados paginados" });
   }
 };
 const deletebyId = async (req, res) => {
@@ -117,7 +117,7 @@ const deletebyId = async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ error:   error?.original?.detail ||  "Error al eliminar la auditoria." });
+      .json({ error:   error?.original?.detail || error?.errors[0].message  || "Error al eliminar la auditoria." });
   }
 };
 

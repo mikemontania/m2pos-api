@@ -30,7 +30,7 @@ const findCredits = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar créditos paginados' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar créditos paginados' });
   }
 };
 
@@ -50,7 +50,7 @@ const create  = async (req, res) => {
       res.status(201).json(nuevoCredito);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: error?.original?.detail ||   'Error al crear el crédito' });
+      res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al crear el crédito' });
     }
   };
   
@@ -73,7 +73,7 @@ const create  = async (req, res) => {
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar el crédito' });
+      res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar el crédito' });
     }
   };
 

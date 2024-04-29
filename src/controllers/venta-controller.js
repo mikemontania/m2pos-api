@@ -91,7 +91,7 @@ const getById = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in getPdf:", error);
-    res.status(500).json({ error: error?.original?.detail ||   "Internal Server Error!!!" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Internal Server Error!!!" });
   }
 };
 
@@ -249,7 +249,7 @@ const createVenta = async (req, res) => {
     // Si hay algún error, realiza un rollback de la transacción
     console.error(error);
     await t.rollback();
-    res.status(500).json({ error: error?.original?.detail ||   "Error al crear la venta" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al crear la venta" });
   }
 };
 
@@ -286,7 +286,7 @@ const anularVenta = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al anular la venta" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al anular la venta" });
   }
 };
 
@@ -326,8 +326,8 @@ const listarVentas = async (req, res) => {
     console.log(desde);
     if (desde && hasta) {
       condiciones.fechaVenta = {
-        [Op.lte]: desde,
-        [Op.gte]: hasta
+        [Op.gte]: desde, // Mayor o igual que la fecha desde
+        [Op.lte]: hasta  // Menor o igual que la fecha hasta
       };
     }
 
@@ -391,7 +391,7 @@ const listarVentas = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al listar las ventas" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al listar las ventas" });
   }
 };
 

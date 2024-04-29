@@ -37,8 +37,8 @@ const getReporteCobranza = async (req, res) => {
     console.log(desde);
     if (desde && hasta) {
       condiciones.fechaVenta = {
-        [Op.lte]: desde,
-        [Op.gte]: hasta
+        [Op.gte]: desde, // Mayor o igual que la fecha desde
+        [Op.lte]: hasta  // Menor o igual que la fecha hasta
       };
     }
     condiciones.anulado = false;
@@ -130,7 +130,7 @@ const getReporteCobranza = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al listar las ventas" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al listar las ventas" });
   }
 };
  
@@ -171,7 +171,7 @@ const getVendedoresPorTotal = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al obtener getVendedoresPorTotal" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al obtener getVendedoresPorTotal" });
   }
 };
  
@@ -215,7 +215,7 @@ const getInformeMediosDePago = async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ error: error?.original?.detail ||  "Error al obtener el informe de medios de pago" });
+      .json({ error: error?.original?.detail || error?.errors[0].message  || "Error al obtener el informe de medios de pago" });
   }
 };
 
@@ -260,7 +260,7 @@ const getTopClientes = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al obtener el top de clientes" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al obtener el top de clientes" });
   }
 };
 const getTopVariantes = async (req, res) => {
@@ -312,7 +312,7 @@ const getTopVariantes = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al obtener el top de variantes" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al obtener el top de variantes" });
   }
 };
 const getReporteVentasPorSucursal = async (req, res) => {
@@ -359,7 +359,7 @@ console.log(sucursalId)
     console.error(error);
     res
       .status(500)
-      .json({ error: error?.original?.detail ||  "Error al obtener el reporte de ventas por sucursal" });
+      .json({ error: error?.original?.detail || error?.errors[0].message  || "Error al obtener el reporte de ventas por sucursal" });
   }
 };
 const getPdf = async (req, res) => {
@@ -490,7 +490,7 @@ const getPdf = async (req, res) => {
     pdfContent.pipe(res);
   } catch (error) {
     console.error("Error in getPdf:", error);
-    res.status(500).json({ error: error?.original?.detail ||   "Internal Server Error" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Internal Server Error" });
   }
 };
 

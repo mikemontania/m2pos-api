@@ -14,7 +14,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar la Unidad por ID" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar la Unidad por ID" });
   }
 };
 
@@ -29,7 +29,7 @@ const findAll = async (req, res) => {
     res.status(200).json(unidades);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar Unidades" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar Unidades" });
   }
 };
 
@@ -42,7 +42,7 @@ const create = async (req, res) => {
     res.status(201).json(nuevaUnidad);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al crear la Unidad" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al crear la Unidad" });
   }
 };
 
@@ -61,7 +61,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al actualizar la Unidad" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar la Unidad" });
   }
 };
 
@@ -78,7 +78,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al desactivar la Unidad" });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al desactivar la Unidad" });
   }
 };
 

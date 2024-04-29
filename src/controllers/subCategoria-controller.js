@@ -14,7 +14,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar la SubCategoria por ID' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar la SubCategoria por ID' });
   }
 };
 
@@ -29,7 +29,7 @@ const findAll = async (req, res) => {
     res.status(200).json(subCategorias);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar SubCategorias' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar SubCategorias' });
   }
 };
 
@@ -42,7 +42,7 @@ const create = async (req, res) => {
     res.status(201).json(nuevaSubCategoria);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al crear la SubCategoria' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al crear la SubCategoria' });
   }
 };
 
@@ -61,7 +61,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar la SubCategoria' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar la SubCategoria' });
   }
 };
 
@@ -78,7 +78,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   'Error al desactivar la SubCategoria' });
+    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al desactivar la SubCategoria' });
   }
 };
 
