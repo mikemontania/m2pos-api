@@ -13,7 +13,7 @@ const getById = async (req, res) => {
     
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar sucursal  " });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar sucursal  " });
   }
 };
 
@@ -28,7 +28,7 @@ const findAll = async (req, res) => {
     res.status(200).json(sucursales);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar sucursales" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar sucursales" });
   }
 };
  
@@ -45,7 +45,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al desactivar el sucursal" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al desactivar el sucursal" });
   }
 };
 
@@ -59,7 +59,7 @@ const create = async (req, res) => {
     res.status(201).json(sucursal);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al crear la sucursal' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al crear la sucursal' });
   }
 };
 
@@ -78,7 +78,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar la sucursal' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar la sucursal' });
   }
 };
 

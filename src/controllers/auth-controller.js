@@ -30,7 +30,7 @@ const updatePassword = async (req, res = response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar la contraseña" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al actualizar la contraseña" });
   }
 };
 

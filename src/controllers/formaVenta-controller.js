@@ -13,7 +13,7 @@ const getById = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar la FormaVenta por ID' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar la FormaVenta por ID' });
   }
 };
 const findPredeterminado = async (req, res) => {
@@ -29,7 +29,7 @@ const findPredeterminado = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar cliente predeterminado" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar cliente predeterminado" });
   }
 };
 // Método para buscar todas las FormaVenta
@@ -41,7 +41,7 @@ const findAll = async (req, res) => {
     res.status(200).json(formaVenta);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al buscar FormaVenta' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar FormaVenta' });
   }
 };
 
@@ -53,7 +53,7 @@ const create = async (req, res) => {
     res.status(201).json(formaVenta);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al crear la FormaVenta' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al crear la FormaVenta' });
   }
 };
 
@@ -71,7 +71,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al actualizar la FormaVenta' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar la FormaVenta' });
   }
 };
 
@@ -88,7 +88,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  'Error al desactivar la FormaVenta' });
+    res.status(500).json({ error: error?.original?.detail ||   'Error al desactivar la FormaVenta' });
   }
 };
 

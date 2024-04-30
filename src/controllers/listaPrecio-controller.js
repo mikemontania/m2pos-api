@@ -14,7 +14,7 @@ const getById = async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar la lista de precio por ID" });
+      .json({ error: error?.original?.detail ||   "Error al buscar la lista de precio por ID" });
   }
 };
 const findPredeterminado = async (req, res) => {
@@ -32,7 +32,7 @@ const findPredeterminado = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar cliente predeterminado" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar cliente predeterminado" });
   }
 };
 // Método para buscar todas las listas de precio
@@ -44,7 +44,7 @@ const findAll = async (req, res) => {
     res.status(200).json(listasPrecio);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al buscar listas de precio" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar listas de precio" });
   }
 };
 
@@ -61,7 +61,7 @@ const create = async (req, res) => {
     res.status(201).json(listaPrecio);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al crear la lista de precio" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al crear la lista de precio" });
   }
 };
 
@@ -80,7 +80,7 @@ const update = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar la lista de precio" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al actualizar la lista de precio" });
   }
 };
 
@@ -99,7 +99,7 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al desactivar la lista de precio" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al desactivar la lista de precio" });
   }
 };
 

@@ -34,7 +34,7 @@ const obtenerDescuentoImporte = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al  obtenerDescuentoImporte" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al  obtenerDescuentoImporte" });
   }
 };
 //version correcta
@@ -77,7 +77,7 @@ const obtenerValoracionVigente = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al  obtenerValoracionVigente" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al  obtenerValoracionVigente" });
   }
 };
 const create = async (req, res) => {
@@ -124,7 +124,7 @@ const create = async (req, res) => {
     res.json(nuevaValoracion);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al crear la valoración." });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al crear la valoración." });
   }
 };
 const update = async (req, res) => {
@@ -183,7 +183,7 @@ const update = async (req, res) => {
   } catch (error) {
     console.error(error);
     
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar la valoración." });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al actualizar la valoración." });
   }
 };
 
@@ -203,7 +203,7 @@ const deletebyId = async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al actualizar la valoración." });
+      .json({ error: error?.original?.detail ||   "Error al actualizar la valoración." });
   }
 };
 
@@ -273,7 +273,7 @@ const obtenerValoraciones = async (req, res) => {
     res.json(valoraciones);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al obtener las valoraciones." });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al obtener las valoraciones." });
   }
 };
 // Método para desactivar un Valoracion (marcar como inactivo)
@@ -289,11 +289,12 @@ const disable = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail || error?.errors[0].message  ||  "Error al desactivar el Valoracion" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al desactivar el Valoracion" });
   }
 };
-
+ 
 module.exports = {
+ 
   disable,
   obtenerValoracionVigente,
   obtenerValoraciones,
