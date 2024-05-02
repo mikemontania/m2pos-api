@@ -31,7 +31,7 @@ const createInvoice = (cabecera, detalles) => {
   generarAhorro(doc, cabecera.importeDescuento, 435);
   generarTotalTexto(doc, cabecera.importeTotal, 450);
   generarIva(doc, cabecera, 465);
-  generarCopia(doc, "Original:Ciente", 480);
+  generarCopia(doc, "Original:Cliente", 480);
   dividirHoja(doc);
   /*******copia 2 */
   generarCabecera(doc, cabecera, 520);

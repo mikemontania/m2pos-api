@@ -4,19 +4,19 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const { auditMiddleware } = require('../middlewares/auditMiddleware');
 const router = Router();
 
-// Ruta para buscar una categoría por ID
+// Ruta para buscar un banco por ID
 router.get('/:id', validarJWT,   bancoController.getById);
 
-// Ruta para buscar todas las categorías
+// Ruta para buscar todos los bancos
 router.get('/', validarJWT,   bancoController.findAll);
 
-// Ruta para crear una nueva categoría
+// Ruta para crear un banco
 router.post('/', validarJWT,  auditMiddleware, bancoController.create);
 
-// Ruta para actualizar una categoría por ID
+// Ruta para actualizar un banco
 router.put('/:id', validarJWT,  auditMiddleware, bancoController.update);
 
-// Ruta para desactivar una categoría por ID
+// Ruta para desactivar un banco
 router.put('/desactivar/:id', validarJWT,  auditMiddleware, bancoController.disable);
 
 module.exports = router;
