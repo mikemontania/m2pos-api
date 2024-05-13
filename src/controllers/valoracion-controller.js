@@ -67,7 +67,7 @@ const obtenerValoracionVigente = async (req, res) => {
         [Op.or]: [{ [Op.eq]: sucursalId }, { [Op.eq]: null }]
       }
     };
-    const precio = await Valoracion.findOne({ where: condicionesPrecio });
+    const precio = await Valoracion.findOne({ where: condicionesPrecio, include:[ { model: Variante, as: "variante",  }, ] });
 
     const descuento = await Valoracion.findOne({ where: condicionesDescuento });
 
