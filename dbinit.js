@@ -26,7 +26,7 @@ const populateDB = async () => {
     const empresa = await Empresa.create({
       razonSocial: "CAVALLARO S.A.C.e.I", 
       ruc: "5555555-5", // RUC de ejemplo
-      telefono: "123456789",
+      telefono: "(021) 588 9000",
       email: "cavallaro@example.com",
       web: "www.cavallaro.com.py",
       actividad1:'Fabricación de plásticos y caucho sintético en formas primarias',
@@ -39,15 +39,16 @@ const populateDB = async () => {
       descripcion: "CAPIATA",
       direccion: "RUTA DEPARTAMENTAL D027 (EX RUTA 1 ) E/ISRAEL",
       cel: "(0981) 627-369",
-      telefono: "0981 627 369",
+      telefono: "(021) 588 9000",
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
 
     const sucursal1 = await Sucursal.create({
       descripcion: "LUQUE",
-      direccion: "AVENIDA, AVDA.GRAL. ELIZARDO AQUINO ENTRE MCAL SUCRE Y SAN MARTIN",
-      telefono: "(0981) 223 162",
+      direccion: "AVDA.GRAL. ELIZARDO AQUINO ENTRE MCAL SUCRE Y SAN MARTIN",
+      cel: "(0981) 223 162",
+      telefono: "(021) 588 9000",
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
@@ -55,23 +56,26 @@ const populateDB = async () => {
     const sucursal2 = await Sucursal.create({
       descripcion: "MARIANO ROQUE ALONSO",
       direccion: "RUTA TRANSCHACO C/ HERNANDARIAS 714",
-      telefono: "(0981) 277-318",
+      cel: "(0981) 277-318",
+      telefono: "(021) 588 9000",
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
     
     const sucursal3 = await Sucursal.create({
       descripcion: "JULIO CORREA",
-      direccion: "JULIO CORREA 485 ENTRE TTE CESAR VELAZQUEZ Y DOMINGO PORTILLO",
-      telefono: "(0986) 133-183",
+      direccion: "485 ENTRE TTE CESAR VELAZQUEZ Y DOMINGO PORTILLO",
+      cel: "(0986) 133-183",
+      telefono: "(021) 588 9000",
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
     
     const sucursal4 = await Sucursal.create({
       descripcion: "MBURUCUYA",
-      direccion: "AVENIDA, AVDA. SANTISIMA TRINIDAD E/ DR. RAMON ZUBIZARRETA",
-      telefono: "(0981) 390-050",
+      direccion: "AVDA. SANTISIMA TRINIDAD E/ DR. RAMON ZUBIZARRETA",
+      cel: "(0981) 390-050",
+      telefono: "(021) 588 9000",
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });

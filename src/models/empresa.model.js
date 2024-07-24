@@ -26,7 +26,6 @@ const Empresa = sequelize.define('Empresa', {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  
   ruc: {
     type: DataTypes.STRING,
     allowNull: true,
