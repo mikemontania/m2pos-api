@@ -4,7 +4,7 @@ const cors = require("cors");
 const { dbConnection } = require("./dbconfig");
 const { populateDB } = require("./dbinit");
 const morgan = require("morgan"); // const { json } = require('express/lib/response');
-const { loggerPos } = require("./logger");
+//const { loggerPos } = require("./logger");
 // Este es un comentario
 // Crear el servidor de express
 const app = express();
@@ -13,7 +13,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 // Configurar CORS
 app.use(cors());
-loggerPos();
+//loggerPos();
 // Base de datos
 const dbSetup = async () => {
   await dbConnection(); //crea conexion

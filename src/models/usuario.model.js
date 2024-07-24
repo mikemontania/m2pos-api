@@ -25,7 +25,7 @@ const Usuario = sequelize.define(
       allowNull: true
     },
     username: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: true
     },
 
@@ -34,7 +34,7 @@ const Usuario = sequelize.define(
       allowNull: true
     },
     usuario: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(50),
       allowNull: true
     },
     img: {
