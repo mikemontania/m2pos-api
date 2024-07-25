@@ -37,8 +37,8 @@ const findAll = async (req, res) => {
 const create = async (req, res) => {
   try {
     const { empresaId  } = req.usuario;
-    const {  descripcion, activo } = req.body;
-    const nuevaSubCategoria = await SubCategoria.create({ empresaId, descripcion, activo });
+    const {  descripcion, activo, categoriaId  } = req.body;
+    const nuevaSubCategoria = await SubCategoria.create({ empresaId, descripcion, activo, categoriaId });
     res.status(201).json(nuevaSubCategoria);
   } catch (error) {
     console.error(error);
@@ -51,10 +51,10 @@ const update = async (req, res) => {
   try {
     const { empresaId  } = req.usuario;
     const { id } = req.params;
-    const {  descripcion, activo } = req.body;
+    const {  descripcion, activo , categoriaId } = req.body;
     const subCategoriaActualizada = await SubCategoria.findByPk(id);
     if (subCategoriaActualizada) {
-      await subCategoriaActualizada.update({ empresaId, descripcion, activo });
+      await subCategoriaActualizada.update({ empresaId, descripcion, activo, categoriaId  });
       res.status(200).json(subCategoriaActualizada);
     } else {
       res.status(404).json({ error: 'SubCategoria no encontrada' });
