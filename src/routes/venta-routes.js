@@ -5,7 +5,8 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const { auditMiddleware } = require('../middlewares/auditMiddleware');
 // Rutas para Venta
 
-
+router.get('/generar-xml/:id', validarJWT,   ventaController.generateXML);
+router.get('/firmar-xml/:id', validarJWT,   ventaController.firmarXML);
 router.get('/:id', validarJWT,   ventaController.getById);
 router.get('/:page/:pageSize/:fechaDesde/:fechaHasta/:clienteId/:sucursalId/:formaVentaId/:listaPrecioId/:nroComprobante?', validarJWT,   ventaController.listarVentas);
 router.post('/', validarJWT,  auditMiddleware, ventaController.createVenta); 

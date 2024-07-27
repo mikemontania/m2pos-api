@@ -17,6 +17,10 @@ const Variedad = require("../models/variedad.model");
 const Producto = require("../models/producto.model");
 const Unidad = require("../models/unidad.model");
 const Credito = require("../models/credito.model");
+const  {generaXML } = require('../helpers/xmlGenerator');
+const Empresa = require("../models/empresa.model");
+
+
 
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -394,10 +398,263 @@ const listarVentas = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   "Error al listar las ventas" });
   }
 };
+const generateXML = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const venta = await Venta.findByPk(id, {
+      include: [
+        { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
+        {
+          model: Cliente,
+          as: "cliente",
+          attributes: ["nroDocumento", "razonSocial", "direccion", "telefono"]
+        },
+        {
+          model: FormaVenta,
+          as: "formaVenta",
+          attributes: ["id", "descripcion"]
+        },
+        {
+          model: Sucursal,
+          as: "sucursal",
+          attributes: ["descripcion", "direccion", "telefono", "cel"]
+        },
+        {
+          model: Empresa,
+          as: "empresa",
+          attributes: [
+            "razonSocial",
+            "ruc",
+            "actividad1",
+            "actividad2",
+            "actividad3",
+            "img",
+            "web"
+          ]
+        }
+      ]
+    });
+    if (!venta) {
+      return res.status(404).json({ error: "Venta not found" });
+    }
+    const detallesVenta = await VentaDetalle.findAll({
+      where: { ventaId: id },
+      include: [
+        {
+          model: Variante,
+          as: "variante", // Asegúrate de usar el alias correcto aquí
+          include: [
+            {
+              model: Presentacion,
+              as: "presentacion", // Asegúrate de usar el alias correcto aquí
+              attributes: ["id", "descripcion", "size"]
+            },
+            {
+              model: Variedad,
+              as: "variedad", // Asegúrate de usar el alias correcto aquí
+              attributes: ["id", "descripcion", "color"]
+            },
+            {
+              model: Producto,
+              as: "producto", // Asegúrate de usar el alias correcto aquí
+              attributes: ["nombre"]
+            },
+            {
+              model: Unidad,
+              as: "unidad", // Asegúrate de usar el alias correcto aquí
+              attributes: ["code"]
+            }
+          ]
+        }
+      ]
+    });
+    if (detallesVenta.length === 0) {
+      return res.status(404).json({ error: "No details found for this venta" });
+    }
+    /* console.log(venta)
+ */
 
+    const cabecera = {
+      ...venta.dataValues,
+      sucursal: { ...venta.dataValues.sucursal.dataValues },
+      empresa: { ...venta.dataValues.empresa.dataValues },
+      vendedorCreacion: { ...venta.dataValues.vendedorCreacion.dataValues },
+      cliente: { ...venta.dataValues.cliente.dataValues },
+      formaVenta: { ...venta.dataValues.formaVenta.dataValues }
+    };
+    let detalles = [];
+
+    detallesVenta.forEach(detalle => {
+      // Acceder a los datos de Variante
+      const variante = detalle.variante;
+      detalles.push({
+        porcIva:detalle.porcIva,
+        cantidad: detalle.dataValues.cantidad,
+        importePrecio: detalle.dataValues.importePrecio,
+        importeIva5: detalle.dataValues.importeIva5,
+        importeIva10: detalle.dataValues.importeIva10,
+        importeIvaExenta: detalle.dataValues.importeIvaExenta,
+        importeDescuento: detalle.dataValues.importeDescuento,
+        importeNeto: detalle.dataValues.importeNeto,
+        importeSubtotal: detalle.dataValues.importeSubtotal,
+        importeTotal: detalle.dataValues.importeTotal,
+        totalKg: detalle.dataValues.totalKg,
+        tipoDescuento: detalle.dataValues.tipoDescuento,
+        variante: variante.dataValues,
+        presentacion: variante.presentacion,
+        variedad: variante.variedad,
+        producto: variante.producto,
+        unidad: variante.unidad
+      });
+      /*  console.log("-------------------");
+    console.log(cabecera);
+    console.log("-------------------");
+    console.log(detalles);
+    console.log("-------------------"); */
+    });
+
+    const xml = generaXML(cabecera, detalles);
+
+    // Configurar la respuesta HTTP
+    res.setHeader("Content-Type", "application/xml");
+    res.setHeader("Content-Disposition", `inline; filename=FE-${cabecera.nroComprobante}.xml`);
+    res.status(200).send(xml);
+  } catch (error) {
+    console.error("Error in xml:", error);
+    res.status(500).json({ error: error?.original?.detail ||   "Internal Server Error" });
+  }
+};
+const firmarXML = async (req, res) => {
+/*   const { id } = req.params;
+  try {
+    const venta = await Venta.findByPk(id, {
+      include: [
+        { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
+        {
+          model: Cliente,
+          as: "cliente",
+          attributes: ["nroDocumento", "razonSocial", "direccion", "telefono"]
+        },
+        {
+          model: FormaVenta,
+          as: "formaVenta",
+          attributes: ["id", "descripcion"]
+        },
+        {
+          model: Sucursal,
+          as: "sucursal",
+          attributes: ["descripcion", "direccion", "telefono", "cel"]
+        },
+        {
+          model: Empresa,
+          as: "empresa",
+          attributes: [
+            "razonSocial",
+            "ruc",
+            "actividad1",
+            "actividad2",
+            "actividad3",
+            "img",
+            "web"
+          ]
+        }
+      ]
+    });
+    if (!venta) {
+      return res.status(404).json({ error: "Venta not found" });
+    }
+    const detallesVenta = await VentaDetalle.findAll({
+      where: { ventaId: id },
+      include: [
+        {
+          model: Variante,
+          as: "variante", // Asegúrate de usar el alias correcto aquí
+          include: [
+            {
+              model: Presentacion,
+              as: "presentacion", // Asegúrate de usar el alias correcto aquí
+              attributes: ["id", "descripcion", "size"]
+            },
+            {
+              model: Variedad,
+              as: "variedad", // Asegúrate de usar el alias correcto aquí
+              attributes: ["id", "descripcion", "color"]
+            },
+            {
+              model: Producto,
+              as: "producto", // Asegúrate de usar el alias correcto aquí
+              attributes: ["nombre"]
+            },
+            {
+              model: Unidad,
+              as: "unidad", // Asegúrate de usar el alias correcto aquí
+              attributes: ["code"]
+            }
+          ]
+        }
+      ]
+    });
+    if (detallesVenta.length === 0) {
+      return res.status(404).json({ error: "No details found for this venta" });
+    }
+    
+
+    const cabecera = {
+      ...venta.dataValues,
+      sucursal: { ...venta.dataValues.sucursal.dataValues },
+      empresa: { ...venta.dataValues.empresa.dataValues },
+      vendedorCreacion: { ...venta.dataValues.vendedorCreacion.dataValues },
+      cliente: { ...venta.dataValues.cliente.dataValues },
+      formaVenta: { ...venta.dataValues.formaVenta.dataValues }
+    };
+    let detalles = [];
+
+    detallesVenta.forEach(detalle => {
+      // Acceder a los datos de Variante
+      const variante = detalle.variante;
+      detalles.push({
+        porcIva:detalle.porcIva,
+        cantidad: detalle.dataValues.cantidad,
+        importePrecio: detalle.dataValues.importePrecio,
+        importeIva5: detalle.dataValues.importeIva5,
+        importeIva10: detalle.dataValues.importeIva10,
+        importeIvaExenta: detalle.dataValues.importeIvaExenta,
+        importeDescuento: detalle.dataValues.importeDescuento,
+        importeNeto: detalle.dataValues.importeNeto,
+        importeSubtotal: detalle.dataValues.importeSubtotal,
+        importeTotal: detalle.dataValues.importeTotal,
+        totalKg: detalle.dataValues.totalKg,
+        tipoDescuento: detalle.dataValues.tipoDescuento,
+        variante: variante.dataValues,
+        presentacion: variante.presentacion,
+        variedad: variante.variedad,
+        producto: variante.producto,
+        unidad: variante.unidad
+      });
+     
+    });
+
+    const pdfContent = createInvoice(cabecera, detalles);
+
+    // Configurar la respuesta HTTP
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `inline; filename=FE-${cabecera.nroComprobante}.pdf`
+    );
+
+    // Enviar el contenido del PDF como respuesta
+    pdfContent.pipe(res);
+  } catch (error) {
+    console.error("Error in getPdf:", error);
+    res.status(500).json({ error: error?.original?.detail ||   "Internal Server Error" });
+  } */
+};
 module.exports = {
   getById,
   createVenta,
   anularVenta,
-  listarVentas
+  listarVentas,
+  generateXML,
+  firmarXML,
 };

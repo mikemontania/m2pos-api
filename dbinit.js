@@ -277,7 +277,7 @@ const populateDB = async () => {
       username: "vendedor@capiata.com",
       usuario: "Capiata",
       password: Bcryptjs.hashSync("123456", salt),
-      img: "",
+      img: "9634534584325567563.png",
       rol: "vendedor", // Puedes ajustar el rol según tus necesidades
       intentos: 0,
       activo: true,
@@ -291,7 +291,7 @@ const populateDB = async () => {
       username: "vendedor@luque.com",
       usuario: "Luque",
       password: Bcryptjs.hashSync("123456", salt),
-      img: "",
+      img: "9634534584325567563.png",
       rol: "vendedor", // Puedes ajustar el rol según tus necesidades
       intentos: 0,
       activo: true,
@@ -305,7 +305,7 @@ const populateDB = async () => {
       username: "vendedor@mra.com",
       usuario: "Mariano R. Alonso",
       password: Bcryptjs.hashSync("123456", salt),
-      img: "",
+      img: "9634534584325567563.png",
       rol: "vendedor", // Puedes ajustar el rol según tus necesidades
       intentos: 0,
       activo: true,
@@ -318,7 +318,7 @@ const populateDB = async () => {
       username: "vendedor@jc.com",
       usuario: "Julio Correa",
       password: Bcryptjs.hashSync("123456", salt),
-      img: "",
+      img: "9634534584325567563.png",
       rol: "vendedor", // Puedes ajustar el rol según tus necesidades
       intentos: 0,
       activo: true,
@@ -331,7 +331,7 @@ const populateDB = async () => {
       username: "vendedor@mburucuya.com",
       usuario: "Mburucuya",
       password: Bcryptjs.hashSync("123456", salt),
-      img: "",
+      img: "9634534584325567563.png",
       rol: "vendedor", // Puedes ajustar el rol según tus necesidades
       intentos: 0,
       activo: true,
