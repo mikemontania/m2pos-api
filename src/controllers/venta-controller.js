@@ -427,7 +427,7 @@ const generateXML = async (req, res) => {
         {
           model: FormaVenta,
           as: "formaVenta",
-          attributes: ["id", "descripcion"]
+          attributes: ["id", "descripcion","dias"]
         },
         {
           model: Sucursal,

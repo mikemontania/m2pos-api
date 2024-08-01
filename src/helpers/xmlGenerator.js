@@ -24,12 +24,11 @@ const generaXML = (cabecera, detalles) => {
   const distrito = const_distritos.find(    t => t.codigo == cabecera.empresa.disEmiId  );
   const ciudad = const_ciudades.find(    t => t.codigo == cabecera.empresa.ciuEmiId  );
   const moneda = const_monedas.find(    t => t.codigo == cabecera.empresa.codigoMoneda  );
-  const [nroDocumentoEmp, digitoEmpr] = cabecera.empresa.ruc.split("-");
   const [establecimiento, puntoExp, numero] = cabecera.nroComprobante.split(    "-"  );
-  const [dRucRec, dDVRec] = cabecera.cliente.nroDocumento.split("-");
   const carQRValue = "****************************************************************************************************";
-  const iNatRec = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; //1= contribuyente  2= no contribuyente
-  const iTiOpe = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; //
+  // Fechas
+  const fechaActualISO = formatDateToISO(new Date());
+  const fechaEmisionISO = formatDateToISO(cabecera.fechaCreacion);
   /*
 1= B2B
 2= B2C
@@ -49,32 +48,52 @@ let xml = xmlbuilder
 .ele("dVerFor", "150").up()
 .ele("DE", { Id: cabecera.cdc })
   .ele("dDVId", cabecera.cdc.charAt(cabecera.cdc.length - 1)).up()
-  .ele("dFecFirma", "2024-07-25T20:30:40").up()
+  /*
+      La fecha y hora de la firma digital debe ser anterior a la fecha y hora de transmisión al SIFEN
+    El certificado digital debe estar vigente al momento de la firma digital del DE Fecha y hora en el formato AAAA-MM-DDThh:mm:ss
+    El plazo límite de transmisión del DE al SIFEN para la aprobación normal es de 72 h contadas a partir de la fecha y hora de la firma digital
+  */
+  .ele("dFecFirma", fechaActualISO).up()
   .ele("dSisFact", "1").up()
   // Operation data
   .ele(createGOpeDE(tipoEmision, cabecera)).up() // Uso de la función modularizada para gOpeDE
   .ele(createGTimb(cabecera, establecimiento, puntoExp, numero)).up() // Uso de la función modularizada
-    // General operation data
+    // Campos generales del DE 
     .ele("gDatGralOpe")
-      .ele("dFeEmiDE", cabecera.fechaCreacion).up()
+      /* Fecha y hora en el formato AAAA-MM-DDThh:mm:ss Para el KuDE el formato de la fecha de emisión debe contener los guiones separadores. Ejemplo: 2018-05-31T12:00:00
+        Se aceptará como límites técnicos del sistema, que la fecha de emisión del DE sea atrasada hasta 720 horas (30 días) y adelantada hasta
+        120 horas (5 días) en relación a la fecha y hora de transmisión al SIFEN
+      */
+      .ele("dFeEmiDE", fechaEmisionISO).up()
+      //Campos inherentes a la operación comercial
       .ele(createGOpeCom(tipoTransacciones, tipoImpuesto,moneda)).up() 
+      //Grupo de campos que identifican al emisor
       .ele(createGEmis(cabecera, tipoContribuyente, departamento, distrito, ciudad)).up()
+    //Grupo de campos que identifican al receptor 
     .ele(createGDatRec(cabecera)).up() // Uso de la función modularizada para gDatRec
     .up()//cierre gDatGralOpe
-  // Continuación de la estructura XML
+    // Campos específicos por tipo de Documento Electrónico
     .ele("gDtipDE")
-      .ele(createGCamFE()).up() // Uso de la función modularizada para gCamFE
+      .ele(createGCamFE()).up() //Campos que componen la FE
+      //Campos que describen la condición de la operación
       .ele(createGCamCond(cabecera.formaVenta, cabecera.importeTotal)).up()     
+      //Campos que describen los ítems de la operación
       .ele(detalles.map(item => createGCamItem(item))).up()
     .up()
+    //Campos de subtotales y totales 
     .ele(createGTotSub(cabecera)).up()
     .up()//DE
     .ele(createGCamFuFD(carQRValue)).up()
- 
-   
+  
   // Return the XML as a string
   return xml.end({ pretty: true });
 };
+
+const formatDateToISO = (date) => {
+  const dateObj = new Date(date);
+  return dateObj.toISOString().split('.')[0]; // Elimina los milisegundos
+};
+
 const createGCamFuFD = (carQR) => {
   return {
     gCamFuFD: {
@@ -145,7 +164,7 @@ const createGCamItem = (item) => {
 };
 
 const createGCamCond = (formaVenta, importeTotal) => {
-  if (formaVenta.id === 1) {
+  if (formaVenta.id == 1) {
     // Contado
     return {
       gCamCond: {
