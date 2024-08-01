@@ -27,6 +27,7 @@ const generaXML = (cabecera, detalles) => {
   const [nroDocumentoEmp, digitoEmpr] = cabecera.empresa.ruc.split("-");
   const [establecimiento, puntoExp, numero] = cabecera.nroComprobante.split(    "-"  );
   const [dRucRec, dDVRec] = cabecera.cliente.nroDocumento.split("-");
+  const carQRValue = "****************************************************************************************************";
   const iNatRec = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; //1= contribuyente  2= no contribuyente
   const iTiOpe = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; //
   /*
@@ -38,237 +39,276 @@ const generaXML = (cabecera, detalles) => {
 solo en caso de servicios para
 empresas o personas físicas del
 exterior
-
-
 */
-
 let xml = xmlbuilder
 .create("rDE", { version: "1.0", encoding: "UTF-8" })
 .att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
 .att("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
 .att("xsi:schemaLocation", "http://ekuatia.set.gov.py/sifen/xsd siRecepDE_v150.xsd")
-
 // Header data
 .ele("dVerFor", "150").up()
 .ele("DE", { Id: cabecera.cdc })
   .ele("dDVId", cabecera.cdc.charAt(cabecera.cdc.length - 1)).up()
   .ele("dFecFirma", "2024-07-25T20:30:40").up()
   .ele("dSisFact", "1").up()
-
   // Operation data
-  .ele("gOpeDE")
-    .ele("iTipEmi", tipoEmision.codigo).up()
-    .ele("dDesTipEmi", tipoEmision.descripcion).up()
-    .ele("dCodSeg", cabecera.codigoSeguridad).up()
-  .up()
-  .ele("gTimb")
-    .ele("iTiDE", cabecera.tipoDocumento.codigo).up()
-    .ele("dDesTiDE", cabecera.tipoDocumento.descripcion).up()
-    .ele("dNumTim", cabecera.timbrado).up()
-    .ele("dEst", establecimiento).up()
-    .ele("dPunExp", puntoExp).up()
-    .ele("dNumDoc", numero).up()
-    .ele("dFeIniT", cabecera.fechaInicio).up()
-  .up()
+  .ele(createGOpeDE(tipoEmision, cabecera)).up() // Uso de la función modularizada para gOpeDE
+  .ele(createGTimb(cabecera, establecimiento, puntoExp, numero)).up() // Uso de la función modularizada
     // General operation data
     .ele("gDatGralOpe")
       .ele("dFeEmiDE", cabecera.fechaCreacion).up()
-      .ele("gOpeCom")
-        .ele("iTipTra", tipoTransacciones.codigo).up()
-        .ele("dDesTipTra", tipoTransacciones.descripcion).up()
-        .ele("iTImp", tipoImpuesto.codigo).up()
-        .ele("dDesTImp", tipoImpuesto.descripcion).up()
-        .ele("cMoneOpe", moneda.codigo).up()
-        .ele("dDesMoneOpe", moneda.descripcion).up()
-      .up()
-      // Emitter data
-      let emisElement = xml
-      .ele("gEmis")
-      .ele("dRucEm", nroDocumentoEmp).up()
-      .ele("dDVEmi", digitoEmpr).up()
-      .ele("iTipCont", tipoContribuyente.codigo).up()
-      .ele("dNomEmi", cabecera.empresa.razonSocial).up()
-      .ele("dNomFanEmi", cabecera.empresa.nombreFantasia).up()
-      .ele("dDirEmi", cabecera.sucursal.direccion).up()
-      .ele("dNumCas", cabecera.empresa.numCasa).up()
-      .ele("cDepEmi", departamento.codigo).up()
-      .ele("dDesDepEmi", departamento.descripcion).up()
-      .ele("cDisEmi", distrito.codigo).up()
-      .ele("dDesDisEmi", distrito.descripcion).up()
-      .ele("cCiuEmi", ciudad.codigo).up()
-      .ele("dDesCiuEmi", ciudad.descripcion).up()
-      .ele("dTelEmi", cabecera.empresa.telefono).up()
-      .ele("dEmailE", cabecera.empresa.email).up();
-  
-  if (cabecera.empresa.actividadcode1) {
-      emisElement.ele("gActEco")
-          .ele("cActEco", cabecera.empresa.actividadcode1).up()
-          .ele("dDesActEco", cabecera.empresa.actividad1).up()
-      .up();
-  }
-  
-  if (cabecera.empresa.actividadcode2) {
-      emisElement.ele("gActEco")
-          .ele("cActEco", cabecera.empresa.actividadcode2).up()
-          .ele("dDesActEco", cabecera.empresa.actividad2).up()
-      .up();
-  }
-  
-  if (cabecera.empresa.actividadcode3) {
-      emisElement.ele("gActEco")
-          .ele("cActEco", cabecera.empresa.actividadcode3).up()
-          .ele("dDesActEco", cabecera.empresa.actividad3).up()
-      .up();
-  }
-  
-  // Cierra el elemento gEmis
-  emisElement.up();
-  if (iNatRec == 1) {
-    // Contribuyente
-    xml.ele("gDatRec")
-      .ele("iNatRec", iNatRec).up()
-      .ele("iTiOpe", iTiOpe).up()
-      .ele("cPaisRec", "PRY").up()
-      .ele("dDesPaisRe", "Paraguay").up()
-      .ele("iTiContRec", "2").up()
-      .ele("dRucRec", dRucRec).up()
-      .ele("dDVRec", dDVRec).up()
-      .ele("dNomRec", cabecera.cliente.razonSocial).up()
-      .ele("dDirRec", cabecera.cliente.direccion).up()
-      .ele("dNumCasRec", "0").up()
-    .up();
-  } else {
-    // No contribuyente
-    xml.ele("gDatRec")
-    .ele("iNatRec", iNatRec).up()
-      .ele("iTiOpe", iTiOpe).up()
-      .ele("cPaisRec", "PRY").up()
-      .ele("dDesPaisRe", "Paraguay").up()
-      .ele("iTipIDRec", "1").up()
-      .ele("dDTipIDRec", "Cédula paraguaya").up()
-      .ele("dNumIDRec", cabecera.cliente.nroDocumento).up()
-      .ele("dNomRec", cabecera.cliente.razonSocial).up()
-      .ele("dDirRec", cabecera.cliente.direccion).up()
-      .ele("dNumCasRec", "0").up()
-    .up();
- 
-  }
-  xml.up().up();
- 
+      .ele(createGOpeCom(tipoTransacciones, tipoImpuesto,moneda)).up() 
+      .ele(createGEmis(cabecera, tipoContribuyente, departamento, distrito, ciudad)).up()
+    .ele(createGDatRec(cabecera)).up() // Uso de la función modularizada para gDatRec
+    .up()//cierre gDatGralOpe
   // Continuación de la estructura XML
-  xml
     .ele("gDtipDE")
-    .ele("gCamFE")
-    .ele("iIndPres", "1")
+      .ele(createGCamFE()).up() // Uso de la función modularizada para gCamFE
+      .ele(createGCamCond(cabecera.formaVenta, cabecera.importeTotal)).up()     
+      .ele(detalles.map(item => createGCamItem(item))).up()
     .up()
-    .ele("dDesIndPres", "Operación presencial")
-    .up()
-    .up()
-
-
-    if (cabecera.formaVenta.id == 1) {
-      // Contado
-      xml
-        .ele("gCamCond")
-        .ele("iCondOpe", "1")
-        .up()
-        .ele("dDCondOpe", "Contado")
-        .up()
-        .ele("gPaConEIni")
-        .ele("iTiPago", "1")
-        .up()
-        .ele("dDesTiPag", "Efectivo")
-        .up()
-        .ele("dMonTiPag", cabecera.importeTotal)
-        .up()
-        .ele("cMoneTiPag", "PYG")
-        .up()
-        .ele("dDMoneTiPag", "Guarani")
-        .up()
-        .up() // Cerrar gPaConEIni
-        .up(); // Cerrar gCamCond
-    } else {
-      // Crédito
-      xml
-        .ele("gCamCond")
-        .ele("iCondOpe", "2")
-        .up()
-        .ele("dDCondOpe", "Crédito")
-        .up()
-        .ele("gPagCred")
-        .ele("iCondCred", "1")
-        .up()
-        .ele("dDCondCred", "Plazo")
-        .up()
-        .ele("dPlazoCre", cabecera.formaVenta.dias + " dias")
-        .up()
-        .up() // Cerrar gPagCred
-        .up(); // Cerrar gCamCond
-    }
-
-detalles.forEach(item => {
-  xml
-  .ele("gCamItem")
-    .ele("dCodInt", item.variante.codErp).up()
-    .ele("dDesProSer", item.producto.nombre+" "+item.presentacion.descripcion+" "+item.variedad.descripcion+" "+item.unidad.code).up()
-    .ele("cUniMed", "77").up()
-    .ele("dDesUniMed", "UNI").up()
-    .ele("dCantProSer", item.cantidad).up()
-    .ele("gValorItem")
-      .ele("dPUniProSer",(item.importeTotal/item.cantidad) ).up()
-      .ele("dTotBruOpeItem",item.importeTotal).up()
-      .ele("gValorRestaItem")
-        .ele("dDescItem", "0").up()
-        .ele("dPorcDesIt", "0").up()
-        .ele("dDescGloItem", "0").up()
-        .ele("dAntPreUniIt", "0").up()
-        .ele("dAntGloPreUniIt", "0").up()
-        .ele("dTotOpeItem", item.importeTotal).up()
-      .up()
-    .up()
-    .ele("gCamIVA")
-      .ele("iAfecIVA", "1").up()
-      .ele("dDesAfecIVA", "Gravado IVA").up()
-      .ele("dPropIVA", "100").up()
-      .ele("dTasaIVA", "10").up()
-      .ele("dBasGravIVA",item.importeNeto).up()
-      .ele("dLiqIVAItem",item.importeIva10).up()
-      .ele("dBasExe", "0").up()
-    .up()
-  .up()
-
-});
-
-    xml.ele("gTotSub")
-    .ele("dSubExe", "0").up()
-    .ele("dSubExo", "0").up()
-    .ele("dSub5", "0").up()
-    .ele("dSub10", cabecera.importeTotal).up()
-    .ele("dTotOpe", cabecera.importeTotal).up()
-    .ele("dTotDesc", 0).up()
-    .ele("dTotDescGlotem", 0).up()
-    .ele("dTotAntItem", 0).up()
-    .ele("dTotAnt", 0).up()
-    .ele("dPorcDescTotal", 0).up()
-    .ele("dDescTotal", 0).up()
-    .ele("dAnticipo", 0).up()
-    .ele("dRedon", 0).up()
-    .ele("dTotGralOpe",cabecera.importeTotal).up()
-    .ele("dIVA5",  cabecera.importeIva5).up()
-    .ele("dIVA10", cabecera.importeIva10).up()
-    .ele("dLiqTotIVA5", 0).up()
-    .ele("dLiqTotIVA10", 0).up()
-    .ele("dTotIVA",cabecera.importeIva10 +cabecera.importeIva5 +cabecera.importeIvaExenta ).up()
-    .ele("dBaseGrav5", 0)
-    .ele("dBaseGrav10", 0)
-    .ele("dTBasGraIVA", 0)
-    .up()
-    .up()
-    .up();
+    .ele(createGTotSub(cabecera)).up()
+    .up()//DE
+    .ele(createGCamFuFD(carQRValue)).up()
+ 
+   
   // Return the XML as a string
   return xml.end({ pretty: true });
 };
+const createGCamFuFD = (carQR) => {
+  return {
+    gCamFuFD: {
+      dCarQR: carQR
+    }
+  };
+};
+const createGTotSub = (cabecera) => {
+  return {
+    gTotSub: {
+      dSubExe: "0",
+      dSubExo: "0",
+      dSub5: "0",
+      dSub10: cabecera.importeTotal,
+      dTotOpe: cabecera.importeTotal,
+      dTotDesc: "0",
+      dTotDescGlotem: "0",
+      dTotAntItem: "0",
+      dTotAnt: "0",
+      dPorcDescTotal: "0",
+      dDescTotal: "0",
+      dAnticipo: "0",
+      dRedon: "0",
+      dTotGralOpe: cabecera.importeTotal,
+      dIVA5: cabecera.importeIva5,
+      dIVA10: cabecera.importeIva10,
+      dLiqTotIVA5: "0",
+      dLiqTotIVA10: "0",
+      dTotIVA: cabecera.importeIva10 + cabecera.importeIva5 + cabecera.importeIvaExenta,
+      dBaseGrav5: "0",
+      dBaseGrav10: "0",
+      dTBasGraIVA: "0"
+    }
+  };
+};
 
+const createGCamItem = (item) => {
+  return {
+    gCamItem: {
+      dCodInt: item.variante.codErp,
+      dDesProSer: `${item.producto.nombre} ${item.presentacion.descripcion} ${item.variedad.descripcion} ${item.unidad.code}`,
+      cUniMed: "77", // Asegúrate de que este código sea el correcto
+      dDesUniMed: "UNI", // Asegúrate de que esta descripción sea la correcta
+      dCantProSer: item.cantidad,
+      gValorItem: {
+        dPUniProSer: (item.importeTotal / item.cantidad), // Ajusta el número de decimales según sea necesario
+        dTotBruOpeItem: item.importeTotal,
+        gValorRestaItem: {
+          dDescItem: "0",
+          dPorcDesIt: "0",
+          dDescGloItem: "0",
+          dAntPreUniIt: "0",
+          dAntGloPreUniIt: "0",
+          dTotOpeItem: item.importeTotal
+        }
+      },
+      gCamIVA: {
+        iAfecIVA: "1",
+        dDesAfecIVA: "Gravado IVA",
+        dPropIVA: "100",
+        dTasaIVA: "10",
+        dBasGravIVA: item.importeNeto, // Ajusta el número de decimales según sea necesario
+        dLiqIVAItem: item.importeIva10, // Ajusta el número de decimales según sea necesario
+        dBasExe: "0"
+      }
+    }
+  };
+};
+
+const createGCamCond = (formaVenta, importeTotal) => {
+  if (formaVenta.id === 1) {
+    // Contado
+    return {
+      gCamCond: {
+        iCondOpe: "1",
+        dDCondOpe: "Contado",
+        gPaConEIni: {
+          iTiPago: "1",
+          dDesTiPag: "Efectivo",
+          dMonTiPag: importeTotal,
+          cMoneTiPag: "PYG",
+          dDMoneTiPag: "Guarani"
+        }
+      }
+    };
+  } else {
+    // Crédito
+    return {
+      gCamCond: {
+        iCondOpe: "2",
+        dDCondOpe: "Crédito",
+        gPagCred: {
+          iCondCred: "1",
+          dDCondCred: "Plazo",
+          dPlazoCre: `${formaVenta.dias} dias`
+        }
+      }
+    };
+  }
+};
+
+const createGCamFE = () => {
+  return {
+   
+      gCamFE: {
+        iIndPres: "1",
+        dDesIndPres: "Operación presencial"
+      }
+ 
+  };
+};
+const createGDatRec = (cabecera) => {
+  const [dRucRec, dDVRec] = cabecera.cliente.nroDocumento.split("-");
+  const iNatRec = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; // 1= contribuyente, 2= no contribuyente
+  const iTiOpe = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2;
+
+  if (iNatRec === 1) { // Contribuyente
+    return {
+      gDatRec: {
+        iNatRec: iNatRec,
+        iTiOpe: iTiOpe,
+        cPaisRec: "PRY",
+        dDesPaisRe: "Paraguay",
+        iTiContRec: "2",
+        dRucRec: dRucRec,
+        dDVRec: dDVRec,
+        dNomRec: cabecera.cliente.razonSocial,
+        dDirRec: cabecera.cliente.direccion,
+        dNumCasRec: "0"
+      }
+    };
+  } else { // No contribuyente
+    return {
+      gDatRec: {
+        iNatRec: iNatRec,
+        iTiOpe: iTiOpe,
+        cPaisRec: "PRY",
+        dDesPaisRe: "Paraguay",
+        iTipIDRec: "1",
+        dDTipIDRec: "Cédula paraguaya",
+        dNumIDRec: cabecera.cliente.nroDocumento,
+        dNomRec: cabecera.cliente.razonSocial,
+        dDirRec: cabecera.cliente.direccion,
+        dNumCasRec: "0"
+      }
+    };
+  }
+};
+const createGEmis = (cabecera, tipoContribuyente, departamento, distrito, ciudad) => {
+  const [nroDocumentoEmp, digitoEmpr] = cabecera.empresa.ruc.split("-");
+  const emisElement = {
+    gEmis: {
+      dRucEm: nroDocumentoEmp,
+      dDVEmi: digitoEmpr,
+      iTipCont: tipoContribuyente.codigo,
+      dNomEmi: cabecera.empresa.razonSocial,
+      dNomFanEmi: cabecera.empresa.nombreFantasia,
+      dDirEmi: cabecera.sucursal.direccion,
+      dNumCas: cabecera.empresa.numCasa,
+      cDepEmi: departamento.codigo,
+      dDesDepEmi: departamento.descripcion,
+      cDisEmi: distrito.codigo,
+      dDesDisEmi: distrito.descripcion,
+      cCiuEmi: ciudad.codigo,
+      dDesCiuEmi: ciudad.descripcion,
+      dTelEmi: cabecera.empresa.telefono,
+      dEmailE: cabecera.empresa.email
+    }
+  };
+  
+  // Añadir actividades económicas si existen
+  if (cabecera.empresa.actividadcode1) {
+    emisElement.gEmis.gActEco = [
+      {
+        cActEco: cabecera.empresa.actividadcode1,
+        dDesActEco: cabecera.empresa.actividad1
+      }
+    ];
+  }
+  
+  if (cabecera.empresa.actividadcode2) {
+    emisElement.gEmis.gActEco = emisElement.gEmis.gActEco || [];
+    emisElement.gEmis.gActEco.push({
+      cActEco: cabecera.empresa.actividadcode2,
+      dDesActEco: cabecera.empresa.actividad2
+    });
+  }
+  
+  if (cabecera.empresa.actividadcode3) {
+    emisElement.gEmis.gActEco = emisElement.gEmis.gActEco || [];
+    emisElement.gEmis.gActEco.push({
+      cActEco: cabecera.empresa.actividadcode3,
+      dDesActEco: cabecera.empresa.actividad3
+    });
+  }
+
+  return emisElement;
+};
+const createGOpeCom = (tipoTransacciones, tipoImpuesto,moneda) => {
+  return {
+    gOpeCom: {
+      iTipTra: tipoTransacciones.codigo,
+      dDesTipTra: tipoTransacciones.descripcion,
+      dDesTipTra: tipoTransacciones.descripcion,
+
+      iTImp: tipoImpuesto.codigo,
+      cMoneOpe: moneda.codigo,
+      dDesMoneOpe: moneda.descripcion,
+    }
+  };
+};
+
+const createGOpeDE = (tipoEmision, cabecera) => {
+  return {
+    gOpeDE: {
+      iTipEmi: tipoEmision.codigo,
+      dDesTipEmi: tipoEmision.descripcion,
+      dCodSeg: cabecera.codigoSeguridad,
+    }
+  };
+};
+const createGTimb = (cabecera, establecimiento, puntoExp, numero) => {
+  return {
+    gTimb: {
+      iTiDE: cabecera.tipoDocumento.codigo,
+      dDesTiDE: cabecera.tipoDocumento.descripcion,
+      dNumTim: cabecera.timbrado,
+      dEst: establecimiento,
+      dPunExp: puntoExp,
+      dNumDoc: numero,
+      dFeIniT: cabecera.fechaInicio,
+    }
+  };
+};
 module.exports = {
   generaXML
 };
