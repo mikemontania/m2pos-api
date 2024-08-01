@@ -8,6 +8,7 @@ const Cliente = require('./cliente.model');
 const moment = require('moment');
 const FormaVenta = require('./formaVenta.model');
 const Cobranza = require('./cobranza.model');
+const TablaSifen = require('./tablaSifen.model');
 
 const Venta = sequelize.define('Venta', {
   id: {
@@ -44,7 +45,10 @@ const Venta = sequelize.define('Venta', {
     type: DataTypes.BOOLEAN,
     allowNull: false
   },
-  
+  itide: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
   usuarioCreacionId: {
     type: DataTypes.INTEGER,
     allowNull: true,
@@ -153,8 +157,22 @@ const Venta = sequelize.define('Venta', {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: true
   },
-   
- 
+  estado: {
+    type: DataTypes.STRING(25),
+    allowNull: false
+  },
+  estadoSifen: {
+    type: DataTypes.STRING(25),
+    allowNull: false
+  },
+  codigoSeguridad: {
+    type: DataTypes.STRING(9),
+    allowNull: false
+  },
+  cdc: {
+    type: DataTypes.STRING(44),
+    allowNull: false
+  },
 }, {
   tableName: 'ventas',
   timestamps: false,
@@ -199,5 +217,10 @@ Venta.belongsTo(FormaVenta, {
   foreignKey: 'formaVentaId',
   targetKey: 'id',
   as:'formaVenta'
+});
+Venta.belongsTo(TablaSifen, {
+  foreignKey: 'itide',
+  targetKey: 'id',
+  as :'tipoDocumento'
 });
 module.exports = Venta;

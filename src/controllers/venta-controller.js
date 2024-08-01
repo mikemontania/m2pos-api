@@ -16,11 +16,14 @@ const Presentacion = require("../models/presentacion.model");
 const Variedad = require("../models/variedad.model");
 const Producto = require("../models/producto.model");
 const Unidad = require("../models/unidad.model");
+const TablaSifen = require("../models/tablaSifen.model");
 const Credito = require("../models/credito.model");
 const  {generaXML } = require('../helpers/xmlGenerator');
+const  {generarCDC,generarCodigoSeguridad } = require('../helpers/cdc-helper');
 const Empresa = require("../models/empresa.model");
 
-
+const {   const_tipoContribuyente,const_tiposEmisiones
+} = require('../constantes/Constante.constant');
 
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -107,6 +110,7 @@ const createVenta = async (req, res) => {
 
   try {
     const {
+     
       sucursalId,
       numeracionId,
       listaPrecioId,
@@ -172,16 +176,22 @@ const createVenta = async (req, res) => {
       );
       cobranzaId = cobranzaNew.id;
     }
-
     // Generar número de factura
     const numeracion = await Numeracion.findByPk(numeracionId, {
       transaction: t
     });
+    const codigoSeguridad =generarCodigoSeguridad();
+    const empresa = await Empresa.findByPk(1)
+    const tipoComprobante =const_tipoContribuyente.find(t=>t.id == empresa.tipoContId)
+    const tipoEmision = const_tiposEmisiones.find(t=>t.codigo == 1)
+    const fecha = moment(new Date()).format("YYYY-MM-DD");
     numeracion.ultimoNumero += 1;
     const nroComprobante = `${numeracion.serie}-${numeracion.ultimoNumero
-      .toString()
-      .padStart(7, "0")}`;
+    .toString()
+    .padStart(7, "0")}`;
     console.log(importeIva10);
+    console.log(numeracion)
+    const cdc = generarCDC(numeracion.itide,empresa.ruc ,nroComprobante,tipoComprobante.id,fecha,tipoEmision.codigo,codigoSeguridad);
     if (formaVenta && formaVenta.dias > 0) {
       const nuevoCredito = await Credito.create({
         empresaId,
@@ -202,6 +212,8 @@ const createVenta = async (req, res) => {
     // Guardar venta
     const venta = await Venta.create(
       {
+        codigoSeguridad,
+        cdc,
         empresaId,
         sucursalId,
         listaPrecioId,
@@ -217,6 +229,7 @@ const createVenta = async (req, res) => {
         modoEntrega: "CONTRAENTREGA",
         nroComprobante,
         cobranzaId: cobranzaId,
+        itide: numeracion.itide,
         porcDescuento,
         importeIva5,
         importeIva10,
@@ -225,6 +238,8 @@ const createVenta = async (req, res) => {
         importeNeto,
         importeSubtotal,
         importeTotal,
+        estado:'Pendiente',
+        estadoSifen:'Pendiente',
         totalKg: totalKg ? Number((totalKg / 1000).toFixed(2)) : 0
       },
       { transaction: t }
@@ -420,17 +435,10 @@ const generateXML = async (req, res) => {
           attributes: ["descripcion", "direccion", "telefono", "cel"]
         },
         {
-          model: Empresa,
-          as: "empresa",
-          attributes: [
-            "razonSocial",
-            "ruc",
-            "actividad1",
-            "actividad2",
-            "actividad3",
-            "img",
-            "web"
-          ]
+          model: Empresa,          as: "empresa" 
+        },
+        {
+          model: TablaSifen,          as: "tipoDocumento" 
         }
       ]
     });
@@ -474,8 +482,9 @@ const generateXML = async (req, res) => {
     /* console.log(venta)
  */
 
+   
     const cabecera = {
-      ...venta.dataValues,
+      ...venta.dataValues, 
       sucursal: { ...venta.dataValues.sucursal.dataValues },
       empresa: { ...venta.dataValues.empresa.dataValues },
       vendedorCreacion: { ...venta.dataValues.vendedorCreacion.dataValues },

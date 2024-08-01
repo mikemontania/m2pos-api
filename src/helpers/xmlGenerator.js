@@ -1,171 +1,274 @@
-const xmlbuilder = require('xmlbuilder');
+const xmlbuilder = require("xmlbuilder");
+const {
+  const_tiposTransacciones,
+  const_tiposImpuestos,
+  const_departamentos,
+  const_distritos,
+  const_ciudades,
+  const_monedas,
+  const_tipoContribuyente,
+  const_tiposEmisiones
+} = require("../constantes/Constante.constant");
+
+
+
+
+
 
 const generaXML = (cabecera, detalles) => {
-  // Your XML generation logic here
-  return xmlbuilder.create('rDE', { version: '1.0', encoding: 'UTF-8' })
+  const tipoEmision = const_tiposEmisiones.find(t => t.codigo == 1);
+  const tipoContribuyente = const_tipoContribuyente.find(t => t.id == cabecera.empresa.tipoContId  );
+  const tipoTransacciones = const_tiposTransacciones.find(    t => t.codigo == cabecera.empresa.tipoTransaId  );
+  const tipoImpuesto = const_tiposImpuestos.find(    t => t.codigo == cabecera.empresa.tipoImpId  );
+  const departamento = const_departamentos.find(    t => t.codigo == cabecera.empresa.depEmiId  );
+  const distrito = const_distritos.find(    t => t.codigo == cabecera.empresa.disEmiId  );
+  const ciudad = const_ciudades.find(    t => t.codigo == cabecera.empresa.ciuEmiId  );
+  const moneda = const_monedas.find(    t => t.codigo == cabecera.empresa.codigoMoneda  );
+  const [nroDocumentoEmp, digitoEmpr] = cabecera.empresa.ruc.split("-");
+  const [establecimiento, puntoExp, numero] = cabecera.nroComprobante.split(    "-"  );
+  const [dRucRec, dDVRec] = cabecera.cliente.nroDocumento.split("-");
+  const iNatRec = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; //1= contribuyente  2= no contribuyente
+  const iTiOpe = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; //
+  /*
+1= B2B
+2= B2C
+3= B2G
+4= B2F
+(Esta última opción debe utilizarse
+solo en caso de servicios para
+empresas o personas físicas del
+exterior
+
+
+*/
+
+let xml = xmlbuilder
+.create("rDE", { version: "1.0", encoding: "UTF-8" })
+.att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
+.att("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
+.att("xsi:schemaLocation", "http://ekuatia.set.gov.py/sifen/xsd siRecepDE_v150.xsd")
+
+// Header data
+.ele("dVerFor", "150").up()
+.ele("DE", { Id: cabecera.cdc })
+  .ele("dDVId", cabecera.cdc.charAt(cabecera.cdc.length - 1)).up()
+  .ele("dFecFirma", "2024-07-25T20:30:40").up()
+  .ele("dSisFact", "1").up()
+
+  // Operation data
+  .ele("gOpeDE")
+    .ele("iTipEmi", tipoEmision.codigo).up()
+    .ele("dDesTipEmi", tipoEmision.descripcion).up()
+    .ele("dCodSeg", cabecera.codigoSeguridad).up()
+  .up()
+  .ele("gTimb")
+    .ele("iTiDE", cabecera.tipoDocumento.codigo).up()
+    .ele("dDesTiDE", cabecera.tipoDocumento.descripcion).up()
+    .ele("dNumTim", cabecera.timbrado).up()
+    .ele("dEst", establecimiento).up()
+    .ele("dPunExp", puntoExp).up()
+    .ele("dNumDoc", numero).up()
+    .ele("dFeIniT", cabecera.fechaInicio).up()
+  .up()
+    // General operation data
+    .ele("gDatGralOpe")
+      .ele("dFeEmiDE", cabecera.fechaCreacion).up()
+      .ele("gOpeCom")
+        .ele("iTipTra", tipoTransacciones.codigo).up()
+        .ele("dDesTipTra", tipoTransacciones.descripcion).up()
+        .ele("iTImp", tipoImpuesto.codigo).up()
+        .ele("dDesTImp", tipoImpuesto.descripcion).up()
+        .ele("cMoneOpe", moneda.codigo).up()
+        .ele("dDesMoneOpe", moneda.descripcion).up()
+      .up()
+      // Emitter data
+      let emisElement = xml
+      .ele("gEmis")
+      .ele("dRucEm", nroDocumentoEmp).up()
+      .ele("dDVEmi", digitoEmpr).up()
+      .ele("iTipCont", tipoContribuyente.codigo).up()
+      .ele("dNomEmi", cabecera.empresa.razonSocial).up()
+      .ele("dNomFanEmi", cabecera.empresa.nombreFantasia).up()
+      .ele("dDirEmi", cabecera.sucursal.direccion).up()
+      .ele("dNumCas", cabecera.empresa.numCasa).up()
+      .ele("cDepEmi", departamento.codigo).up()
+      .ele("dDesDepEmi", departamento.descripcion).up()
+      .ele("cDisEmi", distrito.codigo).up()
+      .ele("dDesDisEmi", distrito.descripcion).up()
+      .ele("cCiuEmi", ciudad.codigo).up()
+      .ele("dDesCiuEmi", ciudad.descripcion).up()
+      .ele("dTelEmi", cabecera.empresa.telefono).up()
+      .ele("dEmailE", cabecera.empresa.email).up();
   
+  if (cabecera.empresa.actividadcode1) {
+      emisElement.ele("gActEco")
+          .ele("cActEco", cabecera.empresa.actividadcode1).up()
+          .ele("dDesActEco", cabecera.empresa.actividad1).up()
+      .up();
+  }
+  
+  if (cabecera.empresa.actividadcode2) {
+      emisElement.ele("gActEco")
+          .ele("cActEco", cabecera.empresa.actividadcode2).up()
+          .ele("dDesActEco", cabecera.empresa.actividad2).up()
+      .up();
+  }
+  
+  if (cabecera.empresa.actividadcode3) {
+      emisElement.ele("gActEco")
+          .ele("cActEco", cabecera.empresa.actividadcode3).up()
+          .ele("dDesActEco", cabecera.empresa.actividad3).up()
+      .up();
+  }
+  
+  // Cierra el elemento gEmis
+  emisElement.up();
+  if (iNatRec == 1) {
+    // Contribuyente
+    xml.ele("gDatRec")
+      .ele("iNatRec", iNatRec).up()
+      .ele("iTiOpe", iTiOpe).up()
+      .ele("cPaisRec", "PRY").up()
+      .ele("dDesPaisRe", "Paraguay").up()
+      .ele("iTiContRec", "2").up()
+      .ele("dRucRec", dRucRec).up()
+      .ele("dDVRec", dDVRec).up()
+      .ele("dNomRec", cabecera.cliente.razonSocial).up()
+      .ele("dDirRec", cabecera.cliente.direccion).up()
+      .ele("dNumCasRec", "0").up()
+    .up();
+  } else {
+    // No contribuyente
+    xml.ele("gDatRec")
+    .ele("iNatRec", iNatRec).up()
+      .ele("iTiOpe", iTiOpe).up()
+      .ele("cPaisRec", "PRY").up()
+      .ele("dDesPaisRe", "Paraguay").up()
+      .ele("iTipIDRec", "1").up()
+      .ele("dDTipIDRec", "Cédula paraguaya").up()
+      .ele("dNumIDRec", cabecera.cliente.nroDocumento).up()
+      .ele("dNomRec", cabecera.cliente.razonSocial).up()
+      .ele("dDirRec", cabecera.cliente.direccion).up()
+      .ele("dNumCasRec", "0").up()
+    .up();
  
-  .att('xmlns', 'http://ekuatia.set.gov.py/sifen/xsd')
-  .att('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-  .att('xsi:schemaLocation', 'http://ekuatia.set.gov.py/sifen/xsd siRecepDE_v150.xsd')
-  .ele('dVerFor', '150').up()
-  .ele('DE', { Id: '01800031105011001002724322024072518942776634' })
-    .ele('dDVId', '4').up()
-    .ele('dFecFirma', '2024-07-25T20:30:40').up()
-    .ele('dSisFact', '1').up()
-    .ele('gOpeDE')
-      .ele('iTipEmi', '1').up()
-      .ele('dDesTipEmi', 'Normal').up()
-      .ele('dCodSeg', '894277663').up()
+  }
+  xml.up().up();
+ 
+  // Continuación de la estructura XML
+  xml
+    .ele("gDtipDE")
+    .ele("gCamFE")
+    .ele("iIndPres", "1")
     .up()
-    .ele('gTimb')
-      .ele('iTiDE', '1').up()
-      .ele('dDesTiDE', 'Factura electrónica').up()
-      .ele('dNumTim', '16032661').up()
-      .ele('dEst', '011').up()
-      .ele('dPunExp', '001').up()
-      .ele('dNumDoc', '0027243').up()
-      .ele('dFeIniT', '2022-11-21').up()
+    .ele("dDesIndPres", "Operación presencial")
     .up()
-    .ele('gDatGralOpe')
-      .ele('dFeEmiDE', '2024-07-25T10:00:57').up()
-      .ele('gOpeCom')
-        .ele('iTipTra', '1').up()
-        .ele('dDesTipTra', 'Venta de mercadería').up()
-        .ele('iTImp', '1').up()
-        .ele('dDesTImp', 'IVA').up()
-        .ele('cMoneOpe', 'PYG').up()
-        .ele('dDesMoneOpe', 'Guarani').up()
-      .up()
-      .ele('gEmis')
-        .ele('dRucEm', '80003110').up()
-        .ele('dDVEmi', '5').up()
-        .ele('iTipCont', '2').up()
-        .ele('dNomEmi', 'CAVALLARO S.A.C.E.I.').up()
-        .ele('dNomFanEmi', 'Cavallaro S.A.C.eI.').up()
-        .ele('dDirEmi', 'RUTA DEPARTAMENTAL D027 (EX RUTA 1) E/ ISRAEL').up()
-        .ele('dNumCas', '1').up()
-        .ele('cDepEmi', '12').up()
-        .ele('dDesDepEmi', 'CENTRAL').up()
-        .ele('cDisEmi', '153').up()
-        .ele('dDesDisEmi', 'CAPIATA').up()
-        .ele('cCiuEmi', '3568').up()
-        .ele('dDesCiuEmi', 'CAPIATA').up()
-        .ele('dTelEmi', '0215889000').up()
-        .ele('dEmailE', 'cavallaro@cavallaro.com.py').up()
-        .ele('gActEco')
-          .ele('cActEco', '20130').up()
-          .ele('dDesActEco', 'FABRICACIÓN DE PLÁSTICOS Y CAUCHO SINTÉTICO EN FORMAS PRIMARIAS').up()
-        .up()
-        .ele('gActEco')
-          .ele('cActEco', '20931').up()
-          .ele('dDesActEco', 'FABRICACIÓN DE JABONES, DETERGENTES Y PREPARADOS DE LIMPIEZA').up()
-        .up()
-      .up()
-      .ele('gDatRec')
-        .ele('iNatRec', '1').up()
-        .ele('iTiOpe', '1').up()
-        .ele('cPaisRec', 'PRY').up()
-        .ele('dDesPaisRe', 'Paraguay').up()
-        .ele('iTiContRec', '2').up()
-        .ele('dRucRec', '5430116').up()
-        .ele('dDVRec', '5').up()
-        .ele('dNomRec', 'FERNANDEZ, LINO SEBASTIAN').up()
-        .ele('dDirRec', 'SANBERNARDINO').up()
-        .ele('dNumCasRec', '0').up()
-      .up()
     .up()
-    .ele('gDtipDE')
-      .ele('gCamFE')
-        .ele('iIndPres', '1').up()
-        .ele('dDesIndPres', 'Operación presencial').up()
-      .up()
-      .ele('gCamCond')
-        .ele('iCondOpe', '1').up()
-        .ele('dDCondOpe', 'Contado').up()
-        .ele('gPaConEIni')
-          .ele('iTiPago', '1').up()
-          .ele('dDesTiPag', 'Efectivo').up()
-          .ele('dMonTiPag', '110867.000000').up()
-          .ele('cMoneTiPag', 'PYG').up()
-          .ele('dDMoneTiPag', 'Guarani').up()
+
+
+    if (cabecera.formaVenta.id == 1) {
+      // Contado
+      xml
+        .ele("gCamCond")
+        .ele("iCondOpe", "1")
         .up()
-      .up()
-      .ele('gCamItem')
-        .ele('dCodInt', '300000033').up()
-        .ele('dDesProSer', 'SUAVIZ. CAVALLARO PREMIUM 900 ML. CLASIC').up()
-        .ele('cUniMed', '77').up()
-        .ele('dDesUniMed', 'UNI').up()
-        .ele('dCantProSer', '1.000').up()
-        .ele('gValorItem')
-          .ele('dPUniProSer', '14790.000000').up()
-          .ele('dTotBruOpeItem', '14790.000000').up()
-          .ele('gValorRestaItem')
-            .ele('dDescItem', '0').up()
-            .ele('dPorcDesIt', '0').up()
-            .ele('dDescGloItem', '0').up()
-            .ele('dAntPreUniIt', '0').up()
-            .ele('dAntGloPreUniIt', '0').up()
-            .ele('dTotOpeItem', '14790.000000').up()
-          .up()
+        .ele("dDCondOpe", "Contado")
         .up()
-        .ele('gCamIVA')
-          .ele('iAfecIVA', '1').up()
-          .ele('dDesAfecIVA', 'Gravado IVA').up()
-          .ele('dPropIVA', '100').up()
-          .ele('dTasaIVA', '10').up()
-          .ele('dBasGravIVA', '13445.454545').up()
-          .ele('dLiqIVAItem', '1344.545455').up()
-          .ele('dBasExe', '0').up()
+        .ele("gPaConEIni")
+        .ele("iTiPago", "1")
         .up()
-      .up()
-      .ele('gCamItem')
-        .ele('dCodInt', '300000448').up()
-        .ele('dDesProSer', 'SUAVIZ. CAVALLARO PREMIUM 900 ML. DELICA').up()
-        .ele('cUniMed', '77').up()
-        .ele('dDesUniMed', 'UNI').up()
-        .ele('dCantProSer', '1.000').up()
-        .ele('gValorItem')
-          .ele('dPUniProSer', '14790.000000').up()
-          .ele('dTotBruOpeItem', '14790.000000').up()
-          .ele('gValorRestaItem')
-            .ele('dDescItem', '0').up()
-            .ele('dPorcDesIt', '0').up()
-            .ele('dDescGloItem', '0').up()
-            .ele('dAntPreUniIt', '0').up()
-            .ele('dAntGloPreUniIt', '0').up()
-            .ele('dTotOpeItem', '14790.000000').up()
-          .up()
+        .ele("dDesTiPag", "Efectivo")
         .up()
-        .ele('gCamIVA')
-          .ele('iAfecIVA', '1').up()
-          .ele('dDesAfecIVA', 'Gravado IVA').up()
-          .ele('dPropIVA', '100').up()
-          .ele('dTasaIVA', '10').up()
-          .ele('dBasGravIVA', '13445.454545').up()
-          .ele('dLiqIVAItem', '1344.545455').up()
-          .ele('dBasExe', '0').up()
+        .ele("dMonTiPag", cabecera.importeTotal)
         .up()
+        .ele("cMoneTiPag", "PYG")
+        .up()
+        .ele("dDMoneTiPag", "Guarani")
+        .up()
+        .up() // Cerrar gPaConEIni
+        .up(); // Cerrar gCamCond
+    } else {
+      // Crédito
+      xml
+        .ele("gCamCond")
+        .ele("iCondOpe", "2")
+        .up()
+        .ele("dDCondOpe", "Crédito")
+        .up()
+        .ele("gPagCred")
+        .ele("iCondCred", "1")
+        .up()
+        .ele("dDCondCred", "Plazo")
+        .up()
+        .ele("dPlazoCre", cabecera.formaVenta.dias + " dias")
+        .up()
+        .up() // Cerrar gPagCred
+        .up(); // Cerrar gCamCond
+    }
+
+detalles.forEach(item => {
+  xml
+  .ele("gCamItem")
+    .ele("dCodInt", item.variante.codErp).up()
+    .ele("dDesProSer", item.producto.nombre+" "+item.presentacion.descripcion+" "+item.variedad.descripcion+" "+item.unidad.code).up()
+    .ele("cUniMed", "77").up()
+    .ele("dDesUniMed", "UNI").up()
+    .ele("dCantProSer", item.cantidad).up()
+    .ele("gValorItem")
+      .ele("dPUniProSer",(item.importeTotal/item.cantidad) ).up()
+      .ele("dTotBruOpeItem",item.importeTotal).up()
+      .ele("gValorRestaItem")
+        .ele("dDescItem", "0").up()
+        .ele("dPorcDesIt", "0").up()
+        .ele("dDescGloItem", "0").up()
+        .ele("dAntPreUniIt", "0").up()
+        .ele("dAntGloPreUniIt", "0").up()
+        .ele("dTotOpeItem", item.importeTotal).up()
       .up()
     .up()
-    .ele('gTotSub')
-      .ele('dSubExe', '0').up()
-      .ele('dSubExo', '0').up()
-      .ele('dSub5', '0').up()
-      .ele('dSub10', '26890.909090').up()
-      .ele('dTotOpe', '26890.909090').up()
-      .ele('dIVA5', '0').up()
-      .ele('dIVA10', '2689.090910').up()
-      .ele('dLiqTotIVA5', '0').up()
-      .ele('dLiqTotIVA10', '2689.090910').up()
-      .ele('dIVAComi', '2689.090910').up()
-      .ele('dTotGralOpe', '29579.000000').up()
+    .ele("gCamIVA")
+      .ele("iAfecIVA", "1").up()
+      .ele("dDesAfecIVA", "Gravado IVA").up()
+      .ele("dPropIVA", "100").up()
+      .ele("dTasaIVA", "10").up()
+      .ele("dBasGravIVA",item.importeNeto).up()
+      .ele("dLiqIVAItem",item.importeIva10).up()
+      .ele("dBasExe", "0").up()
     .up()
   .up()
- 
-.end({ pretty: true });
-}
+
+});
+
+    xml.ele("gTotSub")
+    .ele("dSubExe", "0").up()
+    .ele("dSubExo", "0").up()
+    .ele("dSub5", "0").up()
+    .ele("dSub10", cabecera.importeTotal).up()
+    .ele("dTotOpe", cabecera.importeTotal).up()
+    .ele("dTotDesc", 0).up()
+    .ele("dTotDescGlotem", 0).up()
+    .ele("dTotAntItem", 0).up()
+    .ele("dTotAnt", 0).up()
+    .ele("dPorcDescTotal", 0).up()
+    .ele("dDescTotal", 0).up()
+    .ele("dAnticipo", 0).up()
+    .ele("dRedon", 0).up()
+    .ele("dTotGralOpe",cabecera.importeTotal).up()
+    .ele("dIVA5",  cabecera.importeIva5).up()
+    .ele("dIVA10", cabecera.importeIva10).up()
+    .ele("dLiqTotIVA5", 0).up()
+    .ele("dLiqTotIVA10", 0).up()
+    .ele("dTotIVA",cabecera.importeIva10 +cabecera.importeIva5 +cabecera.importeIvaExenta ).up()
+    .ele("dBaseGrav5", 0)
+    .ele("dBaseGrav10", 0)
+    .ele("dTBasGraIVA", 0)
+    .up()
+    .up()
+    .up();
+  // Return the XML as a string
+  return xml.end({ pretty: true });
+};
 
 module.exports = {
-  generaXML,
+  generaXML
 };

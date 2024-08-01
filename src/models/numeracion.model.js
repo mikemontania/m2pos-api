@@ -3,6 +3,7 @@ const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');
 const Sucursal = require('./sucursal.model');
 const moment = require("moment");
+const TablaSifen = require('./tablaSifen.model');
 
 const Numeracion = sequelize.define('Numeracion', {
   id: {
@@ -19,7 +20,10 @@ const Numeracion = sequelize.define('Numeracion', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  
+  itide: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
   inicioTimbrado: {
     type: DataTypes.DATEONLY,
     allowNull: false,
@@ -85,5 +89,10 @@ Numeracion.belongsTo(Sucursal, {
   foreignKey: 'sucursalId',
   targetKey: 'id',
   as :'sucursal'
+});
+Numeracion.belongsTo(TablaSifen, {
+  foreignKey: 'itide',
+  targetKey: 'id',
+  as :'tipoDocumento'
 });
 module.exports = Numeracion;

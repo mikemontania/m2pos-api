@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const Numeracion = require('../models/numeracion.model'); // Asegúrate de que la importación del modelo sea correcta
 const { sequelize } = require('../../dbconfig');
 const Sucursal = require('../models/sucursal.model');
+const TablaSifen = require('../models/tablaSifen.model');
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -29,6 +30,7 @@ const findNumeracionesPaginados = async (req, res) => {
       where: condiciones,
       include: [
         { model: Sucursal, as: "sucursal",  }, 
+        { model: TablaSifen, as: "tipoDocumento",  }, 
       ],
       limit: pageSize,
       offset,
@@ -81,8 +83,8 @@ const findAll = async (req, res) => {
 const create = async (req, res) => {
   const { empresaId } = req.usuario; 
   try {
-    const {   sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo } = req.body;
-    const numeracion = await Numeracion.create({ empresaId, sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo });
+    const {   sucursalId, itide,inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo } = req.body;
+    const numeracion = await Numeracion.create({ empresaId, sucursalId,itide, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo });
     res.status(201).json(numeracion);
   } catch (error) {
     console.error(error);
@@ -95,10 +97,10 @@ const update = async (req, res) => {
   const { empresaId } = req.usuario; 
   try {
     const { id } = req.params;
-    const { sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo } = req.body;
+    const { sucursalId,itide, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo } = req.body;
     const numeracion = await Numeracion.findByPk(id);
     if (numeracion) {
-      await numeracion.update({ empresaId, sucursalId, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo });
+      await numeracion.update({ empresaId, sucursalId,itide, inicioTimbrado, finTimbrado, numeroInicio, numeroFin, serie, timbrado, tipoComprobante, ultimoNumero, tipoImpresion, activo });
       res.status(200).json(numeracion);
     } else {
       res.status(404).json({ error: 'Numeración no encontrada' });

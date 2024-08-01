@@ -18,10 +18,24 @@ const getById = async (req, res) => {
 };
  
 
+
+
+
+
+
+
 const update= async (req, res) => {
   try {
     const { id } = req.params;
-    const { razonSocial, actividad1, actividad2, actividad3, ruc, telefono, email,  web } = req.body;
+    const { razonSocial, actividadcode1,actividadcode2,actividadcode3,actividad1, actividad2, actividad3, ruc, telefono, email, nombreFantasia,
+      moneda,
+      codigoMoneda,
+      simboloMoneda,
+      tipoContId,
+      numCasa,
+      depEmiId,
+      disEmiId,
+      ciuEmiId, web } = req.body;
 
     // Buscar la empresa por su ID
     const empresa = await Empresa.findByPk(id);
@@ -29,7 +43,15 @@ const update= async (req, res) => {
     // Verificar si la empresa existe
     if (empresa) {
       // Actualizar los campos de la empresa
-      await empresa.update({ razonSocial, actividad1, actividad2, actividad3, ruc, telefono, email,  web });
+      await empresa.update({ razonSocial, actividadcode1,actividadcode2,actividadcode3,actividad1, actividad2, actividad3, ruc, telefono, email,nombreFantasia,
+        moneda,
+        codigoMoneda,
+        simboloMoneda,
+        tipoContId,
+        numCasa,
+        depEmiId,
+        disEmiId,
+        ciuEmiId,  web });
 
       // Responder con la empresa actualizada
       res.status(200).json(empresa);
