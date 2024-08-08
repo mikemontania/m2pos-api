@@ -45,7 +45,7 @@ let xml = xmlbuilder
 .att("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
 .att("xsi:schemaLocation", "http://ekuatia.set.gov.py/sifen/xsd siRecepDE_v150.xsd")
 // Header data
-.ele("dVerFor", "150").up()
+.ele("dVerFor", process.env.EKUATIA_VERSION).up()
 .ele("DE", { Id: cabecera.cdc })
   .ele("dDVId", cabecera.cdc.charAt(cabecera.cdc.length - 1)).up()
   /*

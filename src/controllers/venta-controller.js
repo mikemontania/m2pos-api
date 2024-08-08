@@ -21,9 +21,20 @@ const Credito = require("../models/credito.model");
 const  {generaXML } = require('../helpers/xmlGenerator');
 const  {generarCDC,generarCodigoSeguridad } = require('../helpers/cdc-helper');
 const Empresa = require("../models/empresa.model");
+const { signXml  } = require('../helpers/certificado-helper');
+const { generateQR } = require('../helpers/qr-helper');
+
+
+const zlib = require('zlib');
+// Comprimir XML
+//const compressedXml = zlib.gzipSync(xml);
+// Descomprimir XML
+//const decompressedXml = zlib.gunzipSync(compressedXml).toString();
 
 const {   const_tipoContribuyente,const_tiposEmisiones
 } = require('../constantes/Constante.constant');
+const VentaXml = require("../models/ventaXml.model");
+const { enviarFactura } = require("./sifen-controlle");
 
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -413,7 +424,173 @@ const listarVentas = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   "Error al listar las ventas" });
   }
 };
+
 const generateXML = async (req, res) => {
+  const { id } = req.params;
+  const t = await sequelize.transaction(); // Asegúrate de iniciar la transacción
+
+  try {
+    const venta = await Venta.findByPk(id, {
+      include: [
+        { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
+        {
+          model: Cliente,
+          as: "cliente",
+          attributes: ["nroDocumento", "razonSocial", "direccion", "telefono"]
+        },
+        {
+          model: FormaVenta,
+          as: "formaVenta",
+          attributes: ["id", "descripcion","dias"]
+        },
+        {
+          model: Sucursal,
+          as: "sucursal",
+          attributes: ["descripcion", "direccion", "telefono", "cel"]
+        },
+        {
+          model: Empresa, as: "empresa" 
+        },
+        {
+          model: TablaSifen, as: "tipoDocumento" 
+        }
+      ]
+    });
+    if (!venta) {
+      await t.rollback(); // Rollback en caso de error
+      return res.status(404).json({ error: "Venta not found" });
+    }
+    const detallesVenta = await VentaDetalle.findAll({
+      where: { ventaId: id },
+      include: [
+        {
+          model: Variante,
+          as: "variante",
+          include: [
+            {
+              model: Presentacion,
+              as: "presentacion",
+              attributes: ["id", "descripcion", "size"]
+            },
+            {
+              model: Variedad,
+              as: "variedad",
+              attributes: ["id", "descripcion", "color"]
+            },
+            {
+              model: Producto,
+              as: "producto",
+              attributes: ["nombre"]
+            },
+            {
+              model: Unidad,
+              as: "unidad",
+              attributes: ["code"]
+            }
+          ]
+        }
+      ]
+    });
+    if (detallesVenta.length === 0) {
+      await t.rollback(); // Rollback en caso de error
+      return res.status(404).json({ error: "No details found for this venta" });
+    }
+  
+    const cabecera = {
+      ...venta.dataValues, 
+      sucursal: { ...venta.dataValues.sucursal.dataValues },
+      empresa: { ...venta.dataValues.empresa.dataValues },
+      vendedorCreacion: { ...venta.dataValues.vendedorCreacion.dataValues },
+      cliente: { ...venta.dataValues.cliente.dataValues },
+      formaVenta: { ...venta.dataValues.formaVenta.dataValues }
+    };
+    let detalles = [];
+
+    detallesVenta.forEach(detalle => {
+      const variante = detalle.variante;
+      detalles.push({
+        porcIva: detalle.porcIva,
+        cantidad: detalle.dataValues.cantidad,
+        importePrecio: detalle.dataValues.importePrecio,
+        importeIva5: detalle.dataValues.importeIva5,
+        importeIva10: detalle.dataValues.importeIva10,
+        importeIvaExenta: detalle.dataValues.importeIvaExenta,
+        importeDescuento: detalle.dataValues.importeDescuento,
+        importeNeto: detalle.dataValues.importeNeto,
+        importeSubtotal: detalle.dataValues.importeSubtotal,
+        importeTotal: detalle.dataValues.importeTotal,
+        totalKg: detalle.dataValues.totalKg,
+        tipoDescuento: detalle.dataValues.tipoDescuento,
+        variante: variante.dataValues,
+        presentacion: variante.presentacion,
+        variedad: variante.variedad,
+        producto: variante.producto,
+        unidad: variante.unidad
+      });
+    });
+
+    const xml = generaXML(cabecera, detalles);
+    
+    // Comprimir XML
+    const compressedXml = zlib.gzipSync(xml);
+
+    const xmlSinFirma = await VentaXml.create(
+      {
+        id: null,
+        orden:1,
+        empresaId: cabecera.empresaId,
+        ventaId: cabecera.ventaId,
+        xml: compressedXml,
+        estado: 'XML GENERADO'
+      },
+      { transaction: t }
+    );
+ 
+    const xmlConFirma = await signXml(xml, cabecera.empresaId);  
+    const xmlConFirmaConQr = await generateQR(xmlConFirma, cabecera.empresa.idCSC, cabecera.empresa.csc);
+    // Insertar la firma en el XML
+ 
+    const compressedXmlConFirma = zlib.gzipSync(xmlConFirmaConQr);
+
+    const xmlFirmadoRecord = await VentaXml.create(
+      {
+        id: null,
+        orden:2,
+        empresaId: cabecera.empresaId,
+        ventaId: cabecera.ventaId,
+        xml: compressedXmlConFirma,
+        estado: 'XML FIRMADO'
+      },
+      { transaction: t }
+    );
+
+     const respuesta = await enviarFactura(cabecera.empresaId, cabecera.cdc,  xmlConFirmaConQr );  
+    const xmlRespuesta = await VentaXml.create(
+      {
+        id: null,
+        orden:3,
+        empresaId: cabecera.empresaId,
+        ventaId: cabecera.ventaId,
+        xml: respuesta,
+        estado: 'XML FIRMADO'
+      },
+      { transaction: t }
+    );
+
+
+    await t.commit(); 
+    // Enviar respuesta al cliente
+    res.setHeader("Content-Type", "application/xml");
+    res.setHeader("Content-Disposition", `inline; filename=FE-${cabecera.nroComprobante}.xml`);
+    res.status(200).send(xmlConFirmaConQr); // Enviar XML firmado descomprimido
+  } catch (error) {
+    console.error("Error in xml:", error);
+    await t.rollback(); // Rollback en caso de error
+    res.status(500).json({ error: error?.original?.detail || "Internal Server Error" });
+  }
+};
+ 
+const generateXML234 = async (req, res) => {
   const { id } = req.params;
   try {
     const venta = await Venta.findByPk(id, {
@@ -667,3 +844,6 @@ module.exports = {
   generateXML,
   firmarXML,
 };
+
+
+

@@ -23,6 +23,7 @@ dbSetup();
 app.use("/M2POS/auditorias", require("./src/routes/auditoria-routes"));
 app.use("/M2POS/auth", require("./src/routes/auth-routes"));
 app.use("/M2POS/bancos", require("./src/routes/banco-routes"));
+app.use("/M2POS/certificados", require("./src/routes/certificado-routes"));
 app.use("/M2POS/constantes", require("./src/routes/constantes-routes"));
 app.use("/M2POS/usuarios", require("./src/routes/usuario-routes"));
 app.use("/M2POS/categorias", require("./src/routes/categoria-routes"));

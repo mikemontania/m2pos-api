@@ -18,6 +18,8 @@ const Numeracion = require("./src/models/numeracion.model");
 const Banco = require("./src/models/banco.model");
 const MedioPago = require("./src/models/medioPago.model");
 const TablaSifen = require("./src/models/tablaSifen.model");
+const Certificado = require("./src/models/certificado.model");
+const { encryptPassphrase,decryptPassphrase } = require('./src/helpers/encript-helper');
 
 const populateDB = async () => {
   console.log("populateDB");
@@ -28,10 +30,12 @@ const populateDB = async () => {
     const empresa = await Empresa.create({
       razonSocial: "CAVALLARO S.A.C.e.I", 
       nombreFantasia: "CAVALLARO S.A.C.e.I", 
-      ruc: "5555555-5", // RUC de ejemplo
+      ruc: "80003110-5", // RUC de ejemplo
       moneda: "Guarani",
       simboloMoneda: "Gs",
       codigoMoneda: "PYG",
+      idCSC: "1", 
+      csc: "34715d2302a68bbFcf9ec21c032763C2", 
       tipoContId: 1,
       tipoTransaId: 1,
       tipoImpId: 1,
@@ -52,6 +56,18 @@ const populateDB = async () => {
       actividad3: "",
       img:'grupocavallaro3.png'
     });
+    const encriptado =encryptPassphrase('q3rjp3%0')
+    const certificado = await Certificado.create({
+      empresaId :empresa.id,
+      path:'firma_cavallaro.p12',
+      passphrase: encriptado,
+      validoDesde:'2024-05-08',
+      validoHasta:'2025-05-08',
+      activo:true
+    })
+
+
+
     const iTiDE1 = await TablaSifen.create({
       empresaId: empresa.id,
       codigo: "1",
@@ -446,8 +462,8 @@ const populateDB = async () => {
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "011-001",
-      timbrado: "16999661",
-      ultimoNumero: 0,
+      timbrado: "16032661",
+      ultimoNumero: 27801,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
@@ -461,8 +477,8 @@ const populateDB = async () => {
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "012-001",
-      timbrado: "16999661",
-      ultimoNumero: 0,
+      timbrado: "16032661",
+      ultimoNumero: 27801,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
@@ -476,7 +492,7 @@ const populateDB = async () => {
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "013-001",
-      timbrado: "16999661",
+      timbrado: "16032661",
       ultimoNumero: 0,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
@@ -490,7 +506,7 @@ const populateDB = async () => {
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "014-001",
-      timbrado: "16999661",
+      timbrado: "16032661",
       ultimoNumero: 0,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
@@ -504,7 +520,7 @@ const populateDB = async () => {
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "015-001",
-      timbrado: "16999661",
+      timbrado: "16032661",
       ultimoNumero: 0,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
@@ -518,7 +534,7 @@ const populateDB = async () => {
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "011-002",
-      timbrado: "16999661",
+      timbrado: "16032661",
       ultimoNumero: 0,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
@@ -533,7 +549,7 @@ const populateDB = async () => {
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "012-002",
-      timbrado: "16999661",
+      timbrado: "16032661",
       ultimoNumero: 0,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
@@ -548,7 +564,7 @@ const populateDB = async () => {
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "013-002",
-      timbrado: "16999661",
+      timbrado: "16032661",
       ultimoNumero: 0,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
@@ -11951,7 +11967,7 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
     });
 
  
-    console.log("Registros creados exitosamente!");
+    console.log("Registros creados exitosamente!"); 
   }
 };
 

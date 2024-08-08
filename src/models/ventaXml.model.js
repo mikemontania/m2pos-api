@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');   
-const Venta = require('./venta.model');
-const Variante = require('./variante.model');
+const Venta = require('./venta.model'); 
+const moment = require('moment');
 
 const VentaXml = sequelize.define('VentaXml', {
   id: {
@@ -19,17 +19,26 @@ const VentaXml = sequelize.define('VentaXml', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  xml: {
-    type: DataTypes.TEXT('long'), // Almacena el XML como texto largo
-    allowNull: false,
-  },
-  fechaFirma: {
-    type: DataTypes.DATE,
+  orden: {
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
-  estado: {
-    type: DataTypes.STRING(50),
+  xml: {
+    type: DataTypes.BLOB('long'), // Usa BLOB para datos binarios grandes
     allowNull: false,
+  },
+
+  estado: {
+    type: DataTypes.STRING(25),
+    allowNull: false,
+  }, 
+   fechaCreacion: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    get() {
+      return moment(this.getDataValue('fechaCreacion')).format('YYYY-MM-DD HH:mm:ss');
+    }
   },
 }, {
   tableName: 'ventas_xml',

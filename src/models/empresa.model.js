@@ -17,6 +17,14 @@ const Empresa = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true
     },
+    idCSC: {
+      type: DataTypes.STRING(5),
+      allowNull: true
+    },
+     csc: {
+      type: DataTypes.STRING(50),
+      allowNull: true
+    },
     moneda: {
       type: DataTypes.STRING,
       allowNull: true
