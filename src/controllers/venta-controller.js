@@ -21,7 +21,7 @@ const Credito = require("../models/credito.model");
 const  {generaXML } = require('../helpers/xmlGenerator');
 const  {generarCDC,generarCodigoSeguridad } = require('../helpers/cdc-helper');
 const Empresa = require("../models/empresa.model");
-const { signXml  } = require('../helpers/certificado-helper');
+const { signXml, getxml  } = require('../helpers/certificado-helper');
 const { generateQR } = require('../helpers/qr-helper');
 
 
@@ -548,6 +548,7 @@ const generateXML = async (req, res) => {
  
     const xmlConFirma = await signXml(xml, cabecera.empresaId);  
     const xmlConFirmaConQr = await generateQR(xmlConFirma, cabecera.empresa.idCSC, cabecera.empresa.csc);
+
     // Insertar la firma en el XML
  
     const compressedXmlConFirma = zlib.gzipSync(xmlConFirmaConQr);

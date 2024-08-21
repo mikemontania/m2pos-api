@@ -461,9 +461,9 @@ const populateDB = async () => {
       finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,
-      serie: "011-001",
+      serie: "001-001",
       timbrado: "16032661",
-      ultimoNumero: 27801,
+      ultimoNumero: 200553,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true

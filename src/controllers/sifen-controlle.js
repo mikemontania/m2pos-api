@@ -7,6 +7,9 @@ const axios = require("axios");
 const xml2js = require("xml2js");
 const { loadCertificateAndKey } = require("../helpers/certificado-helper");
 const forge = require("node-forge");
+const Certificado = require("../models/certificado.model");
+const { decryptPassphrase } = require("../helpers/encript-helper");
+
 // Definir las URLs completas para cada servicio
 const wsdlRecibe = `${process.env.SIFEN_URL}de/ws/sync/recibe.wsdl?wsdl`;
 const wsdlRecibeLote = `${process.env
@@ -22,32 +25,36 @@ const wsdlConsulta = `${process.env
 const normalizarXml = xml => {
   return xml.replace(/\r?\n|\r|\t| {2,}/g, "").replace(/> {1,}</g, "><");
 };
+
 const enviarFactura = async (empresaId, cdc, xml) => {
   try {
-   
     // Crear el agente HTTPS usando las cadenas PEM directamente
-    const { cert, key  } = await loadCertificateAndKey(empresaId);
-      const httpsAgent = new https.Agent({
+    const { cert, key } = await loadCertificateAndKey(empresaId);
+    const httpsAgent = new https.Agent({
       cert: Buffer.from(cert, "utf8"),
-      key: Buffer.from(key, "utf8"),
-  });
+      key: Buffer.from(key, "utf8")
+    });
     // Asegurarse de que xml es una cadena de texto
     if (typeof xml !== "string") {
       throw new Error("El XML debe ser una cadena de texto.");
     }
-
+    //xml.replace('<?xml version="1.0" encoding="UTF-8"?>', "");
     xml = xml.split("\n").slice(1).join("\n"); // Retirar <xml>
     let soapXMLData = `<?xml version="1.0" encoding="UTF-8"?>\n\
-            <env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">\n\
-              <env:Header/>\n\
-              <env:Body>\n\
+
+    <soap-env:Envelope	xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap-env:Header>\n\ 
+              	<soap-env:Header/>\n\
+           	<soap-env:Body>\n\
                 <rEnviDe xmlns="http://ekuatia.set.gov.py/sifen/xsd">\n\
                   <dId>${cdc}</dId>\n\
                   <xDE>${xml}</xDE>\n\
                 </rEnviDe>\n\
-              </env:Body>\n\
-            </env:Envelope>\n`;
+              </soap-env:Body>\n\
+            </soap-env:Envelope>\n`;
     soapXMLData = normalizarXml(soapXMLData);
+    console.log("=========================> soapXMLData");
+    console.log(soapXMLData);
 
     const response = await axios.post(wsdlRecibe, soapXMLData, {
       headers: {
@@ -57,7 +64,7 @@ const enviarFactura = async (empresaId, cdc, xml) => {
       httpsAgent,
       timeout: 90000
     });
-console.log(response)
+    console.log(response);
     if (response.status === 200) {
       const parser = new xml2js.Parser({ explicitArray: false });
       if (response.data.startsWith("<?xml")) {
@@ -75,16 +82,16 @@ console.log(response)
     if (error.response) {
       // La solicitud se hizo y el servidor respondió con un código de estado
       // que está fuera del rango de 2xx
-      console.log('Error de respuesta:', error.response.status);
-      console.log('Datos del error:', error.response.data);
-      console.log('Encabezados del error:', error.response.headers);
+      console.log("Error de respuesta:", error.response.status);
+      console.log("Datos del error:", error.response.data);
+      console.log("Encabezados del error:", error.response.headers);
       return error.response.data;
     } else if (error.request) {
       // La solicitud se hizo pero no se recibió respuesta
-      console.log('Error de solicitud:', error.request);
+      console.log("Error de solicitud:", error.request);
     } else {
       // Algo pasó al configurar la solicitud
-      console.log('Error al configurar:', error.message);
+      console.log("Error al configurar:", error.message);
     }
   }
 };

@@ -3,7 +3,7 @@ const forge = require("node-forge");
 const Certificado = require("../models/certificado.model");
 const { decryptPassphrase } = require("../helpers/encript-helper");
 const { SignedXml } = require("xml-crypto");
- 
+const https = require("https");
 // Función para obtener la clave privada en formato PEM
 const getPrivateKey = p12 => {
   for (let i = 0; i < p12.safeContents.length; i++) {
@@ -67,7 +67,19 @@ const loadCertificateAndKey = async empresaId => {
   }
 };
 
- 
+
+const getxml = async () => {
+  try {
+    const path = `./src/certificado/factura.xml`;
+    const xml = fs.readFileSync(path, 'utf8'); // Lee el archivo y conviértelo a una cadena de texto
+     
+    return xml;
+  } catch (error) {
+    console.error("Error al cargar el XML:", error);
+    throw error;
+  }
+};
+
 // Función para cargar el certificado y la clave privada desde un archivo .p12
 /* const loadCertificateAndKey = async empresaId => {
   try {
@@ -157,4 +169,4 @@ const signXml = async (xmlData, empresaId) => {
 };
 
 // Exportar las funciones para ser utilizadas en otros archivos del proyecto
-module.exports = { signXml, loadCertificateAndKey  };
+module.exports = { signXml, loadCertificateAndKey ,getxml};
