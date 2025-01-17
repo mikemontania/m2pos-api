@@ -12,15 +12,11 @@ const { decryptPassphrase } = require("../helpers/encript-helper");
 
 // Definir las URLs completas para cada servicio
 const wsdlRecibe = `${process.env.SIFEN_URL}de/ws/sync/recibe.wsdl?wsdl`;
-const wsdlRecibeLote = `${process.env
-  .SIFEN_URL}de/ws/async/recibe-lote.wsdl?wsdl`;
+const wsdlRecibeLote = `${process.env.SIFEN_URL}de/ws/async/recibe-lote.wsdl?wsdl`;
 const wsdlEvento = `${process.env.SIFEN_URL}de/ws/eventos/evento.wsdl?wsdl`;
-const wsdlConsultaLote = `${process.env
-  .SIFEN_URL}de/ws/consultas/consulta-lote.wsdl?wsdl`;
-const wsdlConsultaRuc = `${process.env
-  .SIFEN_URL}de/ws/consultas/consulta-ruc.wsdl?wsdl`;
-const wsdlConsulta = `${process.env
-  .SIFEN_URL}de/ws/consultas/consulta.wsdl?wsdl`;
+const wsdlConsultaLote = `${process.env.SIFEN_URL}de/ws/consultas/consulta-lote.wsdl?wsdl`;
+const wsdlConsultaRuc = `${process.env.SIFEN_URL}de/ws/consultas/consulta-ruc.wsdl?wsdl`;
+const wsdlConsulta = `${process.env.SIFEN_URL}de/ws/consultas/consulta.wsdl?wsdl`;
 
 const normalizarXml = xml => {
   return xml.replace(/\r?\n|\r|\t| {2,}/g, "").replace(/> {1,}</g, "><");
@@ -43,7 +39,6 @@ const enviarFactura = async (empresaId, cdc, xml) => {
     let soapXMLData = `<?xml version="1.0" encoding="UTF-8"?>\n\
 
     <soap-env:Envelope	xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
-	<soap-env:Header>\n\ 
               	<soap-env:Header/>\n\
            	<soap-env:Body>\n\
                 <rEnviDe xmlns="http://ekuatia.set.gov.py/sifen/xsd">\n\
@@ -56,7 +51,7 @@ const enviarFactura = async (empresaId, cdc, xml) => {
     console.log("=========================> soapXMLData");
     console.log(soapXMLData);
 
-    const response = await axios.post(wsdlRecibe, soapXMLData, {
+    const response = await axios.post(wsdlRecibeLote, soapXMLData, {
       headers: {
         "User-Agent": "facturaSend",
         "Content-Type": "application/xml; charset=utf-8"
