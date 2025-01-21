@@ -35,8 +35,8 @@ const populateDB = async () => {
       simboloMoneda: "Gs",
       codigoMoneda: "PYG",
       idCSC: "1", 
-      csc: "34715d2302a68bbFcf9ec21c032763C2", 
-      tipoContId: 1,
+      csc: "ABCD0000000000000000000000000000", 
+      tipoContId: 2,
       tipoTransaId: 1,
       tipoImpId: 1,
       numCasa:714,
@@ -6793,7 +6793,7 @@ const populateDB = async () => {
       fechaHasta: "9999-12-31",
       registro: "PRECIO",
       tipo: "IMPORTE",
-      valor: 9000,
+      valor: 6885,
       activo: true,
       empresaId: empresa.id
     });

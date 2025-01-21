@@ -1,3 +1,4 @@
+ 
 const xmlbuilder = require("xmlbuilder");
 const {
   const_tiposTransacciones,
@@ -9,12 +10,7 @@ const {
   const_tipoContribuyente,
   const_tiposEmisiones
 } = require("../constantes/Constante.constant");
-
-
-
-
-
-
+ 
 const generaXML = (cabecera, detalles) => {
   const tipoEmision = const_tiposEmisiones.find(t => t.codigo == 1);
   const tipoContribuyente = const_tipoContribuyente.find(t => t.id == cabecera.empresa.tipoContId  );
@@ -119,10 +115,10 @@ const createGTotSub = (cabecera) => {
       dRedon: "0",
       dTotGralOpe: cabecera.importeTotal,
       dIVA5: cabecera.importeIva5,
-      dIVA10: cabecera.importeIva10,
+      dIVA10: roundTo8Decimals(cabecera.importeIva10) ,
       dLiqTotIVA5: "0",
       dLiqTotIVA10: "0",
-      dTotIVA: cabecera.importeIva10 + cabecera.importeIva5 + cabecera.importeIvaExenta,
+      dTotIVA: roundTo8Decimals(cabecera.importeIva10 + cabecera.importeIva5 + cabecera.importeIvaExenta),
       dBaseGrav5: "0",
       dBaseGrav10: "0",
       dTBasGraIVA: "0"
@@ -139,7 +135,7 @@ const createGCamItem = (item) => {
       dDesUniMed: "UNI", // Asegúrate de que esta descripción sea la correcta
       dCantProSer: item.cantidad,
       gValorItem: {
-        dPUniProSer: (item.importeTotal / item.cantidad), // Ajusta el número de decimales según sea necesario
+        dPUniProSer: (item.importePrecio), // Ajusta el número de decimales según sea necesario
         dTotBruOpeItem: item.importeTotal,
         gValorRestaItem: {
           dDescItem: "0",
@@ -155,14 +151,16 @@ const createGCamItem = (item) => {
         dDesAfecIVA: "Gravado IVA",
         dPropIVA: "100",
         dTasaIVA: "10",
-        dBasGravIVA: item.importeNeto, // Ajusta el número de decimales según sea necesario
-        dLiqIVAItem: item.importeIva10, // Ajusta el número de decimales según sea necesario
+        dBasGravIVA: roundTo8Decimals(item.importeIva10* item.cantidad), // Ajusta el número de decimales según sea necesario
+        dLiqIVAItem: roundTo8Decimals(item.importeIva10) , // Ajusta el número de decimales según sea necesario
         dBasExe: "0"
       }
     }
   };
 };
-
+const roundTo8Decimals = (value) => {
+  return parseFloat(value.toFixed(8)); // Redondea a 8 decimales
+};
 const createGCamCond = (formaVenta, importeTotal) => {
   if (formaVenta.id == 1) {
     // Contado
@@ -243,12 +241,13 @@ const createGDatRec = (cabecera) => {
   }
 };
 const createGEmis = (cabecera, tipoContribuyente, departamento, distrito, ciudad) => {
+  
   const [nroDocumentoEmp, digitoEmpr] = cabecera.empresa.ruc.split("-");
   const emisElement = {
     gEmis: {
       dRucEm: nroDocumentoEmp,
       dDVEmi: digitoEmpr,
-      iTipCont: tipoContribuyente.codigo,
+      iTipCont: tipoContribuyente.id,
       dNomEmi: cabecera.empresa.razonSocial,
       dNomFanEmi: cabecera.empresa.nombreFantasia,
       dDirEmi: cabecera.sucursal.direccion,
@@ -300,6 +299,7 @@ const createGOpeCom = (tipoTransacciones, tipoImpuesto,moneda) => {
       dDesTipTra: tipoTransacciones.descripcion,
 
       iTImp: tipoImpuesto.codigo,
+      dDesTImp:'IVA',
       cMoneOpe: moneda.codigo,
       dDesMoneOpe: moneda.descripcion,
     }

@@ -1,7 +1,8 @@
 const { parseStringPromise, Builder } = require("xml2js");
 const crypto = require("crypto");
 require("dotenv").config();
-
+const qrgen = require('facturacionelectronicapy-qrgen').default;
+ 
 // Función para generar un código QR a partir de un XML
 const generateQR = async (xml, idCSC, CSC) => {
   try {
@@ -55,7 +56,7 @@ const generateQR = async (xml, idCSC, CSC) => {
         obj["rDE"]["DE"][0]["gTotSub"][0]["dTotIVA"] && obj["rDE"]["DE"][0]["gTotSub"][0]["dTotIVA"][0]) {
       dTotIVA = obj["rDE"]["DE"][0]["gTotSub"][0]["dTotIVA"][0];
     }
-    qr += "dTotIVA=" + dTotIVA + "&"; // Agrega el total de IVA al contenido del QR
+    qr += "dTotIVA=" + dTotIVA  + "&"; // Agrega el total de IVA al contenido del QR
 
     // Obtiene la cantidad de ítems en el documento
     let cItems = 0;
@@ -90,4 +91,33 @@ const generateQR = async (xml, idCSC, CSC) => {
   }
 };
 
-module.exports = { generateQR };
+const roundTo8Decimals = (value) => {
+  return parseFloat(value.toFixed(8)); // Redondea a 8 decimales
+};
+
+const addQR =async (xmlSigned) =>{ 
+
+
+  try {
+    // Firmar el XML usando una promesa
+    const xmlqr = await new Promise((resolve, reject) => {
+      qrgen
+      .generateQR(xmlSigned)
+        .then((xmlqr) => {
+          console.log("XML xmlqr:", xmlqr);
+          resolve(xmlqr); // Resolver la promesa con el XML firmado
+        })
+        .catch((err) => {
+          console.error("Error al generar QR el XML:", err);
+          reject(xmlSigned); // Rechazar la promesa en caso de error
+        });
+    });
+
+    return xmlqr; // Devolver el XML 
+  } catch (error) {
+    console.error("Error en xmlqr:", error);
+    return xmlString; // Devolver el XML original en caso de error
+  }
+};
+ 
+module.exports = { generateQR,addQR };

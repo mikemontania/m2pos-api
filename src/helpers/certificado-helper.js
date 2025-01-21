@@ -4,6 +4,8 @@ const Certificado = require("../models/certificado.model");
 const { decryptPassphrase } = require("../helpers/encript-helper");
 const { SignedXml } = require("xml-crypto");
 const https = require("https");
+const xmlsign = require("facturacionelectronicapy-xmlsign").default;
+
 // Función para obtener la clave privada en formato PEM
 const getPrivateKey = p12 => {
   for (let i = 0; i < p12.safeContents.length; i++) {
@@ -29,7 +31,6 @@ const getCertificate = p12 => {
   }
   return null;
 };
- 
 
 const loadCertificateAndKey = async empresaId => {
   try {
@@ -51,7 +52,7 @@ const loadCertificateAndKey = async empresaId => {
     const p12File = fs.readFileSync(path);
     const p12Asn1 = forge.asn1.fromDer(p12File.toString("binary"), true);
     let p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, false, password);
-    
+
     let cert = getCertificate(p12);
     let key = getPrivateKey(p12);
     if (!cert) {
@@ -61,18 +62,17 @@ const loadCertificateAndKey = async empresaId => {
       reject("Antes debe autenticarse");
     }
     return { cert, key, password };
-   } catch (error) {
+  } catch (error) {
     console.error("Error al cargar el certificado y la clave privada:", error);
     throw error;
   }
 };
 
-
 const getxml = async () => {
   try {
     const path = `./src/certificado/factura.xml`;
-    const xml = fs.readFileSync(path, 'utf8'); // Lee el archivo y conviértelo a una cadena de texto
-     
+    const xml = fs.readFileSync(path, "utf8"); // Lee el archivo y conviértelo a una cadena de texto
+
     return xml;
   } catch (error) {
     console.error("Error al cargar el XML:", error);
@@ -80,82 +80,86 @@ const getxml = async () => {
   }
 };
 
-// Función para cargar el certificado y la clave privada desde un archivo .p12
-/* const loadCertificateAndKey = async empresaId => {
+const firmarXml = async (xmlString, empresaId) => {
+  let condiciones = { activo: true };
+  if (empresaId) condiciones.empresaId = empresaId;
+
+  // Solo devolverá un certificado por empresa
+  const certificados = await Certificado.findAll({ where: condiciones });
+  if (certificados.length === 0)
+    throw new Error("No se encontró un certificado activo para la empresa");
+  console.log("Certificado", certificados[0]);
+  console.log(certificados[0].passphrase);
+
+  const passCert = decryptPassphrase(certificados[0].passphrase);
+  const pathCert = `./src/certificado/${certificados[0].path}`;
   try {
-    let condiciones = { activo: true };
-    if (empresaId) condiciones.empresaId = empresaId;
-
-    // Solo devolverá un certificado por empresa
-    const certificados = await Certificado.findAll({ where: condiciones });
-    if (certificados.length === 0)
-      throw new Error("No se encontró un certificado activo para la empresa");
-    console.log("Certificado", certificados[0]);
-    console.log(certificados[0].passphrase);
-
-    const password = decryptPassphrase(certificados[0].passphrase);
-
-    const path = `./src/certificado/${certificados[0].path}`;
-    console.log("password", password);
-    console.log("path", path);
-    const p12File = fs.readFileSync(path);
-    const p12Asn1 = forge.asn1.fromDer(p12File.toString("binary"), true);
-    const p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, false, password);
-
-    const certBags = p12.getBags({ bagType: forge.pki.oids.certBag });
-    const cert = certBags[forge.pki.oids.certBag][0].cert;
-
-    const privateKeyBags = p12.getBags({
-      bagType: forge.pki.oids.pkcs8ShroudedKeyBag
+    // Firmar el XML usando una promesa
+    const xmlFirmado = await new Promise((resolve, reject) => {
+      xmlsign
+        .signXML(xmlString, pathCert, passCert)
+        .then(signedXml => {
+          console.log("XML firmado:", signedXml);
+          resolve(signedXml); // Resolver la promesa con el XML firmado
+        })
+        .catch(err => {
+          console.error("Error al firmar el XML:", err);
+          reject(xmlString); // Rechazar la promesa en caso de error
+        });
     });
-    const privateKey =
-      privateKeyBags[forge.pki.oids.pkcs8ShroudedKeyBag][0].key;
 
-    return { cert, privateKey };
+    return xmlFirmado; // Devolver el XML firmado
   } catch (error) {
-    console.error("Error al cargar el certificado y la clave privada:", error);
-    throw error;
+    console.error("Error en firmarXml:", error);
+    return xmlString; // Devolver el XML original en caso de error
   }
-}; */
+};
 
 // Función para firmar un XML usando la clave privada
 const signXml = async (xmlData, empresaId) => {
   try {
     const { cert, key, password } = await loadCertificateAndKey(empresaId);
 
+    // Función para limpiar el certificado (eliminar delimitadores y saltos de línea)
+    const cleanCertificate = cert =>
+      cert
+        .replace(/-----BEGIN CERTIFICATE-----/g, "")
+        .replace(/-----END CERTIFICATE-----/g, "")
+        .replace(/(?:\r\n|\r|\n)/g, ""); // Eliminar saltos de línea
+
     const sig = new SignedXml({
       publicKey: cert,
       privateKey: key,
       passphrase: password,
       getKeyInfoContent: (publicKey, prefix) => {
-        const certContent = cert.replace(/(?:\r\n|\r|\n)/g, ""); // Remover saltos de línea del certificado
+        const certContent = cleanCertificate(cert); // Limpiar el certificado
         return `<X509Data><X509Certificate>${certContent}</X509Certificate></X509Data>`;
-    }, 
+      }
     });
-
-    sig.signatureAlgorithm =
-      "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
-    sig.canonicalizationAlgorithm = "http://www.w3.org/2001/10/xml-exc-c14n#";
 
     // Verifica que el XML de entrada es el correcto
     console.log("XML de entrada:", xmlData);
 
-    sig.addReference({
-      xpath: "//*[local-name()='DE']",
-      digestAlgorithm: "http://www.w3.org/2001/04/xmlenc#sha256",
-      transforms: [
-        "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
-        "http://www.w3.org/2001/10/xml-exc-c14n#"
-      ]
-    });
 
+    sig.addReference(
+      /*"#" + idAtributo, */ {
+        xpath: "//*[local-name()='DE']",
+        digestAlgorithm: "http://www.w3.org/2001/04/xmlenc#sha256",
+        transforms: [
+          "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
+          "http://www.w3.org/2001/10/xml-exc-c14n#",
+        ],
+      });
+      sig.canonicalizationAlgorithm = "http://www.w3.org/2001/10/xml-exc-c14n#WithComments";
+      sig.signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";  
     // Calcular la firma
     sig.computeSignature(xmlData, {
       location: {
         reference: "//*[local-name()='DE']",
-        action: "after"
-      }
+        action: "after",
+      },
     });
+    
 
     // Obtener el XML firmado
     const signedXml = sig.getSignedXml();
@@ -169,4 +173,4 @@ const signXml = async (xmlData, empresaId) => {
 };
 
 // Exportar las funciones para ser utilizadas en otros archivos del proyecto
-module.exports = { signXml, loadCertificateAndKey ,getxml};
+module.exports = { signXml, loadCertificateAndKey, getxml, firmarXml };

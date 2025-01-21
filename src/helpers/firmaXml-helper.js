@@ -1,3 +1,5 @@
+
+
 const fs = require('fs');
 const { SignedXml } = require('xml-crypto');
 const { DOMParser } = require('@xmldom/xmldom');
@@ -17,16 +19,12 @@ function signXML(xml, certPath, keyPath, passphrase) {
 
   // Crear un nuevo objeto SignedXml
   const sig = new SignedXml();
-
-  // Configurar la firma
-  sig.addReference(
-    "//*[local-name(.)='DE']",
-    ["http://www.w3.org/2000/09/xmldsig#enveloped-signature"]
-  );
-  sig.signingKey = {
-    key: key,
-    passphrase: passphrase
+  sig.addReference("//*[local-name(.)='Factura']"); // Ajusta el nodo firmado
+  sig.signingKey = privateKey;
+  sig.keyInfoProvider = {
+    getKeyInfo: () => `<X509Data><X509Certificate>${publicCert}</X509Certificate></X509Data>`,
   };
+   
 
   // Cargar el XML a firmar
   const doc = new DOMParser().parseFromString(xml);
@@ -36,4 +34,7 @@ function signXML(xml, certPath, keyPath, passphrase) {
   return sig.getSignedXml();
 }
 
-module.exports = { signXML };
+
+
+
+module.exports = { signXML  };

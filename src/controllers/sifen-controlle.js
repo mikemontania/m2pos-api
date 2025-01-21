@@ -11,12 +11,6 @@ const Certificado = require("../models/certificado.model");
 const { decryptPassphrase } = require("../helpers/encript-helper");
 
 // Definir las URLs completas para cada servicio
-const wsdlRecibe = `${process.env.SIFEN_URL}de/ws/sync/recibe.wsdl?wsdl`;
-const wsdlRecibeLote = `${process.env.SIFEN_URL}de/ws/async/recibe-lote.wsdl?wsdl`;
-const wsdlEvento = `${process.env.SIFEN_URL}de/ws/eventos/evento.wsdl?wsdl`;
-const wsdlConsultaLote = `${process.env.SIFEN_URL}de/ws/consultas/consulta-lote.wsdl?wsdl`;
-const wsdlConsultaRuc = `${process.env.SIFEN_URL}de/ws/consultas/consulta-ruc.wsdl?wsdl`;
-const wsdlConsulta = `${process.env.SIFEN_URL}de/ws/consultas/consulta.wsdl?wsdl`;
 
 const normalizarXml = xml => {
   return xml.replace(/\r?\n|\r|\t| {2,}/g, "").replace(/> {1,}</g, "><");

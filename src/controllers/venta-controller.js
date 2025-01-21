@@ -21,7 +21,8 @@ const Credito = require("../models/credito.model");
 const  {generaXML } = require('../helpers/xmlGenerator');
 const  {generarCDC,generarCodigoSeguridad } = require('../helpers/cdc-helper');
 const Empresa = require("../models/empresa.model");
-const { signXml, getxml  } = require('../helpers/certificado-helper');
+const { firmarXml, getxml,signXml  } = require('../helpers/certificado-helper'); 
+
 const { generateQR } = require('../helpers/qr-helper');
 
 
@@ -34,7 +35,7 @@ const zlib = require('zlib');
 const {   const_tipoContribuyente,const_tiposEmisiones
 } = require('../constantes/Constante.constant');
 const VentaXml = require("../models/ventaXml.model");
-const { enviarFactura } = require("./sifen-controlle");
+const { recibeLote, recibeLoteSifen } = require("../service/envioLote.service");
 
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -496,28 +497,26 @@ const generateXML = async (req, res) => {
       return res.status(404).json({ error: "No details found for this venta" });
     }
   
-    const cabecera = {
-      ...venta.dataValues, 
-      sucursal: { ...venta.dataValues.sucursal.dataValues },
-      empresa: { ...venta.dataValues.empresa.dataValues },
-      vendedorCreacion: { ...venta.dataValues.vendedorCreacion.dataValues },
-      cliente: { ...venta.dataValues.cliente.dataValues },
-      formaVenta: { ...venta.dataValues.formaVenta.dataValues }
-    };
+  
+
+    let totalImporteIva5 =0;
+    let totalImporteIva10=0;
+    let totalImporteIvaexe=0;
     let detalles = [];
 
     detallesVenta.forEach(detalle => {
       const variante = detalle.variante;
+      totalImporteIva5 =totalImporteIva5 + ((detalle.dataValues.importeIva5 > 0)? detalle.dataValues.importeTotal/21 :0);
+      totalImporteIva10=totalImporteIva10 + ((detalle.dataValues.importeIva10 > 0) ? detalle.dataValues.importeTotal/11 :0);
+      totalImporteIvaexe=totalImporteIvaexe + ((detalle.dataValues.importeIvaExenta >0) ? detalle.dataValues.importeTotal:0);
+
       detalles.push({
         porcIva: detalle.porcIva,
         cantidad: detalle.dataValues.cantidad,
-        importePrecio: detalle.dataValues.importePrecio,
-        importeIva5: detalle.dataValues.importeIva5,
-        importeIva10: detalle.dataValues.importeIva10,
-        importeIvaExenta: detalle.dataValues.importeIvaExenta,
-        importeDescuento: detalle.dataValues.importeDescuento,
-        importeNeto: detalle.dataValues.importeNeto,
-        importeSubtotal: detalle.dataValues.importeSubtotal,
+        importePrecio: (detalle.dataValues.importeTotal/ detalle.dataValues.cantidad) ,
+        importeIva5: (detalle.dataValues.importeIva5 > 0)? detalle.dataValues.importeTotal/21 :0,
+        importeIva10: (detalle.dataValues.importeIva10 > 0) ? detalle.dataValues.importeTotal/11 :0,
+        importeIvaExenta: (detalle.dataValues.importeIvaExenta >0) ? detalle.dataValues.importeTotal:0, 
         importeTotal: detalle.dataValues.importeTotal,
         totalKg: detalle.dataValues.totalKg,
         tipoDescuento: detalle.dataValues.tipoDescuento,
@@ -528,6 +527,18 @@ const generateXML = async (req, res) => {
         unidad: variante.unidad
       });
     });
+
+    const cabecera = {
+      ...venta.dataValues, 
+      importeIva5:totalImporteIva5,
+      importeIva10:totalImporteIva10,
+      importeIvaExenta:totalImporteIvaexe,
+      sucursal: { ...venta.dataValues.sucursal.dataValues },
+      empresa: { ...venta.dataValues.empresa.dataValues },
+      vendedorCreacion: { ...venta.dataValues.vendedorCreacion.dataValues },
+      cliente: { ...venta.dataValues.cliente.dataValues },
+      formaVenta: { ...venta.dataValues.formaVenta.dataValues }
+    };
 
     const xml = generaXML(cabecera, detalles);
     
@@ -545,10 +556,10 @@ const generateXML = async (req, res) => {
       },
       { transaction: t }
     );
- 
+    //const xmlConFirma = await firmarXml(xml, cabecera.empresaId);  
     const xmlConFirma = await signXml(xml, cabecera.empresaId);  
     const xmlConFirmaConQr = await generateQR(xmlConFirma, cabecera.empresa.idCSC, cabecera.empresa.csc);
-
+console.log(xmlConFirmaConQr)
     // Insertar la firma en el XML
  
     const compressedXmlConFirma = zlib.gzipSync(xmlConFirmaConQr);
@@ -565,7 +576,25 @@ const generateXML = async (req, res) => {
       { transaction: t }
     );
 
-     const respuesta = await enviarFactura(cabecera.empresaId, cabecera.cdc,  xmlConFirmaConQr );  
+    
+
+
+     const respuesta  = await recibeLote(
+      cabecera.cdc,
+      [xmlConFirmaConQr],   
+      cabecera.empresaId,
+      {
+          debug: true,  // Para activar logs de depuración
+          saveRequestFile: './soap_request.xml',  // Opcional: guarda la solicitud SOAP
+      }
+  );
+
+     
+     
+     
+     
+     
+      
     const xmlRespuesta = await VentaXml.create(
       {
         id: null,
