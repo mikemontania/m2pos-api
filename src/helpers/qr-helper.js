@@ -79,7 +79,7 @@ const generateQR = async (xml, idCSC, CSC) => {
     const valueHashed = crypto.createHash("sha256").update(valueForHash + CSC).digest("hex");
     qr += "&cHashQR=" + valueHashed;;
  
-    const qrEncoded = qr.replace(/&/g, '&amp;');
+    const qrEncoded = qr//.replace(/&/g, '&amp;');
     obj["rDE"]["gCamFuFD"]["dCarQR"] = qrEncoded; 
 
     // Construye el nuevo XML con el código QR incluido

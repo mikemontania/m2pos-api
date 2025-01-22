@@ -586,6 +586,7 @@ console.log(xmlConFirmaConQr)
       {
           debug: true,  // Para activar logs de depuración
           saveRequestFile: './soap_request.xml',  // Opcional: guarda la solicitud SOAP
+          saveFile: './file.xml',  // Opcional: file
       }
   );
 

@@ -67,6 +67,11 @@ const recibeLote = (id, xmls, empresaId,   config = {}) =>{
                 return reject("Sólo se permiten un máximo de 50 Documentos electrónicos XML por lote");
             }
 
+            if (xmls[0]) {
+                const file = fs.writeFileSync(defaultConfig.saveFile, xmls[0]);
+            }
+
+
             let url = wsdlRecibeLote;
 
             const zip = new jszip();
