@@ -44,7 +44,8 @@ const generateQR = async (xml, idCSC, CSC) => {
 
     // Obtiene el total general de operaciones, si está disponible
     let dTotGralOpe = 0;
-    if (obj["rDE"]["DE"][0]["gTotSub"] && obj["rDE"]["DE"][0]["gTotSub"][0] &&
+    if (obj["rDE"]["DE"][0]["gTotSub"] && 
+        obj["rDE"]["DE"][0]["gTotSub"][0] &&
         obj["rDE"]["DE"][0]["gTotSub"][0]["dTotGralOpe"] && obj["rDE"]["DE"][0]["gTotSub"][0]["dTotGralOpe"][0]) {
       dTotGralOpe = obj["rDE"]["DE"][0]["gTotSub"][0]["dTotGralOpe"][0];
     }

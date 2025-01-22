@@ -1,4 +1,6 @@
-const generarCDC = (iTiDE, dRucEm , comprobante,iTipCont, dFeEmiDE, iTipEmi, dCodSeg,) => {
+const generarCDC = (iTiDE, dRucEm , comprobante,iTipCont, dFeEmiDE, iTipEmi, dCodSeg) => {
+  console.log("iTiDE, dRucEm , comprobante,iTipCont, dFeEmiDE, iTipEmi, dCodSeg")
+  console.log(iTiDE, dRucEm , comprobante,iTipCont, dFeEmiDE, iTipEmi, dCodSeg)
     const cdcBase = '0' + iTiDE + dRucEm.replaceAll("-", "") + comprobante.replaceAll("-", "") +  iTipCont+ dFeEmiDE.substring(0, 10).replaceAll("-", "") + iTipEmi + dCodSeg;
     const dDVId = calcularDV(cdcBase);
     return cdcBase + dDVId;

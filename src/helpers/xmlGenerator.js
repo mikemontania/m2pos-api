@@ -23,7 +23,8 @@ const generaXML = (cabecera, detalles) => {
   const [establecimiento, puntoExp, numero] = cabecera.nroComprobante.split(    "-"  );
   const carQRValue = "****************************************************************************************************";
   // Fechas
-  const fechaActualISO = formatDateToISO(new Date());
+  //const fechaActualISO = formatDateToISO(new Date());
+  const fechaActualISO = formatDateToLocalISO(new Date());
   const fechaEmisionISO = formatDateToISO(cabecera.fechaCreacion);
   /*
 1= B2B
@@ -114,18 +115,35 @@ const createGTotSub = (cabecera) => {
       dAnticipo: "0",
       dRedon: "0",
       dTotGralOpe: cabecera.importeTotal,
-      dIVA5: cabecera.importeIva5,
+      dIVA5: roundTo8Decimals(cabecera.importeIva5),
       dIVA10: roundTo8Decimals(cabecera.importeIva10) ,
       dLiqTotIVA5: "0",
       dLiqTotIVA10: "0",
-      dTotIVA: roundTo8Decimals(cabecera.importeIva10 + cabecera.importeIva5 + cabecera.importeIvaExenta),
-      dBaseGrav5: "0",
-      dBaseGrav10: "0",
-      dTBasGraIVA: "0"
+      dTotIVA: roundTo8Decimals(cabecera.importeIva10 + cabecera.importeIva5  ),
+      dBaseGrav5: (cabecera.importeIva5 > 0)?cabecera.importeTotal - roundTo8Decimals(cabecera.importeIva5):0,
+      dBaseGrav10: (cabecera.importeIva10 > 0)?cabecera.importeTotal - roundTo8Decimals(cabecera.importeIva10):0,
+      dTBasGraIVA: (cabecera.importeIva5 > 0 || cabecera.importeIva10 > 0)?cabecera.importeTotal - roundTo8Decimals(cabecera.importeIva5 + cabecera.importeIva10):0,
     }
   };
 };
+function formatDateToLocalISO(date) {
+  const tzOffset = -date.getTimezoneOffset(); // Diferencia en minutos entre UTC y tu zona horaria
+  const offsetHours = Math.floor(tzOffset / 60);
+  const offsetMinutes = tzOffset % 60;
 
+  const localDate = new Date(date.getTime() + tzOffset * 60000);
+  const isoString = localDate.toISOString();
+
+  // Agregar el offset en formato ±HH:MM
+  const sign = tzOffset >= 0 ? '+' : '-';
+  const formattedOffset =
+    sign +
+    String(Math.abs(offsetHours)).padStart(2, '0') +
+    ':' +
+    String(Math.abs(offsetMinutes)).padStart(2, '0');
+
+  return isoString.replace('Z', formattedOffset).substring(0, 19);
+}
 const createGCamItem = (item) => {
   return {
     gCamItem: {
