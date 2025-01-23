@@ -23,7 +23,7 @@ const  {generarCDC,generarCodigoSeguridad } = require('../helpers/cdc-helper');
 const Empresa = require("../models/empresa.model");
 const { firmarXml, getxml,signXml  } = require('../helpers/certificado-helper'); 
 
-const { generateQR } = require('../helpers/qr-helper');
+const { generateQR ,addQR} = require('../helpers/qr-helper');
 
 
 const zlib = require('zlib');
@@ -556,21 +556,23 @@ const generateXML = async (req, res) => {
       },
       { transaction: t }
     );
+    console.log("/*----------------------------------------------------xmlConFirma----------------------------------------------------------------*/" ); 
     //const xmlConFirma = await firmarXml(xml, cabecera.empresaId);  
     const xmlConFirma = await signXml(xml, cabecera.empresaId);  
+    console.log(xmlConFirma); 
     const xmlConFirmaConQr = await generateQR(xmlConFirma, cabecera.empresa.idCSC, cabecera.empresa.csc);
-console.log(xmlConFirmaConQr)
+    console.log("/*----------------------------------------------------xmlConFirmaConQr----------------------------------------------------------------*/" );
+    console.log(xmlConFirmaConQr)
     // Insertar la firma en el XML
- 
-    const compressedXmlConFirma = zlib.gzipSync(xmlConFirmaConQr);
-
+  
+    console.log("/*--------------------------------------------------------------------------------------------------------------------*/" );
     const xmlFirmadoRecord = await VentaXml.create(
       {
         id: null,
         orden:2,
         empresaId: cabecera.empresaId,
         ventaId: cabecera.ventaId,
-        xml: compressedXmlConFirma,
+        xml: xmlConFirmaConQr,
         estado: 'XML FIRMADO'
       },
       { transaction: t }

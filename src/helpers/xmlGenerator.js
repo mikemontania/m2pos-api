@@ -83,7 +83,7 @@ let xml = xmlbuilder
     .ele(createGCamFuFD(carQRValue)).up()
   
   // Return the XML as a string
-  return xml.end({ pretty: true });
+  return xml.end({ pretty: false });
 };
 
 const formatDateToISO = (date) => {
@@ -266,7 +266,7 @@ const createGEmis = (cabecera, tipoContribuyente, departamento, distrito, ciudad
       dRucEm: nroDocumentoEmp,
       dDVEmi: digitoEmpr,
       iTipCont: tipoContribuyente.id,
-      dNomEmi: cabecera.empresa.razonSocial,
+      dNomEmi:'DE generado en ambiente de prueba - sin valor comercial ni fiscal',// cabecera.empresa.razonSocial
       dNomFanEmi: cabecera.empresa.nombreFantasia,
       dDirEmi: cabecera.sucursal.direccion,
       dNumCas: cabecera.empresa.numCasa,
@@ -277,7 +277,8 @@ const createGEmis = (cabecera, tipoContribuyente, departamento, distrito, ciudad
       cCiuEmi: ciudad.codigo,
       dDesCiuEmi: ciudad.descripcion,
       dTelEmi: cabecera.empresa.telefono,
-      dEmailE: cabecera.empresa.email
+      dEmailE: cabecera.empresa.email,
+      dDenSuc:1// falta agregar
     }
   };
   

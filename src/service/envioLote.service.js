@@ -92,16 +92,16 @@ const recibeLote = (id, xmls, empresaId,   config = {}) =>{
             });
 
             let soapXMLData = `<?xml version="1.0" encoding="UTF-8"?>\n\
-                <env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">\n\
-                    <env:Header/>\n\
-                    <env:Body>\n\
-                        <rEnvioLote xmlns="http://ekuatia.set.gov.py/sifen/xsd">\n\
-                            <dId>${id}</dId>\n\
-                                <xDE>${zipAsBase64}</xDE>\n\
-                        </rEnvioLote>\n\
-                    </env:Body>\n\
-                </env:Envelope>`;
-            soapXMLData = normalizeXML(soapXMLData);
+                <soap:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">\n\
+                    <soap:Header/>\n\
+                    <soap:Body>\n\
+                        <xsd:rEnvioLote>
+                            <xsd:dId>${id}</xsd:dId>\n\
+                            <xsd:xDE>${zipAsBase64}</xsd:xDE>\n\
+                        </xsd:rEnvioLote>\n\
+                    </soap:Body>\n\
+                </soap:Envelope>`;
+            //soapXMLData = normalizeXML(soapXMLData);
              
             if (soapXMLData) {
                 console.log("url", url );

@@ -39,19 +39,19 @@ const populateDB = async () => {
       tipoContId: 2,
       tipoTransaId: 1,
       tipoImpId: 1,
-      numCasa:714,
+      numCasa:1,
       depEmiId: 12,
       disEmiId: 153,
       ciuEmiId: 3568,
-      telefono: "(021) 588 9000",
-      email: "cavallaro@example.com",
+      telefono: "021578603",
+      email: "info@cavallaro.com.py",
       web: "www.cavallaro.com.py",
       actividadcode1: "20130",
       actividad1:
-        "Fabricación de plásticos y caucho sintético en formas primarias",
+        "FABRICACIÓN DE PLÁSTICOS Y CAUCHO SINTÉTICO EN FORMAS PRIMARIAS",
       actividadcode2: "20931",
       actividad2:
-        "Fabricación de jabones, detergentes y preparados de limpieza",
+        "FABRICACIÓN DE JABONES, DETERGENTES Y PREPARADOS DE LIMPIEZA",
       actividadcode3: "",
       actividad3: "",
       img:'grupocavallaro3.png'
@@ -354,7 +354,7 @@ const populateDB = async () => {
     });
     const sucursal = await Sucursal.create({
       descripcion: "CAPIATA",
-      direccion: "RUTA DEPARTAMENTAL D027 (EX RUTA 1 ) E/ISRAEL",
+      direccion: "CARRETERA RUTA MCAL. FRANCISCO SOLANO LOPEZ",
       cel: "(0981) 627-369",
       telefono: "(021) 588 9000",
       empresaId: empresa.id,
@@ -457,7 +457,7 @@ const populateDB = async () => {
     const numeracion1 = await Numeracion.create({ 
       empresaId: empresa.id,
       sucursalId: sucursal.id,
-      inicioTimbrado: "2022-11-21",
+      inicioTimbrado: "2022-06-17",
       finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,

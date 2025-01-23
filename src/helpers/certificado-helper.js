@@ -163,12 +163,8 @@ const signXml = async (xmlData, empresaId) => {
       },
     });
     
-
-    // Obtener el XML firmado
-    const signedXml = sig.getSignedXml();
-    console.log("XML firmado:", signedXml);
-
-    return signedXml;
+    // Obtener el XML firmado 
+    return sig.getSignedXml();
   } catch (error) {
     console.error("Error al firmar el XML:", error);
     throw error;
