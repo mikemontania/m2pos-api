@@ -35,6 +35,139 @@ const normalizeXML = (xml) => {
         .replace(/\r?\n|\r/g, "");
 }
 
+
+const recibe = (id, xml, empresaId,   config = {}) =>{
+    const xmls = [xml]
+    return new Promise(async (resolve, reject) => {
+        try {
+            let defaultConfig = {
+                debug: false,
+                timeout: 90000,
+                ...config,
+            };
+
+     
+
+            // Solo devolverá un certificado por empresa
+            const certificados = await Certificado.findAll({ where: empresaId });
+            if (certificados.length === 0)
+              throw new Error("No se encontró un certificado activo para la empresa");
+            console.log("Certificado", certificados[0]);
+            console.log(certificados[0].passphrase);
+            const p12Path = `./src/certificado/${certificados[0].path}`;
+            const p12Password = decryptPassphrase(certificados[0].passphrase);
+        
+
+
+            const { cert, key } = abrirCertificado(p12Path, p12Password);
+
+            if (!xmls.length) {
+                return reject("No se envió datos en el array de Documentos electrónicos XMLs");
+            }
+
+            if (xmls.length > 50) {
+                return reject("Sólo se permiten un máximo de 50 Documentos electrónicos XML por lote");
+            }
+
+            if (xmls[0]) {
+                const file = fs.writeFileSync(defaultConfig.saveFile, xmls[0]);
+            }
+ 
+
+            const zip = new jszip();
+            let rLoteDEXml = "<rLoteDE>\n";
+          
+            for (let i = 0; i < xmls.length; i++) {
+                const xml = xmls[i].split("\n").slice(1).join("\n"); //Retirar xml
+                    rLoteDEXml += `${xml}\n`;
+            }
+            rLoteDEXml += `</rLoteDE>`;
+           // rLoteDEXml = normalizeXML(rLoteDEXml);  
+            zip.file(`xml_file.xml`, `<?xml version="1.0" encoding="UTF-8"?>${rLoteDEXml}`);
+            const zipAsBase64 = await zip.generateAsync({ type: "base64" });
+          
+            const httpsAgent = new https.Agent({
+                cert: Buffer.from(cert, "utf8"),
+                key: Buffer.from(key, "utf8"),
+            });
+
+            let soapXMLData = `<?xml version="1.0" encoding="UTF-8"?>\n\
+                <soap:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">\n\
+                    <soap:Header/>\n\
+                    <soap:Body>\n\
+                        <xsd:rEnvioLote>
+                            <xsd:dId>${id}</xsd:dId>\n\
+                            <xsd:xDE>${zipAsBase64}</xsd:xDE>\n\
+                        </xsd:rEnvioLote>\n\
+                    </soap:Body>\n\
+                </soap:Envelope>`;
+            //soapXMLData = normalizeXML(soapXMLData);
+            soapXMLData= soapXMLData.replace(/>\s+</g, '><').trim();
+            if (soapXMLData) {
+                console.log("url", wsdlRecibeLote );
+                console.log( "soapXMLData", soapXMLData);
+            }
+
+            if (defaultConfig.saveRequestFile) {
+                const json = fs.writeFileSync(defaultConfig.saveRequestFile, soapXMLData);
+            }
+          
+            const headers ={
+                headers: {
+                    "User-Agent": "facturaSend",
+                    "Content-Type": "application/xml; charset=utf-8",
+                },
+                httpsAgent,
+                timeout: defaultConfig.timeout,
+            }
+            console.log(headers)
+            console.log('https://sifen-test.set.gov.py/de/ws/async/recibe-lote.wsdl')
+            axios
+                .post('https://sifen-test.set.gov.py/de/ws/async/recibe-lote.wsdl', soapXMLData,headers )
+                .then((respuestaSuccess) => {
+                    if (respuestaSuccess.status === 200) {
+                        const parser = new xml2js.Parser({ explicitArray: false });
+
+                        if (respuestaSuccess.data.startsWith("<?xml")) {
+                            parser.parseStringPromise(respuestaSuccess.data).then((result) => {
+                                const resultData = result["env:Envelope"]["env:Body"];
+                                resultData.id = id;
+                                console.log(respuestaSuccess.data)
+                                resolve(resultData);
+                            });
+                        } else if (respuestaSuccess.data.startsWith("<html>")) {
+                            reject(new Error("Error de la SET BIG-IP logout page"));
+                        } else {
+                            reject(new Error(respuestaSuccess.data));
+                        }
+                    } else {
+                        reject(new Error("Error de conexión con la SET"));
+                    }
+                })
+                .catch((err) => {
+                    if (err.response?.data) {
+                        console.log(err.response?.data);
+                        const parser = new xml2js.Parser({ explicitArray: false });
+                        parser
+                            .parseStringPromise(err.response.data)
+                            .then((result) => {
+                                const resultData = result["env:Envelope"]["env:Body"];
+                                resultData.id = id;
+                                 // Inspeccionar el contenido de ns2:gResProc
+                                resolve(resultData);
+                            })
+                            .catch(reject);
+                    } else {
+                        reject(err);
+                    }
+                });
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+
 const recibeLote = (id, xmls, empresaId,   config = {}) =>{
     return new Promise(async (resolve, reject) => {
         try {
@@ -70,9 +203,7 @@ const recibeLote = (id, xmls, empresaId,   config = {}) =>{
             if (xmls[0]) {
                 const file = fs.writeFileSync(defaultConfig.saveFile, xmls[0]);
             }
-
-
-            let url = wsdlRecibeLote;
+ 
 
             const zip = new jszip();
             let rLoteDEXml = "<rLoteDE>\n";
@@ -104,7 +235,7 @@ const recibeLote = (id, xmls, empresaId,   config = {}) =>{
             //soapXMLData = normalizeXML(soapXMLData);
              
             if (soapXMLData) {
-                console.log("url", url );
+                console.log("url", wsdlRecibeLote );
                 console.log( "soapXMLData", soapXMLData);
             }
 
@@ -112,16 +243,18 @@ const recibeLote = (id, xmls, empresaId,   config = {}) =>{
                 const json = fs.writeFileSync(defaultConfig.saveRequestFile, soapXMLData);
             }
           
-
+            const headers ={
+                headers: {
+                    "User-Agent": "facturaSend",
+                    "Content-Type": "application/xml; charset=utf-8",
+                },
+                httpsAgent,
+                timeout: defaultConfig.timeout,
+            }
+            console.log(headers)
+            console.log(wsdlRecibeLote)
             axios
-                .post(url, soapXMLData, {
-                    headers: {
-                        "User-Agent": "facturaSend",
-                        "Content-Type": "application/xml; charset=utf-8",
-                    },
-                    httpsAgent,
-                    timeout: defaultConfig.timeout,
-                })
+                .post(wsdlRecibeLote, soapXMLData,headers )
                 .then((respuestaSuccess) => {
                     if (respuestaSuccess.status === 200) {
                         const parser = new xml2js.Parser({ explicitArray: false });
@@ -200,4 +333,5 @@ const recibeLoteSifen = async (id, xmlSigned ,  empresaId ) =>{
 module.exports = {
     recibeLoteSifen,
     recibeLote,
+    recibe
 };

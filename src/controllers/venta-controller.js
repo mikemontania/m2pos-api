@@ -35,7 +35,7 @@ const zlib = require('zlib');
 const {   const_tipoContribuyente,const_tiposEmisiones
 } = require('../constantes/Constante.constant');
 const VentaXml = require("../models/ventaXml.model");
-const { recibeLote, recibeLoteSifen } = require("../service/envioLote.service");
+const { recibeLote, recibe } = require("../service/envioLote.service");
 
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -581,9 +581,9 @@ const generateXML = async (req, res) => {
     
 
 
-     const respuesta  = await recibeLote(
+     const respuesta  = await recibe(
       cabecera.cdc,
-      [xmlConFirmaConQr],   
+       xmlConFirmaConQr ,   
       cabecera.empresaId,
       {
           debug: true,  // Para activar logs de depuración
