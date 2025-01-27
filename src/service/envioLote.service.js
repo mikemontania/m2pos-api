@@ -90,9 +90,8 @@ const recibe = (id, xml, empresaId,   config = {}) =>{
                 cert: Buffer.from(cert, "utf8"),
                 key: Buffer.from(key, "utf8"),
             });
-
-            let soapXMLData = `<?xml version="1.0" encoding="UTF-8"?>\n\
-                <soap:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">\n\
+//    <?xml version="1.0" encoding="UTF-8"?>\n\
+            let soapXMLData = `<soap:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">\n\
                     <soap:Header/>\n\
                     <soap:Body>\n\
                         <xsd:rEnvioLote>
@@ -146,7 +145,7 @@ const recibe = (id, xml, empresaId,   config = {}) =>{
                 })
                 .catch((err) => {
                     if (err.response?.data) {
-                        console.log(err.response?.data);
+                        console.log(normalizeXML(err.response?.data));
                         const parser = new xml2js.Parser({ explicitArray: false });
                         parser
                             .parseStringPromise(err.response.data)

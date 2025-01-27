@@ -582,7 +582,7 @@ const generateXML = async (req, res) => {
 
 
      const respuesta  = await recibe(
-      cabecera.cdc,
+      cabecera.ventaId,
        xmlConFirmaConQr ,   
       cabecera.empresaId,
       {
