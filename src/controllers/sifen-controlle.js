@@ -28,7 +28,7 @@ const enviarFactura = async (empresaId, cdc, xml) => {
     if (typeof xml !== "string") {
       throw new Error("El XML debe ser una cadena de texto.");
     }
-    //xml.replace('<?xml version="1.0" encoding="UTF-8"?>', "");
+  
     xml = xml.split("\n").slice(1).join("\n"); // Retirar <xml>
     let soapXMLData = `<?xml version="1.0" encoding="UTF-8"?>\n\
 

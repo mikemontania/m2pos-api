@@ -35,9 +35,49 @@ const normalizeXML = (xml) => {
         .replace(/\r?\n|\r/g, "");
 }
 
+// Función para comprimir un XML a un archivo ZIP
+const comprimirXml = async (xmlString, zipFileName = "archivo.zip", xmlFileName = "archivo.xml") => {
+    try {
+        const zip = new jszip();
+        zip.file(xmlFileName, xmlString); // Agregamos el archivo XML al ZIP
 
-const recibe = (id, xml, empresaId,   config = {}) =>{
-    const xmls = [xml]
+        // Generamos el ZIP en formato base64
+        const zipData = await zip.generateAsync({ type: "nodebuffer" });
+
+        // Guardamos el archivo ZIP
+        fs.writeFileSync(zipFileName, zipData);
+
+        console.log(`Archivo ZIP creado correctamente: ${zipFileName}`);
+        return zipFileName;
+    } catch (error) {
+        console.error("Error al comprimir el XML:", error);
+        throw error;
+    }
+};
+
+const descomprimirXml = async (zipFileName) => {
+    try {
+        const zipData = fs.readFileSync(zipFileName); // Leemos el archivo ZIP
+        const zip = await jszip.loadAsync(zipData); // Cargamos el contenido del ZIP
+
+        // Extraemos el contenido del archivo XML
+        const fileNames = Object.keys(zip.files);
+        if (fileNames.length === 0) throw new Error("El archivo ZIP está vacío.");
+        const xmlFileName = fileNames[0]; // Nombre del primer archivo en el ZIP
+
+        const xmlContent = await zip.file(xmlFileName).async("string");
+        console.log(`Archivo XML descomprimido correctamente: ${xmlFileName}`);
+        console.log(xmlContent);
+
+        return xmlContent;
+    } catch (error) {
+        console.error("Error al descomprimir el XML:", error);
+        throw error;
+    }
+};
+
+const recibe = (id, xmlfirmado, empresaId,   config = {}) =>{
+    
     return new Promise(async (resolve, reject) => {
         try {
             let defaultConfig = {
@@ -45,9 +85,7 @@ const recibe = (id, xml, empresaId,   config = {}) =>{
                 timeout: 90000,
                 ...config,
             };
-
-     
-
+ 
             // Solo devolverá un certificado por empresa
             const certificados = await Certificado.findAll({ where: empresaId });
             if (certificados.length === 0)
@@ -57,41 +95,38 @@ const recibe = (id, xml, empresaId,   config = {}) =>{
             const p12Path = `./src/certificado/${certificados[0].path}`;
             const p12Password = decryptPassphrase(certificados[0].passphrase);
         
-
-
             const { cert, key } = abrirCertificado(p12Path, p12Password);
 
-            if (!xmls.length) {
-                return reject("No se envió datos en el array de Documentos electrónicos XMLs");
-            }
+            //Escribo el archivo para verificacion
+            if (xmlfirmado) {
+             //   const file = fs.writeFileSync(defaultConfig.saveFile, xmlfirmado);
+            } 
+     
+              let rLoteDE = xmlfirmado.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
+             rLoteDE = `<rLoteDE>\n${rLoteDE }\n</rLoteDE>\n`
+               //Escribo el archivo para verificacion
+             if (rLoteDE) {
+              //  const file = fs.writeFileSync('./rLoteDE.xml', rLoteDE);
+            } 
 
-            if (xmls.length > 50) {
-                return reject("Sólo se permiten un máximo de 50 Documentos electrónicos XML por lote");
-            }
-
-            if (xmls[0]) {
-                const file = fs.writeFileSync(defaultConfig.saveFile, xmls[0]);
-            }
- 
-
-            const zip = new jszip();
-            let rLoteDEXml = "<rLoteDE>\n";
           
-            for (let i = 0; i < xmls.length; i++) {
-                const xml = xmls[i].split("\n").slice(1).join("\n"); //Retirar xml
-                    rLoteDEXml += `${xml}\n`;
-            }
-            rLoteDEXml += `</rLoteDE>`;
-           // rLoteDEXml = normalizeXML(rLoteDEXml);  
-            zip.file(`xml_file.xml`, `<?xml version="1.0" encoding="UTF-8"?>${rLoteDEXml}`);
+            const zip = new jszip(); 
+            zip.file("lote.xml", rLoteDE);
+
+            
+            //Escribo el archivo para verificacion
+            //const zipBuffer = await zip.generateAsync({ type: "nodebuffer" });
+           // fs.writeFileSync("./file.zip", zipBuffer);
+        
             const zipAsBase64 = await zip.generateAsync({ type: "base64" });
           
+
             const httpsAgent = new https.Agent({
                 cert: Buffer.from(cert, "utf8"),
                 key: Buffer.from(key, "utf8"),
             });
 //    <?xml version="1.0" encoding="UTF-8"?>\n\
-            let soapXMLData = `<soap:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">\n\
+            let soapXMLData = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://ekuatia.set.gov.py/sifen/xsd">\n\
                     <soap:Header/>\n\
                     <soap:Body>\n\
                         <xsd:rEnvioLote>
@@ -100,21 +135,21 @@ const recibe = (id, xml, empresaId,   config = {}) =>{
                         </xsd:rEnvioLote>\n\
                     </soap:Body>\n\
                 </soap:Envelope>`;
-            //soapXMLData = normalizeXML(soapXMLData);
+            soapXMLData = normalizeXML(soapXMLData);
             soapXMLData= soapXMLData.replace(/>\s+</g, '><').trim();
             if (soapXMLData) {
                 console.log("url", wsdlRecibeLote );
                 console.log( "soapXMLData", soapXMLData);
             }
-
+        //Escribo el archivo para verificacion
             if (defaultConfig.saveRequestFile) {
-                const json = fs.writeFileSync(defaultConfig.saveRequestFile, soapXMLData);
+                //const json = fs.writeFileSync(defaultConfig.saveRequestFile, soapXMLData);
             }
           
             const headers ={
                 headers: {
                     "User-Agent": "facturaSend",
-                    "Content-Type": "application/xml; charset=utf-8",
+                    "Content-Type": "application/soap+xml",
                 },
                 httpsAgent,
                 timeout: defaultConfig.timeout,

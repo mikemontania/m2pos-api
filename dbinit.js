@@ -463,7 +463,7 @@ const populateDB = async () => {
       numeroFin: 999999999,
       serie: "001-001",
       timbrado: "12559587",
-      ultimoNumero: 200577,
+      ultimoNumero: 200579,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true

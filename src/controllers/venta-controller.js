@@ -579,10 +579,10 @@ const generateXML = async (req, res) => {
     );
 
     
-
+console.log('venta.dataValues',venta.dataValues);
 
      const respuesta  = await recibe(
-      cabecera.ventaId,
+      venta.dataValues.id,
        xmlConFirmaConQr ,   
       cabecera.empresaId,
       {
