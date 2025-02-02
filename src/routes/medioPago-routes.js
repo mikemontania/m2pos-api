@@ -14,12 +14,12 @@ router.get('/predeterminado', validarJWT,  medioPagoController.findPredeterminad
 router.get('/:id', validarJWT,    medioPagoController.getById);
 
 // Ruta para crear una nueva categoría
-router.post('/', validarJWT,  auditMiddleware, medioPagoController.create);
+router.post('/', validarJWT,   medioPagoController.create);
 
 // Ruta para actualizar una categoría por ID
-router.put('/:id', validarJWT,  auditMiddleware, medioPagoController.update);
+router.put('/:id', validarJWT,   medioPagoController.update);
 
 // Ruta para desactivar una categoría por ID
-router.put('/desactivar/:id', validarJWT,  auditMiddleware, medioPagoController.disable);
+router.put('/desactivar/:id', validarJWT,   medioPagoController.disable);
 
 module.exports = router;

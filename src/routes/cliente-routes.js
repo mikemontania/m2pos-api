@@ -18,12 +18,12 @@ router.get('/:id', validarJWT,    clienteController.getById);
 router.get('/clientes', validarJWT,   clienteController.findAll);
 
 // Ruta para crear un nuevo cliente
-router.post('/', validarJWT,  auditMiddleware, clienteController.create);
+router.post('/', validarJWT,   clienteController.create);
 
 // Ruta para actualizar un cliente por ID
-router.put('/:id', validarJWT,  auditMiddleware, clienteController.update);
+router.put('/:id', validarJWT,   clienteController.update);
 
 // Ruta para desactivar un cliente por ID
-router.put('/clientedesactivar/:id', validarJWT,  auditMiddleware, clienteController.disable);
+router.put('/clientedesactivar/:id', validarJWT,   clienteController.disable);
 
 module.exports = router;

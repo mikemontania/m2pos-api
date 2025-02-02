@@ -36,6 +36,8 @@ const {   const_tipoContribuyente,const_tiposEmisiones
 } = require('../constantes/Constante.constant');
 const VentaXml = require("../models/ventaXml.model");
 const { recibeLote, recibe } = require("../service/envioLote.service");
+const EmpresaActividad = require("../models/empresaActividad.model");
+const Actividad = require("../models/actividad.model");
 
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -527,21 +529,20 @@ const generateXML = async (req, res) => {
         unidad: variante.unidad
       });
     });
-
+ 
     const cabecera = {
       ...venta.dataValues, 
       importeIva5:totalImporteIva5,
       importeIva10:totalImporteIva10,
       importeIvaExenta:totalImporteIvaexe,
       sucursal: { ...venta.dataValues.sucursal.dataValues },
-      empresa: { ...venta.dataValues.empresa.dataValues },
+      empresa: { ...venta.dataValues.empresa.dataValues  },
       vendedorCreacion: { ...venta.dataValues.vendedorCreacion.dataValues },
       cliente: { ...venta.dataValues.cliente.dataValues },
       formaVenta: { ...venta.dataValues.formaVenta.dataValues }
     };
 
-    const xml = generaXML(cabecera, detalles);
-    
+    const xml = await generaXML(cabecera, detalles); 
     // Comprimir XML
     const compressedXml = zlib.gzipSync(xml);
 

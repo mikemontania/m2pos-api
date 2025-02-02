@@ -11,12 +11,12 @@ router.get('/:id', validarJWT,   marcaController.getById);
 router.get('/', validarJWT,   marcaController.findAll);
 
 // Ruta para crear una nueva marca
-router.post('/', validarJWT,  auditMiddleware, marcaController.create);
+router.post('/', validarJWT,   marcaController.create);
 
 // Ruta para actualizar una marca por ID
-router.put('/:id', validarJWT,  auditMiddleware, marcaController.update);
+router.put('/:id', validarJWT,   marcaController.update);
 
 // Ruta para desactivar una marca por ID
-router.put('/marcadesactivar/:id', validarJWT,  auditMiddleware, marcaController.disable);
+router.put('/marcadesactivar/:id', validarJWT,   marcaController.disable);
 
 module.exports = router;

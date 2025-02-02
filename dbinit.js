@@ -1,5 +1,8 @@
 const Bcryptjs = require("bcryptjs");
 const Usuario = require("./src/models/usuario.model");
+const Departamento = require("./src/models/departamento.model");
+const Ciudad = require("./src/models/ciudad.model");
+const Barrio = require("./src/models/barrio.model");
 const Empresa = require("./src/models/empresa.model");
 const Sucursal = require("./src/models/sucursal.model");
 const Unidad = require("./src/models/unidad.model");
@@ -20,15 +23,33 @@ const MedioPago = require("./src/models/medioPago.model");
 const TablaSifen = require("./src/models/tablaSifen.model");
 const Certificado = require("./src/models/certificado.model");
 const { encryptPassphrase,decryptPassphrase } = require('./src/helpers/encript-helper');
+const   {departamentos} = require('./src/json/departamentos.json');
+const   {ciudades} = require('./src/json/ciudades.json');
+const   {barrios} = require('./src/json/barrios.json');
+const Actividad = require("./src/models/actividad.model");
+const EmpresaActividad = require("./src/models/empresaActividad.model");
+ 
 
 const populateDB = async () => {
   console.log("populateDB");
   if (process.env.DB_INIT == "true") {
     console.log("Inicializando registros en DB!");
+    
+    if (departamentos && departamentos.length > 0) {
+      await Departamento.bulkCreate(departamentos, { ignoreDuplicates: true });
+    }
+
+    if (ciudades && ciudades.length > 0) {
+      await Ciudad.bulkCreate(ciudades, { ignoreDuplicates: true });
+    }
+
+    if (barrios && barrios.length > 0) {
+      await Barrio.bulkCreate(barrios, { ignoreDuplicates: true });
+    }
 
     // Crear empresa
     const empresa = await Empresa.create({
-      razonSocial: "CAVALLARO S.A.C.e.I", 
+      razonSocial: "DE generado en ambiente de prueba - sin valor comercial ni fiscal", 
       nombreFantasia: "CAVALLARO S.A.C.e.I", 
       ruc: "80003110-5", // RUC de ejemplo
       moneda: "Guarani",
@@ -40,22 +61,31 @@ const populateDB = async () => {
       tipoTransaId: 1,
       tipoImpId: 1,
       numCasa:1,
-      depEmiId: 12,
-      disEmiId: 153,
-      ciuEmiId: 3568,
+      codDepartamento: 12,
+      codCiudad: 153,
+      codBarrio: 3568,
       telefono: "021578603",
       email: "info@cavallaro.com.py",
       web: "www.cavallaro.com.py",
-      actividadcode1: "20130",
-      actividad1:
-        "FABRICACIÓN DE PLÁSTICOS Y CAUCHO SINTÉTICO EN FORMAS PRIMARIAS",
-      actividadcode2: "20931",
-      actividad2:
-        "FABRICACIÓN DE JABONES, DETERGENTES Y PREPARADOS DE LIMPIEZA",
-      actividadcode3: "",
-      actividad3: "",
       img:'grupocavallaro3.png'
     });
+
+
+// Crear actividades si no existen y asociarlas a la empresa
+const actividades = [
+  { codigo: "20130", descripcion: "FABRICACIÓN DE PLÁSTICOS Y CAUCHO SINTÉTICO EN FORMAS PRIMARIAS" },
+  { codigo: "20931", descripcion: "FABRICACIÓN DE JABONES, DETERGENTES Y PREPARADOS DE LIMPIEZA" }
+];
+
+for (const actividadData of actividades) {
+
+  let  actividad = await Actividad.create(actividadData);
+      
+  await EmpresaActividad.create({ empresaId:empresa.id, actividadId: actividad.id });
+ 
+}
+
+
     const encriptado =encryptPassphrase('q3rjp3%0')
     const certificado = await Certificado.create({
       empresaId :empresa.id,
@@ -11966,7 +11996,8 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       propietario: true
     });
 
- 
+   
+
     console.log("Registros creados exitosamente!"); 
   }
 };

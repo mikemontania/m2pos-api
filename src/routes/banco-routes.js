@@ -11,12 +11,12 @@ router.get('/:id', validarJWT,   bancoController.getById);
 router.get('/', validarJWT,   bancoController.findAll);
 
 // Ruta para crear un banco
-router.post('/', validarJWT,  auditMiddleware, bancoController.create);
+router.post('/', validarJWT,   bancoController.create);
 
 // Ruta para actualizar un banco
-router.put('/:id', validarJWT,  auditMiddleware, bancoController.update);
+router.put('/:id', validarJWT,   bancoController.update);
 
 // Ruta para desactivar un banco
-router.put('/desactivar/:id', validarJWT,  auditMiddleware, bancoController.disable);
+router.put('/desactivar/:id', validarJWT,   bancoController.disable);
 
 module.exports = router;

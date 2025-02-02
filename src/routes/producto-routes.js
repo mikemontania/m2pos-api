@@ -14,12 +14,12 @@ router.get('/paginados/:sucursalId/:listaPrecioId/:page/:pageSize/:marcaId/:cate
 router.get('/', validarJWT,    productoController.findAll);
 
 // Ruta para crear un nuevo producto
-router.post('/', validarJWT,  auditMiddleware, productoController.create);
+router.post('/', validarJWT,   productoController.create);
 
 // Ruta para actualizar un producto por ID
-router.put('/:id', validarJWT,  auditMiddleware, productoController.update);
+router.put('/:id', validarJWT,   productoController.update);
 
 // Ruta para desactivar un producto (marcar como inactivo)
-router.delete('/:id', validarJWT,  auditMiddleware, productoController.disable);
+router.delete('/:id', validarJWT,   productoController.disable);
 
 module.exports = router;

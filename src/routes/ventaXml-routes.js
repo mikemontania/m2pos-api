@@ -9,10 +9,10 @@ const router = Router();
 router.get('/:id', validarJWT, ventaXmlController.getById);
 
 // Ruta para crear un nuevo XML
-router.post('/', validarJWT, auditMiddleware, ventaXmlController.create);
+router.post('/', validarJWT,  ventaXmlController.create);
 
 // Ruta para actualizar un XML por ID
-router.put('/:id', validarJWT, auditMiddleware, ventaXmlController.update);
+router.put('/:id', validarJWT,  ventaXmlController.update);
 
 // Ruta para buscar XMLs por ventaId
 router.get('/venta/:ventaId', validarJWT, ventaXmlController.findByVentaId);

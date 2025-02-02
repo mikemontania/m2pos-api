@@ -12,12 +12,12 @@ router.get('/:id', validarJWT,   listaPrecioController.getById);
 router.get('/', validarJWT,    listaPrecioController.findAll);
 
 // Ruta para crear una nueva lista de precio
-router.post('/', validarJWT,  auditMiddleware, listaPrecioController.create);
+router.post('/', validarJWT,   listaPrecioController.create);
 
 // Ruta para actualizar una lista de precio por ID
-router.put('/:id', validarJWT,  auditMiddleware, listaPrecioController.update);
+router.put('/:id', validarJWT,   listaPrecioController.update);
 
 // Ruta para desactivar una lista de precio por ID
-router.put('/desactivar/:id', validarJWT,  auditMiddleware, listaPrecioController.disable);
+router.put('/desactivar/:id', validarJWT,   listaPrecioController.disable);
 
 module.exports = router;

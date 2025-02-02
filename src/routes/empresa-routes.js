@@ -5,9 +5,12 @@ const { auditMiddleware } = require('../middlewares/auditMiddleware');
 const router = Router();
 
 // Ruta para buscar una categoría por ID
+router.get('/actividades', validarJWT,    empresaController.obtenerActividadesPorEmpresa); 
+
+
+router.post('/add-actividades', validarJWT,   empresaController.agregarActividadAEmpresa);
+router.delete('/remove-actividad/:actividadId',  validarJWT,  empresaController.eliminarActividadDeEmpresa);
 router.get('/:id', validarJWT,    empresaController.getById); 
-// Ruta para actualizar una categoría por ID
-router.put('/:id', validarJWT,  auditMiddleware, empresaController.update);
- 
+router.put('/:id', validarJWT,   empresaController.update);
 
 module.exports = router;

@@ -20,6 +20,8 @@ const { Op } = require("sequelize");
 
 const moment = require("moment");
 const { sequelize } = require("../../dbconfig");
+const EmpresaActividad = require("../models/empresaActividad.model");
+const Actividad = require("../models/actividad.model");
 
 const getReporteCobranza = async (req, res) => {
   console.log("getReporteCobranza");
@@ -363,6 +365,7 @@ console.log(sucursalId)
   }
 };
 const getPdf = async (req, res) => {
+  const { empresaId } = req.usuario;
   const { id } = req.params;
   try {
     const venta = await Venta.findByPk(id, {
@@ -389,9 +392,6 @@ const getPdf = async (req, res) => {
           attributes: [
             "razonSocial",
             "ruc",
-            "actividad1",
-            "actividad2",
-            "actividad3",
             "img",
             "web"
           ]
@@ -401,6 +401,14 @@ const getPdf = async (req, res) => {
     if (!venta) {
       return res.status(404).json({ error: "Venta not found" });
     }
+    const  data = await EmpresaActividad.findAll({
+      where: {   empresaId },
+      include: [{ model: Actividad, as: 'actividades' }]
+    });
+    const actividades = data.map(d => ({
+      ...d.actividades['dataValues']
+     }))
+
     const detallesVenta = await VentaDetalle.findAll({
       where: { ventaId: id },
       include: [
@@ -441,7 +449,7 @@ const getPdf = async (req, res) => {
     const cabecera = {
       ...venta.dataValues,
       sucursal: { ...venta.dataValues.sucursal.dataValues },
-      empresa: { ...venta.dataValues.empresa.dataValues },
+      empresa: { ...venta.dataValues.empresa.dataValues,actividades },
       vendedorCreacion: { ...venta.dataValues.vendedorCreacion.dataValues },
       cliente: { ...venta.dataValues.cliente.dataValues },
       formaVenta: { ...venta.dataValues.formaVenta.dataValues }

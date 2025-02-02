@@ -1,5 +1,8 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../dbconfig");
+const Departamento = require("./departamento.model");
+const Ciudad = require("./ciudad.model");
+const Barrio = require("./barrio.model");
 
 const Empresa = sequelize.define(
   "Empresa",
@@ -21,7 +24,7 @@ const Empresa = sequelize.define(
       type: DataTypes.STRING(5),
       allowNull: true
     },
-     csc: {
+    csc: {
       type: DataTypes.STRING(50),
       allowNull: true
     },
@@ -39,56 +42,32 @@ const Empresa = sequelize.define(
     },
     tipoContId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     tipoTransaId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     tipoImpId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     numCasa: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
-    depEmiId: {
+    codDepartamento: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
-    disEmiId: {
+    codCiudad: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
-    ciuEmiId: {
+    codBarrio: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
-    actividadcode1: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    actividad1: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    actividadcode2: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    actividad2: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    actividadcode3: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    actividad3: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },  
     ruc: {
       type: DataTypes.STRING,
       allowNull: true
@@ -116,5 +95,17 @@ const Empresa = sequelize.define(
     underscored: true // Convierte automáticamente a snake_case
   }
 );
+Empresa.belongsTo(Departamento, {
+  Empresa: "codDepartamento",
+  targetKey: "codigo"
+});
+Empresa.belongsTo(Ciudad, {
+  foreignKey: "codCiudad",
+  targetKey: "codigo"
+});
+Empresa.belongsTo(Barrio, {
+  foreignKey: "codBarrio",
+  targetKey: "codigo"
+});
 
 module.exports = Empresa;

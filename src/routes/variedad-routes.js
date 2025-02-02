@@ -11,12 +11,12 @@ router.get('/:id', validarJWT,   variedadController.getById);
 router.get('/', validarJWT,    variedadController.findAll);
 
 // Ruta para crear una nueva presentación
-router.post('/', validarJWT,  auditMiddleware, variedadController.create);
+router.post('/', validarJWT,   variedadController.create);
 
 // Ruta para actualizar una presentación por ID
-router.put('/:id', validarJWT,  auditMiddleware, variedadController.update);
+router.put('/:id', validarJWT,   variedadController.update);
 
 // Ruta para desactivar una presentación (marcar como inactiva)
-router.delete('/:id', validarJWT,  auditMiddleware, variedadController.disable);
+router.delete('/:id', validarJWT,   variedadController.disable);
 
 module.exports = router;

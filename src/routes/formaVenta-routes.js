@@ -12,12 +12,12 @@ router.get('/:id', validarJWT,   formaVentaController.getById);
 router.get('/', validarJWT,    formaVentaController.findAll);
 
 // Ruta para crear una nueva lista de precio
-router.post('/', validarJWT,  auditMiddleware, formaVentaController.create);
+router.post('/', validarJWT,   formaVentaController.create);
 
 // Ruta para actualizar una lista de precio por ID
-router.put('/:id', validarJWT,  auditMiddleware, formaVentaController.update);
+router.put('/:id', validarJWT,   formaVentaController.update);
 
 // Ruta para desactivar una lista de precio por ID
-router.put('/desactivar/:id', validarJWT,  auditMiddleware, formaVentaController.disable);
+router.put('/desactivar/:id', validarJWT,   formaVentaController.disable);
 
 module.exports = router;

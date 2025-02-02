@@ -1,6 +1,8 @@
 const { Op } = require('sequelize');
 const Empresa = require('../models/empresa.model');
 const { sequelize } = require('../../dbconfig');
+const Actividad = require('../models/actividad.model');
+const EmpresaActividad = require('../models/empresaActividad.model');
 
 const getById = async (req, res) => {
   try {
@@ -17,25 +19,20 @@ const getById = async (req, res) => {
   }
 };
  
-
-
-
-
-
-
+ 
 
 const update= async (req, res) => {
   try {
     const { id } = req.params;
-    const { razonSocial, actividadcode1,actividadcode2,actividadcode3,actividad1, actividad2, actividad3, ruc, telefono, email, nombreFantasia,
+    const { razonSocial,  ruc, telefono, email, nombreFantasia,
       moneda,
       codigoMoneda,
       simboloMoneda,
       tipoContId,
       numCasa,
-      depEmiId,
-      disEmiId,
-      ciuEmiId, web } = req.body;
+      codDepartamento,
+      codCiudad,
+      codBarrio, web } = req.body;
 
     // Buscar la empresa por su ID
     const empresa = await Empresa.findByPk(id);
@@ -43,15 +40,15 @@ const update= async (req, res) => {
     // Verificar si la empresa existe
     if (empresa) {
       // Actualizar los campos de la empresa
-      await empresa.update({ razonSocial, actividadcode1,actividadcode2,actividadcode3,actividad1, actividad2, actividad3, ruc, telefono, email,nombreFantasia,
+      await empresa.update({ razonSocial, ruc, telefono, email,nombreFantasia,
         moneda,
         codigoMoneda,
         simboloMoneda,
         tipoContId,
         numCasa,
-        depEmiId,
-        disEmiId,
-        ciuEmiId,  web });
+        codDepartamento,
+        codCiudad,
+        codBarrio,  web });
 
       // Responder con la empresa actualizada
       res.status(200).json(empresa);
@@ -65,10 +62,79 @@ const update= async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   'Error al actualizar la empresa' });
   }
 };
- 
+ // Agregar actividades a una empresa
+const agregarActividadAEmpresa  = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const {   codigo, descripcion } = req.body; // Recibe un array de IDs de actividades
 
+    const empresa = await Empresa.findByPk(empresaId);
+    if (!empresa) {
+      return res.status(404).json({ message: "Empresa no encontrada" });
+    }
+ 
+      let  actividad = await Actividad.create({ codigo, descripcion });
+      
+      await EmpresaActividad.create({ empresaId, actividadId: actividad.id });
+   
+
+    return res.json({ message: "Actividad agregada correctamente", actividad });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+const obtenerActividadesPorEmpresa = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+
+    const data = await EmpresaActividad.findAll({
+      where: {   empresaId },
+      include: [{ model: Actividad, as: 'actividades' }]
+    });
+ 
+    
+    if (!data) {
+      return res.status(200).json([]);
+    }
+
+
+    const actividades = data.map(d => ({
+     ...d.actividades['dataValues']
+    }))
+ 
+    return res.json(actividades);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+
+// Eliminar actividad de una empresa
+const eliminarActividadDeEmpresa = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const {  actividadId } = req.params;
+
+    await EmpresaActividad.destroy({
+      where: { empresaId, actividadId }
+    });
+    await Actividad.destroy({
+      where: { id:actividadId }
+    }); 
+    return res.json({ message: "Actividad eliminada correctamente" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+ 
 module.exports = {
   getById,
   update ,
- 
+  agregarActividadAEmpresa,
+  obtenerActividadesPorEmpresa,
+  eliminarActividadDeEmpresa
 };

@@ -14,12 +14,12 @@ router.get('/paginados/:page/:pageSize?', validarJWT,  numeracionController.find
 router.get('/list/:sucursalId', validarJWT,   numeracionController.findAll);
 
 // Ruta para crear una nueva numeración
-router.post('/', validarJWT,  auditMiddleware, numeracionController.create);
+router.post('/', validarJWT,   numeracionController.create);
 
 // Ruta para actualizar una numeración por ID
-router.put('/:id', validarJWT,  auditMiddleware, numeracionController.update);
+router.put('/:id', validarJWT,   numeracionController.update);
 
 // Ruta para desactivar una numeración por ID
-router.put('/desactivar/:id', validarJWT,  auditMiddleware, numeracionController.disable);
+router.put('/desactivar/:id', validarJWT,   numeracionController.disable);
 
 module.exports = router;

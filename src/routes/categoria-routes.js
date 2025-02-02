@@ -11,12 +11,12 @@ router.get('/:id', validarJWT,  categoriaController.getById);
 router.get('/', validarJWT,   categoriaController.findAll);
 
 // Ruta para crear una nueva categoría
-router.post('/', validarJWT,  auditMiddleware, categoriaController.create);
+router.post('/', validarJWT,   categoriaController.create);
 
 // Ruta para actualizar una categoría por ID
-router.put('/:id', validarJWT,  auditMiddleware, categoriaController.update);
+router.put('/:id', validarJWT,   categoriaController.update);
 
 // Ruta para desactivar una categoría por ID
-router.put('/categoriadesactivar/:id', validarJWT,  auditMiddleware, categoriaController.disable);
+router.put('/categoriadesactivar/:id', validarJWT,   categoriaController.disable);
 
 module.exports = router;

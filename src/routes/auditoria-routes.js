@@ -9,6 +9,6 @@ const { auditMiddleware } = require('../middlewares/auditMiddleware');
  
 router.get('/:page/:pageSize/:fechaDesde/:fechaHasta/:searchTerm?', validarJWT,   auditoriaController.getListPaginado);
  
-router.delete('/:id', validarJWT,  auditMiddleware, auditoriaController.deletebyId);
+router.delete('/:id', validarJWT,   auditoriaController.deletebyId);
 
 module.exports = router;

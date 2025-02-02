@@ -52,9 +52,9 @@ const generarCabecera = (doc, venta , top) => {
 const bloque2 = [
   encabezado,
   empresa,
-  venta.empresa.actividad1,
-  venta.empresa.actividad2,
-  venta.empresa.actividad3,
+  venta.empresa.actividades[0]?.descripcion,
+  venta.empresa.actividades[1]?.descripcion,
+  venta.empresa.actividades[2]?.descripcion,
   datos1,
   datos2
 ];

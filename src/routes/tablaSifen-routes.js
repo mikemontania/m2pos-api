@@ -12,12 +12,12 @@ router.get('/tabla/:tabla', validarJWT,   tablaSifenController.findAllRecords);
 router.get('/', validarJWT,   tablaSifenController.findAll);
 
 // Ruta para crear un tablaSifen
-router.post('/', validarJWT,  auditMiddleware, tablaSifenController.create);
+router.post('/', validarJWT,   tablaSifenController.create);
 
 // Ruta para actualizar un tablaSifen
-router.put('/:id', validarJWT,  auditMiddleware, tablaSifenController.update);
+router.put('/:id', validarJWT,   tablaSifenController.update);
 
 // Ruta para desactivar un tablaSifen
-router.put('/desactivar/:id', validarJWT,  auditMiddleware, tablaSifenController.disable);
+router.put('/desactivar/:id', validarJWT,   tablaSifenController.disable);
 
 module.exports = router;

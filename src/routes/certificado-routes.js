@@ -12,13 +12,13 @@ router.get('/:id', validarJWT, certificadoController.getById);
 router.get('/', validarJWT, certificadoController.findAll);
 
 // Ruta para crear un certificado
-router.post('/', validarJWT, auditMiddleware, certificadoController.create);
+router.post('/', validarJWT,  certificadoController.create);
 
 // Ruta para actualizar un certificado por ID
-router.put('/:id', validarJWT, auditMiddleware, certificadoController.update);
+router.put('/:id', validarJWT,  certificadoController.update);
 
 // Ruta para desactivar un certificado (si es necesario, puedes añadir este método en el controlador)
-router.put('/desactivar/:id', validarJWT, auditMiddleware, async (req, res) => {
+router.put('/desactivar/:id', validarJWT,  async (req, res) => {
   try {
     const { id } = req.params;
     const certificado = await Certificado.findByPk(id);

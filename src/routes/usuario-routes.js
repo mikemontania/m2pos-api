@@ -13,18 +13,18 @@ router.get('/:id',validarJWT,   usuarioController.getById);
 router.get('/paginados/:page/:pageSize/:searchTerm?', validarJWT,  usuarioController.findPaginados);
 
 router.put('/:id',
-    [ validarJWT,  auditMiddleware,
+    [ validarJWT,  
         check('id', 'El id es obligatorio').not().isEmpty(),
         check('username', 'El username es obligatorio').isEmail(), 
         check('usuario', 'El usuario es obligatorio').not().isEmpty(),
         validarCampos
     ], usuarioController.update);
 router.post('/',
-    [ validarJWT,  auditMiddleware,
+    [ validarJWT,  
         check('username', 'El username es obligatorio').isEmail(),
         check('password', 'El password es obligatorio').not().isEmpty(),
         check('usuario', 'El usuario es obligatorio').not().isEmpty(),
         validarCampos
     ], usuarioController.create);
-router.delete('/:id/disable',validarJWT,  auditMiddleware,  usuarioController.disable);
+router.delete('/:id/disable',validarJWT,    usuarioController.disable);
 module.exports = router;
