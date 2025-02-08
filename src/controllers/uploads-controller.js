@@ -1,7 +1,7 @@
 const path = require("path");
 const { response } = require("express");
 const { v4: uuidv4 } = require("uuid");
-const { actualizarImagen } = require("../helpers/actualizar-imagen");
+const { actualizarImagen ,actualizarP12} = require("../helpers/actualizar-imagen");
 
 const fs = require("fs");
 
@@ -63,6 +63,55 @@ const fileUpload = (req, res = response) => {
   });
 };
 
+const p12fileUpload = (req, res = response) => {
+   const id = req.params.certificadoId;
+ 
+  // Validar que exista un archivo
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({
+      msg: "No hay ningún archivo"
+    });
+  }
+
+  // Procesar la imagen...
+  const file = req.files.certificado;
+
+  const nombreCortado = file.name.split("."); 
+  const extensionArchivo = nombreCortado[nombreCortado.length - 1];
+
+  // Validar extension
+  const extensionesValidas = ["p12"];
+  if (!extensionesValidas.includes(extensionArchivo)) {
+    return res.status(400).json({
+        message: "No es una extensión permitida"
+    });
+  }
+  // Generar el nombre del archivo
+  const nombreArchivo = `${uuidv4()}.${extensionArchivo}`;
+
+  // Path para guardar la imagen
+  const path = `./src/certificado/${nombreArchivo}`;
+  console.log(path);
+  // Mover la imagen
+  file.mv(path, err => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({
+        error: err?.original?.detail || err?.errors[0].message  ||  "Error al mover la certificado"
+      });
+    }
+ 
+    actualizarP12( id, nombreArchivo);
+
+    res.status(200).json({
+        message: "Archivo subido",
+      nombreArchivo
+    });
+  });
+};
+
+
+
 const getImage = async (req, res = response) => {
   try {
     const { tipo, foto } = req.params;
@@ -84,5 +133,6 @@ const getImage = async (req, res = response) => {
 
 module.exports = {
   fileUpload,
-  getImage
+  getImage,
+  p12fileUpload,
 };

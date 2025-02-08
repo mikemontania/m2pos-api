@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const barrioController = require('../controllers/barrio-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 
 // Ruta para buscar un barrio por ID

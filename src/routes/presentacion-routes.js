@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const presentacionController = require('../controllers/presentacion-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 
 // Ruta para buscar una presentación por ID

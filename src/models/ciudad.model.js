@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig'); 
 const Departamento = require('./departamento.model');
 
-const Ciudad  = sequelize.define('Ciudad ', {
+const Ciudad  = sequelize.define('Ciudad', {
   codigo: {
     type: DataTypes.INTEGER,
     primaryKey: true, 

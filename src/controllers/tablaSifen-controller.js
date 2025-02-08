@@ -20,7 +20,7 @@ const getById = async (req, res) => {
   try {
     const { tabla } = req.params;
     const { empresaId  } = req.usuario;
-    const condiciones =   { empresaId,tabla }  ;
+    const condiciones =   { tabla }  ;
     const tablasSifen = await TablaSifen.findAll({ where: condiciones }); 
     res.status(200).json(tablasSifen);
   } catch (error) {
@@ -32,8 +32,7 @@ const findAll = async (req, res) => {
   try {
 
     const { empresaId  } = req.usuario;
-    const condiciones =   { empresaId }  ;
-    const tablasSifen = await TablaSifen.findAll({ where: condiciones }); 
+    const tablasSifen = await TablaSifen.findAll(); 
     res.status(200).json(tablasSifen);
   } catch (error) {
     console.error(error);
@@ -42,11 +41,10 @@ const findAll = async (req, res) => {
 };
 
 const create= async (req, res) => {
-  try {
-    const { empresaId } = req.usuario;
+  try { 
 
     const {  codigo, tabla, descripcion, activo } = req.body;
-    const tablaSifen = await TablaSifen.create({ empresaId,codigo, tabla, descripcion, activo });
+    const tablaSifen = await TablaSifen.create({  codigo, tabla, descripcion, activo });
     res.status(201).json(tablaSifen);
   } catch (error) {
     console.error(error);
@@ -56,13 +54,13 @@ const create= async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { empresaId } = req.usuario;
+ 
 
     const { id } = req.params;
     const { codigo, tabla, descripcion, activo} = req.body;
     const tablaSifen = await TablaSifen.findByPk(id);
     if (tablaSifen) {
-      await tablaSifen.update({ empresaId,codigo, tabla, descripcion, activo});
+      await tablaSifen.update({  codigo, tabla, descripcion, activo});
       res.status(200).json(tablaSifen);
     } else {
       res.status(404).json({ error: 'TablaSifen no encontrado' });

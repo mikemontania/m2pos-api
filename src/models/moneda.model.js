@@ -1,23 +1,23 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig'); 
 
-const Departamento  = sequelize.define('Departamento', {
+const Moneda  = sequelize.define('Moneda', {
  
   codigo: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING(5),
     primaryKey: true, 
     allowNull: false 
   }, 
   descripcion: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING(70),
     allowNull: false
   }, 
    
 }, {
-  tableName: 'departamentos',
+  tableName: 'monedas',
   timestamps: false,
   underscored: true, // Convierte automáticamente a snake_case
 });
  
  
-module.exports = Departamento;
+module.exports = Moneda;

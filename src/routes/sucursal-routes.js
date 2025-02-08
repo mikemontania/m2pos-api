@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const sucursalController = require('../controllers/sucursal-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
  
 // Ruta para buscar un sucursal por ID

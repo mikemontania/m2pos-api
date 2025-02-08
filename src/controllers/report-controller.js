@@ -135,6 +135,7 @@ const getReporteCobranza = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   "Error al listar las ventas" });
   }
 };
+
  
 const getVendedoresPorTotal = async (req, res) => {
   try {

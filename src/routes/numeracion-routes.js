@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const numeracionController = require('../controllers/numeracion-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 
 // Ruta para buscar una numeración por ID

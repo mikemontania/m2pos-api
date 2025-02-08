@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const productoController = require('../controllers/producto-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 
 // Ruta para buscar un producto por ID

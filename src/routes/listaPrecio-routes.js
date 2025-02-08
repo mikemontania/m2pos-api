@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const listaPrecioController = require('../controllers/listaPrecio-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 router.get('/predeterminado', validarJWT,  listaPrecioController.findPredeterminado);
 

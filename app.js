@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { dbConnection } = require("./dbconfig");
 const { populateDB } = require("./dbinit");
+require("./src/jobs/generadorXml.job");
 const morgan = require("morgan"); // const { json } = require('express/lib/response');
 //const { loggerPos } = require("./logger");
 // Este es un comentario
@@ -41,6 +42,7 @@ app.use("/M2POS/variantes", require("./src/routes/variante-routes"));
 app.use("/M2POS/variedades", require("./src/routes/variedad-routes"));
 app.use("/M2POS/lista-precio", require("./src/routes/listaPrecio-routes"));
 app.use("/M2POS/medio-pago", require("./src/routes/medioPago-routes"));
+app.use("/M2POS/monedas", require("./src/routes/moneda-routes"));
 app.use("/M2POS/ventas", require("./src/routes/venta-routes"));
 app.use("/M2POS/ventas-xml", require("./src/routes/ventaXml-routes"));
 app.use("/M2POS/marcas", require("./src/routes/marca-routes"));

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const medioPagoController = require('../controllers/medioPago.controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 
 // Ruta para buscar todas las categorías

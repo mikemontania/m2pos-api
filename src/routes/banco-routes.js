@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const bancoController = require('../controllers/banco-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 
 // Ruta para buscar un banco por ID

@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../dbconfig");
 const Empresa = require("./empresa.model");
+const moment = require("moment");
 const Certificado = sequelize.define(
   "Certificado ",
   {

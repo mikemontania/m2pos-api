@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ventaController = require('../controllers/venta-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 // Rutas para Venta
 
 router.get('/generar-xml/:id', validarJWT,   ventaController.generateXML);

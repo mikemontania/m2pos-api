@@ -3,79 +3,58 @@ const Certificado = require('../models/certificado.model');
 const { sequelize } = require('../../dbconfig');
 const Bcryptjs = require('bcryptjs');
 const { encryptPassphrase, decryptPassphrase } = require('../helpers/encript-helper');
+const moment = require("moment");
 
 // Método para buscar por ID
-const getById = async (req, res) => {
+const getCertificado = async (req, res) => {
   try {
-    const { id } = req.params;
-    const certificado = await Certificado.findByPk(id);
-    if (certificado) {
-      // Desencriptar el passphrase antes de enviarlo
-      certificado.passphrase = decryptPassphrase(certificado.passphrase);
-      res.status(200).json(certificado);
-    } else {
-      res.status(404).json({ error: 'Certificado no encontrado' });
+    const { empresaId } = req.usuario;
+    console.log('**********codigo empresa:'+empresaId)
+    // Buscar un único certificado para la empresa
+    let certificado = await Certificado.findOne({ where: { empresaId } });
+
+    if (certificado  )  {
+      console.log("certificado",certificado)
+      if (certificado?.passphrase.length > 4)  
+        certificado.passphrase = decryptPassphrase(certificado.passphrase); 
+      return res.status(200).json(certificado);
+    } else{
+      console.log("no se encontro certificado")
     }
+   
+
+    // Crear un nuevo certificado si no existe
+    const fechaActual = moment().format("YYYY-MM-DD");
+    certificado = await Certificado.create({
+      empresaId,
+      path: '',
+      passphrase: '',
+      validoDesde: fechaActual,
+      validoHasta: fechaActual
+    });
+    console.log(" certificado creado")
+    res.status(200).json(certificado);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error?.original?.detail || 'Error al buscar el Certificado por ID' });
   }
 };
-
-// Método para buscar todos los Certificados
-const findAll = async (req, res) => {
-  try {
-    const { empresaId } = req.usuario;
-    const condiciones = {};
-    if (empresaId) condiciones.empresaId = empresaId;
-
-    const certificados = await Certificado.findAll({ where: condiciones });
-    // Desencriptar el passphrase para cada certificado
-    certificados.forEach(certificado => {
-      certificado.passphrase = decryptPassphrase(certificado.passphrase);
-    });
-    res.status(200).json(certificados);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error?.original?.detail || 'Error al buscar Certificados' });
-  }
-};
-
-// Método para crear un nuevo Certificado
-const create = async (req, res) => {
-  try {
-    const { empresaId } = req.usuario;
-    const { path, passphrase, validoDesde, validoHasta, activo } = req.body;
-    // Encriptar el passphrase antes de almacenarlo
-    const encryptedPassphrase = encryptPassphrase(passphrase);
-    const nuevoCertificado = await Certificado.create({
-      empresaId,
-      path,
-      passphrase: encryptedPassphrase,
-      validoDesde,
-      validoHasta,
-      activo
-    });
-    res.status(201).json(nuevoCertificado);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error?.original?.detail || 'Error al crear el Certificado' });
-  }
-};
+ 
 
 // Método para actualizar un Certificado por ID
 const update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { path, passphrase, validoDesde, validoHasta, activo } = req.body;
+    const { empresaId } = req.usuario;
+    const { path, passphrase, validoDesde, validoHasta } = req.body;
+    console.log({ path, passphrase, validoDesde, validoHasta , id})
     const certificadoActualizado = await Certificado.findByPk(id);
-
     if (certificadoActualizado) {
       const updatedFields = {
         path,
+        empresaId,
         validoDesde,
-        validoHasta,
-        activo
+        validoHasta
       };
 
       if (passphrase) {
@@ -98,8 +77,7 @@ const update = async (req, res) => {
 };
 
 module.exports = {
-  getById,
-  findAll,
-  create,
+  getCertificado,
+ 
   update,
 };

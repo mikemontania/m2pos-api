@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt')
 const usuarioController = require('../controllers/usuario-controller.js');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 /*
 RUTA  /api/usuarios

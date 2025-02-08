@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const formaVentaController = require('../controllers/formaVenta-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 router.get('/predeterminado', validarJWT,  formaVentaController.findPredeterminado);
 

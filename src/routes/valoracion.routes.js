@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const valoracionController = require('../controllers/valoracion-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 router.get('/descuentoescala/:listaPrecioId/:sucursalId', validarJWT,   valoracionController.obtenerDescuentoImporte);
 router.get('/vigente/:id/:sucursalId/:listaPrecioId', validarJWT,    valoracionController.obtenerValoracionVigente);

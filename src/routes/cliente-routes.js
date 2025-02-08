@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const clienteController = require('../controllers/cliente-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 // Ruta para encontrar el cliente predeterminado
 router.get('/predeterminado', validarJWT,  clienteController.findPredeterminado);

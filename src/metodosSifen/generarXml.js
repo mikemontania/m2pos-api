@@ -1,69 +1,10 @@
 const xmlbuilder = require("xmlbuilder");
-const {
-  const_tiposTransacciones,
-  const_tiposImpuestos,
-  const_departamentos,
-  const_distritos,
-  const_ciudades,
-  const_monedas,
-  const_tipoContribuyente,
-  const_tiposEmisiones
-} = require("../constantes/Constante.constant");
-const EmpresaActividad = require("../models/empresaActividad.model");
-const Actividad = require("../models/actividad.model");
-
-const generaXML = async (cabecera, detalles) => {
-  const tipoEmision = const_tiposEmisiones.find(t => t.codigo == 1);
-  const tipoContribuyente = const_tipoContribuyente.find(
-    t => t.id == cabecera.empresa.tipoContId
-  );
-  const tipoTransacciones = const_tiposTransacciones.find(
-    t => t.codigo == cabecera.empresa.tipoTransaId
-  );
-  const tipoImpuesto = const_tiposImpuestos.find(
-    t => t.codigo == cabecera.empresa.tipoImpId
-  );
-  const departamento = const_departamentos.find(
-    t => t.codigo == cabecera.empresa.codDepartamento
-  );
-  const distrito = const_distritos.find(
-    t => t.codigo == cabecera.empresa.codCiudad
-  );
-  const ciudad = const_ciudades.find(
-    t => t.codigo == cabecera.empresa.codBarrio
-  );
-  const moneda = const_monedas.find(
-    t => t.codigo == cabecera.empresa.codMoneda
-);
-  const [establecimiento, puntoExp, numero] = cabecera.nroComprobante.split(
-    "-"
-  );
-  const data = await EmpresaActividad.findAll({
-      where: { empresaId: cabecera.empresa.id },
-      include: [{ model: Actividad, as: "actividades" }]
-  });
-
-  const actividades = data.map(a => ({
-      cActEco: a.actividades.codigo,
-      dDesActEco: a.actividades.descripcion
-  }));
- 
-  const carQRValue =
-    "****************************************************************************************************";
-  // Fechas
-  //const fechaActualISO = formatDateToISO(new Date());
+  
+const generarXML = async (empresa, venta) => {
+  const tipoEmision = {codigo: 1, descripcion: "Normal"};
+  const [establecimiento, puntoExp, numero] = venta.nroComprobante.split("-");
   const fechaActualISO = formatDateToLocalISO(new Date());
-  const fechaEmisionISO = formatDateToISO(cabecera.fechaCreacion);
-  /*
-1= B2B
-2= B2C
-3= B2G
-4= B2F
-(Esta última opción debe utilizarse
-solo en caso de servicios para
-empresas o personas físicas del
-exterior
-*/
+  const fechaEmisionISO = formatDateToISO(venta.fechaCreacion);
   let xml = xmlbuilder
     .create("rDE", { version: "1.0", encoding: "UTF-8" })
     .att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
@@ -75,8 +16,8 @@ exterior
     // Header data
     .ele("dVerFor", process.env.EKUATIA_VERSION)
     .up()
-    .ele("DE", { Id: cabecera.cdc })
-    .ele("dDVId", cabecera.cdc.charAt(cabecera.cdc.length - 1))
+    .ele("DE", { Id: venta.cdc })
+    .ele("dDVId", venta.cdc.charAt(venta.cdc.length - 1))
     .up()
     /*
       La fecha y hora de la firma digital debe ser anterior a la fecha y hora de transmisión al SIFEN
@@ -88,9 +29,9 @@ exterior
     .ele("dSisFact", "1")
     .up()
     // Operation data
-    .ele(createGOpeDE(tipoEmision, cabecera))
+    .ele(createGOpeDE(tipoEmision, venta.codigoSeguridad))
     .up() // Uso de la función modularizada para gOpeDE
-    .ele(createGTimb(cabecera, establecimiento, puntoExp, numero))
+    .ele(createGTimb(venta, establecimiento, puntoExp, numero))
     .up() // Uso de la función modularizada
     // Campos generales del DE
     .ele("gDatGralOpe")
@@ -101,15 +42,15 @@ exterior
     .ele("dFeEmiDE", fechaEmisionISO)
     .up()
     //Campos inherentes a la operación comercial
-    .ele(createGOpeCom(tipoTransacciones, tipoImpuesto, moneda))
+    .ele(createGOpeCom(empresa))
     .up()
     //Grupo de campos que identifican al emisor
     .ele(
-      createGEmis(cabecera, actividades, tipoContribuyente, departamento, distrito, ciudad)
+      createGEmis(empresa, venta.sucursal)
     )
     .up()
     //Grupo de campos que identifican al receptor
-    .ele(createGDatRec(cabecera))
+    .ele(createGDatRec(venta))
     .up() // Uso de la función modularizada para gDatRec
     .up() //cierre gDatGralOpe
     // Campos específicos por tipo de Documento Electrónico
@@ -117,17 +58,17 @@ exterior
     .ele(createGCamFE())
     .up() //Campos que componen la FE
     //Campos que describen la condición de la operación
-    .ele(createGCamCond(cabecera.formaVenta, cabecera.importeTotal))
+    .ele(createGCamCond(venta.formaVenta, roundTo8Decimals(venta.importeTotal)))
     .up()
     //Campos que describen los ítems de la operación
-    .ele(detalles.map(item => createGCamItem(item)))
+    .ele(venta.detalles.map(item => createGCamItem(item)))
     .up()
     .up()
     //Campos de subtotales y totales
-    .ele(createGTotSub(cabecera))
+    .ele(createGTotSub(venta))
     .up()
     .up() //DE
-    .ele(createGCamFuFD(carQRValue))
+    .ele(createGCamFuFD())
     .up();
 
   // Return the XML as a string
@@ -139,19 +80,22 @@ const formatDateToISO = date => {
   return dateObj.toISOString().split(".")[0]; // Elimina los milisegundos
 };
 
-const createGCamFuFD = carQR => {
+const createGCamFuFD = () => {
   return {
     gCamFuFD: {
-      dCarQR: carQR
+      dCarQR: "****************************************************************************************************"
     }
   };
 };
 const createGTotSub = (venta) => {
-  const dTotIVA = venta.importeIva10 + venta.importeIva5;
+  const dTotIVA =  Number(venta.importeIva10) + Number(venta.importeIva5);
   const dBaseGrav5 =(venta.importeIva5 > 0)  ? (venta.importeTotal - venta.importeIva5)  : 0;
   const dBaseGrav10 =(venta.importeIva10 > 0)  ? (venta.importeTotal - venta.importeIva10)  : 0;
-  const dTBasGraIVA =(venta.importeIva5 > 0 || venta.importeIva10 > 0)  ? (venta.importeTotal - (venta.importeIva5 + venta.importeIva10)
-  )  : 0;
+  const dTBasGraIVA =(venta.importeIva5 > 0 || venta.importeIva10 > 0)  ? (venta.importeTotal - dTotIVA  )  : 0;
+/*   console.log('dTotIVA',dTotIVA)
+  console.log('dBaseGrav5',dBaseGrav5)
+  console.log('dBaseGrav10',dBaseGrav10)
+  console.log('dTBasGraIVA',dTBasGraIVA) */
   return {
     gTotSub: {
       dSubExe: "0",
@@ -179,26 +123,9 @@ const createGTotSub = (venta) => {
     }
   };
 };
-function formatDateToLocalISO(date) {
-  const tzOffset = -date.getTimezoneOffset(); // Diferencia en minutos entre UTC y tu zona horaria
-  const offsetHours = Math.floor(tzOffset / 60);
-  const offsetMinutes = tzOffset % 60;
 
-  const localDate = new Date(date.getTime() + tzOffset * 60000);
-  const isoString = localDate.toISOString();
-
-  // Agregar el offset en formato ±HH:MM
-  const sign = tzOffset >= 0 ? "+" : "-";
-  const formattedOffset =
-    sign +
-    String(Math.abs(offsetHours)).padStart(2, "0") +
-    ":" +
-    String(Math.abs(offsetMinutes)).padStart(2, "0");
-
-  return isoString.replace("Z", formattedOffset).substring(0, 19);
-}
-const createGCamItem = item => {
-  const dBasGravIVA = item.importeIva10 * item.cantidad;
+const createGCamItem = (item) => {
+  //console.log(item)
   return {
     gCamItem: {
       dCodInt: item.variante.codErp,
@@ -224,7 +151,7 @@ const createGCamItem = item => {
         dDesAfecIVA: "Gravado IVA",
         dPropIVA: "100",
         dTasaIVA: "10",
-        dBasGravIVA: roundTo8Decimals(dBasGravIVA), // Ajusta el número de decimales según sea necesario
+        dBasGravIVA: roundTo8Decimals(item.importeIva10 * item.cantidad), // Ajusta el número de decimales según sea necesario
         dLiqIVAItem: roundTo8Decimals(item.importeIva10), // Ajusta el número de decimales según sea necesario
         dBasExe: "0"
       }
@@ -234,12 +161,30 @@ const createGCamItem = item => {
 const roundTo8Decimals = (value) => {  
   const numValue = Number(value);  // Convertir a número
   if (isNaN(numValue)) {
-    console.error('❌ Error: Valor no numérico en roundTo8Decimals:', value);
+    console.error('❌ Error: Valor no numérico en roundTo8Decimals:'+ value+" se cambia a 0");
     return 0;  // Retorna 0 en caso de error
   }
-  console.log('roundTo8Decimals', numValue);
+  //console.log('roundTo8Decimals', numValue);
   return parseFloat(numValue.toFixed(8)); // Redondea a 8 decimales
 };
+const formatDateToLocalISO =(date)=> {
+  const tzOffset = -date.getTimezoneOffset(); // Diferencia en minutos entre UTC y tu zona horaria
+  const offsetHours = Math.floor(tzOffset / 60);
+  const offsetMinutes = tzOffset % 60;
+
+  const localDate = new Date(date.getTime() + tzOffset * 60000);
+  const isoString = localDate.toISOString();
+
+  // Agregar el offset en formato ±HH:MM
+  const sign = tzOffset >= 0 ? "+" : "-";
+  const formattedOffset =
+    sign +
+    String(Math.abs(offsetHours)).padStart(2, "0") +
+    ":" +
+    String(Math.abs(offsetMinutes)).padStart(2, "0");
+
+  return isoString.replace("Z", formattedOffset).substring(0, 19);
+}
 const createGCamCond = (formaVenta, importeTotal) => {
   if (formaVenta.id == 1) {
     // Contado
@@ -280,10 +225,10 @@ const createGCamFE = () => {
     }
   };
 };
-const createGDatRec = cabecera => {
-  const [dRucRec, dDVRec] = cabecera.cliente.nroDocumento.split("-");
-  const iNatRec = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; // 1= contribuyente, 2= no contribuyente
-  const iTiOpe = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2;
+const createGDatRec = (venta) => {
+  const [dRucRec, dDVRec] = venta.cliente.nroDocumento.split("-");
+  const iNatRec = venta.cliente.nroDocumento.includes("-") ? 1 : 2; // 1= contribuyente, 2= no contribuyente
+  const iTiOpe = venta.cliente.nroDocumento.includes("-") ? 1 : 2;
 
   if (iNatRec === 1) {
     // Contribuyente
@@ -296,8 +241,8 @@ const createGDatRec = cabecera => {
         iTiContRec: "2",
         dRucRec: dRucRec,
         dDVRec: dDVRec,
-        dNomRec: cabecera.cliente.razonSocial,
-        dDirRec: cabecera.cliente.direccion,
+        dNomRec: venta.cliente.razonSocial,
+        dDirRec: venta.cliente.direccion,
         dNumCasRec: "0"
       }
     };
@@ -311,85 +256,79 @@ const createGDatRec = cabecera => {
         dDesPaisRe: "Paraguay",
         iTipIDRec: "1",
         dDTipIDRec: "Cédula paraguaya",
-        dNumIDRec: cabecera.cliente.nroDocumento,
-        dNomRec: cabecera.cliente.razonSocial,
-        dDirRec: cabecera.cliente.direccion,
+        dNumIDRec: venta.cliente.nroDocumento,
+        dNomRec: venta.cliente.razonSocial,
+        dDirRec: venta.cliente.direccion,
         dNumCasRec: "0"
       }
     };
   }
 };
 const createGEmis = (
-  cabecera,
-  actividades,
-  tipoContribuyente,
-  departamento,
-  distrito,
-  ciudad
+  empresa ,sucursal
 ) => {
-  const [nroDocumentoEmp, digitoEmpr] = cabecera.empresa.ruc.split("-");
+  const [nroDocumentoEmp, digitoEmpr] = empresa.ruc.split("-");
   const emisElement = {
     gEmis: {
       dRucEm: nroDocumentoEmp,
       dDVEmi: digitoEmpr,
-      iTipCont: tipoContribuyente.id,
-      dNomEmi: cabecera.empresa.razonSocial,
-      dNomFanEmi: cabecera.empresa.nombreFantasia,
-      dDirEmi: cabecera.sucursal.direccion,
-      dNumCas: cabecera.empresa.numCasa,
-      cDepEmi: departamento.codigo,
-      dDesDepEmi: departamento.descripcion,
-      cDisEmi: distrito.codigo,
-      dDesDisEmi: distrito.descripcion,
-      cCiuEmi: ciudad.codigo,
-      dDesCiuEmi: ciudad.descripcion,
-      dTelEmi: cabecera.empresa.telefono,
-      dEmailE: cabecera.empresa.email,
+      iTipCont: empresa.tipoContribuyente.codigo,
+      dNomEmi:  empresa.razonSocial,
+      dNomFanEmi:  empresa.nombreFantasia,
+      dDirEmi:  sucursal.direccion,
+      dNumCas:  empresa.numCasa,
+      cDepEmi: empresa.departamento.codigo,
+      dDesDepEmi: empresa.departamento.descripcion,
+      cDisEmi: empresa.ciudad.codigo,
+      dDesDisEmi: empresa.ciudad.descripcion,
+      cCiuEmi: empresa.barrio.codigo,
+      dDesCiuEmi: empresa.barrio.descripcion,
+      dTelEmi: empresa.telefono,
+      dEmailE: empresa.email,
       dDenSuc: 1, // falta agregar,
-      gActEco: Array.isArray(actividades) ? [...actividades] : [],
+      gActEco: Array.isArray(empresa.actividades) ? [...empresa.actividades] : [],
     }
   };
  
 
   return emisElement;
 };
-const createGOpeCom = (tipoTransacciones, tipoImpuesto, moneda) => {
+const createGOpeCom = (empresa) => {
   return {
     gOpeCom: {
-      iTipTra: tipoTransacciones.codigo,
-      dDesTipTra: tipoTransacciones.descripcion,
-      dDesTipTra: tipoTransacciones.descripcion,
+      iTipTra: empresa.tipoTransaccion.codigo,
+      dDesTipTra: empresa.tipoTransaccion.descripcion, 
 
-      iTImp: tipoImpuesto.codigo,
-      dDesTImp: "IVA",
-      cMoneOpe: moneda.codigo,
-      dDesMoneOpe: moneda.descripcion
+      iTImp: empresa.tipoImpuesto.codigo,
+      dDesTImp: empresa.tipoImpuesto.descripcion,
+      cMoneOpe: empresa.moneda.codigo,
+      dDesMoneOpe: empresa.moneda.descripcion
     }
   };
 };
 
-const createGOpeDE = (tipoEmision, cabecera) => {
+const createGOpeDE = (tipoEmision, codigoSeguridad) => {
   return {
     gOpeDE: {
       iTipEmi: tipoEmision.codigo,
       dDesTipEmi: tipoEmision.descripcion,
-      dCodSeg: cabecera.codigoSeguridad
+      dCodSeg: codigoSeguridad
     }
   };
 };
-const createGTimb = (cabecera, establecimiento, puntoExp, numero) => {
+const createGTimb = (venta, establecimiento, puntoExp, numero) => {
   return {
     gTimb: {
-      iTiDE: cabecera.tipoDocumento.codigo,
-      dDesTiDE: cabecera.tipoDocumento.descripcion,
-      dNumTim: cabecera.timbrado,
+      iTiDE: venta.tipoDocumento.codigo,
+      dDesTiDE: venta.tipoDocumento.descripcion,
+      dNumTim: venta.timbrado,
       dEst: establecimiento,
       dPunExp: puntoExp,
       dNumDoc: numero,
-      dFeIniT: cabecera.fechaInicio
+      dFeIniT: venta.fechaInicio
     }
   };
 };
 module.exports = {
-  generaXML
+  generarXML
 };

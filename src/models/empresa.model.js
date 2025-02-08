@@ -2,7 +2,8 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../dbconfig");
 const Departamento = require("./departamento.model");
 const Ciudad = require("./ciudad.model");
-const Barrio = require("./barrio.model");
+const Barrio = require("./barrio.model"); 
+const Moneda = require("./moneda.model");
 
 const Empresa = sequelize.define(
   "Empresa",
@@ -27,12 +28,8 @@ const Empresa = sequelize.define(
     csc: {
       type: DataTypes.STRING(50),
       allowNull: true
-    },
-    moneda: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    codigoMoneda: {
+    }, 
+    codMoneda: {
       type: DataTypes.STRING,
       allowNull: true
     },
@@ -87,6 +84,16 @@ const Empresa = sequelize.define(
     web: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    generarXml: {
+      type: DataTypes.ENUM("SI", "NO"),
+      allowNull: false,
+      defaultValue: "SI"
+    },
+    envioXml: {
+      type: DataTypes.ENUM("SI", "NO"),
+      allowNull: false,
+      defaultValue: "SI"
     }
   },
   {
@@ -96,16 +103,28 @@ const Empresa = sequelize.define(
   }
 );
 Empresa.belongsTo(Departamento, {
-  Empresa: "codDepartamento",
-  targetKey: "codigo"
+  foreignKey: "codDepartamento",
+  targetKey: "codigo",
+  as:'departamento'
 });
 Empresa.belongsTo(Ciudad, {
   foreignKey: "codCiudad",
-  targetKey: "codigo"
+  targetKey: "codigo",
+  as:'ciudad'
 });
 Empresa.belongsTo(Barrio, {
   foreignKey: "codBarrio",
-  targetKey: "codigo"
+  targetKey: "codigo",
+  as:'barrio'
 });
+Empresa.belongsTo(Moneda, {
+  foreignKey: "codMoneda",
+  targetKey: "codigo",
+  as:'moneda'
+});
+ 
+
+
+ 
 
 module.exports = Empresa;

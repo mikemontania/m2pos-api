@@ -87,13 +87,16 @@ const recibe = (id, xmlfirmado, empresaId,   config = {}) =>{
             };
  
             // Solo devolverá un certificado por empresa
-            const certificados = await Certificado.findAll({ where: empresaId });
-            if (certificados.length === 0)
+ 
+            let certificado = await Certificado.findOne({ where: { empresaId } });
+
+            console.log('certificados,',certificado)
+            if (!certificado)
               throw new Error("No se encontró un certificado activo para la empresa");
-            console.log("Certificado", certificados[0]);
-            console.log(certificados[0].passphrase);
-            const p12Path = `./src/certificado/${certificados[0].path}`;
-            const p12Password = decryptPassphrase(certificados[0].passphrase);
+            console.log("Certificado", certificado );
+            console.log(certificado.passphrase);
+            const p12Path = `./src/certificado/${certificado.path}`;
+            const p12Password = decryptPassphrase(certificado.passphrase);
         
             const { cert, key } = abrirCertificado(p12Path, p12Password);
 
@@ -159,6 +162,7 @@ const recibe = (id, xmlfirmado, empresaId,   config = {}) =>{
             axios
                 .post('https://sifen-test.set.gov.py/de/ws/async/recibe-lote.wsdl', soapXMLData,headers )
                 .then((respuestaSuccess) => {
+                    console.log(respuestaSuccess)
                     if (respuestaSuccess.status === 200) {
                         const parser = new xml2js.Parser({ explicitArray: false });
 
@@ -332,6 +336,7 @@ const recibeLote = (id, xmls, empresaId,   config = {}) =>{
     });
 }
  
+
 const recibeLoteSifen = async (id, xmlSigned ,  empresaId ) =>{
   
             const certificados = await Certificado.findAll({ where: empresaId });

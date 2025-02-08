@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const varianteController = require('../controllers/variante-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 // Rutas para Variante con validación de JWT 
 router.get('/descripcion', validarJWT,  varianteController.findDescripcion); 
 router.get('/findAllDesc/:page/:pageSize/:descripcion?', validarJWT,  varianteController.findAllDesc); 

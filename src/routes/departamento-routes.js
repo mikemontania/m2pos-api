@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const departamentoController = require('../controllers/departamento-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 
 // Ruta para buscar un departamento por ID

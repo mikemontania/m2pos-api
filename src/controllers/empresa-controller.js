@@ -26,13 +26,16 @@ const update= async (req, res) => {
     const { id } = req.params;
     const { razonSocial,  ruc, telefono, email, nombreFantasia,
       moneda,
-      codigoMoneda,
+      codMoneda,
       simboloMoneda,
       tipoContId,
       numCasa,
       codDepartamento,
       codCiudad,
-      codBarrio, web } = req.body;
+      codBarrio, 
+      web,
+      generarXml, 
+      envioXml} = req.body;
 
     // Buscar la empresa por su ID
     const empresa = await Empresa.findByPk(id);
@@ -42,13 +45,16 @@ const update= async (req, res) => {
       // Actualizar los campos de la empresa
       await empresa.update({ razonSocial, ruc, telefono, email,nombreFantasia,
         moneda,
-        codigoMoneda,
+        codMoneda,
         simboloMoneda,
         tipoContId,
         numCasa,
         codDepartamento,
         codCiudad,
-        codBarrio,  web });
+        codBarrio,  
+        web,
+        generarXml,
+         envioXml });
 
       // Responder con la empresa actualizada
       res.status(200).json(empresa);

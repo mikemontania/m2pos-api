@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const ventaXmlController = require('../controllers/ventaXml-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 
 const router = Router();
 

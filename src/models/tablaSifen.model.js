@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../../dbconfig'); 
-const Empresa = require('./empresa.model');
+const { sequelize } = require('../../dbconfig');  
 
 const TablaSifen  = sequelize.define('TablaSifen ', {
   id: {
@@ -8,11 +7,7 @@ const TablaSifen  = sequelize.define('TablaSifen ', {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false
-  }, 
-  empresaId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  }, 
+  },  
   codigo: {
     type: DataTypes.STRING(15),
     allowNull: false
@@ -36,9 +31,6 @@ const TablaSifen  = sequelize.define('TablaSifen ', {
   timestamps: false,
   underscored: true, // Convierte automáticamente a snake_case
 });
-TablaSifen.belongsTo(Empresa, {
-  foreignKey: 'empresaId',
-  targetKey: 'id',
-});
+ 
  
 module.exports = TablaSifen;

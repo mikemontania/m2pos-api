@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const empresaController = require('../controllers/empresa-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { auditMiddleware } = require('../middlewares/auditMiddleware');
+
 const router = Router();
 
 // Ruta para buscar una categoría por ID

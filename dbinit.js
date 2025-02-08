@@ -22,19 +22,23 @@ const Banco = require("./src/models/banco.model");
 const MedioPago = require("./src/models/medioPago.model");
 const TablaSifen = require("./src/models/tablaSifen.model");
 const Certificado = require("./src/models/certificado.model");
-const { encryptPassphrase,decryptPassphrase } = require('./src/helpers/encript-helper');
-const   {departamentos} = require('./src/json/departamentos.json');
-const   {ciudades} = require('./src/json/ciudades.json');
-const   {barrios} = require('./src/json/barrios.json');
+const {
+  encryptPassphrase,
+  decryptPassphrase
+} = require("./src/helpers/encript-helper");
+const { departamentos } = require("./src/json/departamentos.json");
+const { ciudades } = require("./src/json/ciudades.json");
+const { barrios } = require("./src/json/barrios.json");
+const { monedas } = require("./src/json/monedas.json");
 const Actividad = require("./src/models/actividad.model");
 const EmpresaActividad = require("./src/models/empresaActividad.model");
- 
+const Moneda = require("./src/models/moneda.model");
 
 const populateDB = async () => {
   console.log("populateDB");
   if (process.env.DB_INIT == "true") {
     console.log("Inicializando registros en DB!");
-    
+
     if (departamentos && departamentos.length > 0) {
       await Departamento.bulkCreate(departamentos, { ignoreDuplicates: true });
     }
@@ -46,342 +50,310 @@ const populateDB = async () => {
     if (barrios && barrios.length > 0) {
       await Barrio.bulkCreate(barrios, { ignoreDuplicates: true });
     }
+    if (monedas && monedas.length > 0) {
+      await Moneda.bulkCreate(monedas, { ignoreDuplicates: true });
+    }
 
-    // Crear empresa
-    const empresa = await Empresa.create({
-      razonSocial: "DE generado en ambiente de prueba - sin valor comercial ni fiscal", 
-      nombreFantasia: "CAVALLARO S.A.C.e.I", 
-      ruc: "80003110-5", // RUC de ejemplo
-      moneda: "Guarani",
-      simboloMoneda: "Gs",
-      codigoMoneda: "PYG",
-      idCSC: "1", 
-      csc: "ABCD0000000000000000000000000000", 
-      tipoContId: 2,
-      tipoTransaId: 1,
-      tipoImpId: 1,
-      numCasa:1,
-      codDepartamento: 12,
-      codCiudad: 153,
-      codBarrio: 3568,
-      telefono: "021578603",
-      email: "info@cavallaro.com.py",
-      web: "www.cavallaro.com.py",
-      img:'grupocavallaro3.png'
-    });
-
-
-// Crear actividades si no existen y asociarlas a la empresa
-const actividades = [
-  { codigo: "20130", descripcion: "FABRICACIÓN DE PLÁSTICOS Y CAUCHO SINTÉTICO EN FORMAS PRIMARIAS" },
-  { codigo: "20931", descripcion: "FABRICACIÓN DE JABONES, DETERGENTES Y PREPARADOS DE LIMPIEZA" }
-];
-
-for (const actividadData of actividades) {
-
-  let  actividad = await Actividad.create(actividadData);
-      
-  await EmpresaActividad.create({ empresaId:empresa.id, actividadId: actividad.id });
- 
-}
-
-
-    const encriptado =encryptPassphrase('q3rjp3%0')
-    const certificado = await Certificado.create({
-      empresaId :empresa.id,
-      path:'firma_cavallaro.p12',
-      passphrase: encriptado,
-      validoDesde:'2024-05-08',
-      validoHasta:'2025-05-08',
-      activo:true
-    })
-
-
-
-    const iTiDE1 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiDE1 = await TablaSifen.create({ 
       codigo: "1",
       descripcion: "Factura electrónica",
       tabla: "iTiDE"
     });
-    const iTiDE2 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiDE2 = await TablaSifen.create({ 
       codigo: "8",
       descripcion: "Comprobante de retención electrónico",
       tabla: "iTiDE"
     });
-    const iTiDE3 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiDE3 = await TablaSifen.create({ 
       codigo: "2",
       descripcion: "Factura electrónica de exportación",
       tabla: "iTiDE"
     });
-    const iTiDE4 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiDE4 = await TablaSifen.create({ 
       codigo: "3",
       descripcion: "Factura electrónica de importación",
       tabla: "iTiDE"
     });
-    const iTiDE5 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiDE5 = await TablaSifen.create({ 
       codigo: "4",
       descripcion: "Autofactura electrónica",
       tabla: "iTiDE"
     });
-    const iTiDE6 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiDE6 = await TablaSifen.create({ 
       codigo: "5",
       descripcion: "Nota de crédito electrónica",
       tabla: "iTiDE"
     });
-    const iTiDE7 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiDE7 = await TablaSifen.create({ 
       codigo: "6",
       descripcion: "Nota de débito electrónica",
       tabla: "iTiDE"
     });
-    const iTiDE8 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiDE8 = await TablaSifen.create({ 
       codigo: "7",
       descripcion: "Nota de remisión electrónica",
       tabla: "iTiDE"
     });
 
-    const iTipTra1 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra1 = await TablaSifen.create({ 
       codigo: "1",
       descripcion: "Venta de mercadería",
       tabla: "iTipTra"
     });
-    const iTipTra2 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra2 = await TablaSifen.create({ 
       codigo: "2",
       descripcion: "Prestación de servicios",
       tabla: "iTipTra"
     });
-    const iTipTra3 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra3 = await TablaSifen.create({ 
       codigo: "3",
       descripcion: "Mixto (Venta de mercadería y servicios)",
       tabla: "iTipTra"
     });
-    const iTipTra4 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra4 = await TablaSifen.create({ 
       codigo: "4",
       descripcion: "Venta de activo fijo",
       tabla: "iTipTra"
     });
-    const iTipTra5 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra5 = await TablaSifen.create({ 
       codigo: "5",
       descripcion: "Venta de divisas",
       tabla: "iTipTra"
     });
-    const iTipTra6 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra6 = await TablaSifen.create({ 
       codigo: "6",
       descripcion: "Compra de divisas",
       tabla: "iTipTra"
     });
-    const iTipTra7 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra7 = await TablaSifen.create({ 
       codigo: "7",
       descripcion: "Promoción o entrega de muestras",
       tabla: "iTipTra"
     });
-    const iTipTra8 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra8 = await TablaSifen.create({ 
       codigo: "8",
       descripcion: "Donación",
       tabla: "iTipTra"
     });
-    const iTipTra9 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra9 = await TablaSifen.create({ 
       codigo: "9",
       descripcion: "Anticipo",
       tabla: "iTipTra"
     });
-    const iTipTra10 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra10 = await TablaSifen.create({ 
       codigo: "10",
       descripcion: "Compra de productos",
       tabla: "iTipTra"
     });
-    const iTipTra11 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra11 = await TablaSifen.create({ 
       codigo: "11",
       descripcion: "Compra de servicios",
       tabla: "iTipTra"
     });
-    const iTipTra12 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra12 = await TablaSifen.create({ 
       codigo: "12",
       descripcion: "Venta de crédito fiscal",
       tabla: "iTipTra"
     });
-    const iTipTra13 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipTra13 = await TablaSifen.create({ 
       codigo: "13",
       descripcion: "Muestras médicas",
       tabla: "iTipTra"
     });
 
-    const iTimp1 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTimp1 = await TablaSifen.create({ 
       codigo: "1",
       descripcion: "IVA",
       tabla: "iTImp"
     });
-    const iTimp2 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTimp2 = await TablaSifen.create({ 
       codigo: "2",
       descripcion: "ISC",
       tabla: "iTImp"
     });
-    const iTimp3 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTimp3 = await TablaSifen.create({ 
       codigo: "3",
       descripcion: "Renta",
       tabla: "iTImp"
     });
-    const iTimp4 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTimp4 = await TablaSifen.create({ 
       codigo: "4",
       descripcion: "Ninguno",
       tabla: "iTImp"
     });
-    const iTimp5 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTimp5 = await TablaSifen.create({ 
       codigo: "5",
       descripcion: "IVA - Renta",
       tabla: "iTImp"
     });
 
-    const iTipCont1 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipCont1 = await TablaSifen.create({ 
       codigo: "1",
       descripcion: "Persona Física",
       tabla: "iTipCont"
     });
-    const iTipCont2 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTipCont2 = await TablaSifen.create({ 
       codigo: "2",
       descripcion: "Persona Jurídica",
       tabla: "iTipCont"
     });
 
-    const cDepEmi = await TablaSifen.create({
-      empresaId: empresa.id,
+    const cDepEmi = await TablaSifen.create({ 
       codigo: "12",
       descripcion: "CENTRAL",
       tabla: "cDepEmi"
     });
-    const cDisEmi = await TablaSifen.create({
-      empresaId: empresa.id,
+    const cDisEmi = await TablaSifen.create({ 
       codigo: "153",
       descripcion: "CAPIATA",
       tabla: "cDisEmi"
     });
-    const cCiuEmi = await TablaSifen.create({
-      empresaId: empresa.id,
+    const cCiuEmi = await TablaSifen.create({ 
       codigo: "3568",
       descripcion: "CAPIATA",
       tabla: "cCiuEmi"
     });
 
-    const iNatRec1 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iNatRec1 = await TablaSifen.create({ 
       codigo: "1",
       descripcion: "contribuyente",
       tabla: "iNatRec"
     });
-    const iNatRec2 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iNatRec2 = await TablaSifen.create({ 
       codigo: "2",
       descripcion: "no contribuyente",
       tabla: "iNatRec"
     });
 
-    const iTiOpe1 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiOpe1 = await TablaSifen.create({ 
       codigo: "1",
       descripcion: "B2B",
       tabla: "iTiOpe"
     });
-    const iTiOpe2 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiOpe2 = await TablaSifen.create({ 
       codigo: "2",
       descripcion: "B2C",
       tabla: "iTiOpe"
     });
     const iTiOpe3 = await TablaSifen.create({
-      empresaId: empresa.id,
+     
       codigo: "3",
       descripcion: "B2G",
       tabla: "iTiOpe"
     });
-    const iTiOpe4 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiOpe4 = await TablaSifen.create({ 
       codigo: "4",
       descripcion: "B2F",
       tabla: "iTiOpe"
     });
 
-    const iTiContRec1 = await TablaSifen.create({
-      empresaId: empresa.id,
+    const iTiContRec1 = await TablaSifen.create({ 
       codigo: "1",
       descripcion: "Persona Física",
       tabla: "iTiContRec"
     });
     const iTiContRec2 = await TablaSifen.create({
-      empresaId: empresa.id,
       codigo: "2",
       descripcion: "Persona Jurídica",
       tabla: "iTiContRec"
     });
 
     const iIndPres2 = await TablaSifen.create({
-      empresaId: empresa.id,
       codigo: "1",
       descripcion: "Operación presencial",
       tabla: "iIndPres"
     });
     const iIndPres3 = await TablaSifen.create({
-      empresaId: empresa.id,
       codigo: "2",
       descripcion: "Operación electrónica",
       tabla: "iIndPres"
     });
     const iIndPres1 = await TablaSifen.create({
-      empresaId: empresa.id,
       codigo: "3",
       descripcion: "Operación telemarketing",
       tabla: "iIndPres"
     });
     const iIndPres4 = await TablaSifen.create({
-      empresaId: empresa.id,
       codigo: "4",
       descripcion: "Venta a domicilio",
       tabla: "iIndPres"
     });
     const iIndPres5 = await TablaSifen.create({
-      empresaId: empresa.id,
       codigo: "5",
       descripcion: "Operación bancaria",
       tabla: "iIndPres"
     });
     const iIndPres6 = await TablaSifen.create({
-      empresaId: empresa.id,
       codigo: "6",
       descripcion: "Operación cíclica",
       tabla: "iIndPres"
     });
     const iIndPres8 = await TablaSifen.create({
-      empresaId: empresa.id,
       codigo: "9",
       descripcion: "Otro",
       tabla: "iIndPres"
     });
+
+
+    // Crear empresa
+    const empresa = await Empresa.create({
+      razonSocial:
+        "DE generado en ambiente de prueba - sin valor comercial ni fiscal",
+      nombreFantasia: "CAVALLARO S.A.C.e.I",
+      ruc: "80003110-5", // RUC de ejemplo
+      simboloMoneda: "Gs",
+      codMoneda: "PYG",
+      idCSC: "1",
+      csc: "ABCD0000000000000000000000000000",
+      tipoContId: 2,
+      tipoTransaId: 1,
+      tipoImpId: 1,
+      numCasa: 1,
+      codDepartamento: 12,
+      codCiudad: 153,
+      codBarrio: 3568,
+      telefono: "021578603",
+      email: "info@cavallaro.com.py",
+      web: "www.cavallaro.com.py",
+      img: "grupocavallaro3.png",
+      generarXml: "SI",
+      envioXml: "SI",
+    });
+
+    // Crear actividades si no existen y asociarlas a la empresa
+    const actividades = [
+      {
+        codigo: "20130",
+        descripcion:
+          "FABRICACIÓN DE PLÁSTICOS Y CAUCHO SINTÉTICO EN FORMAS PRIMARIAS"
+      },
+      {
+        codigo: "20931",
+        descripcion:
+          "FABRICACIÓN DE JABONES, DETERGENTES Y PREPARADOS DE LIMPIEZA"
+      }
+    ];
+
+    for (const actividadData of actividades) {
+      let actividad = await Actividad.create(actividadData);
+
+      await EmpresaActividad.create({
+        empresaId: empresa.id,
+        actividadId: actividad.id
+      });
+    }
+
+    const encriptado = encryptPassphrase("q3rjp3%0");
+    const certificado = await Certificado.create({
+      empresaId: empresa.id,
+      path: "firma_cavallaro.p12",
+      passphrase: encriptado,
+      validoDesde: "2024-05-08",
+      validoHasta: "2025-05-08",
+      activo: true
+    });
+
+   
     const sucursal = await Sucursal.create({
       descripcion: "CAPIATA",
       direccion: "CARRETERA RUTA MCAL. FRANCISCO SOLANO LOPEZ",
@@ -399,7 +371,7 @@ for (const actividadData of actividades) {
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
-    
+
     const sucursal2 = await Sucursal.create({
       descripcion: "MARIANO ROQUE ALONSO",
       direccion: "RUTA TRANSCHACO C/ HERNANDARIAS 714",
@@ -408,7 +380,7 @@ for (const actividadData of actividades) {
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
-    
+
     const sucursal3 = await Sucursal.create({
       descripcion: "JULIO CORREA",
       direccion: "485 ENTRE TTE CESAR VELAZQUEZ Y DOMINGO PORTILLO",
@@ -417,7 +389,7 @@ for (const actividadData of actividades) {
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
-    
+
     const sucursal4 = await Sucursal.create({
       descripcion: "MBURUCUYA",
       direccion: "AVDA. SANTISIMA TRINIDAD E/ DR. RAMON ZUBIZARRETA",
@@ -426,69 +398,321 @@ for (const actividadData of actividades) {
       empresaId: empresa.id,
       email: "sucursal@example.com"
     });
-    
- 
 
-    const banco1 = await Banco.create({descripcion: 'Banco Rio S.A.E.C.A', activo: true, empresaId: empresa.id });
-    const banco2 = await Banco.create({descripcion: 'Solar Banco S.A.E.', activo: true, empresaId: empresa.id });
-    const banco3 = await Banco.create({descripcion: 'Banco Nacional de Fomento (BNF)', activo: true, empresaId: empresa.id });
-    const banco4 = await Banco.create({descripcion: 'Interfisa Banco', activo: true, empresaId: empresa.id });
-    const banco5 = await Banco.create({descripcion: 'Banco Atlas S.A.', activo: true, empresaId: empresa.id });
-    const banco6 = await Banco.create({descripcion: 'BANCOP S.A.', activo: true, empresaId: empresa.id });
-    const banco7 = await Banco.create({descripcion: 'Visión Banco S.A.E.C.A.', activo: true, empresaId: empresa.id });
-    const banco8 = await Banco.create({descripcion: 'Sudameris Bank S.A.E.C.A.', activo: true, empresaId: empresa.id });
-    const banco9 = await Banco.create({descripcion: 'Banco GNB - Paraguay', activo: true, empresaId: empresa.id });
-    const banco10 = await Banco.create({descripcion: 'Banco Itaú Paraguay S.A.', activo: true, empresaId: empresa.id });
-    const banco11 = await Banco.create({descripcion: 'Banco Familiar S.A.E.C.A.', activo: true, empresaId: empresa.id });
-    const banco12 = await Banco.create({descripcion: 'Banco Continental S.A.E.C.A.', activo: true, empresaId: empresa.id });
-    const banco13 = await Banco.create({descripcion: 'Banco BASA', activo: true, empresaId: empresa.id });
-    const banco14 = await Banco.create({descripcion: 'Finexpar S.A.E.C.A.', activo: true, empresaId: empresa.id });
-    const banco15 = await Banco.create({descripcion: 'FINANCIERA FIC S.A.E.C.A.', activo: true, empresaId: empresa.id });
-    const banco16 = await Banco.create({descripcion: 'Tu Financiera', activo: true, empresaId: empresa.id });
-    const banco17 = await Banco.create({descripcion: 'Financiera Paraguayo Japonesa S.A.E.C.A', activo: true, empresaId: empresa.id });
-    const banco18 = await Banco.create({descripcion: 'Financiera Ueno', activo: true, empresaId: empresa.id });
-    const banco19 = await Banco.create({descripcion: 'Coop. del Sur Ltda.', activo: true, empresaId: empresa.id });
-    const banco20 = await Banco.create({descripcion: 'Coop. 21 de Setiembre', activo: true, empresaId: empresa.id });
-    const banco21 = await Banco.create({descripcion: 'Coop. San Ignacio', activo: true, empresaId: empresa.id });
-    const banco22 = await Banco.create({descripcion: 'Coop. Alemán Concordia Ltda.', activo: true, empresaId: empresa.id });
-    const banco23 = await Banco.create({descripcion: 'Coop. Mborayhu Ltda.', activo: true, empresaId: empresa.id });
-    const banco24 = await Banco.create({descripcion: 'Coop. Nazareth Ltda.', activo: true, empresaId: empresa.id });
-    const banco25 = await Banco.create({descripcion: 'Coop. Coodeñe Ltda.', activo: true, empresaId: empresa.id });
-    const banco26 = await Banco.create({descripcion: 'Coop. Ñemby Ltda.', activo: true, empresaId: empresa.id });
-    const banco27 = await Banco.create({descripcion: 'Coop. Judicial Ltda.', activo: true, empresaId: empresa.id });
-    const banco28 = await Banco.create({descripcion: 'Coop. Mercado 4 Ltda.', activo: true, empresaId: empresa.id });
-    const banco29 = await Banco.create({descripcion: 'Coop. Multiactiva 8 de Marzo Ltda.', activo: true, empresaId: empresa.id });
-    const banco30 = await Banco.create({descripcion: 'Coop. San Juan Bautista Ltda.', activo: true, empresaId: empresa.id });
-    const banco31 = await Banco.create({descripcion: 'Coop. Universitaria Ltda.', activo: true, empresaId: empresa.id });
-    const banco32 = await Banco.create({descripcion: 'Coop. Coomecipar Ltda.', activo: true, empresaId: empresa.id });
-    const banco33 = await Banco.create({descripcion: 'COPACONS Ltda.', activo: true, empresaId: empresa.id });
-    const banco34 = await Banco.create({descripcion: 'Coop. Medalla Milagrosa Ltda.', activo: true, empresaId: empresa.id });
-    const banco35 = await Banco.create({descripcion: 'Coop. Mburicao Ltda.', activo: true, empresaId: empresa.id });
-    const banco36 = await Banco.create({descripcion: 'Coop. Lambaré Ltda.', activo: true, empresaId: empresa.id });
-    const banco37 = await Banco.create({descripcion: 'C.O.F.A.N.', activo: true, empresaId: empresa.id });
-    const banco38 = await Banco.create({descripcion: 'Coop. Chortitzer Ltda.', activo: true, empresaId: empresa.id });
-    const banco39 = await Banco.create({descripcion: 'Coop. Neuland Ltda.', activo: true, empresaId: empresa.id });
-    const banco40 = await Banco.create({descripcion: 'Coop. Raúl Peña Ltda.', activo: true, empresaId: empresa.id });
-    const banco41 = await Banco.create({descripcion: 'Coop. Naranjal Ltda.', activo: true, empresaId: empresa.id });
-    const banco42 = await Banco.create({descripcion: 'Coop. Colonias Unidas Ltda.', activo: true, empresaId: empresa.id });
-    const banco43 = await Banco.create({descripcion: 'Coop. Fernheim Ltda.', activo: true, empresaId: empresa.id });
-    
-    const medioPago1 = await MedioPago.create({descripcion: 'EFECTIVO', activo: true,predeterminado:true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:false,tieneTipo:false,esObsequio:false});
-    const medioPago2 = await MedioPago.create({descripcion: 'TARJETA', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:true,tieneTipo:false,esObsequio:false});
-    const medioPago3 = await MedioPago.create({descripcion: 'VALE EMPLEADOS', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:false,tieneTipo:false,esObsequio:false});
-    const medioPago4 = await MedioPago.create({descripcion: 'RETENCION', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:true,tieneTipo:false,esObsequio:false});
-    const medioPago5 = await MedioPago.create({descripcion: 'CHEQUE DIA', activo: true, empresaId: empresa.id ,esCheque:true,tieneBanco:true,tieneRef:true,tieneTipo:false,esObsequio:false});
-    const medioPago6 = await MedioPago.create({descripcion: 'CHEQUE DIFERIDO', activo: true, empresaId: empresa.id ,esCheque:true,tieneBanco:true,tieneRef:true,tieneTipo:false,esObsequio:false});
-    const medioPago7 = await MedioPago.create({descripcion: 'TRANSFERENCIA', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:true,tieneTipo:false,esObsequio:false});
-    const medioPago8 = await MedioPago.create({descripcion: 'OBSEQUIO', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:false,tieneTipo:false,esObsequio:true});
-    const medioPago9 = await MedioPago.create({descripcion: 'BANCARD QR', activo: true, empresaId: empresa.id ,esCheque:false,tieneBanco:false,tieneRef:true,tieneTipo:false,esObsequio:false});
-    
+    const banco1 = await Banco.create({
+      descripcion: "Banco Rio S.A.E.C.A",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco2 = await Banco.create({
+      descripcion: "Solar Banco S.A.E.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco3 = await Banco.create({
+      descripcion: "Banco Nacional de Fomento (BNF)",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco4 = await Banco.create({
+      descripcion: "Interfisa Banco",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco5 = await Banco.create({
+      descripcion: "Banco Atlas S.A.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco6 = await Banco.create({
+      descripcion: "BANCOP S.A.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco7 = await Banco.create({
+      descripcion: "Visión Banco S.A.E.C.A.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco8 = await Banco.create({
+      descripcion: "Sudameris Bank S.A.E.C.A.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco9 = await Banco.create({
+      descripcion: "Banco GNB - Paraguay",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco10 = await Banco.create({
+      descripcion: "Banco Itaú Paraguay S.A.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco11 = await Banco.create({
+      descripcion: "Banco Familiar S.A.E.C.A.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco12 = await Banco.create({
+      descripcion: "Banco Continental S.A.E.C.A.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco13 = await Banco.create({
+      descripcion: "Banco BASA",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco14 = await Banco.create({
+      descripcion: "Finexpar S.A.E.C.A.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco15 = await Banco.create({
+      descripcion: "FINANCIERA FIC S.A.E.C.A.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco16 = await Banco.create({
+      descripcion: "Tu Financiera",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco17 = await Banco.create({
+      descripcion: "Financiera Paraguayo Japonesa S.A.E.C.A",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco18 = await Banco.create({
+      descripcion: "Financiera Ueno",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco19 = await Banco.create({
+      descripcion: "Coop. del Sur Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco20 = await Banco.create({
+      descripcion: "Coop. 21 de Setiembre",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco21 = await Banco.create({
+      descripcion: "Coop. San Ignacio",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco22 = await Banco.create({
+      descripcion: "Coop. Alemán Concordia Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco23 = await Banco.create({
+      descripcion: "Coop. Mborayhu Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco24 = await Banco.create({
+      descripcion: "Coop. Nazareth Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco25 = await Banco.create({
+      descripcion: "Coop. Coodeñe Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco26 = await Banco.create({
+      descripcion: "Coop. Ñemby Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco27 = await Banco.create({
+      descripcion: "Coop. Judicial Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco28 = await Banco.create({
+      descripcion: "Coop. Mercado 4 Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco29 = await Banco.create({
+      descripcion: "Coop. Multiactiva 8 de Marzo Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco30 = await Banco.create({
+      descripcion: "Coop. San Juan Bautista Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco31 = await Banco.create({
+      descripcion: "Coop. Universitaria Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco32 = await Banco.create({
+      descripcion: "Coop. Coomecipar Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco33 = await Banco.create({
+      descripcion: "COPACONS Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco34 = await Banco.create({
+      descripcion: "Coop. Medalla Milagrosa Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco35 = await Banco.create({
+      descripcion: "Coop. Mburicao Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco36 = await Banco.create({
+      descripcion: "Coop. Lambaré Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco37 = await Banco.create({
+      descripcion: "C.O.F.A.N.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco38 = await Banco.create({
+      descripcion: "Coop. Chortitzer Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco39 = await Banco.create({
+      descripcion: "Coop. Neuland Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco40 = await Banco.create({
+      descripcion: "Coop. Raúl Peña Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco41 = await Banco.create({
+      descripcion: "Coop. Naranjal Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco42 = await Banco.create({
+      descripcion: "Coop. Colonias Unidas Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
+    const banco43 = await Banco.create({
+      descripcion: "Coop. Fernheim Ltda.",
+      activo: true,
+      empresaId: empresa.id
+    });
 
-    const numeracion1 = await Numeracion.create({ 
+    const medioPago1 = await MedioPago.create({
+      descripcion: "EFECTIVO",
+      activo: true,
+      predeterminado: true,
+      empresaId: empresa.id,
+      esCheque: false,
+      tieneBanco: false,
+      tieneRef: false,
+      tieneTipo: false,
+      esObsequio: false
+    });
+    const medioPago2 = await MedioPago.create({
+      descripcion: "TARJETA",
+      activo: true,
+      empresaId: empresa.id,
+      esCheque: false,
+      tieneBanco: false,
+      tieneRef: true,
+      tieneTipo: false,
+      esObsequio: false
+    });
+    const medioPago3 = await MedioPago.create({
+      descripcion: "VALE EMPLEADOS",
+      activo: true,
+      empresaId: empresa.id,
+      esCheque: false,
+      tieneBanco: false,
+      tieneRef: false,
+      tieneTipo: false,
+      esObsequio: false
+    });
+    const medioPago4 = await MedioPago.create({
+      descripcion: "RETENCION",
+      activo: true,
+      empresaId: empresa.id,
+      esCheque: false,
+      tieneBanco: false,
+      tieneRef: true,
+      tieneTipo: false,
+      esObsequio: false
+    });
+    const medioPago5 = await MedioPago.create({
+      descripcion: "CHEQUE DIA",
+      activo: true,
+      empresaId: empresa.id,
+      esCheque: true,
+      tieneBanco: true,
+      tieneRef: true,
+      tieneTipo: false,
+      esObsequio: false
+    });
+    const medioPago6 = await MedioPago.create({
+      descripcion: "CHEQUE DIFERIDO",
+      activo: true,
+      empresaId: empresa.id,
+      esCheque: true,
+      tieneBanco: true,
+      tieneRef: true,
+      tieneTipo: false,
+      esObsequio: false
+    });
+    const medioPago7 = await MedioPago.create({
+      descripcion: "TRANSFERENCIA",
+      activo: true,
+      empresaId: empresa.id,
+      esCheque: false,
+      tieneBanco: false,
+      tieneRef: true,
+      tieneTipo: false,
+      esObsequio: false
+    });
+    const medioPago8 = await MedioPago.create({
+      descripcion: "OBSEQUIO",
+      activo: true,
+      empresaId: empresa.id,
+      esCheque: false,
+      tieneBanco: false,
+      tieneRef: false,
+      tieneTipo: false,
+      esObsequio: true
+    });
+    const medioPago9 = await MedioPago.create({
+      descripcion: "BANCARD QR",
+      activo: true,
+      empresaId: empresa.id,
+      esCheque: false,
+      tieneBanco: false,
+      tieneRef: true,
+      tieneTipo: false,
+      esObsequio: false
+    });
+
+    const numeracion1 = await Numeracion.create({
       empresaId: empresa.id,
       sucursalId: sucursal.id,
       inicioTimbrado: "2022-06-17",
-      finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
+      finTimbrado: "9999-12-31",
+      itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "001-001",
@@ -498,12 +722,13 @@ for (const actividadData of actividades) {
       tipoImpresion: "TICKET",
       activo: true
     });
- 
-    const numeracion2 = await Numeracion.create({ 
+
+    const numeracion2 = await Numeracion.create({
       empresaId: empresa.id,
       sucursalId: sucursal1.id,
       inicioTimbrado: "2022-11-21",
-      finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
+      finTimbrado: "9999-12-31",
+      itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "012-001",
@@ -514,11 +739,12 @@ for (const actividadData of actividades) {
       activo: true
     });
 
-    const numeracion3 = await Numeracion.create({ 
+    const numeracion3 = await Numeracion.create({
       empresaId: empresa.id,
       sucursalId: sucursal2.id,
       inicioTimbrado: "2022-11-21",
-      finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
+      finTimbrado: "9999-12-31",
+      itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "013-001",
@@ -528,11 +754,12 @@ for (const actividadData of actividades) {
       tipoImpresion: "TICKET",
       activo: true
     });
-    const numeracion4 = await Numeracion.create({ 
+    const numeracion4 = await Numeracion.create({
       empresaId: empresa.id,
       sucursalId: sucursal3.id,
       inicioTimbrado: "2022-11-21",
-      finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
+      finTimbrado: "9999-12-31",
+      itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "014-001",
@@ -542,11 +769,12 @@ for (const actividadData of actividades) {
       tipoImpresion: "TICKET",
       activo: true
     });
-    const numeracion5 = await Numeracion.create({ 
+    const numeracion5 = await Numeracion.create({
       empresaId: empresa.id,
       sucursalId: sucursal4.id,
       inicioTimbrado: "2022-11-21",
-      finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
+      finTimbrado: "9999-12-31",
+      itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "015-001",
@@ -556,11 +784,12 @@ for (const actividadData of actividades) {
       tipoImpresion: "TICKET",
       activo: true
     });
-    const numeracion6 = await Numeracion.create({ 
+    const numeracion6 = await Numeracion.create({
       empresaId: empresa.id,
       sucursalId: sucursal.id,
       inicioTimbrado: "2022-11-21",
-      finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
+      finTimbrado: "9999-12-31",
+      itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "011-002",
@@ -570,12 +799,13 @@ for (const actividadData of actividades) {
       tipoImpresion: "TICKET",
       activo: true
     });
-  
-    const numeracion7 = await Numeracion.create({ 
+
+    const numeracion7 = await Numeracion.create({
       empresaId: empresa.id,
       sucursalId: sucursal1.id,
       inicioTimbrado: "2022-11-21",
-      finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
+      finTimbrado: "9999-12-31",
+      itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "012-002",
@@ -586,11 +816,12 @@ for (const actividadData of actividades) {
       activo: true
     });
 
-    const numeracion8 = await Numeracion.create({ 
+    const numeracion8 = await Numeracion.create({
       empresaId: empresa.id,
       sucursalId: sucursal2.id,
       inicioTimbrado: "2022-11-21",
-      finTimbrado: "9999-12-31", itide: iTiDE1.codigo,
+      finTimbrado: "9999-12-31",
+      itide: iTiDE1.codigo,
       numeroInicio: 1,
       numeroFin: 999999999,
       serie: "013-002",
@@ -605,7 +836,7 @@ for (const actividadData of actividades) {
     const userAdmin = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal.id,
-      numPrefId:numeracion1.id,
+      numPrefId: numeracion1.id,
       username: "admin@admin.com",
       usuario: "Miguel Montania",
       password: Bcryptjs.hashSync("123456", salt),
@@ -616,11 +847,10 @@ for (const actividadData of actividades) {
       bloqueado: false
     });
 
-     
     const vendedorCapiata = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal.id,
-      numPrefId:numeracion1.id,
+      numPrefId: numeracion1.id,
       username: "vendedor@capiata.com",
       usuario: "Capiata",
       password: Bcryptjs.hashSync("123456", salt),
@@ -634,7 +864,7 @@ for (const actividadData of actividades) {
     const vendedorLuque = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal1.id,
-      numPrefId:numeracion2.id,
+      numPrefId: numeracion2.id,
       username: "vendedor@luque.com",
       usuario: "Luque",
       password: Bcryptjs.hashSync("123456", salt),
@@ -648,7 +878,7 @@ for (const actividadData of actividades) {
     const vendedorMra = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal2.id,
-      numPrefId:numeracion3.id,
+      numPrefId: numeracion3.id,
       username: "vendedor@mra.com",
       usuario: "Mariano R. Alonso",
       password: Bcryptjs.hashSync("123456", salt),
@@ -661,7 +891,7 @@ for (const actividadData of actividades) {
     const vendedorJCorrea = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal3.id,
-      numPrefId:numeracion4.id,
+      numPrefId: numeracion4.id,
       username: "vendedor@jc.com",
       usuario: "Julio Correa",
       password: Bcryptjs.hashSync("123456", salt),
@@ -674,7 +904,7 @@ for (const actividadData of actividades) {
     const vendedorMburucuya = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal4.id,
-      numPrefId:numeracion5.id,
+      numPrefId: numeracion5.id,
       username: "vendedor@mburucuya.com",
       usuario: "Mburucuya",
       password: Bcryptjs.hashSync("123456", salt),
@@ -684,9 +914,12 @@ for (const actividadData of actividades) {
       activo: true,
       bloqueado: false
     });
- 
 
-    const categoria2 = await Categoria.create({descripcion: "Cuidado de las Prendas", activo: true, empresaId: empresa.id });
+    const categoria2 = await Categoria.create({
+      descripcion: "Cuidado de las Prendas",
+      activo: true,
+      empresaId: empresa.id
+    });
     const categoria3 = await Categoria.create({
       descripcion: "Higiene Personal",
       activo: true,
@@ -697,7 +930,7 @@ for (const actividadData of actividades) {
       activo: true,
       empresaId: empresa.id
     });
-    
+
     const subCategoria1 = await SubCategoria.create({
       descripcion: "Bolsas para residuos",
       categoriaId: categoria1.id,
@@ -5179,7 +5412,8 @@ for (const actividadData of actividades) {
       empresaId: empresa.id
     });
     const formaVenta = await FormaVenta.create({
-      descripcion: "contado",dias:0,
+      descripcion: "contado",
+      dias: 0,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",
@@ -5187,35 +5421,38 @@ for (const actividadData of actividades) {
     });
 
     const formaVenta2 = await FormaVenta.create({
-      descripcion: "credito 15",dias:15,
+      descripcion: "credito 15",
+      dias: 15,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",
       predeterminado: false
     });
     const formaVenta3 = await FormaVenta.create({
-      descripcion: "credito 20",dias:20,
+      descripcion: "credito 20",
+      dias: 20,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",
       predeterminado: false
     });
     const formaVenta4 = await FormaVenta.create({
-      descripcion: "credito 25",dias:25,
+      descripcion: "credito 25",
+      dias: 25,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",
       predeterminado: false
     });
     const formaVenta5 = await FormaVenta.create({
-      descripcion: "credito 30",dias:30,
+      descripcion: "credito 30",
+      dias: 30,
       activo: true,
       empresaId: empresa.id,
       color: "#45A137",
       predeterminado: false
     });
 
- 
     const listaPrecio = await ListaPrecio.create({
       descripcion: "showroom",
       activo: true,
@@ -5223,7 +5460,6 @@ for (const actividadData of actividades) {
       color: "#45A137",
       predeterminado: true
     });
-
 
     const listaPrecio2 = await ListaPrecio.create({
       descripcion: "empleados",
@@ -8258,212 +8494,2211 @@ for (const actividadData of actividades) {
       empresaId: empresa.id
     });
 
-//lista funcionario
-const precio232 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 1,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4470 ,activo: true,  empresaId: empresa.id  });
-const precio233 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 2,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:9831 ,activo: true,  empresaId: empresa.id  });
-const precio234 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 3,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2550 ,activo: true,  empresaId: empresa.id  });
-const precio235 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 4,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:32033 ,activo: true,  empresaId: empresa.id  });
-const precio236 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 5,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:57143 ,activo: true,  empresaId: empresa.id  });
-const precio237 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 6,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5245 ,activo: true,  empresaId: empresa.id  });
-const precio238 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 7,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4578 ,activo: true,  empresaId: empresa.id  });
-const precio239 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 8,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:32000 ,activo: true,  empresaId: empresa.id  });
-const precio240 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 9,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:15152 ,activo: true,  empresaId: empresa.id  });
-const precio241 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 10,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:30345 ,activo: true,  empresaId: empresa.id  });
-const precio242 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 11,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5342 ,activo: true,  empresaId: empresa.id  });
-const precio243 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 12,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5342 ,activo: true,  empresaId: empresa.id  });
-const precio244 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 13,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5342 ,activo: true,  empresaId: empresa.id  });
-const precio245 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 14,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:9724 ,activo: true,  empresaId: empresa.id  });
-const precio246 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 15,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:9724 ,activo: true,  empresaId: empresa.id  });
-const precio247 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 16,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:15152 ,activo: true,  empresaId: empresa.id  });
-const precio248 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 17,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:15152 ,activo: true,  empresaId: empresa.id  });
-const precio249 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 18,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:18510 ,activo: true,  empresaId: empresa.id  });
-const precio250 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 19,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:18510 ,activo: true,  empresaId: empresa.id  });
-const precio251 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 20,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5034 ,activo: true,  empresaId: empresa.id  });
-const precio252 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 21,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5034 ,activo: true,  empresaId: empresa.id  });
-const precio253 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 22,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:30345 ,activo: true,  empresaId: empresa.id  });
-const precio254 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 23,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:30345 ,activo: true,  empresaId: empresa.id  });
-const precio255 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 24,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:27580 ,activo: true,  empresaId: empresa.id  });
-const precio256 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 25,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:27580 ,activo: true,  empresaId: empresa.id  });
-const precio257 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 26,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5034 ,activo: true,  empresaId: empresa.id  });
-const precio258 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 27,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:11494 ,activo: true,  empresaId: empresa.id  });
-const precio259 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 28,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:22701 ,activo: true,  empresaId: empresa.id  });
-const precio260 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 29,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:225250 ,activo: true,  empresaId: empresa.id  });
-const precio261 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 30,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:225250 ,activo: true,  empresaId: empresa.id  });
-const precio262 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 31,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:225250 ,activo: true,  empresaId: empresa.id  });
-const precio263 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 32,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2472 ,activo: true,  empresaId: empresa.id  });
-const precio264 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 33,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1600 ,activo: true,  empresaId: empresa.id  });
-const precio265 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 34,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3752 ,activo: true,  empresaId: empresa.id  });
-const precio266 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 35,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1600 ,activo: true,  empresaId: empresa.id  });
-const precio267 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 36,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3930 ,activo: true,  empresaId: empresa.id  });
-const precio268 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 37,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:6400 ,activo: true,  empresaId: empresa.id  });
-const precio269 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 38,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:13241 ,activo: true,  empresaId: empresa.id  });
-const precio270 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 39,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7700 ,activo: true,  empresaId: empresa.id  });
-const precio271 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 40,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:15200 ,activo: true,  empresaId: empresa.id  });
-const precio272 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 41,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:993 ,activo: true,  empresaId: empresa.id  });
-const precio273 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 42,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:993 ,activo: true,  empresaId: empresa.id  });
-const precio274 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 43,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1896 ,activo: true,  empresaId: empresa.id  });
-const precio275 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 44,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:11756 ,activo: true,  empresaId: empresa.id  });
-const precio276 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 45,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2745 ,activo: true,  empresaId: empresa.id  });
-const precio277 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 46,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3840 ,activo: true,  empresaId: empresa.id  });
-const precio278 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 47,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3962 ,activo: true,  empresaId: empresa.id  });
-const precio279 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 48,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2167 ,activo: true,  empresaId: empresa.id  });
-const precio280 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 49,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2167 ,activo: true,  empresaId: empresa.id  });
-const precio281 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 50,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2167 ,activo: true,  empresaId: empresa.id  });
-const precio282 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 51,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:20679 ,activo: true,  empresaId: empresa.id  });
-const precio283 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 52,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:20679 ,activo: true,  empresaId: empresa.id  });
-const precio284 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 53,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:22177 ,activo: true,  empresaId: empresa.id  });
-const precio285 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 54,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:192000 ,activo: true,  empresaId: empresa.id  });
-const precio286 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 55,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2097 ,activo: true,  empresaId: empresa.id  });
-const precio287 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 56,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2097 ,activo: true,  empresaId: empresa.id  });
-const precio288 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 57,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2097 ,activo: true,  empresaId: empresa.id  });
-const precio289 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 58,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2097 ,activo: true,  empresaId: empresa.id  });
-const precio290 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 59,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1545 ,activo: true,  empresaId: empresa.id  });
-const precio291 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 60,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1545 ,activo: true,  empresaId: empresa.id  });
-const precio292 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 61,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1545 ,activo: true,  empresaId: empresa.id  });
-const precio293 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 62,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1545 ,activo: true,  empresaId: empresa.id  });
-const precio294 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 63,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1545 ,activo: true,  empresaId: empresa.id  });
-const precio295 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 64,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1545 ,activo: true,  empresaId: empresa.id  });
-const precio296 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 65,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4450 ,activo: true,  empresaId: empresa.id  });
-const precio297 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 66,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4450 ,activo: true,  empresaId: empresa.id  });
-const precio298 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 67,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4450 ,activo: true,  empresaId: empresa.id  });
-const precio299 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 68,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:207000 ,activo: true,  empresaId: empresa.id  });
-const precio300 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 69,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:41000 ,activo: true,  empresaId: empresa.id  });
-const precio301 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 70,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:41000 ,activo: true,  empresaId: empresa.id  });
-const precio302 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 71,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:67000 ,activo: true,  empresaId: empresa.id  });
-const precio303 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 72,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7200 ,activo: true,  empresaId: empresa.id  });
-const precio304 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 73,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:67000 ,activo: true,  empresaId: empresa.id  });
-const precio305 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 74,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3320 ,activo: true,  empresaId: empresa.id  });
-const precio306 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 75,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1570 ,activo: true,  empresaId: empresa.id  });
-const precio307 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 76,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3320 ,activo: true,  empresaId: empresa.id  });
-const precio308 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 77,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:21875 ,activo: true,  empresaId: empresa.id  });
-const precio309 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 78,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7200 ,activo: true,  empresaId: empresa.id  });
-const precio310 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 79,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:21875 ,activo: true,  empresaId: empresa.id  });
-const precio311 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 80,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1570 ,activo: true,  empresaId: empresa.id  });
-const precio312 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 81,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:83000 ,activo: true,  empresaId: empresa.id  });
-const precio313 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 82,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:1329 ,activo: true,  empresaId: empresa.id  });
-const precio314 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 83,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3408 ,activo: true,  empresaId: empresa.id  });
-const precio315 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 84,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5707 ,activo: true,  empresaId: empresa.id  });
-const precio316 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 85,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:10881 ,activo: true,  empresaId: empresa.id  });
-const precio317 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 86,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3408 ,activo: true,  empresaId: empresa.id  });
-const precio318 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 87,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5707 ,activo: true,  empresaId: empresa.id  });
-const precio319 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 88,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:10881 ,activo: true,  empresaId: empresa.id  });
-const precio320 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 89,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:27580 ,activo: true,  empresaId: empresa.id  });
-const precio321 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 90,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:27580 ,activo: true,  empresaId: empresa.id  });
-const precio322 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 91,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:27580 ,activo: true,  empresaId: empresa.id  });
-const precio323 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 92,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:6826 ,activo: true,  empresaId: empresa.id  });
-const precio324 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 93,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:6826 ,activo: true,  empresaId: empresa.id  });
-const precio325 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 94,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:6826 ,activo: true,  empresaId: empresa.id  });
-const precio326 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 95,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:27800 ,activo: true,  empresaId: empresa.id  });
-const precio327 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 96,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:69400 ,activo: true,  empresaId: empresa.id  });
-const precio328 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 97,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7110 ,activo: true,  empresaId: empresa.id  });
-const precio329 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 98,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7810 ,activo: true,  empresaId: empresa.id  });
-const precio330 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 99,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3145 ,activo: true,  empresaId: empresa.id  });
-const precio331 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 100,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7810 ,activo: true,  empresaId: empresa.id  });
-const precio332 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 101,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2794 ,activo: true,  empresaId: empresa.id  });
-const precio333 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 102,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2794 ,activo: true,  empresaId: empresa.id  });
-const precio334 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 103,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2794 ,activo: true,  empresaId: empresa.id  });
-const precio335 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 104,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2794 ,activo: true,  empresaId: empresa.id  });
-const precio336 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 105,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:25750 ,activo: true,  empresaId: empresa.id  });
-const precio337 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 106,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:9724 ,activo: true,  empresaId: empresa.id  });
-const precio338 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 107,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:22989 ,activo: true,  empresaId: empresa.id  });
-const precio339 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 108,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:22989 ,activo: true,  empresaId: empresa.id  });
-const precio340 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 109,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:22989 ,activo: true,  empresaId: empresa.id  });
-const precio341 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 110,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:46297 ,activo: true,  empresaId: empresa.id  });
-const precio342 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 111,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:46297 ,activo: true,  empresaId: empresa.id  });
-const precio343 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 112,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:46297 ,activo: true,  empresaId: empresa.id  });
-const precio344 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 113,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:52900 ,activo: true,  empresaId: empresa.id  });
-const precio345 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 114,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:52900 ,activo: true,  empresaId: empresa.id  });
-const precio346 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 115,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2900 ,activo: true,  empresaId: empresa.id  });
-const precio347 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 116,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2900 ,activo: true,  empresaId: empresa.id  });
-const precio348 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 117,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2900 ,activo: true,  empresaId: empresa.id  });
-const precio349 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 118,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:8780 ,activo: true,  empresaId: empresa.id  });
-const precio350 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 119,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:27580 ,activo: true,  empresaId: empresa.id  });
-const precio351 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 120,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:18510 ,activo: true,  empresaId: empresa.id  });
-const precio352 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 121,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:49720 ,activo: true,  empresaId: empresa.id  });
-const precio353 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 122,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:49720 ,activo: true,  empresaId: empresa.id  });
-const precio354 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 123,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:11036 ,activo: true,  empresaId: empresa.id  });
-const precio355 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 124,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:46430 ,activo: true,  empresaId: empresa.id  });
-const precio356 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 125,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:41021 ,activo: true,  empresaId: empresa.id  });
-const precio357 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 126,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3940 ,activo: true,  empresaId: empresa.id  });
-const precio358 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 127,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3940 ,activo: true,  empresaId: empresa.id  });
-const precio359 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 128,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3940 ,activo: true,  empresaId: empresa.id  });
-const precio360 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 129,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2184 ,activo: true,  empresaId: empresa.id  });
-const precio361 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 130,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2184 ,activo: true,  empresaId: empresa.id  });
-const precio362 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 131,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2184 ,activo: true,  empresaId: empresa.id  });
-const precio363 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 132,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3100 ,activo: true,  empresaId: empresa.id  });
-const precio364 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 133,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3100 ,activo: true,  empresaId: empresa.id  });
-const precio365 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 134,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3100 ,activo: true,  empresaId: empresa.id  });
-const precio366 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 135,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3100 ,activo: true,  empresaId: empresa.id  });
-const precio367 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 136,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:38840 ,activo: true,  empresaId: empresa.id  });
-const precio368 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 137,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2813 ,activo: true,  empresaId: empresa.id  });
-const precio369 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 138,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2813 ,activo: true,  empresaId: empresa.id  });
-const precio370 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 139,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2813 ,activo: true,  empresaId: empresa.id  });
-const precio371 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 140,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:25200 ,activo: true,  empresaId: empresa.id  });
-const precio372 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 141,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:25200 ,activo: true,  empresaId: empresa.id  });
-const precio373 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 142,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:25200 ,activo: true,  empresaId: empresa.id  });
-const precio374 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 143,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2100 ,activo: true,  empresaId: empresa.id  });
-const precio375 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 144,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2100 ,activo: true,  empresaId: empresa.id  });
-const precio376 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 145,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2840 ,activo: true,  empresaId: empresa.id  });
-const precio377 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 146,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2840 ,activo: true,  empresaId: empresa.id  });
-const precio378 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 147,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:6900 ,activo: true,  empresaId: empresa.id  });
-const precio379 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 148,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:32060 ,activo: true,  empresaId: empresa.id  });
-const precio380 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 149,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2100 ,activo: true,  empresaId: empresa.id  });
-const precio381 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 150,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2100 ,activo: true,  empresaId: empresa.id  });
-const precio382 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 151,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2840 ,activo: true,  empresaId: empresa.id  });
-const precio383 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 152,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2840 ,activo: true,  empresaId: empresa.id  });
-const precio384 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 153,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:6900 ,activo: true,  empresaId: empresa.id  });
-const precio385 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 154,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:6900 ,activo: true,  empresaId: empresa.id  });
-const precio386 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 155,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:6900 ,activo: true,  empresaId: empresa.id  });
-const precio387 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 156,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:6900 ,activo: true,  empresaId: empresa.id  });
-const precio388 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 157,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:32060 ,activo: true,  empresaId: empresa.id  });
-const precio389 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 158,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:32060 ,activo: true,  empresaId: empresa.id  });
-const precio390 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 159,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:32060 ,activo: true,  empresaId: empresa.id  });
-const precio391 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 160,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:32060 ,activo: true,  empresaId: empresa.id  });
-const precio392 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 161,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3260 ,activo: true,  empresaId: empresa.id  });
-const precio393 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 162,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:5640 ,activo: true,  empresaId: empresa.id  });
-const precio394 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 163,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:10630 ,activo: true,  empresaId: empresa.id  });
-const precio395 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 164,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4310 ,activo: true,  empresaId: empresa.id  });
-const precio396 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 165,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7850 ,activo: true,  empresaId: empresa.id  });
-const precio397 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 166,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:18200 ,activo: true,  empresaId: empresa.id  });
-const precio398 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 167,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:25100 ,activo: true,  empresaId: empresa.id  });
-const precio399 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 168,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3400 ,activo: true,  empresaId: empresa.id  });
-const precio400 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 169,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3400 ,activo: true,  empresaId: empresa.id  });
-const precio401 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 170,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3400 ,activo: true,  empresaId: empresa.id  });
-const precio402 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 171,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:133424 ,activo: true,  empresaId: empresa.id  });
-const precio403 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 172,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:13506 ,activo: true,  empresaId: empresa.id  });
-const precio404 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 173,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:13506 ,activo: true,  empresaId: empresa.id  });
-const precio405 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 174,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:21900 ,activo: true,  empresaId: empresa.id  });
-const precio406 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 175,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:21900 ,activo: true,  empresaId: empresa.id  });
-const precio407 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 176,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2100 ,activo: true,  empresaId: empresa.id  });
-const precio408 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 177,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2100 ,activo: true,  empresaId: empresa.id  });
-const precio409 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 178,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2840 ,activo: true,  empresaId: empresa.id  });
-const precio410 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 179,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2840 ,activo: true,  empresaId: empresa.id  });
-const precio411 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 180,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:133424 ,activo: true,  empresaId: empresa.id  });
-const precio412 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 181,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4055 ,activo: true,  empresaId: empresa.id  });
-const precio413 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 182,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4055 ,activo: true,  empresaId: empresa.id  });
-const precio414 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 183,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7810 ,activo: true,  empresaId: empresa.id  });
-const precio415 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 184,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7810 ,activo: true,  empresaId: empresa.id  });
-const precio416 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 185,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7810 ,activo: true,  empresaId: empresa.id  });
-const precio417 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 186,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:7810 ,activo: true,  empresaId: empresa.id  });
-const precio418 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 187,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4055 ,activo: true,  empresaId: empresa.id  });
-const precio419 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 188,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3470 ,activo: true,  empresaId: empresa.id  });
-const precio420 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 189,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3470 ,activo: true,  empresaId: empresa.id  });
-const precio421 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 190,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:34500 ,activo: true,  empresaId: empresa.id  });
-const precio422 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 191,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:34500 ,activo: true,  empresaId: empresa.id  });
-const precio423 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 192,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:3100 ,activo: true,  empresaId: empresa.id  });
-const precio424 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 193,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2700 ,activo: true,  empresaId: empresa.id  });
-const precio425 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 194,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2700 ,activo: true,  empresaId: empresa.id  });
-const precio426 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 195,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2700 ,activo: true,  empresaId: empresa.id  });
-const precio427 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 196,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2700 ,activo: true,  empresaId: empresa.id  });
-const precio428 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 197,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:2700 ,activo: true,  empresaId: empresa.id  });
-const precio429 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 198,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4885 ,activo: true,  empresaId: empresa.id  });
-const precio430 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 199,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:4885 ,activo: true,  empresaId: empresa.id  });
-const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, varianteId: 200,fechaDesde: '2023-12-31',fechaHasta: '9999-12-31'  ,registro: 'PRECIO',tipo: 'IMPORTE',valor:9300 ,activo: true,  empresaId: empresa.id  });
-
+    //lista funcionario
+    const precio232 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 1,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4470,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio233 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 2,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 9831,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio234 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 3,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2550,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio235 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 4,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 32033,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio236 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 5,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 57143,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio237 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 6,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5245,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio238 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 7,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4578,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio239 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 8,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 32000,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio240 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 9,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 15152,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio241 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 10,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 30345,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio242 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 11,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5342,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio243 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 12,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5342,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio244 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 13,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5342,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio245 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 14,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 9724,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio246 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 15,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 9724,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio247 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 16,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 15152,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio248 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 17,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 15152,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio249 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 18,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 18510,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio250 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 19,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 18510,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio251 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 20,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5034,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio252 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 21,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5034,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio253 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 22,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 30345,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio254 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 23,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 30345,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio255 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 24,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 27580,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio256 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 25,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 27580,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio257 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 26,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5034,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio258 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 27,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 11494,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio259 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 28,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 22701,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio260 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 29,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 225250,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio261 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 30,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 225250,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio262 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 31,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 225250,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio263 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 32,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2472,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio264 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 33,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1600,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio265 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 34,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3752,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio266 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 35,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1600,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio267 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 36,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3930,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio268 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 37,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 6400,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio269 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 38,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 13241,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio270 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 39,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7700,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio271 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 40,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 15200,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio272 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 41,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 993,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio273 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 42,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 993,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio274 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 43,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1896,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio275 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 44,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 11756,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio276 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 45,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2745,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio277 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 46,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3840,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio278 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 47,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3962,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio279 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 48,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2167,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio280 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 49,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2167,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio281 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 50,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2167,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio282 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 51,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 20679,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio283 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 52,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 20679,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio284 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 53,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 22177,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio285 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 54,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 192000,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio286 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 55,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2097,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio287 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 56,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2097,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio288 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 57,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2097,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio289 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 58,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2097,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio290 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 59,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1545,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio291 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 60,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1545,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio292 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 61,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1545,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio293 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 62,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1545,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio294 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 63,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1545,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio295 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 64,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1545,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio296 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 65,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4450,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio297 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 66,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4450,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio298 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 67,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4450,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio299 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 68,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 207000,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio300 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 69,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 41000,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio301 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 70,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 41000,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio302 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 71,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 67000,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio303 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 72,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7200,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio304 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 73,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 67000,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio305 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 74,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3320,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio306 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 75,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1570,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio307 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 76,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3320,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio308 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 77,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 21875,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio309 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 78,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7200,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio310 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 79,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 21875,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio311 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 80,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1570,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio312 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 81,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 83000,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio313 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 82,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 1329,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio314 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 83,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3408,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio315 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 84,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5707,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio316 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 85,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 10881,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio317 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 86,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3408,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio318 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 87,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5707,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio319 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 88,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 10881,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio320 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 89,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 27580,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio321 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 90,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 27580,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio322 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 91,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 27580,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio323 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 92,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 6826,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio324 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 93,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 6826,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio325 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 94,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 6826,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio326 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 95,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 27800,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio327 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 96,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 69400,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio328 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 97,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7110,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio329 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 98,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7810,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio330 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 99,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3145,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio331 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 100,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7810,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio332 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 101,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2794,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio333 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 102,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2794,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio334 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 103,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2794,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio335 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 104,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2794,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio336 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 105,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 25750,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio337 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 106,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 9724,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio338 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 107,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 22989,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio339 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 108,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 22989,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio340 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 109,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 22989,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio341 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 110,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 46297,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio342 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 111,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 46297,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio343 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 112,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 46297,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio344 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 113,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 52900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio345 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 114,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 52900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio346 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 115,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio347 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 116,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio348 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 117,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio349 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 118,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 8780,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio350 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 119,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 27580,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio351 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 120,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 18510,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio352 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 121,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 49720,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio353 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 122,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 49720,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio354 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 123,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 11036,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio355 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 124,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 46430,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio356 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 125,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 41021,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio357 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 126,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3940,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio358 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 127,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3940,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio359 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 128,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3940,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio360 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 129,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2184,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio361 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 130,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2184,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio362 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 131,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2184,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio363 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 132,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio364 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 133,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio365 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 134,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio366 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 135,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio367 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 136,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 38840,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio368 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 137,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2813,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio369 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 138,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2813,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio370 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 139,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2813,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio371 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 140,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 25200,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio372 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 141,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 25200,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio373 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 142,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 25200,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio374 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 143,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio375 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 144,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio376 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 145,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2840,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio377 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 146,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2840,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio378 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 147,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 6900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio379 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 148,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 32060,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio380 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 149,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio381 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 150,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio382 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 151,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2840,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio383 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 152,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2840,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio384 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 153,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 6900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio385 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 154,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 6900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio386 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 155,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 6900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio387 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 156,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 6900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio388 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 157,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 32060,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio389 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 158,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 32060,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio390 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 159,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 32060,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio391 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 160,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 32060,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio392 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 161,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3260,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio393 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 162,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 5640,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio394 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 163,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 10630,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio395 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 164,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4310,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio396 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 165,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7850,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio397 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 166,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 18200,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio398 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 167,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 25100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio399 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 168,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3400,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio400 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 169,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3400,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio401 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 170,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3400,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio402 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 171,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 133424,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio403 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 172,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 13506,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio404 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 173,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 13506,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio405 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 174,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 21900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio406 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 175,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 21900,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio407 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 176,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio408 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 177,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio409 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 178,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2840,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio410 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 179,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2840,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio411 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 180,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 133424,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio412 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 181,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4055,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio413 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 182,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4055,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio414 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 183,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7810,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio415 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 184,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7810,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio416 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 185,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7810,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio417 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 186,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 7810,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio418 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 187,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4055,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio419 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 188,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3470,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio420 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 189,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3470,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio421 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 190,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 34500,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio422 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 191,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 34500,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio423 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 192,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 3100,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio424 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 193,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2700,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio425 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 194,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2700,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio426 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 195,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2700,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio427 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 196,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2700,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio428 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 197,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 2700,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio429 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 198,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4885,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio430 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 199,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 4885,
+      activo: true,
+      empresaId: empresa.id
+    });
+    const precio431 = await Valoracion.create({
+      listaPrecioId: listaPrecio2.id,
+      varianteId: 200,
+      fechaDesde: "2023-12-31",
+      fechaHasta: "9999-12-31",
+      registro: "PRECIO",
+      tipo: "IMPORTE",
+      valor: 9300,
+      activo: true,
+      empresaId: empresa.id
+    });
 
     const descImporte1 = await Valoracion.create({
       listaPrecioId: listaPrecio.id,
-       
+
       cantDesde: 20000,
       cantHasta: 50000,
       fechaDesde: "2023-12-31",
@@ -8475,7 +10710,7 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       empresaId: empresa.id
     });
     const descImporte2 = await Valoracion.create({
-      listaPrecioId: listaPrecio.id, 
+      listaPrecioId: listaPrecio.id,
       cantDesde: 50001,
       cantHasta: 300000,
       fechaDesde: "2023-12-31",
@@ -8487,7 +10722,7 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       empresaId: empresa.id
     });
     const descImporte3 = await Valoracion.create({
-      listaPrecioId: listaPrecio.id, 
+      listaPrecioId: listaPrecio.id,
       cantDesde: 300001,
       cantHasta: 500000,
       fechaDesde: "2023-12-31",
@@ -8499,7 +10734,7 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       empresaId: empresa.id
     });
     const descImporte4 = await Valoracion.create({
-      listaPrecioId: listaPrecio.id, 
+      listaPrecioId: listaPrecio.id,
       cantDesde: 500001,
       cantHasta: 999999999,
       fechaDesde: "2023-12-31",
@@ -8509,7 +10744,7 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       valor: 25,
       activo: true,
       empresaId: empresa.id
-    }); 
+    });
 
     const descuento02 = await Valoracion.create({
       listaPrecioId: listaPrecio.id,
@@ -11515,7 +13750,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       empresaId: empresa.id
     });
 
-    const cliente1 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente1 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "782718-0",
       razonSocial: "HERIBERTO GENES",
@@ -11530,7 +13767,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente2 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente2 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "473301-0",
       razonSocial: "VERONICA JOSEFINA RUIZ LLANO",
@@ -11545,7 +13784,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente3 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente3 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "3772943-8",
       razonSocial: "ROMAN ACOSTA, EVER DANIEL",
@@ -11560,7 +13801,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente4 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente4 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "390437-7",
       razonSocial: "SR. MIGUEL ANGEL FLEITAS",
@@ -11575,7 +13818,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente5 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente5 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "80046129-0",
       razonSocial: "SULTAN S.R.L.",
@@ -11590,7 +13835,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente6 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente6 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "347277-9",
       razonSocial: "LAVANDERIA ESPUMA",
@@ -11605,7 +13852,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente7 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente7 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "1399523-5",
       razonSocial: "SR. CLAUDE HURARD",
@@ -11620,7 +13869,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente8 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente8 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "365336-6",
       razonSocial: "MARTINEZ PERALTA, SALVADOR",
@@ -11635,7 +13886,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente9 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente9 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "1173713-1",
       razonSocial: "EDUARDO AQUINO",
@@ -11650,7 +13903,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente10 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente10 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "2865013-1",
       razonSocial: "MONGELOS ROMERO, EDITH ROCIO-MOTEL SIRENA",
@@ -11665,7 +13920,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente11 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente11 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "1771424-9",
       razonSocial: "RIVEROS CRISTALDO, PEDRO",
@@ -11680,7 +13937,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente12 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente12 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "80050507-7",
       razonSocial: "LOS LAGOS RESORT HOTEL S.A",
@@ -11695,7 +13954,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente13 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente13 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "1050296-3",
       razonSocial: "COUCHONNAL RAMIREZ, MARICARMEN",
@@ -11710,7 +13971,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente14 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente14 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "2999065-3",
       razonSocial: "DIEGO BENDLIN  (SPA)",
@@ -11725,7 +13988,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente15 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente15 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "2352135-0",
       razonSocial: "HENRY MARTINEZ",
@@ -11740,7 +14005,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente16 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente16 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "80001449-9",
       razonSocial: "APARE PY",
@@ -11755,7 +14022,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente17 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente17 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "80039445-3",
       razonSocial: "O.A.G.E. S.R.L",
@@ -11770,7 +14039,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente18 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente18 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "2204022-6",
       razonSocial: "MARIA DE LOS ANGELES MORINIGO",
@@ -11785,7 +14056,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente19 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente19 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "4255760-7",
       razonSocial: "DESP. SAN FRANCISCO - FERMIN BRITEZ",
@@ -11800,7 +14073,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente20 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente20 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "3212901-7",
       razonSocial: "ROJAS, RICHAR ALCIDES",
@@ -11815,7 +14090,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente21 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente21 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "929238-1",
       razonSocial: "MERCEDES CORONEL FLORES",
@@ -11830,7 +14107,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente22 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente22 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "1368388-8",
       razonSocial: "DESP. MERCERIA J Y C",
@@ -11845,7 +14124,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente23 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente23 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "696149-5",
       razonSocial: "JORGE NUÑEZ",
@@ -11860,7 +14141,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente24 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente24 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "400735-2",
       razonSocial: "FRANCISCO SOLANO ACOSTA GONZALEZ",
@@ -11875,7 +14158,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente25 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente25 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "80021551-6",
       razonSocial: "IGRAFICA S.A",
@@ -11890,7 +14175,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente26 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente26 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "4638165-1",
       razonSocial: "HERMINIA AQUINO ZARACHO",
@@ -11905,7 +14192,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente27 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente27 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "2471633-2",
       razonSocial: "WALTER SPAINI",
@@ -11920,7 +14209,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente28 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente28 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "80087901-5",
       razonSocial: "CENTRO CRISTIANO FUENTE DE VIDA",
@@ -11935,7 +14226,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente29 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente29 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "3638073-3",
       razonSocial: "DERLIS PANIAGUA",
@@ -11950,7 +14243,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente30 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente30 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "80070476-2",
       razonSocial: "XIMEX SA",
@@ -11965,7 +14260,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: false,
       propietario: false
     });
-    const cliente31 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente31 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "44444401-7",
       razonSocial: "CLIENTE MOSTRADOR",
@@ -11980,7 +14277,9 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       predeterminado: true,
       propietario: false
     });
-    const cliente32 = await Cliente.create({ listaPrecioId:listaPrecio.id,formaVentaId: formaVenta.id,
+    const cliente32 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
       puntos: 0,
       nroDocumento: "80003110-5",
       razonSocial: "CAVALLARO S.A.C.E.I.",
@@ -11996,9 +14295,7 @@ const precio431 = await Valoracion.create({ listaPrecioId: listaPrecio2.id, vari
       propietario: true
     });
 
-   
-
-    console.log("Registros creados exitosamente!"); 
+    console.log("Registros creados exitosamente!");
   }
 };
 
