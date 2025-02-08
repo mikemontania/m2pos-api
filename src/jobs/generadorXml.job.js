@@ -26,6 +26,7 @@ const Moneda = require("../models/moneda.model");
 const { generarXML } = require("../metodosSifen/generarXml");
 const VentaXml = require("../models/ventaXml.model");
 const { agregarFirmaXml } = require("../metodosSifen/agregarFirmaXml");
+const { agregaQr } = require("../metodosSifen/agregaQr");
  
 
 const getEmpresasXml = async () => {
@@ -180,19 +181,7 @@ const obtenerVentasPendientes = async () => {
   } catch (error) {
     console.error('Error al obtener ventas pendientes:', error);
   }
-};
-
-const crearRegistro = async (orden,empresaId,ventaId, estado,xml) =>{
-  const xmlSinFirma = await VentaXml.create({
-    id: null,
-    orden: orden,
-    empresaId:  empresaId,
-    ventaId:  ventaId,
-    estado: estado,
-    xml: xml,
-  });
-}
-  
+}; 
 // Función para generar registros xml
 const generarXml = async () => {
   console.log('***************************************************************')
@@ -201,7 +190,7 @@ const generarXml = async () => {
     //primero es necesario crear una funcion que retorne las empresas a las que se generan los xml con sus datos para facturacion electronica
     const empresasXml = await getEmpresasXml()
     if (empresasXml && empresasXml?.length > 0) {
-      console.log(`✅ Se encontraron ${empresasXml.length} ventas pendientes.`)
+      console.log(`✅ Se encontraron ${empresasXml.length} empresas.`)
       //permite ejecutar varias promesas en paralelo de manera eficiente
       await Promise.all(
         empresasXml.map(async empresa => {
@@ -212,28 +201,34 @@ const generarXml = async () => {
               for (let index = 0; index < ventasPendientes.length; index++) {
                 
                 const xml =await  generarXML(empresa,ventasPendientes[index])
-                const xmlgenerado = await VentaXml.create({
+                const registro1 = await VentaXml.create({
                   id: null,
                   orden: 1,
                   empresaId:  empresa.id,
                   ventaId:  ventasPendientes[index].id,
-                  estado: 'Generado',
+                  estado: 'GENERADO',
                     xml,
                 });
                 const xmlFirmado =await agregarFirmaXml(xml,empresa.certificado)
-
-
-
-
-
-
-
-                console.log('Este es el xml generado =>',xml)
-              }
-              // Generar y firmar XMLs
-            /*   const xmlSinFirma = await crearXml(ventasXml)
-              const xmlConFirma = await crearXmlConFirma(xmlSinFirma)
-              const xmlConFirmaQr = await crearXmlConFirmaQr(xmlConFirma) */
+                const xmlFirmadoConQr =await agregaQr(xmlFirmado,  empresa.idCSC,  empresa.csc);
+                console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
+                const registro2 = await VentaXml.create({
+                  id: null,
+                  orden: 1,
+                  empresaId:  empresa.id,
+                  ventaId:  ventasPendientes[index].id,
+                  estado: 'FIRMADO',
+                  xml:xmlFirmadoConQr,
+                }); 
+                const registroVenta = await Venta.findByPk(ventasPendientes[index].id);
+                if (registroVenta) {
+                  await registroVenta.update({  estado:'Procesado' });
+                  console.log(`✅ Venta con cdc ${ventasPendientes[index].cdc}  comprobante: ${ventasPendientes[index].nroComprobante}procesado con exito `)
+                } else {
+                  console.error(`❌ id de venta desconocido: ${ventasPendientes[index].id}`)
+                }
+          
+              } 
               console.log(`✅ XML generado y firmado para empresa ${empresa.id}`)
             }else{
               console.warn(
@@ -255,34 +250,16 @@ const generarXml = async () => {
   }
 }
 
-
-const revisarVentasPendientes = async () => {
-  try {
-   
-    
-    const ventasPendientes = await Venta.findAll({ where: { estado: "Pendiente" } });
-
-    if (ventasPendientes.length > 0) {
-      console.log(`✅ Se encontraron ${ventasPendientes.length} ventas pendientes.`);
-      // Aquí puedes realizar otras acciones como actualizaciones o notificaciones
-    } else {
-      console.log("⏳ No hay ventas pendientes en este momento.");
-    }
-  } catch (error) {
-    console.error("❌ Error al revisar ventas pendientes:", error);
-  }
-};
-
 // Revisar si la tarea debe ejecutarse
 const activarTarea = process.env.ENABLE_VENTAS_JOB === "true";
 
 if (activarTarea) {
-  cron.schedule("*/1 * * * *", generarXml, {
+  cron.schedule("*/30 * * * *", generarXml, {
     scheduled: true,
     timezone: "America/Asuncion",
   });
 
-  console.log("✅ Tarea programada para revisar ventas pendientes cada 5 minutos.");
+  console.log("✅ Tarea programada para revisar ventas pendientes cada 30 minutos.");
 } else {
   console.log("❌ Tarea de revisión de ventas desactivada por configuración.");
 }

@@ -5,8 +5,6 @@ const { SignedXml } = require("xml-crypto");
 const agregarFirmaXml = async (xmlData, certificado) => {
   try {
     const { cert, key, password } = certificado;
-    console.log("certificado =>")
-console.log({ cert, key, password })
     // Función para limpiar el certificado (eliminar delimitadores y saltos de línea)
     const cleanCertificate = cert =>
       cert
@@ -25,7 +23,7 @@ console.log({ cert, key, password })
     });
 
     // Verifica que el XML de entrada es el correcto
-    console.log("XML de entrada:", xmlData);
+    //console.log("XML de entrada:", xmlData);
 
 
     sig.addReference(
