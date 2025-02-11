@@ -12,8 +12,7 @@ app.post('/sendInvoice', (req, res) => {
         console.error(err);
         res.status(500).send('Error al crear el cliente SOAP');
         return;
-      }
-  
+      }  
       // Nombre del método según el WSDL del SIFEN
       client.recibeDE(args, (err, result) => {
         if (err) {

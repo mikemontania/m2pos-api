@@ -1,38 +1,41 @@
 const xmlbuilder = require("xmlbuilder");
 const {
-  const_tiposTransacciones,
-  const_tiposImpuestos,
-  const_departamentos,
-  const_distritos,
-  const_ciudades,
-  const_monedas,
-  const_tipoContribuyente,
-  const_tiposEmisiones
+  tiposTransacciones,
+  tiposImpuestos,
+  departamentos,
+  distritos,
+  ciudades,
+  monedas, 
+  tiposEmisiones
 } = require("../constantes/Constante.constant");
 const EmpresaActividad = require("../models/empresaActividad.model");
 const Actividad = require("../models/actividad.model");
+const tiposContribuyente = [
+  { id: 1, descripcion: "Persona Física" },
+  { id: 2, descripcion: "Persona Jurídica" }
+];
 
 const generaXML = async (cabecera, detalles) => {
-  const tipoEmision = const_tiposEmisiones.find(t => t.codigo == 1);
-  const tipoContribuyente = const_tipoContribuyente.find(
+  const tipoEmision = tiposEmisiones.find(t => t.codigo == 1);
+  const tipoContribuyente = tiposContribuyente.find(
     t => t.id == cabecera.empresa.tipoContId
   );
-  const tipoTransacciones = const_tiposTransacciones.find(
+  const tipoTransacciones = tiposTransacciones.find(
     t => t.codigo == cabecera.empresa.tipoTransaId
   );
-  const tipoImpuesto = const_tiposImpuestos.find(
+  const tipoImpuesto = tiposImpuestos.find(
     t => t.codigo == cabecera.empresa.tipoImpId
   );
-  const departamento = const_departamentos.find(
+  const departamento = departamentos.find(
     t => t.codigo == cabecera.empresa.codDepartamento
   );
-  const distrito = const_distritos.find(
+  const distrito = distritos.find(
     t => t.codigo == cabecera.empresa.codCiudad
   );
-  const ciudad = const_ciudades.find(
+  const ciudad = ciudades.find(
     t => t.codigo == cabecera.empresa.codBarrio
   );
-  const moneda = const_monedas.find(
+  const moneda = monedas.find(
     t => t.codigo == cabecera.empresa.codMoneda
 );
   const [establecimiento, puntoExp, numero] = cabecera.nroComprobante.split(

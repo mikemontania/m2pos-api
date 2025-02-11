@@ -32,7 +32,7 @@ const zlib = require('zlib');
 // Descomprimir XML
 //const decompressedXml = zlib.gunzipSync(compressedXml).toString();
 
-const {   const_tipoContribuyente,const_tiposEmisiones
+const {   tipoContribuyente,tiposEmisiones
 } = require('../constantes/Constante.constant');
 const VentaXml = require("../models/ventaXml.model");
 const { recibeLote, recibe } = require("../service/envioLote.service");
@@ -196,8 +196,8 @@ const createVenta = async (req, res) => {
     });
     const codigoSeguridad =generarCodigoSeguridad();
     const empresa = await Empresa.findByPk(1)
-    const tipoComprobante =const_tipoContribuyente.find(t=>t.id == empresa.tipoContId)
-    const tipoEmision = const_tiposEmisiones.find(t=>t.codigo == 1)
+    const tipoComprobante =tipoContribuyente.find(t=>t.id == empresa.tipoContId)
+    const tipoEmision = tiposEmisiones.find(t=>t.codigo == 1)
     const fecha = moment(new Date()).format("YYYY-MM-DD");
     numeracion.ultimoNumero += 1;
     const nroComprobante = `${numeracion.serie}-${numeracion.ultimoNumero
@@ -252,8 +252,7 @@ const createVenta = async (req, res) => {
         importeNeto,
         importeSubtotal,
         importeTotal,
-        estado:'Pendiente',
-        estadoSifen:'Pendiente',
+        estado:'Pendiente', 
         totalKg: totalKg ? Number((totalKg / 1000).toFixed(2)) : 0
       },
       { transaction: t }

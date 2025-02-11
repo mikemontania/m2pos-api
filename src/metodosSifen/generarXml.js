@@ -1,78 +1,120 @@
 const xmlbuilder = require("xmlbuilder");
+const { agregarFirmaXml } = require("./agregarFirmaXml");
+const VentaXml = require("../models/ventaXml.model");
+const { agregaQr } = require("./agregaQr");
   
 const generarXML = async (empresa, venta) => {
-  const tipoEmision = {codigo: 1, descripcion: "Normal"};
-  const [establecimiento, puntoExp, numero] = venta.nroComprobante.split("-");
-  const fechaActualISO = formatDateToLocalISO(new Date());
-  const fechaEmisionISO = formatDateToISO(venta.fechaCreacion);
-  let xml = xmlbuilder
-    .create("rDE", { version: "1.0", encoding: "UTF-8" })
-    .att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
-    .att("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-    .att(
-      "xsi:schemaLocation",
-      "http://ekuatia.set.gov.py/sifen/xsd siRecepDE_v150.xsd"
-    )
-    // Header data
-    .ele("dVerFor", process.env.EKUATIA_VERSION)
-    .up()
-    .ele("DE", { Id: venta.cdc })
-    .ele("dDVId", venta.cdc.charAt(venta.cdc.length - 1))
-    .up()
-    /*
-      La fecha y hora de la firma digital debe ser anterior a la fecha y hora de transmisión al SIFEN
-    El certificado digital debe estar vigente al momento de la firma digital del DE Fecha y hora en el formato AAAA-MM-DDThh:mm:ss
-    El plazo límite de transmisión del DE al SIFEN para la aprobación normal es de 72 h contadas a partir de la fecha y hora de la firma digital
-  */
-    .ele("dFecFirma", fechaActualISO)
-    .up()
-    .ele("dSisFact", "1")
-    .up()
-    // Operation data
-    .ele(createGOpeDE(tipoEmision, venta.codigoSeguridad))
-    .up() // Uso de la función modularizada para gOpeDE
-    .ele(createGTimb(venta, establecimiento, puntoExp, numero))
-    .up() // Uso de la función modularizada
-    // Campos generales del DE
-    .ele("gDatGralOpe")
-    /* Fecha y hora en el formato AAAA-MM-DDThh:mm:ss Para el KuDE el formato de la fecha de emisión debe contener los guiones separadores. Ejemplo: 2018-05-31T12:00:00
-        Se aceptará como límites técnicos del sistema, que la fecha de emisión del DE sea atrasada hasta 720 horas (30 días) y adelantada hasta
-        120 horas (5 días) en relación a la fecha y hora de transmisión al SIFEN
-      */
-    .ele("dFeEmiDE", fechaEmisionISO)
-    .up()
-    //Campos inherentes a la operación comercial
-    .ele(createGOpeCom(empresa))
-    .up()
-    //Grupo de campos que identifican al emisor
-    .ele(
-      createGEmis(empresa, venta.sucursal)
-    )
-    .up()
-    //Grupo de campos que identifican al receptor
-    .ele(createGDatRec(venta))
-    .up() // Uso de la función modularizada para gDatRec
-    .up() //cierre gDatGralOpe
-    // Campos específicos por tipo de Documento Electrónico
-    .ele("gDtipDE")
-    .ele(createGCamFE())
-    .up() //Campos que componen la FE
-    //Campos que describen la condición de la operación
-    .ele(createGCamCond(venta.formaVenta, roundTo8Decimals(venta.importeTotal)))
-    .up()
-    //Campos que describen los ítems de la operación
-    .ele(venta.detalles.map(item => createGCamItem(item)))
-    .up()
-    .up()
-    //Campos de subtotales y totales
-    .ele(createGTotSub(venta))
-    .up()
-    .up() //DE
-    .ele(createGCamFuFD())
-    .up();
+   
+  try {
+    const tipoEmision = {codigo: 1, descripcion: "Normal"};
+    const [establecimiento, puntoExp, numero] = venta.nroComprobante.split("-");
+    const fechaActualISO = formatDateToLocalISO(new Date());
+    const fechaEmisionISO = formatDateToISO(venta.fechaCreacion);
+    let xml = xmlbuilder
+      .create("rDE", { version: "1.0", encoding: "UTF-8" })
+      .att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
+      .att("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
+      .att(
+        "xsi:schemaLocation",
+        "http://ekuatia.set.gov.py/sifen/xsd siRecepDE_v150.xsd"
+      )
+      // Header data
+      .ele("dVerFor", process.env.EKUATIA_VERSION)
+      .up()
+      .ele("DE", { Id: venta.cdc })
+      .ele("dDVId", venta.cdc.charAt(venta.cdc.length - 1))
+      .up()
+      /*
+        La fecha y hora de la firma digital debe ser anterior a la fecha y hora de transmisión al SIFEN
+      El certificado digital debe estar vigente al momento de la firma digital del DE Fecha y hora en el formato AAAA-MM-DDThh:mm:ss
+      El plazo límite de transmisión del DE al SIFEN para la aprobación normal es de 72 h contadas a partir de la fecha y hora de la firma digital
+    */
+      .ele("dFecFirma", fechaActualISO)
+      .up()
+      .ele("dSisFact", "1")
+      .up()
+      // Operation data
+      .ele(createGOpeDE(tipoEmision, venta.codigoSeguridad))
+      .up() // Uso de la función modularizada para gOpeDE
+      .ele(createGTimb(venta, establecimiento, puntoExp, numero))
+      .up() // Uso de la función modularizada
+      // Campos generales del DE
+      .ele("gDatGralOpe")
+      /* Fecha y hora en el formato AAAA-MM-DDThh:mm:ss Para el KuDE el formato de la fecha de emisión debe contener los guiones separadores. Ejemplo: 2018-05-31T12:00:00
+          Se aceptará como límites técnicos del sistema, que la fecha de emisión del DE sea atrasada hasta 720 horas (30 días) y adelantada hasta
+          120 horas (5 días) en relación a la fecha y hora de transmisión al SIFEN
+        */
+      .ele("dFeEmiDE", fechaEmisionISO)
+      .up()
+      //Campos inherentes a la operación comercial
+      .ele(createGOpeCom(empresa))
+      .up()
+      //Grupo de campos que identifican al emisor
+      .ele(
+        createGEmis(empresa, venta.sucursal)
+      )
+      .up()
+      //Grupo de campos que identifican al receptor
+      .ele(createGDatRec(venta))
+      .up() // Uso de la función modularizada para gDatRec
+      .up() //cierre gDatGralOpe
+      // Campos específicos por tipo de Documento Electrónico
+      .ele("gDtipDE")
+      .ele(createGCamFE())
+      .up() //Campos que componen la FE
+      //Campos que describen la condición de la operación
+      .ele(createGCamCond(venta.formaVenta, roundTo8Decimals(venta.importeTotal)))
+      .up()
+      //Campos que describen los ítems de la operación
+      .ele(venta.detalles.map(item => createGCamItem(item)))
+      .up()
+      .up()
+      //Campos de subtotales y totales
+      .ele(createGTotSub(venta))
+      .up()
+      .up() //DE
+      .ele(createGCamFuFD())
+      .up();
+  
+    // Return the XML as a string
+    const xmlBase = xml.end({ pretty: false });
+    const registro1 = await VentaXml.create({
+      id: null,
+      orden: 1,
+      empresaId:  empresa.id,
+      ventaId:  venta.id,
+      estado: 'GENERADO',
+        xml:xmlBase,
+    });
+    const xmlFirmado =await agregarFirmaXml(xmlBase,empresa.certificado)
+    const xmlFirmadoConQr =await agregaQr(xmlFirmado,  empresa.idCSC,  empresa.csc);
+    console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
+    const registro2 = await VentaXml.create({
+      id: null,
+      orden: 1,
+      empresaId:  empresa.id,
+      ventaId:  venta.id,
+      estado: 'FIRMADO',
+      xml:xmlFirmadoConQr,
+    }); 
+  
+  
+  return xmlFirmadoConQr;
+    
+  } catch (error) {
+    console.error(error)
+    console.error(JSON.stringify(error, null, 2)); 
 
-  // Return the XML as a string
-  return xml.end({ pretty: false });
+    const registroERROR = await VentaXml.create({
+      id: null,
+      orden: 0,
+      empresaId:  empresa.id,
+      ventaId:  venta.id,
+      estado: 'ERROR',
+      xml: JSON.stringify(error, Object.getOwnPropertyNames(error)), // ✅
+    }); 
+    return null;
+  }
 };
 
 const formatDateToISO = date => {

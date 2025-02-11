@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { dbConnection } = require("./dbconfig");
 const { populateDB } = require("./dbinit");
-require("./src/jobs/generadorXml.job");
+
 const morgan = require("morgan"); // const { json } = require('express/lib/response');
 //const { loggerPos } = require("./logger");
 // Este es un comentario
@@ -56,3 +56,6 @@ app.use("/M2POS/reportes", require("./src/routes/reporte-routes"));
 app.listen(process.env.PORT, () =>
   console.log("Servidor corriendo en puerto " + process.env.PORT)
 );
+
+require("./src/jobs/generadorXml.job");
+require("./src/jobs/envioSifenXml.job");

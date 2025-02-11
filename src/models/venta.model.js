@@ -161,10 +161,6 @@ const Venta = sequelize.define('Venta', {
     type: DataTypes.STRING(25),
     allowNull: false
   },
-  estadoSifen: {
-    type: DataTypes.STRING(25),
-    allowNull: false
-  },
   codigoSeguridad: {
     type: DataTypes.STRING(9),
     allowNull: false

@@ -31,7 +31,7 @@ const VentaXml = sequelize.define('VentaXml', {
   estado: {
     type: DataTypes.STRING(25),
     allowNull: false,
-  }, 
+  },  
    fechaCreacion: {
     type: DataTypes.DATE,
     allowNull: false,

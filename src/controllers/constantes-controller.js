@@ -1,7 +1,7 @@
  
-const {  const_tiposEmisiones,const_tiposTransacciones,const_tiposImpuestos,const_obligaciones,const_monedas,const_tipoReceptor,
-  const_departamentos,const_distritos,const_ciudades,const_paises, const_tasasIsc,const_tipoContribuyente,
-  const_codigosAfectaciones,const_unidadesMedidas,const_notasCreditosMotivos,const_condicionesTiposPagos 
+const {  tiposEmisiones,tiposTransacciones,tiposImpuestos,obligaciones,monedas,tipoReceptor,
+  departamentos,distritos,ciudades,paises, tasasIsc,tipoContribuyente,
+  codigosAfectaciones,unidadesMedidas,notasCreditosMotivos,condicionesTiposPagos 
 } = require('../constantes/Constante.constant');
 
 const getByTypeAndGroupId = async (req, res) => {
@@ -11,10 +11,10 @@ const getByTypeAndGroupId = async (req, res) => {
     let data;
     switch (type) {
       case 'distritos':
-        data = const_distritos.filter(distrito => distrito.departamento === parseInt(grupoId));
+        data = distritos.filter(distrito => distrito.departamento === parseInt(grupoId));
         break;
       case 'ciudades':
-        data = const_ciudades.filter(ciudad => ciudad.distrito === parseInt(grupoId));
+        data = ciudades.filter(ciudad => ciudad.distrito === parseInt(grupoId));
         break;
       // Añadir más casos si es necesario
       default:
@@ -39,31 +39,31 @@ const findAll = (req, res) => {
     let data;
     switch (type) {
       case 'tiposEmisiones':
-        data = const_tiposEmisiones;
+        data = tiposEmisiones;
         break;
       case 'tiposTransacciones':
-        data = const_tiposTransacciones;
+        data = tiposTransacciones;
         break;
       case 'monedas':
-        data = const_monedas;
+        data = monedas;
         break;
       case 'tipoReceptor':
-        data = const_tipoReceptor;
+        data = tipoReceptor;
         break;
       case 'departamentos':
-        data = const_departamentos;
+        data = departamentos;
         break;
       case 'distritos':
-        data = const_distritos;
+        data = distritos;
         break;
       case 'ciudades':
-        data = const_ciudades;
+        data = ciudades;
         break;
       case 'paises':
-        data = const_paises;
+        data = paises;
         break;
         case 'tipoContribuyente':
-          data = const_tipoContribuyente;
+          data = tipoContribuyente;
           break;
       default:
         return res.status(404).json({ error: 'Tipo de datos no encontrado' });
