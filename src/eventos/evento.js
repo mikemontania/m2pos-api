@@ -61,14 +61,14 @@ Evento de Notificación
 
 
 
-  const generateXMLEventoCancelacion =(id , params , data , config )=>{
+  const generateXMLEventoCancelacion =(  data   )=>{
     data.tipoEvento = 1; //Cancelacion
     return new Promise(async (resolve, reject) => {
       try {
-        let xml = await generateXMLEventoService(params, data);
+        let xml = await generateXMLEventoService(data);
         xml = xml.replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>', '');
 
-        let soapXMLData = envelopeEvent(id, xml);
+        let soapXMLData = envelopeEvent(data.id, xml);
         resolve(soapXMLData);
       } catch (error) {
         reject(error);
@@ -76,14 +76,14 @@ Evento de Notificación
     });
   }
 
-  const generateXMLEventoInutilizacion=(id , params , data , config )=>{
+  const generateXMLEventoInutilizacion=( data   )=>{
     data.tipoEvento = 2; //Inutilizacion
     return new Promise(async (resolve, reject) => {
       try {
-        let xml = await generateXMLEventoService(params, data);
+        let xml = await generateXMLEventoService( data);
                 xml = xml.replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>', '');
 
-        let soapXMLData = envelopeEvent(id, xml);
+        let soapXMLData = envelopeEvent(data.id, xml);
     
         resolve(soapXMLData);
       } catch (error) {
@@ -92,14 +92,14 @@ Evento de Notificación
     });
   }
 
-  const generateXMLEventoConformidad =(id , params , data , config )=>{
+  const generateXMLEventoConformidad =( data   )=>{
     data.tipoEvento = 11; //Conformidad
     return new Promise(async (resolve, reject) => {
       try {
-        let xml = await generateXMLEventoService(params, data);
+        let xml = await generateXMLEventoService(data);
         xml = xml.replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>', '');
 
-        let soapXMLData = envelopeEvent(id, xml);
+        let soapXMLData = envelopeEvent(data.id, xml)(data);
         resolve(soapXMLData);
       } catch (error) {
         reject(error);
@@ -107,14 +107,14 @@ Evento de Notificación
     });
   }
 
-  const generateXMLEventoDisconformidad=(id , params , data , config )=>{
+  const generateXMLEventoDisconformidad=( data   )=>{
     data.tipoEvento = 12; //Disconformidad
     return new Promise(async (resolve, reject) => {
       try {
-        let xml = await generateXMLEventoService(params, data);
+        let xml = await generateXMLEventoService(data);
         xml = xml.replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>', '');
 
-        let soapXMLData = envelopeEvent(id, xml);
+        let soapXMLData = envelopeEvent(data.id, xml)(data);
         resolve(soapXMLData);
       } catch (error) {
         reject(error);
@@ -122,14 +122,14 @@ Evento de Notificación
     });
   }
 
-  const generateXMLEventoDesconocimiento=(id , params , data , config )=>{
+  const generateXMLEventoDesconocimiento=( data   )=>{
     data.tipoEvento = 13; //Desconocimiento
     return new Promise(async (resolve, reject) => {
       try {
-        let xml = await generateXMLEventoService(params, data);
+        let xml = await generateXMLEventoService(data);
         xml = xml.replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>', '');
 
-        let soapXMLData = envelopeEvent(id, xml);
+        let soapXMLData = envelopeEvent(data.id, xml)(data);
         resolve(soapXMLData);
       } catch (error) {
         reject(error);
@@ -137,14 +137,14 @@ Evento de Notificación
     });
   }
 
-  const generateXMLEventoNotificacion=(id , params , data , config )=>{
+  const generateXMLEventoNotificacion=( data   )=>{
     data.tipoEvento = 14; //Notificacion
     return new Promise(async (resolve, reject) => {
       try {
-        let xml = await generateXMLEventoService(params, data);
+        let xml = await generateXMLEventoService(data);
         xml = xml.replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>', '');
 
-        let soapXMLData = envelopeEvent(id, xml);
+        let soapXMLData = envelopeEvent(data.id, xml)(data);
         resolve(soapXMLData);
       } catch (error) {
         reject(error);
@@ -156,10 +156,10 @@ Evento de Notificación
     data.tipoEvento = 15; //Nominacion
     return new Promise(async (resolve, reject) => {
       try {
-         let xml = await generateXMLEventoService(params, data);
+         let xml = await generateXMLEventoService(data);
         xml = xml.replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>', '');
 
-        let soapXMLData = envelopeEvent(id, xml);
+        let soapXMLData = envelopeEvent(data.id, xml)(data);
         resolve(soapXMLData);
       } catch (error) {
         reject(error);
@@ -171,10 +171,10 @@ Evento de Notificación
     data.tipoEvento = 16; //ActualizacionDatosTransporte
     return new Promise(async (resolve, reject) => {
       try {
-         let xml = await generateXMLEventoService(params, data);
+         let xml = await generateXMLEventoService(data);
         xml = xml.replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>', '');
 
-        let soapXMLData = envelopeEvent(id, xml);
+        let soapXMLData = envelopeEvent(data.id, xml)(data);
         resolve(soapXMLData);
       } catch (error) {
         reject(error);

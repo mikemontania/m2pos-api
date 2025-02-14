@@ -85,6 +85,23 @@ const enviarFactura = async (empresaId, cdc, xml) => {
   }
 };
 
+
+const anularFactura = async (id) => {
+
+}
+const reintentarFactura = async (id) => {
+
+}
+
+const envioFactura = async (id) => {
+
+}
+
+
+
+
+
+
 // Exportar las funciones para ser utilizadas en otros archivos del proyecto
 module.exports = {
   enviarFactura

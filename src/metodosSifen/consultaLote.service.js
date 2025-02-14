@@ -3,21 +3,20 @@
 const jszip = require("jszip"); 
 const fs = require("fs");
 const https = require("https");
-const axios = require("axios");
-const Certificado = require("../models/certificado.model");
-const wsdlEnvioLote = `${process.env.SIFEN_URL}de/ws/async/recibe-lote.wsdl`;
-const xml2js = require('xml2js');
+const axios = require("axios"); 
 const EnvioRespuesta = require("../models/envioRespuesta.model");
+const wsdlConsultaLote = `${process.env.SIFEN_URL}de/ws/consultas/consulta-lote.wsdl`;
 
-const crearRespuesta = async (respuesta, stacktrace = null) => {
+ const crearRespuesta = async (respuesta, stacktrace = null) => {
     try { 
        
-        const nuevaRespuesta = await EnvioRespuesta.create({
+        let nuevaRespuesta = await EnvioRespuesta.create({
             respuesta:respuesta,
             stacktrace:stacktrace
         });
 
         console.log(`✅ Respuesta creada con ID: ${nuevaRespuesta.id}`);
+        nuevaRespuesta.respuesta = nuevaRespuesta.respuesta.toString('utf8');
         return nuevaRespuesta;
     } catch (error) {
         console.error('❌ Error al guardar la respuesta:', error);
@@ -39,7 +38,7 @@ const normalizeXML = (xml) => {
 
 
 
-const enviarLote = (id, xmls, certificado) => {
+const consultaLote = (id, loteId, certificado) => {
     let respuesta = {}
     const config = {
         debug: true,  // Para activar logs de depuración
@@ -52,51 +51,27 @@ const enviarLote = (id, xmls, certificado) => {
                 debug: false,
                 timeout: 90000,
                 ...config,
-            };
-            console.log("xmls recibido:", xmls);
-            if (!Array.isArray(xmls)) {
-                return reject("Error: xmls no es un array");
-            }
-            const { cert, key } = certificado;
-            if (!xmls.length) {
-                return reject("No se envió datos en el array de Documentos electrónicos XMLs");
-            }
-
-            if (xmls.length > 50) {
-                return reject("Sólo se permiten un máximo de 50 Documentos electrónicos XML por lote");
-            } 
-            let rLoteDEXml = "<rLoteDE>\n";
-
-            for (let i = 0; i < xmls.length; i++) {
-                let xml = xmls[i].replace('<?xml version="1.0" encoding="UTF-8"?>', "")
-                //xml = xml.split("\n").slice(1).join("\n"); //Retirar xml
-                rLoteDEXml += `${xml}\n`;
-            }
-            rLoteDEXml += `</rLoteDE>`;
-            const zip = new jszip();
-            zip.file("lote.xml", rLoteDEXml);
-            const zipAsBase64 = await zip.generateAsync({ type: "base64" });
-
-
+            }; 
+            const { cert, key } = certificado;  
             const httpsAgent = new https.Agent({
                 cert: Buffer.from(cert, "utf8"),
                 key: Buffer.from(key, "utf8"),
             });
-            console.log('zipAsBase64',zipAsBase64)
+          
             //    <?xml version="1.0" encoding="UTF-8"?>\n\
-            let soapXMLData = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://ekuatia.set.gov.py/sifen/xsd">\n\
-                    <soap:Header/>\n\
-                    <soap:Body>\n\
-                        <xsd:rEnvioLote>
-                            <xsd:dId>${id}</xsd:dId>\n\
-                            <xsd:xDE>${zipAsBase64}</xsd:xDE>\n\
-                        </xsd:rEnvioLote>\n\
-                    </soap:Body>\n\
-                </soap:Envelope>`;
+            let soapXMLData =  `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">\n\
+                                    <soap:Header/>\n\
+                                    <soap:Body>\n\
+                                        <xsd:rEnviConsLoteDe xmlns:xsd="http://ekuatia.set.gov.py/sifen/xsd">\n\
+                                            <xsd:dId>${id}</xsd:dId>\n\
+                                            <xsd:dProtConsLote>${loteId}</xsd:dProtConsLote>\n\
+                                        </xsd:rEnviConsLoteDe>\n\
+                                    </soap:Body>\n\
+                                </soap:Envelope>`; 
                 soapXMLData = normalizeXML(soapXMLData);
                 soapXMLData= soapXMLData.replace(/>\s+</g, '><').trim();
             if (soapXMLData) {
-                console.log("url", wsdlEnvioLote);
+                console.log("url", wsdlConsultaLote);
                 console.log("soapXMLData", soapXMLData);
             }
             //Escribo el archivo para verificacion
@@ -113,8 +88,8 @@ const enviarLote = (id, xmls, certificado) => {
                 timeout: defaultConfig.timeout,
             }
             console.log(headers)
-            console.log(wsdlEnvioLote)
-            axios.post(wsdlEnvioLote, soapXMLData, headers)
+            console.log(wsdlConsultaLote)
+            axios.post(wsdlConsultaLote, soapXMLData, headers)
                 .then(async (respuestaSuccess) => {
                     let respuesta;
                     if (respuestaSuccess.status === 200) {
@@ -149,6 +124,5 @@ const enviarLote = (id, xmls, certificado) => {
 }
 
 module.exports = {
-    enviarLote,
-    normalizeXML
+    consultaLote
 };

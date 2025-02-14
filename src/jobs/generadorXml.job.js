@@ -95,7 +95,7 @@ const obtenerVentasPendientes = async () => {
   try {
     // Obteniendo las ventas pendientes
     const ventas = await Venta.findAll({
-      where: { estado: 'Pendiente' }, // Filtra por ventas pendientes
+      where: { estado: 'Pendiente', anulado:false }, // Filtra por ventas pendientes
       include: [
         { model: Sucursal, as: 'sucursal' },
         { model: FormaVenta, as: 'formaVenta' },

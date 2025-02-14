@@ -5,6 +5,7 @@ const { dbConnection } = require("./dbconfig");
 const { populateDB } = require("./dbinit");
 
 const morgan = require("morgan"); // const { json } = require('express/lib/response');
+const { ejecucionJobs } = require("./src/jobs/jobs");
 //const { loggerPos } = require("./logger");
 // Este es un comentario
 // Crear el servidor de express
@@ -21,6 +22,7 @@ const dbSetup = async () => {
   await populateDB(); //inserta registros
 };
 dbSetup();
+ejecucionJobs()//jobs
 app.use("/M2POS/auditorias", require("./src/routes/auditoria-routes"));
 app.use("/M2POS/auth", require("./src/routes/auth-routes"));
 app.use("/M2POS/bancos", require("./src/routes/banco-routes"));
@@ -56,6 +58,3 @@ app.use("/M2POS/reportes", require("./src/routes/reporte-routes"));
 app.listen(process.env.PORT, () =>
   console.log("Servidor corriendo en puerto " + process.env.PORT)
 );
-
-require("./src/jobs/generadorXml.job");
-require("./src/jobs/envioSifenXml.job");

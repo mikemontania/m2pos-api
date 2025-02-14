@@ -1,6 +1,5 @@
 const cron = require("node-cron");
-// Asegúrate de importar el modelo adecuado
-const moment = require("moment");
+// Asegúrate de importar el modelo adecuado 
 const Venta = require("../models/venta.model");
 const Empresa = require("../models/empresa.model");
 require("dotenv").config(); // Cargar variables de entorno

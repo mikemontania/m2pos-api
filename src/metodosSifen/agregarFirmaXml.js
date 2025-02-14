@@ -1,12 +1,10 @@
-const fs = require("fs");
-const forge = require("node-forge"); 
-const { decryptPassphrase } = require("../helpers/encript-helper");
+
 const { SignedXml } = require("xml-crypto");
 const agregarFirmaXml = async (xmlData, certificado) => {
   try {
     const { cert, key, password } = certificado;
 
-
+    const targetNode = xmlData.includes("<DE>") ? "DE" : "rEve";
 
     console.log('xmlData =',xmlData )
     console.log('certificado =',{ cert, key, password } )
@@ -33,7 +31,7 @@ const agregarFirmaXml = async (xmlData, certificado) => {
 
     sig.addReference(
       /*"#" + idAtributo, */ {
-        xpath: "//*[local-name()='DE']",
+        xpath: `//*[local-name()='${targetNode}']`,
         digestAlgorithm: "http://www.w3.org/2001/04/xmlenc#sha256",
         transforms: [
           "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
@@ -48,8 +46,8 @@ const agregarFirmaXml = async (xmlData, certificado) => {
     // Calcular la firma
     sig.computeSignature(xmlData, {
       location: {
-        reference: "//*[local-name()='DE']",
-        action: "after",
+        reference: `//*[local-name()='${targetNode}']`,
+        action: "after", 
       },
     });
     

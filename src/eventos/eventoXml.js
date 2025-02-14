@@ -1,8 +1,9 @@
-const xml2js = require("xml2js");
 const {convertToJSONFormat, leftZero} = require("./util");
 const {eventoConformidadTipo,tipoReceptor,tiposDocumentosIdentidades,paises, departamentos, validateDepartamentoDistritoCiudad, distritos, ciudades, tiposDocumentosReceptorInnominado, tiposDocumentosIdentidadesTransportistas, tiposTransportes, modalidadesTransportes} = require("../constantes/Constante.constant");
- const generateXMLEventoService =(params, data) =>{
+const { normalizeXML } = require("../metodosSifen/envioLote.service");
+const generateXMLEventoService =(  data) =>{
   
+  const xml2js = require("xml2js");
 
    let json = {};
 
@@ -19,31 +20,26 @@ const {eventoConformidadTipo,tipoReceptor,tiposDocumentosIdentidades,paises, dep
     json['gGroupGesEve']['rGesEve']['rEve']['$'] = {};
     json['gGroupGesEve']['rGesEve']['rEve']['$']['Id'] = 1;
     json['gGroupGesEve']['rGesEve']['rEve']['dFecFirma'] = convertToJSONFormat(new Date());
-    json['gGroupGesEve']['rGesEve']['rEve']['dVerFor'] = params.version;
-    json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = {};
-
+    json['gGroupGesEve']['rGesEve']['rEve']['dVerFor'] = data.version;
+    json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = {}; 
     //Emisor
     if (data.tipoEvento == 1) {
-      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosEmisorCancelacion(params, data);
+      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosEmisorCancelacion(  data);
     }
 
     if (data.tipoEvento == 2) {
-      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosEmisorInutilizacion(params, data);
+      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosEmisorInutilizacion(  data);
     }
-
-    //if (data.tipoEvento == 3) {
-    //json['gGroupGesEve']['rGesEve']['gGroupTiEvt'] = eventos(params, data);
-    //}
-
+ 
     //Receptor (empieza en 11)
     if (data.tipoEvento == 11) {
-      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosReceptorConformidad(params, data);
+      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosReceptorConformidad(  data);
     }
     if (data.tipoEvento == 12) {
-      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosReceptorDisconformidad(params, data);
+      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosReceptorDisconformidad(  data);
     }
     if (data.tipoEvento == 13) {
-      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosReceptorDesconocimiento(params, data);
+      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosReceptorDesconocimiento(  data);
     }
     if (data.tipoEvento == 14) {
       json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventosReceptorNotificacionRecepcion(
@@ -52,13 +48,10 @@ const {eventoConformidadTipo,tipoReceptor,tiposDocumentosIdentidades,paises, dep
       );
     }
     if (data.tipoEvento == 15) {
-      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventoEmisorNominacion(params, data);
+      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventoEmisorNominacion(  data);
     }
     if (data.tipoEvento == 16) {
-      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventoEmisorActualizacionDatosTransporte(
-        params,
-        data,
-      );
+      json['gGroupGesEve']['rGesEve']['rEve']['gGroupTiEvt'] = eventoEmisorActualizacionDatosTransporte(        data      );
     }
     var builder = new xml2js.Builder({
       xmldec: {
@@ -67,12 +60,12 @@ const {eventoConformidadTipo,tipoReceptor,tiposDocumentosIdentidades,paises, dep
         standalone: false,
       },
     });
-    var xml = builder.buildObject(json);
+    const xml = builder.buildObject(json);
 
     return normalizeXML(xml); //Para firmar tiene que estar normalizado
   }
  
-  const eventosEmisorCancelacion = (params , data )=>{
+  const eventosEmisorCancelacion = (  data )=>{
     if (!data['cdc']) {
       throw new Error('Debe proporcionar el CDC en data.cdc');
     }
@@ -97,7 +90,7 @@ const {eventoConformidadTipo,tipoReceptor,tiposDocumentosIdentidades,paises, dep
 
     return jsonResult;
   }
-  const eventosEmisorInutilizacion = (params , data )=> {
+  const eventosEmisorInutilizacion = ( data )=> {
     if (!data['timbrado']) {
       throw new Error('Falta el Timbrado en data.timbrado');
     }
@@ -870,5 +863,8 @@ const {eventoConformidadTipo,tipoReceptor,tiposDocumentosIdentidades,paises, dep
 
   
   module.exports = { generateXMLEventoService, eventosEmisorCancelacion,eventosEmisorInutilizacion,eventosReceptorConformidad,
-    eventosReceptorDisconformidad,eventosReceptorDesconocimiento,eventosReceptorNotificacionRecepcion,eventoEmisorNominacion,eventoEmisorActualizacionDatosTransporte
+    eventosReceptorDisconformidad,
+    eventosReceptorDesconocimiento
+    ,eventosReceptorNotificacionRecepcion,
+    eventoEmisorNominacion,eventoEmisorActualizacionDatosTransporte
   };

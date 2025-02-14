@@ -50,8 +50,31 @@ const extraerDatosRespuesta = async (xml) => {
         return { error: "Error al procesar la respuesta", detalle: error.message };
     }
 };
+const extraerRespuestasXml = async (xml) => {
+const json =await xmlToJson(xml);
 
+    try {
+      const gResProcLote = json?.["env:Envelope"]?.["env:Body"]?.["ns2:rResEnviConsLoteDe"]?.["ns2:gResProcLote"];
+  
+      if (!gResProcLote) return [];
+  
+      // Si solo hay un objeto, lo convertimos en un array para manejarlo uniformemente
+      const documentos = Array.isArray(gResProcLote) ? gResProcLote : [gResProcLote];
+  
+      return documentos.map((doc) => ({
+        id: doc["ns2:id"],
+        dEstRes: doc["ns2:dEstRes"],
+        dCodRes: doc["ns2:gResProc"]["ns2:dCodRes"],
+        dMsgRes: doc["ns2:gResProc"]["ns2:dMsgRes"],
+      }));
+    } catch (error) {
+      console.error("Error al extraer respuestas del lote:", error);
+      return [];
+    }
+  };
+  
 module.exports = {
     xmlToJson,
-    extraerDatosRespuesta
+    extraerDatosRespuesta,
+    extraerRespuestasXml
 };
