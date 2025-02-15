@@ -1,17 +1,12 @@
-const cron = require("node-cron");
-// Asegúrate de importar el modelo adecuado
-const moment = require("moment");
-const Venta = require("../models/venta.model");
-const Empresa = require("../models/empresa.model");
-require("dotenv").config(); // Cargar variables de entorno
+ // Asegúrate de importar el modelo adecuado
+ const Venta = require("../models/venta.model");
+ require("dotenv").config(); // Cargar variables de entorno
 const { Op ,literal} = require("sequelize");
-const { loadCertificateAndKey } = require("../metodosSifen/obtenerCertificado");
-const VentaXml = require("../models/ventaXml.model");
+ const VentaXml = require("../models/ventaXml.model");
 const Envio = require("../models/envio.model"); 
 const { extraerDatosRespuesta ,extraerRespuestasXml} = require("../metodosSifen/xmlToJson");
 const { consultaLote } = require("../metodosSifen/consultaLote.service");
-const minutos = 1;
-
+  
 const actualizarLote = async (loteId,json, respuestaId) => {
   try {
 
@@ -89,37 +84,7 @@ const convertirObjetoAXML = (objeto) => {
   const builder = require('xmlbuilder');
   return builder.create(objeto).end({ pretty: true });
 };
-
-const getEmpresasXml = async () => {
-  const tablas = ['iTiDE', 'iTipTra', 'iTImp', 'iTipCont'];
-  try {
-    // Obtener empresas que generan XML
-    const empresas = await Empresa.findAll({
-      where: { envioXml: 'SI' },
-      raw: true,
-      nest: true
-    });
-
-    if (!empresas.length) return [];
-
-    // Agregar datos SIFEN y actividades a cada empresa
-    const empresasCompletas = await Promise.all(
-      empresas.map(async (empresa, index) => {
-        const certificado = await loadCertificateAndKey(empresa.id);
-        return {
-          ...empresa,
-          certificado: certificado || null
-        };
-      })
-    );
-
-    /*  console.log('Empresas procesadas:', empresasCompletas); */
-    return empresasCompletas;
-  } catch (error) {
-    console.error('❌ Error al obtener empresas:', error);
-    return [];
-  }
-};
+ 
 const obtenerLotesRecibidos = async (empresaId) => {
   try {
     const lotes = await Envio.findAll({
@@ -141,25 +106,14 @@ const obtenerLotesRecibidos = async (empresaId) => {
 };
   
 // Función para generar registros xml
-const consultaLoteXml = async () => {
+const consultaLoteXml = async (empresasXml) => {
   console.log('***************************************************************');
   console.log('🔍 Iniciado consula de lote...');
   try {
-    const empresasXml = await getEmpresasXml();
-    if (!empresasXml?.length) {
-      console.log('⏳ No hay empresas con facturación electrónica.');
-      return;
-    }
-
-    console.log(`✅ Se encontraron ${empresasXml.length} empresas.`);
-
+    
     await Promise.all(
       empresasXml.map(async (empresa) => {
-        if (!empresa.certificado) {
-          console.error(`❌ Empresa ${empresa.id} no posee certificado válido!!`);
-          return;
-        }
- 
+        
        const  lotesPendientes = await obtenerLotesRecibidos(empresa.id);
             if (!lotesPendientes?.length) {
               console.warn(`⚠️ No se encontraron lotesPendientes  para empresa ${empresa.id}.`);
@@ -189,16 +143,9 @@ const consultaLoteXml = async () => {
     console.error('❌ Error al revisar ventas pendientes:', error);
   }
 }
+ 
 
-// Revisar si la tarea debe ejecutarse
-const activarTarea = process.env.ENABLE_VENTAS_JOB === "true";
+module.exports = {
+  consultaLoteXml
+};
 
-if (activarTarea) {
-  console.log(`✅ Tarea programada para consultar lotes de xml firmados cada ${minutos} minutos.`);
-  cron.schedule(`*/${minutos} * * * *`, consultaLoteXml, {
-    scheduled: true,
-    timezone: "America/Asuncion",
-  });
-} else {
-  console.log("❌ Tarea de revisión para enviar lotes esta desactivada por configuración.");
-}

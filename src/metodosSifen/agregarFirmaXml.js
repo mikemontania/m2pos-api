@@ -2,9 +2,10 @@
 const { SignedXml } = require("xml-crypto");
 const agregarFirmaXml = async (xmlData, certificado) => {
   try {
+    console.log(certificado)
     const { cert, key, password } = certificado;
 
-    const targetNode = xmlData.includes("<DE>") ? "DE" : "rEve";
+    const targetNode = xmlData.includes("<DE") ? "DE" : "rEve";
 
     console.log('xmlData =',xmlData )
     console.log('certificado =',{ cert, key, password } )
