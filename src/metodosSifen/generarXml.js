@@ -62,24 +62,24 @@ const generarXMLInutilizacion = async (datos) => {
   // Return the XML as a string
 let xmlBase = xml.end({ pretty: false, headless: true ,normalize: true}); 
 if (xmlBase)  fs.writeFileSync('./xmlBaseSinFirma.xml', xmlBase); 
-/*   const registro1 = await VentaXml.create({
+   const registro1 = await VentaXml.create({
   id: null,
   orden: 1,
   empresaId:  datos.empresaId,
   ventaId:  datos.id,
   estado: 'GENERADO',
   xml:xmlBase,
-  }); */
+  });  
   const xmlFirmado =await agregarFirmaXml(xmlBase, datos.certificado);
   if (xmlFirmado)  fs.writeFileSync('./xmlFirmado.xml', xmlFirmado);
-  /*   const registro2 = await VentaXml.create({
+    const registro2 = await VentaXml.create({
     id: null,
     orden:2,
     empresaId:  datos.empresaId,
     ventaId:  datos.id,
     estado: 'FIRMADO',
     xml:xmlFirmado,
-    });  */
+    });  
    let envuelto =await generarEnvolturaXMLSoapEvento(datos,xmlFirmado)   
    if (envuelto)  fs.writeFileSync('./envuelto.xml', envuelto);
       return envuelto ;
