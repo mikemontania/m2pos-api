@@ -2,11 +2,11 @@
  
 const https = require("https");
 const axios = require("axios");   
-const wsdlInutilizarDoc = `${process.env.SIFEN_URL}de/ws/eventos/evento.wsdl?wsdl`;  
+const wsdlInutilizarDoc = `${process.env.SIFEN_URL}de/ws/eventos/evento.wsdl`;  
 const { generarXMLInutilizacion } = require("./generarXml");
 const { normalizeXML } = require("./envioLote.service");
 const fs = require("fs");  
-
+const xml2js = require('xml2js');
  
 const inutilizarDoc = ( id,nroComprobante, timbrado,empresa) => {
     return new Promise(async (resolve, reject) => {
@@ -49,8 +49,8 @@ const inutilizarDoc = ( id,nroComprobante, timbrado,empresa) => {
                 timeout: defaultConfig.timeout,
             }
             if (soapXMLData)  fs.writeFileSync('./soap_request.xml', soapXMLData); 
-            soapXMLData = normalizeXML(soapXMLData);
-            soapXMLData= soapXMLData.replace(/>\s+</g, '><').trim();
+            //soapXMLData = normalizeXML(soapXMLData);
+            //soapXMLData= soapXMLData.replace(/>\s+</g, '><').trim();
             console.log(soapXMLData)
             console.log(wsdlInutilizarDoc) 
          /*    
@@ -65,14 +65,35 @@ const inutilizarDoc = ( id,nroComprobante, timbrado,empresa) => {
                     reject(err.response?.data );
                 });
 
-        } catch (error) { 
-            console.error(`❌ error al realizar inutilizacion de documento =>`,error.message); 
-            reject(error);
-        }
-    });
-}
- 
+            } catch (error) { 
+                console.error(`❌ error al realizar inutilizacion de documento =>`,error.message); 
+                reject(error);
+            }
+        });
+    }
+   
+   
 
+    const extraeRespuestInu = async (xml) => {
+      try {
+        const parser = new xml2js.Parser({ explicitArray: false });
+        const result = await parser.parseStringPromise(xml);
+    
+        const body = result["env:Envelope"]["env:Body"]["ns2:rRetEnviEventoDe"];
+        const gResProcEVe = body["ns2:gResProcEVe"];
+    
+        const dEstRes = gResProcEVe["ns2:dEstRes"];
+        const gResProc = gResProcEVe["ns2:gResProc"];
+        const dCodRes = gResProc["ns2:dCodRes"];
+        const dMsgRes = gResProc["ns2:dMsgRes"];
+    
+        return { codigo: dCodRes, estado: dEstRes, observacion: dMsgRes };
+      } catch (error) {
+        console.error("Error procesando XML:", error);
+        return null;
+      }
+    };
 module.exports = {
+    extraeRespuestInu,
     inutilizarDoc
 };

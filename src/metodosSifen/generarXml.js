@@ -6,48 +6,41 @@ const fs = require("fs");
 const { normalizeXML } = require("./envioLote.service");
 
 
-const generarEnvolturaXMLSoapEvento = async (data) => {
+const generarEnvolturaXMLSoapEvento = async (data,base) => {
   try {
     let xml = xmlbuilder
     .begin() // Asegura que el documento no tenga declaración XML
       .ele("soap:Envelope") 
+      .att("xmlns:env", "http://www.w3.org/2003/05/soap-envelope")
       .att("xmlns:soap", "http://www.w3.org/2003/05/soap-envelope")
       .att("xmlns:xsd", "http://ekuatia.set.gov.py/sifen/xsd")
-      .ele("soap:Body")
-      .raw(data) // Aquí agregamos el XML firmado correctamente
-      .up();
+        .ele("soap:Body")
+          .ele("xsd:rEnviEventoDe" ) // Define el namespace en la raíz
+            .ele("xsd:dId", data.id).up()
+            .raw(base) // Aquí agregamos el XML firmado correctamente
+          .up()
+        .up();
 
-    return xml.end({ pretty: true, headless: true ,normalize: false})
+    return xml.end({ pretty: false, headless: true ,normalize: true})
   } catch (error) {
     console.error("Error en generarEnvolturaXMLSoapEvento:", error);
     return null;
   }
 };
-/* const envelopeEvent =(id , xml )=> {
-  return `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-          <env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">\n\
-              <env:Header/>\n\
-              <env:Body>\n\
-                  <rEnviEventoDe xmlns="http://ekuatia.set.gov.py/sifen/xsd">\n\
-                    <dId>${id}</dId>\n\
-                    <dEvReg>${xml}</dEvReg>\n\
-                  </rEnviEventoDe>\n\
-              </env:Body>\n\
-          </env:Envelope>\n`;
-} */
+ 
 const generarXMLInutilizacion = async (datos) => {
   const fechaActualISO = formatDateToLocalISO(new Date());
   try {
     let xml = xmlbuilder
   .begin() // Asegura que el documento no tenga declaración XML
-  .ele("xsd:rEnviEventoDe", { xmlns: "http://ekuatia.set.gov.py/sifen/xsd" }) // Define el namespace en la raíz
-  .ele("xsd:dId", datos.id).up()
+ 
   .ele("xsd:dEvReg")
     .ele("gGroupGesEve")
+      .att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
       .att("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
       .att("xsi:schemaLocation", "http://ekuatia.set.gov.py/sifen/xsd siRecepEvento_v150.xsd")
-      .ele("rGesEve")
-        .ele("rEve", { Id: '1' })
+      .ele("rGesEve").att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
+        .ele("rEve", { Id: `${datos.id}` })
           .ele("dFecFirma", fechaActualISO).up()
           .ele("dVerFor", datos.version).up()
           .ele("gGroupTiEvt")
@@ -62,7 +55,7 @@ const generarXMLInutilizacion = async (datos) => {
             .up()
           .up()
         .up()
-      .up()
+      
     .up()
   //.up();
  
@@ -87,7 +80,7 @@ if (xmlBase)  fs.writeFileSync('./xmlBaseSinFirma.xml', xmlBase);
     estado: 'FIRMADO',
     xml:xmlFirmado,
     });  */
-   let envuelto =await generarEnvolturaXMLSoapEvento(xmlFirmado)   
+   let envuelto =await generarEnvolturaXMLSoapEvento(datos,xmlFirmado)   
    if (envuelto)  fs.writeFileSync('./envuelto.xml', envuelto);
       return envuelto ;
 

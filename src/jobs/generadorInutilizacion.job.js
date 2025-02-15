@@ -6,7 +6,7 @@ const Empresa = require("../models/empresa.model");
 require("dotenv").config(); // Cargar variables de entorno
 const { Op } = require("sequelize");
 const { loadCertificateAndKey } = require("../metodosSifen/obtenerCertificado");
-const { inutilizarDoc } = require("../metodosSifen/InutilizarDocumento.service");
+const { inutilizarDoc, extraeRespuestInu } = require("../metodosSifen/InutilizarDocumento.service");
 const { extraerDatosRespuesta } = require("../metodosSifen/xmlToJson");
 const VentaXml = require("../models/ventaXml.model");
  
@@ -85,7 +85,7 @@ const generarInutilizacion = async () => {
           ventasPendientes.map(async (venta) => {
             try {
               const respuesta = await inutilizarDoc(venta.id,venta.nroComprobante,venta.timbrado, empresa );
-             const json = await extraerDatosRespuesta(respuesta);
+             const json = await extraeRespuestInu(respuesta);
               console.log(json)
              const registroInutilizado = await VentaXml.create({
               id: null,
@@ -95,6 +95,7 @@ const generarInutilizacion = async () => {
               estado: 'CONCLUIDO',
                 xml:respuesta,
             }); 
+            console.log(json)
              const ventaUpd = await Venta.update(
                 {
                    estado:json.estado,
@@ -107,7 +108,7 @@ const generarInutilizacion = async () => {
 
                
               console.log(
-                xml?.length
+                respuesta?.length
                   ? `✅ Venta con CDC ${venta.cdc} comprobante ${venta.nroComprobante}  con estado ${json.estado}.`
                   : `❌ Error al inutilizacion de comprobante ${venta.nroComprobante}.`
               );
