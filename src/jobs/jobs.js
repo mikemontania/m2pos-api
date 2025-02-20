@@ -92,7 +92,7 @@ const realizaTareas =async () =>{
 
 
     try {
-        const empresas = await getEmpresas();
+      const empresas = await getEmpresas();
         if (!empresas?.length) {
             console.log('⏳ No hay empresas con facturación electrónica. o no tienen certificado valido');
             return;
@@ -102,7 +102,7 @@ const realizaTareas =async () =>{
         await generarXml(empresas);
         await envioLoteXml(empresas);
         await consultaLoteXml(empresas);
-        await generarInutilizacion(empresas); 
+        await generarInutilizacion(empresas);  
     } catch (error) {
         console.error('❌ Error al realizar jobs... :', error);
     }

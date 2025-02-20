@@ -4,6 +4,8 @@ const VentaXml = require("../models/ventaXml.model");
 const { agregaQr } = require("./agregaQr");   
 const fs = require("fs");
 const { normalizeXML } = require("./envioLote.service");
+const { generateDatosItemsOperacion } = require("./service/jsonDteItem.service");
+const { generateDatosTotales } = require("./service/jsonDteTotales.service");
 
 
 const generarEnvolturaXMLSoapEvento = async (data,base) => {
@@ -98,6 +100,25 @@ const generarXML = async (empresa, venta) => {
     const [establecimiento, puntoExp, numero] = venta.nroComprobante.split("-");
     const fechaActualISO = formatDateToLocalISO(new Date());
     const fechaEmisionISO = formatDateToISO(venta.fechaCreacion);
+    const sifenData = {
+      tipoImpuesto: empresa.tipoImpId,
+      tipoDocumento: venta.itide,
+      tipoOperacion: venta.cliente.nroDocumento.includes("-") ? 1 : 2,
+      anticipoGlobal: 0,
+      comision: 0,
+      condicionTipoCambio: 1,
+      cambio: 0,
+      moneda: empresa.codMoneda,
+      descuentoGlobal: venta.importeDescuento,
+      importeSubtotal: venta.importeSubtotal,
+      importeTotal: venta.importeTotal
+    };
+ 
+    const sifenDetalles = await generateDatosItemsOperacion(
+      sifenData,
+      venta.detalles
+    );
+    const sifenCab = await generateDatosTotales(sifenData, sifenDetalles.gCamItem);
     let xml = xmlbuilder
       .create("rDE", { version: "1.0", encoding: "UTF-8" })
       .att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
@@ -154,11 +175,13 @@ const generarXML = async (empresa, venta) => {
       .ele(createGCamCond(venta.formaVenta, roundTo8Decimals(venta.importeTotal)))
       .up()
       //Campos que describen los ítems de la operación
-      .ele(venta.detalles.map(item => createGCamItem(item)))
-      .up()
+     // .ele(venta.detalles.map(item => createGCamItem(item)))
+     .ele( sifenDetalles) 
+     .up()
       .up()
       //Campos de subtotales y totales
-      .ele(createGTotSub(venta))
+     // .ele(createGTotSub(venta))
+     .ele(sifenCab)
       .up()
       .up() //DE
       .ele(createGCamFuFD())
@@ -186,7 +209,8 @@ const generarXML = async (empresa, venta) => {
       xml:xmlFirmadoConQr,
     }); 
   
-  
+    if (xmlFirmadoConQr)  fs.writeFileSync(`./fact_${venta.cdc}.xml`, xmlFirmadoConQr);
+
   return xmlFirmadoConQr;
     
   } catch (error) {

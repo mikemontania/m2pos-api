@@ -7,7 +7,7 @@ const qrgen = require("facturacionelectronicapy-qrgen").default;
 const generateQR = async (xml, idCSC, CSC) => {
   try {
     let qr = ""; // Inicializa la cadena para almacenar el contenido del código QR
-    console.log("Original XML:", xml); // Muestra el XML original para depuración
+    //console.log("Original XML:", xml); // Muestra el XML original para depuración
 
     // Convierte el XML a un objeto JavaScript utilizando xml2js
     const obj = await parseStringPromise(xml);

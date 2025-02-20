@@ -55,13 +55,17 @@ const obtenerVentasPendientes = async () => {
           raw: true,
           nest: true
         });
-
+        venta.importeDescuento= +(venta.importeDescuento),
+        venta.importeNeto= +(venta.importeNeto),
+        venta.importeSubtotal= +(venta.importeSubtotal),
+        venta.importeTotal= +(venta.importeTotal),
         // Procesando cada detalle
         venta.detalles = detalles.map((detalle) => {
-          const importePrecio = detalle.importeTotal / detalle.cantidad; 
+          
           const importeIva5 = detalle.importeIva5 > 0 ? detalle.importeIva5 : 0;
           const importeIva10 = detalle.importeIva10 > 0 ? detalle.importeIva10 : 0;
           const importeIvaExenta = detalle.importeIvaExenta > 0 ? detalle.importeIvaExenta : 0;
+          const descripcion =`${detalle.variante.producto.nombre} ${detalle.variante.presentacion.descripcion} ${detalle.variante.variedad.descripcion} ${detalle.variante.unidad.code}`
 
           // Sumando a los totales
           totalImporteIva5 += importeIva5;
@@ -70,20 +74,22 @@ const obtenerVentasPendientes = async () => {
 
           // Retornar los detalles procesados
           return {
-            porcIva: detalle.porcIva,
-            cantidad: detalle.cantidad,
-            importePrecio,
+            ...detalle,
+            codigo: detalle.variante.codErp,
+            descripcion,
+            cantidad: +(detalle.cantidad),
+            importePrecio: +(detalle.importePrecio),
             importeIva5,
             importeIva10,
             importeIvaExenta,
-            importeTotal: detalle.importeTotal,
-            totalKg: detalle.totalKg,
-            tipoDescuento: detalle.tipoDescuento,
-            variante: detalle.variante,
-            presentacion: detalle.variante.presentacion,
-            variedad: detalle.variante.variedad,
-            producto: detalle.variante.producto,
-            unidad: detalle.variante.unidad
+            porcIva: +(detalle.porcIva),
+            porcDescuento: +(detalle.porcDescuento),
+            importeDescuento: +(detalle.importeDescuento),
+            importeNeto: +(detalle.importeNeto),
+            importeSubtotal: +(detalle.importeSubtotal),
+            importeTotal: +(detalle.importeTotal),
+            anticipo: +(detalle.anticipo),
+            totalKg: +(detalle.totalKg)
           };
         });
 

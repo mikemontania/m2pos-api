@@ -92,7 +92,7 @@ const obtenerLotesRecibidos = async (empresaId) => {
         empresa_id: empresaId,
         estado: 'RECIBIDO',
         fecha_hora_envio: {
-          [Op.lte]: literal("NOW() - INTERVAL '10 minutes'") // Registros con más de 10 minutos
+          [Op.lte]: literal("NOW() - INTERVAL '1 minutes'") // Registros con más de 10 minutos
         }
       },
        raw: true,

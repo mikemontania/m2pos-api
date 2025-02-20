@@ -14,7 +14,7 @@ const getCertificado = async (req, res) => {
     let certificado = await Certificado.findOne({ where: { empresaId } });
 
     if (certificado  )  {
-      console.log("certificado",certificado)
+    /*   console.log("certificado",certificado) */
       if (certificado?.passphrase.length > 4)  
         certificado.passphrase = decryptPassphrase(certificado.passphrase); 
       return res.status(200).json(certificado);
@@ -47,8 +47,8 @@ const update = async (req, res) => {
     const { id } = req.params;
     const { empresaId } = req.usuario;
     const { path, passphrase, validoDesde, validoHasta } = req.body;
-    console.log({ path, passphrase, validoDesde, validoHasta , id})
-    const certificadoActualizado = await Certificado.findByPk(id);
+/*     console.log({ path, passphrase, validoDesde, validoHasta , id})
+ */    const certificadoActualizado = await Certificado.findByPk(id);
     if (certificadoActualizado) {
       const updatedFields = {
         path,

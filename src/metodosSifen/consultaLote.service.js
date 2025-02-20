@@ -7,9 +7,9 @@ const axios = require("axios");
 const EnvioRespuesta = require("../models/envioRespuesta.model");
 const wsdlConsultaLote = `${process.env.SIFEN_URL}de/ws/consultas/consulta-lote.wsdl`;
 
- const crearRespuesta = async (respuesta, stacktrace = null) => {
+ const crearRespuesta = async (lote_id,respuesta, stacktrace = null) => {
     try { 
-       
+       if (respuesta)  fs.writeFileSync(`./respuestaLote${lote_id}.xml`, respuesta);
         let nuevaRespuesta = await EnvioRespuesta.create({
             respuesta:respuesta,
             stacktrace:stacktrace
@@ -94,12 +94,12 @@ const consultaLote = (id, loteId, certificado) => {
                     let respuesta;
                     if (respuestaSuccess.status === 200) {
                         if (respuestaSuccess.data.startsWith("<?xml")) {
-                             respuesta = await crearRespuesta(respuestaSuccess.data, '')
+                             respuesta = await crearRespuesta(loteId,respuestaSuccess.data, '')
                         } else {
-                            respuesta = await crearRespuesta("Error de la SET BIG-IP logout page", respuestaSuccess.data);
+                            respuesta = await crearRespuesta(loteId,"Error de la SET BIG-IP logout page", respuestaSuccess.data);
                         }
                     } else {
-                        respuesta = await crearRespuesta("Error de conexión con la SET", respuestaSuccess.data);
+                        respuesta = await crearRespuesta(loteId,"Error de conexión con la SET", respuestaSuccess.data);
                     }
                     console.log(respuesta); // Aquí puedes guardar la respuesta en una base de datos o archivo si lo necesitas
                     resolve(respuesta);
@@ -108,16 +108,16 @@ const consultaLote = (id, loteId, certificado) => {
                     console.error(`❌ error al realizar envio de lote`,err);
                     if (err.response?.data.startsWith("<?xml")) {
                         
-                        respuesta = await crearRespuesta(err.response?.data, '')
+                        respuesta = await crearRespuesta(loteId,err.response?.data, '')
                     } else {
-                        respuesta = await crearRespuesta("Error en la solicitud a la SET", err.response?.data || err.response||err||null);
+                        respuesta = await crearRespuesta(loteId,"Error en la solicitud a la SET", err.response?.data || err.response||err||null);
                         console.error(respuesta); // Puedes guardar este error en logs
                         reject(respuesta);
                     }
                 });
 
         } catch (error) {
-            let respuestaError = await crearRespuesta("Error interno", error.message);
+            let respuestaError = await crearRespuesta(loteId,"Error interno", error.message);
             reject(respuestaError);
         }
     });

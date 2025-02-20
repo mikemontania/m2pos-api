@@ -21,9 +21,8 @@ const Credito = require("../models/credito.model");
 const  {generaXML } = require('../helpers/xmlGenerator');
 const  {generarCDC,generarCodigoSeguridad } = require('../helpers/cdc-helper');
 const Empresa = require("../models/empresa.model");
-const { firmarXml, getxml,signXml  } = require('../helpers/certificado-helper'); 
-
-const { generateQR ,addQR} = require('../helpers/qr-helper');
+const {  signXml  } = require('../helpers/certificado-helper'); 
+ const { generateQR  } = require('../helpers/qr-helper');
 
 
 const zlib = require('zlib');
@@ -35,10 +34,7 @@ const zlib = require('zlib');
 const {   tipoContribuyente,tiposEmisiones
 } = require('../constantes/Constante.constant');
 const VentaXml = require("../models/ventaXml.model");
-const { recibeLote, recibe } = require("../service/envioLote.service");
-const EmpresaActividad = require("../models/empresaActividad.model");
-const Actividad = require("../models/actividad.model");
-
+const { recibeLote, recibe } = require("../service/envioLote.service"); 
 const getById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -121,7 +117,6 @@ const createVenta = async (req, res) => {
   const fechaVenta = moment(new Date()).format("YYYY-MM-DD");
   const { id, empresaId } = req.usuario;
   const t = await sequelize.transaction(); // Inicia la transacción
-
   try {
     const {
      
@@ -153,8 +148,8 @@ const createVenta = async (req, res) => {
     const formaVenta = await FormaVenta.findByPk(formaVentaId, {
       transaction: t
     });
-
-    if (cobranza && formaVenta.dias == 0) {
+    const cliente  = await Cliente.findByPk(clienteId, {      transaction: t    });
+     if (cobranza && formaVenta.dias == 0) {
       const {
         importeAbonado,
         fechaCobranza,
@@ -195,7 +190,7 @@ const createVenta = async (req, res) => {
       transaction: t
     });
     const codigoSeguridad =generarCodigoSeguridad();
-    const empresa = await Empresa.findByPk(1)
+    const empresa = await Empresa.findByPk(empresaId)
     const tipoComprobante =tipoContribuyente.find(t=>t.id == empresa.tipoContId)
     const tipoEmision = tiposEmisiones.find(t=>t.codigo == 1)
     const fecha = moment(new Date()).format("YYYY-MM-DD");
@@ -257,7 +252,7 @@ const createVenta = async (req, res) => {
       },
       { transaction: t }
     );
-
+ 
     // Guardar detalles
     await VentaDetalle.bulkCreate(
       detalles.map(detalle => ({

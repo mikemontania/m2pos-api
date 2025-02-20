@@ -3,8 +3,7 @@
 const jszip = require("jszip"); 
 const fs = require("fs");
 const https = require("https");
-const axios = require("axios");
-const Certificado = require("../models/certificado.model");
+const axios = require("axios"); 
 const wsdlEnvioLote = `${process.env.SIFEN_URL}de/ws/async/recibe-lote.wsdl`;
 const xml2js = require('xml2js');
 const EnvioRespuesta = require("../models/envioRespuesta.model");
@@ -53,7 +52,7 @@ const enviarLote = (id, xmls, certificado) => {
                 timeout: 90000,
                 ...config,
             };
-            console.log("xmls recibido:", xmls);
+            console.log("xmls recibido:" );
             if (!Array.isArray(xmls)) {
                 return reject("Error: xmls no es un array");
             }
@@ -100,9 +99,8 @@ const enviarLote = (id, xmls, certificado) => {
                 console.log("soapXMLData", soapXMLData);
             }
             //Escribo el archivo para verificacion
-            if (defaultConfig.saveRequestFile) {
-                const json = fs.writeFileSync(defaultConfig.saveRequestFile, soapXMLData);
-            }
+            if (soapXMLData)  fs.writeFileSync(`./soap_request_${id}.xml`, soapXMLData);
+           
 
             const headers = {
                 headers: {

@@ -28,7 +28,7 @@ const Envio = sequelize.define('Envio', {
     defaultValue:'0000'
   },
   obs: {
-    type: DataTypes.STRING(200),
+    type: DataTypes.STRING,
     allowNull: false    ,
     defaultValue:''
   },

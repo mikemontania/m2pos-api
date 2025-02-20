@@ -19,6 +19,7 @@ const VentaDetalle = sequelize.define('VentaDetalle', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+ 
   cantidad: {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: false
@@ -62,7 +63,12 @@ const VentaDetalle = sequelize.define('VentaDetalle', {
   importeTotal: {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: false
-  }, 
+  },
+  anticipo : {
+    type: DataTypes.DECIMAL(19, 2),
+    allowNull: false,
+    defaultValue:0
+  },
   totalKg: {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: true
@@ -70,6 +76,16 @@ const VentaDetalle = sequelize.define('VentaDetalle', {
   tipoDescuento: {
     type: DataTypes.STRING(50),
     allowNull: true
+  },
+  ivaTipo: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue:1
+  },
+  ivaBase: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue:1
   },
 }, {
   tableName: 'ventas_detalle',
