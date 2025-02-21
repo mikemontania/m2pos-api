@@ -2,8 +2,7 @@ const xmlbuilder = require("xmlbuilder");
 const { agregarFirmaXml } = require("./agregarFirmaXml");
 const VentaXml = require("../models/ventaXml.model");
 const { agregaQr } = require("./agregaQr");   
-const fs = require("fs");
-const { normalizeXML } = require("./envioLote.service");
+const fs = require("fs"); 
 const { generateDatosItemsOperacion } = require("./service/jsonDteItem.service");
 const { generateDatosTotales } = require("./service/jsonDteTotales.service");
 
@@ -209,7 +208,7 @@ const generarXML = async (empresa, venta) => {
       xml:xmlFirmadoConQr,
     }); 
   
-    if (xmlFirmadoConQr)  fs.writeFileSync(`./fact_${venta.cdc}.xml`, xmlFirmadoConQr);
+    if (xmlFirmadoConQr)  fs.writeFileSync(`./xmlfirmado_${venta.cdc}.xml`, xmlFirmadoConQr);
 
   return xmlFirmadoConQr;
     

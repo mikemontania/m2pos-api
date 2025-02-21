@@ -1,1 +1,0 @@
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"><soap:Header/><soap:Body><xsd:rEnviConsLoteDe xmlns:xsd="http://ekuatia.set.gov.py/sifen/xsd"><xsd:dId>1</xsd:dId><xsd:dProtConsLote>11635435889179018</xsd:dProtConsLote></xsd:rEnviConsLoteDe></soap:Body></soap:Envelope>

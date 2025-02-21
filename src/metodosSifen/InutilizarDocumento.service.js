@@ -3,8 +3,7 @@
 const https = require("https");
 const axios = require("axios");
 const wsdlInutilizarDoc = `${process.env.SIFEN_URL}de/ws/eventos/evento.wsdl`;
-const { generarXMLInutilizacion } = require("./generarXml");
-const { normalizeXML } = require("./envioLote.service");
+const { generarXMLInutilizacion } = require("./generarXml"); 
 const fs = require("fs");
 const xml2js = require('xml2js');
 

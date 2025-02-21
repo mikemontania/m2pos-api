@@ -36,7 +36,7 @@ const generarInutilizacion = async (empresasXml) => {
 
         await Promise.all(
           ventasPendientes.map(async (venta) => {
-            try {
+            try { 
               const respuesta = await inutilizarDoc(venta.id,venta.nroComprobante,venta.timbrado, empresa );
              const json = await extraeRespuestInu(respuesta);
               console.log(json)
