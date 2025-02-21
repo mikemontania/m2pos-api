@@ -1,97 +1,11 @@
 const xmlbuilder = require("xmlbuilder");
-const { agregarFirmaXml } = require("./agregarFirmaXml");
 const VentaXml = require("../models/ventaXml.model");
 const { agregaQr } = require("./agregaQr");   
 const fs = require("fs"); 
 const { generateDatosItemsOperacion } = require("./service/jsonDteItem.service");
 const { generateDatosTotales } = require("./service/jsonDteTotales.service");
-
-
-const generarEnvolturaXMLSoapEvento = async (data,base) => {
-  try {
-    let xml = xmlbuilder
-    .begin() // Asegura que el documento no tenga declaración XML
-      .ele("soap:Envelope") 
-      .att("xmlns:env", "http://www.w3.org/2003/05/soap-envelope")
-      .att("xmlns:soap", "http://www.w3.org/2003/05/soap-envelope")
-      .att("xmlns:xsd", "http://ekuatia.set.gov.py/sifen/xsd")
-        .ele("soap:Body")
-          .ele("xsd:rEnviEventoDe" ) // Define el namespace en la raíz
-            .ele("xsd:dId", data.id).up()
-            .raw(base) // Aquí agregamos el XML firmado correctamente
-          .up()
-        .up();
-
-    return xml.end({ pretty: false, headless: true ,normalize: true})
-  } catch (error) {
-    console.error("Error en generarEnvolturaXMLSoapEvento:", error);
-    return null;
-  }
-};
+const { signXML } = require("./service/signxml.service");
  
-const generarXMLInutilizacion = async (datos) => {
-  const fechaActualISO = formatDateToLocalISO(new Date());
-  try {
-    let xml = xmlbuilder
-  .begin() // Asegura que el documento no tenga declaración XML
- 
-  .ele("xsd:dEvReg")
-    .ele("gGroupGesEve")
-      .att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
-      .att("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-      .att("xsi:schemaLocation", "http://ekuatia.set.gov.py/sifen/xsd siRecepEvento_v150.xsd")
-      .ele("rGesEve").att("xmlns", "http://ekuatia.set.gov.py/sifen/xsd")
-        .ele("rEve", { Id: `${datos.id}` })
-          .ele("dFecFirma", fechaActualISO).up()
-          .ele("dVerFor", datos.version).up()
-          .ele("gGroupTiEvt")
-            .ele("rGeVeInu")
-              .ele("dNumTim", datos.timbrado).up()
-              .ele("dEst", datos.establecimiento).up()
-              .ele("dPunExp", datos.punto).up()
-              .ele("dNumIn", datos.desde).up()
-              .ele("dNumFin", datos.hasta).up()
-              .ele("iTiDE", datos.tipoDocumento).up()
-              .ele("mOtEve", datos.motivo).up()
-            .up()
-          .up()
-        .up()
-      
-    .up()
-  //.up();
- 
-  // Return the XML as a string
-let xmlBase = xml.end({ pretty: false, headless: true ,normalize: true}); 
-if (xmlBase)  fs.writeFileSync('./xmlBaseSinFirma.xml', xmlBase); 
-   const registro1 = await VentaXml.create({
-  id: null,
-  orden: 1,
-  empresaId:  datos.empresaId,
-  ventaId:  datos.id,
-  estado: 'GENERADO',
-  xml:xmlBase,
-  });  
-  const xmlFirmado =await agregarFirmaXml(xmlBase, datos.certificado);
-  if (xmlFirmado)  fs.writeFileSync('./xmlFirmado.xml', xmlFirmado);
-    const registro2 = await VentaXml.create({
-    id: null,
-    orden:2,
-    empresaId:  datos.empresaId,
-    ventaId:  datos.id,
-    estado: 'FIRMADO',
-    xml:xmlFirmado,
-    });  
-   let envuelto =await generarEnvolturaXMLSoapEvento(datos,xmlFirmado)   
-   if (envuelto)  fs.writeFileSync('./envuelto.xml', envuelto);
-      return envuelto ;
-
-//return xmlFirmado.replace(/(<Signature)/, "\n$1");
-  } catch (error) {
-    console.error(error);
-    console.error(JSON.stringify(error, null, 2));
-    return null;
-  }
-};
 const generarXML = async (empresa, venta) => {
    
   try {
@@ -196,7 +110,8 @@ const generarXML = async (empresa, venta) => {
       estado: 'GENERADO',
         xml:xmlBase,
     });
-    const xmlFirmado =await agregarFirmaXml(xmlBase,empresa.certificado)
+    const xmlFirmado =await signXML(xmlBase,empresa.certificado)
+    
     const xmlFirmadoConQr =await agregaQr(xmlFirmado,  empresa.idCSC,  empresa.csc);
     console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
     const registro2 = await VentaXml.create({
@@ -483,7 +398,6 @@ const createGTimb = (venta, establecimiento, puntoExp, numero) => {
   };
 };
 module.exports = {
-  generarXML,
-  generarXMLInutilizacion,
+  generarXML, 
   formatDateToLocalISO, 
 };

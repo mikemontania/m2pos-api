@@ -3,8 +3,8 @@
 const Venta = require("../models/venta.model"); 
 require("dotenv").config(); // Cargar variables de entorno
 const { Op } = require("sequelize");
- const { inutilizarDoc, extraeRespuestInu } = require("../metodosSifen/InutilizarDocumento.service");
- const VentaXml = require("../models/ventaXml.model");
+  const VentaXml = require("../models/ventaXml.model");
+const { envioEventoXml, extraeRespEvento } = require("../metodosSifen/envioEvento.service");
    
 const obtenerVentasPendientes = async () => {
   try {
@@ -37,8 +37,9 @@ const generarInutilizacion = async (empresasXml) => {
         await Promise.all(
           ventasPendientes.map(async (venta) => {
             try { 
-              const respuesta = await inutilizarDoc(venta.id,venta.nroComprobante,venta.timbrado, empresa );
-             const json = await extraeRespuestInu(respuesta);
+
+              const respuesta = await envioEventoXml(2,venta,empresa); 
+              const json = await extraeRespEvento(respuesta);
               console.log(json)
              const registroInutilizado = await VentaXml.create({
               id: null,
@@ -58,8 +59,7 @@ const generarInutilizacion = async (empresasXml) => {
                   where: { id: venta.id }
                 }
               );
-
-               
+ 
               console.log(
                 respuesta?.length
                   ? `✅ Venta con CDC ${venta.cdc} comprobante ${venta.nroComprobante}  con estado ${json.estado}.`

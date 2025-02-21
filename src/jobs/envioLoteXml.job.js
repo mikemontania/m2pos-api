@@ -176,9 +176,12 @@ const envioLoteXml = async (empresasXml) => {
           if (loteActualizado.estado === "RECIBIDO") {
             console.log(`📨 Envío exitoso de ${xmls.length} XMLs.`);
             await actualizarEstadoVentas(ventasIds, 'Recibido');
+          } else  if (loteActualizado.estado === "RECHAZADO") {
+            console.warn(`⚠️ Fallo en el envío de ${lote.numeroLote} XMLs.`);
+            await actualizarEstadoVentas(ventasIds, 'Rechazado');
           } else {
-            console.warn(`⚠️ Fallo en el envío de ${xmls.length} XMLs.`);
-            await actualizarEstadoVentas(ventasIds, 'Procesado');
+            console.warn(`⚠️ Fallo en el envío de ${lote.numeroLote} XMLs.`);
+            await actualizarEstadoVentas(ventasIds, 'Rechazado');
           }
 
         }

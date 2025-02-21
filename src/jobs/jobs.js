@@ -4,8 +4,7 @@ const { generarInutilizacion } = require("./generadorInutilizacion.job");
 const { generarXml } = require("./generadorXml.job");
 const cron = require("node-cron"); 
 // Asegúrate de importar el modelo adecuado
-const moment = require("moment"); 
-const Empresa = require("../models/empresa.model"); 
+ const Empresa = require("../models/empresa.model"); 
 const TablaSifen = require("../models/tablaSifen.model");
 const Departamento = require("../models/departamento.model");
 const Ciudad = require("../models/ciudad.model");
