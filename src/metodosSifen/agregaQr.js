@@ -33,8 +33,8 @@ const agregaQr = async (xml, idCSC, CSC) => {
     // Obtiene la fecha de emisión y la convierte a formato hexadecimal
     let dFeEmiDE = obj["rDE"]["DE"][0]["gDatGralOpe"][0]["dFeEmiDE"][0];
     dFeEmiDE = Buffer.from(dFeEmiDE, "utf8").toString("hex");
-    qrtohash += "dFeEmiDE=" + dFeEmiDE + "&"; // Agrega la fecha de emisión al contenido del QR
-    qr += "dFeEmiDE=" + dFeEmiDE + "&amp;"; // Agrega la fecha de emisión al contenido del QR
+    qrtohash = qrtohash +  "dFeEmiDE=" + dFeEmiDE + "&"; // Agrega la fecha de emisión al contenido del QR
+    qr= qr + "dFeEmiDE=" + dFeEmiDE + "&amp;"; // Agrega la fecha de emisión al contenido del QR
     // Determina el tipo de receptor y agrega el número de identificación
     let dRucRec = "";
     if (
@@ -105,7 +105,7 @@ const agregaQr = async (xml, idCSC, CSC) => {
       .update(qrtohash + CSC)
       .digest("hex");
      // 
-    obj["rDE"]["gCamFuFD"]["dCarQR"] = qr + "&cHashQR=" + valueHashed;;
+    obj["rDE"]["gCamFuFD"]["dCarQR"] = qr + "&cHashQR=" + valueHashed;
 
     // Construye el nuevo XML con el código QR incluido
     const builder = new Builder();

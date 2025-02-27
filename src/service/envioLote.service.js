@@ -15,6 +15,7 @@ const wsdlConsultaRuc = `${process.env.SIFEN_URL}de/ws/consultas/consulta-ruc.ws
 const wsdlConsulta = `${process.env.SIFEN_URL}de/ws/consultas/consulta.wsdl?wsdl`;
 const {decryptPassphrase } = require('../helpers/encript-helper');
 const setApi  = require('facturacionelectronicapy-setapi');
+const { normalizeXML } = require("../metodosSifen/envioLote.service");
 
 const abrirCertificado = (certificado, passphase) => {
      const p12 = openFileP12(certificado, passphase);
@@ -23,17 +24,7 @@ const abrirCertificado = (certificado, passphase) => {
         key: getPrivateKey(p12),
     };
 }
-
-const normalizeXML = (xml) => {
-    return xml
-        .split("\r\n").join("")
-        .split("\n").join("")
-        .split("\t").join("")
-        .split("    ").join("")
-        .split(">    <").join("><")
-        .split(">  <").join("><")
-        .replace(/\r?\n|\r/g, "");
-}
+ 
 
 // Función para comprimir un XML a un archivo ZIP
 const comprimirXml = async (xmlString, zipFileName = "archivo.zip", xmlFileName = "archivo.xml") => {

@@ -14,9 +14,7 @@ const xmlToJson = async (xml) => {
         throw error;
     }
 };
-
-
-
+ 
 const extraerDatosRespuesta = async (xml) => {
     try {
         const jsonData = await xmlToJson(xml);
@@ -49,7 +47,7 @@ const extraerDatosRespuesta = async (xml) => {
     } catch (error) {
         return { error: "Error al procesar la respuesta", detalle: error.message };
     }
-};
+};  
 const extraerRespuestasXml = async (xml) => {
 const json =await xmlToJson(xml);
 

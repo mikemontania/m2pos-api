@@ -126,7 +126,7 @@ const generarXml = async ( empresasXml) => {
           ventasPendientes.map(async (venta) => {
             try {
               const xml = await generarXML(empresa, venta);
-              const estado = xml?.length ? 'Procesado' : 'Error';
+              const estado = xml ? 'Procesado' : 'Error';
 
              const ventaUpd = await Venta.update(
                 {

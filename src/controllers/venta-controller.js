@@ -288,6 +288,7 @@ const anularVenta = async (req, res) => {
     if (venta) {
       await venta.update({
         anulado: true,
+        estado:'Pendiente',
         fechaAnulacion: new Date(),
         usuarioAnulacionId: req.usuario.id
       });

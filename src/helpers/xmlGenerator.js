@@ -287,7 +287,14 @@ const createGDatRec = cabecera => {
   const [dRucRec, dDVRec] = cabecera.cliente.nroDocumento.split("-");
   const iNatRec = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; // 1= contribuyente, 2= no contribuyente
   const iTiOpe = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2;
-
+/**
+ * iTiOpe
+1= B2B
+2= B2C
+3= B2G
+4= B2F
+ * 
+ */
   if (iNatRec === 1) {
     // Contribuyente
     return {

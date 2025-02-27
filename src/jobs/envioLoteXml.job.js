@@ -3,81 +3,10 @@ const cron = require("node-cron");
 const Venta = require("../models/venta.model");
  require("dotenv").config(); // Cargar variables de entorno
 const { Op } = require("sequelize");
- const VentaXml = require("../models/ventaXml.model");
-const Envio = require("../models/envio.model");
-const { enviarLote } = require("../metodosSifen/envioLote.service");
-const EnvioVenta = require("../models/envioVenta");
-const { extraerDatosRespuesta } = require("../metodosSifen/xmlToJson");
+ const VentaXml = require("../models/ventaXml.model"); 
+const { enviarLote } = require("../metodosSifen/envioLote.service"); 
+const { cargandoLote, actualizarLote, relacionarVentasConLote } = require("../metodosSifen/service/createLote.service");
 
-
- const relacionarVentasConLote = async (loteId, ventasIds) => {
-  try {
-    const registros = ventasIds.map(ventaId => ({
-      ventaId: ventaId,
-      envioId: loteId
-    }));
-
-    await EnvioVenta.bulkCreate(registros);
-
-    console.log(`🔗 Relación creada entre ${ventasIds.length} ventas y el lote ${loteId}`);
-  } catch (error) {
-    console.error("❌ Error al relacionar ventas con el lote:", error);
-    throw error;
-  }
-};
-
-
-const actualizarLote = async (loteId, respuesta, respuestaId) => {
-  try {
-
-    const json = await extraerDatosRespuesta(respuesta);
-
-    console.log("json ", json)
-    console.log("JSON.stringify ", JSON.stringify(json, null, 2));
-    // Determinar estado basado en el código de respuesta
-    const estado = json?.codigo === "0300" ? "RECIBIDO" : "RECHAZADO";
-    const reintento = json?.codigo === "0300" ? false : true;
-    const actualizado = await Envio.update(
-      {
-        estado: estado,
-        numeroLote: json?.numeroLote,
-        codigo:json?.codigo,
-        obs:json?.observacion,
-        respuestaId: respuestaId,
-        reintentar: reintento
-      },
-      {
-        where: { id: loteId }
-      }
-    );
-    console.log(actualizado)
-    console.log(`✅ Lote actualizado con ID: ${loteId}, Estado: ${estado}`);
-    return {id:loteId,estado:estado,...json};
-  } catch (error) {
-    console.error("❌ Error al actualizar el lote:", error);
-    throw error;
-  }
-};
-
-const cargandoLote = async (empresaId) => {
-  try {
-    const envio = await Envio.create({
-      estado: 'INIT',
-      empresaId: empresaId,
-      reintentar: true,  // Asumimos que se reintenta en caso de error
-      tipo: 'LOTE',      // Tipo de envío (puedes cambiarlo según tu lógica)
-      numeroLote: null,  // Se puede actualizar después
-      respuestaId: null,
-      respuestaConsultaId: null
-    });
-
-    console.log(`✅ Lote creado con ID: ${envio.id}`);
-    return envio;
-  } catch (error) {
-    console.error('❌ Error al crear el lote:', error);
-    throw error;
-  }
-};
  
 const obtenerVentasProcesadas = async (empresaId) => {
   try {
@@ -194,5 +123,6 @@ const envioLoteXml = async (empresasXml) => {
 
  
 module.exports = {
-  envioLoteXml
+  envioLoteXml,
+  actualizarEstadoVentas
 };

@@ -5,7 +5,7 @@ const { Op ,literal} = require("sequelize");
  const VentaXml = require("../models/ventaXml.model");
 const Envio = require("../models/envio.model"); 
 const { extraerDatosRespuesta ,extraerRespuestasXml} = require("../metodosSifen/xmlToJson");
-const { consultaLote } = require("../metodosSifen/consultaLote.service");
+ const { consulta } = require("../metodosSifen/service/consulta.service");
   
 const actualizarLote = async (loteId,json, respuestaId) => {
   try {
@@ -124,7 +124,9 @@ const consultaLoteXml = async (empresasXml) => {
               lotesPendientes.map(async (lote) => {
                 try {
                   console.log(lote)
-                  const respuesta = await consultaLote(lote.id, lote.numeroLote, empresa.certificado);
+                  
+                  const data = {id:lote.id, numeroLote: lote.numeroLote,tipoConsulta:"LOTE"}
+                  const respuesta = await consulta(data ,empresa.certificado);
                   console.log(respuesta);
                   const json = await extraerDatosRespuesta(respuesta.respuesta);
                   await actualizarVentasDesdeSifen(respuesta.respuesta); 

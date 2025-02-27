@@ -1,10 +1,11 @@
 const xmlbuilder = require("xmlbuilder");
 const VentaXml = require("../models/ventaXml.model");
-const { agregaQr } = require("./agregaQr");   
 const fs = require("fs"); 
 const { generateDatosItemsOperacion } = require("./service/jsonDteItem.service");
 const { generateDatosTotales } = require("./service/jsonDteTotales.service");
-const { signXML } = require("./service/signxml.service");
+const { signXML } = require("./service/signxml.service"); 
+const { generateQR } = require("./service/generateQR.service");
+const { normalizeXML } = require("./service/util");
  
 const generarXML = async (empresa, venta) => {
    
@@ -101,7 +102,9 @@ const generarXML = async (empresa, venta) => {
       .up();
   
     // Return the XML as a string
-    const xmlBase = xml.end({ pretty: false });
+    let xmlBase = xml.end({ pretty: false });
+    xmlBase =    normalizeXML(xmlBase);          
+    xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
     const registro1 = await VentaXml.create({
       id: null,
       orden: 1,
@@ -112,7 +115,7 @@ const generarXML = async (empresa, venta) => {
     });
     const xmlFirmado =await signXML(xmlBase,empresa.certificado)
     
-    const xmlFirmadoConQr =await agregaQr(xmlFirmado,  empresa.idCSC,  empresa.csc);
+    const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc);
     console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
     const registro2 = await VentaXml.create({
       id: null,

@@ -88,10 +88,7 @@ const signDocument = (xmlString, tag, certificado) => {
     var dsig = null;
     try {
       const { cert, key, password } = certificado;
-      // Crear un objeto SignedXml
-
-      // Configurar la clave privada para firmar (ejemplo, deberías cargar tu propia clave privada)
-
+ 
       let xmlFirmado = "";
 
       const sig = new SignedXml({
@@ -121,8 +118,14 @@ const signDocument = (xmlString, tag, certificado) => {
         "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"; // Algoritmo de firma RSA con SHA-256
       sig.canonicalizationAlgorithm = "http://www.w3.org/2001/10/xml-exc-c14n#";
 
-      // Calcular la firma
-      sig.computeSignature(xmlString);
+      // Calcular la firma 
+      sig.computeSignature(xmlString, {
+        location: {
+          reference: `//*[local-name()='${tag}']`,
+          action: "after", 
+        },
+      });
+
 
       // Obtener la firma en formato XML
       const xmlWithSignature = sig.getSignedXml();
@@ -144,5 +147,5 @@ const signDocument = (xmlString, tag, certificado) => {
  
 
 module.exports = {
-    signXML,signXMLEvento
+    signXML,signXMLEvento ,cleanCertificate
   };

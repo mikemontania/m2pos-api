@@ -4,38 +4,100 @@ const jszip = require("jszip");
 const fs = require("fs");
 const https = require("https");
 const axios = require("axios"); 
-const wsdlEnvioLote = `${process.env.SIFEN_URL}de/ws/async/recibe-lote.wsdl`;
-const xml2js = require('xml2js');
-const EnvioRespuesta = require("../models/envioRespuesta.model");
-
-const crearRespuesta = async (respuesta, stacktrace = null) => {
-    try { 
-       
-        const nuevaRespuesta = await EnvioRespuesta.create({
-            respuesta:respuesta,
-            stacktrace:stacktrace
-        });
-
-        console.log(`✅ Respuesta creada con ID: ${nuevaRespuesta.id}`);
-        return nuevaRespuesta;
-    } catch (error) {
-        console.error('❌ Error al guardar la respuesta:', error);
-        throw error;
+const wsdlEnvioLote = `${process.env.SIFEN_URL}de/ws/async/recibe-lote.wsdl`;  
+const { crearRespuesta, crearRespuesta1 } = require("./service/respuesta.service");
+const { normalizeXML } = require("./service/util");
+ 
+const enviarXml = (id, xmlfirmado, certificado) => {
+    let respuesta = {}
+    const config = {
+        debug: true,  // Para activar logs de depuración
+         
     }
-};
+    return new Promise(async (resolve, reject) => {
+        try {
+            let defaultConfig = {
+                debug: false,
+                timeout: 90000,
+                ...config,
+            };
+           
+            const { cert, key } = certificado;
+            if (!xmlfirmado) {
+                return reject("no se recibio xml");
+            }
+ 
+            let rLoteDE = xmlfirmado.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
+            rLoteDE = `<rLoteDE>\n${rLoteDE }\n</rLoteDE>\n`
+      
+           const zip = new jszip(); 
+           zip.file("lote.xml", rLoteDE); 
+           const zipAsBase64 = await zip.generateAsync({ type: "base64" });
 
+ 
+ 
+            const httpsAgent = new https.Agent({
+                cert: Buffer.from(cert, "utf8"),
+                key: Buffer.from(key, "utf8"),
+            });
+            console.log('zipAsBase64',zipAsBase64)
+            //    <?xml version="1.0" encoding="UTF-8"?>\n\
+            let soapXMLData = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://ekuatia.set.gov.py/sifen/xsd">\n\
+                    <soap:Header/>\n\
+                    <soap:Body>\n\
+                        <xsd:rEnvioLote>
+                            <xsd:dId>${id}</xsd:dId>\n\
+                            <xsd:xDE>${zipAsBase64}</xsd:xDE>\n\
+                        </xsd:rEnvioLote>\n\
+                    </soap:Body>\n\
+                </soap:Envelope>`;
+                soapXMLData = normalizeXML(soapXMLData);
+                soapXMLData= soapXMLData.replace(/>\s+</g, '><').trim();
+             
+            const headers = {
+                headers: {
+                    "User-Agent": "facturaSend",
+                    "Content-Type": "application/soap+xml",
+                },
+                httpsAgent,
+                timeout: defaultConfig.timeout,
+            }
+           // console.log(headers)
+            console.log(wsdlEnvioLote)
+            axios.post(wsdlEnvioLote, soapXMLData, headers)
+                .then(async (respuestaSuccess) => {
+                    console.log(`✅ then =>`,respuestaSuccess);
+                    let respuesta;
+                    if (respuestaSuccess.status === 200) {
+                        if (respuestaSuccess.data.startsWith("<?xml")) {
+                             respuesta = await crearRespuesta1(respuestaSuccess.data, '')
+                        } else {
+                            respuesta = await crearRespuesta1("Error de la SET BIG-IP logout page", respuestaSuccess.data);
+                        }
+                    } else {
+                        respuesta = await crearRespuesta1("Error de conexión con la SET", respuestaSuccess.data);
+                    }
+                    console.log(respuesta); // Aquí puedes guardar la respuesta en una base de datos o archivo si lo necesitas
+                    resolve(respuesta);
+                })
+                .catch(async (err) => {
+                    console.error(`❌ error al realizar envio de lote`,err);
+                    if (err.response?.data.startsWith("<?xml")) {
+                        
+                        respuesta = await crearRespuesta1(err.response?.data, '')
+                    } else {
+                        respuesta = await crearRespuesta1("Error en la solicitud a la SET", err.response?.data || err.response||err||null);
+                        console.error(respuesta); // Puedes guardar este error en logs
+                        reject(respuesta);
+                    }
+                });
 
-const normalizeXML = (xml) => {
-    return xml
-        .split("\r\n").join("")
-        .split("\n").join("")
-        .split("\t").join("")
-        .split("    ").join("")
-        .split(">    <").join("><")
-        .split(">  <").join("><")
-        .replace(/\r?\n|\r/g, "");
+        } catch (error) {
+            let respuestaError = await crearRespuesta("Error interno", error.message);
+            reject(respuestaError);
+        }
+    });
 }
-
 
 
 const enviarLote = (id, xmls, certificado) => {
@@ -110,19 +172,20 @@ const enviarLote = (id, xmls, certificado) => {
                 httpsAgent,
                 timeout: defaultConfig.timeout,
             }
-            console.log(headers)
+           // console.log(headers)
             console.log(wsdlEnvioLote)
             axios.post(wsdlEnvioLote, soapXMLData, headers)
                 .then(async (respuestaSuccess) => {
+                    console.log(`✅ then =>`,respuestaSuccess);
                     let respuesta;
                     if (respuestaSuccess.status === 200) {
                         if (respuestaSuccess.data.startsWith("<?xml")) {
-                             respuesta = await crearRespuesta(respuestaSuccess.data, '')
+                             respuesta = await crearRespuesta1(respuestaSuccess.data, '')
                         } else {
-                            respuesta = await crearRespuesta("Error de la SET BIG-IP logout page", respuestaSuccess.data);
+                            respuesta = await crearRespuesta1("Error de la SET BIG-IP logout page", respuestaSuccess.data);
                         }
                     } else {
-                        respuesta = await crearRespuesta("Error de conexión con la SET", respuestaSuccess.data);
+                        respuesta = await crearRespuesta1("Error de conexión con la SET", respuestaSuccess.data);
                     }
                     console.log(respuesta); // Aquí puedes guardar la respuesta en una base de datos o archivo si lo necesitas
                     resolve(respuesta);
@@ -131,9 +194,9 @@ const enviarLote = (id, xmls, certificado) => {
                     console.error(`❌ error al realizar envio de lote`,err);
                     if (err.response?.data.startsWith("<?xml")) {
                         
-                        respuesta = await crearRespuesta(err.response?.data, '')
+                        respuesta = await crearRespuesta1(err.response?.data, '')
                     } else {
-                        respuesta = await crearRespuesta("Error en la solicitud a la SET", err.response?.data || err.response||err||null);
+                        respuesta = await crearRespuesta1("Error en la solicitud a la SET", err.response?.data || err.response||err||null);
                         console.error(respuesta); // Puedes guardar este error en logs
                         reject(respuesta);
                     }
@@ -147,6 +210,6 @@ const enviarLote = (id, xmls, certificado) => {
 }
 
 module.exports = {
-    enviarLote,
-    normalizeXML
+    enviarLote ,
+    enviarXml
 };
