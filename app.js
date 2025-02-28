@@ -46,7 +46,7 @@ app.use("/M2POS/lista-precio", require("./src/routes/listaPrecio-routes"));
 app.use("/M2POS/medio-pago", require("./src/routes/medioPago-routes"));
 app.use("/M2POS/monedas", require("./src/routes/moneda-routes"));
 app.use("/M2POS/ventas", require("./src/routes/venta-routes"));
-app.use("/M2POS/ventas-xml", require("./src/routes/ventaXml-routes"));
+app.use("/M2POS/historiales", require("./src/routes/ventaXml-routes"));
 app.use("/M2POS/marcas", require("./src/routes/marca-routes"));
 app.use("/M2POS/subcategorias", require("./src/routes/subCategoria-routes"));
 app.use("/M2POS/sifens", require("./src/routes/sifen-routes"));

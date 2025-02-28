@@ -82,7 +82,11 @@ const actualizarVentasDesdeSifen = async (res) => {
 // Función de ejemplo para convertir JSON a XML
 const convertirObjetoAXML = (objeto) => {
   const builder = require('xmlbuilder');
-  return builder.create(objeto).end({ pretty: true });
+  
+  return builder
+    .create('responseLote', { version: '1.0', encoding: 'UTF-8' }) // Agrega una etiqueta raíz y la codificación
+    .ele(objeto) // Inserta los datos dentro de la raíz
+    .end({ pretty: true }); // Formato legible
 };
  
 const obtenerLotesRecibidos = async (empresaId) => {

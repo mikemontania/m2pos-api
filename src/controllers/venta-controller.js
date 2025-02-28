@@ -406,6 +406,7 @@ const listarVentas = async (req, res) => {
           attributes: ["descripcion", "direccion", "telefono", "cel"]
         }
       ],
+      order: [["id", "ASC"]], // Ordena por ID en orden descendente
       offset,
       limit: pageSize
     });

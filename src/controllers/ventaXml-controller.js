@@ -53,13 +53,18 @@ const update = async (req, res) => {
 const findByVentaId = async (req, res) => {
   try {
     const { ventaId } = req.params;
-    const xmls = await VentaXml.findAll({ where: { ventaId } });
+    const xmls = await VentaXml.findAll({ 
+      where: { ventaId },
+      order: [['orden', 'ASC']] // Ordena por createdAt en orden ascendente
+    });
     res.status(200).json(xmls);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error al buscar XMLs por ventaId" });
   }
 };
+
+
 
 module.exports = {
   getById,
