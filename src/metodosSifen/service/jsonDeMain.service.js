@@ -12,18 +12,18 @@ const { leftZero } = require("./util");
 const xml2js = require('xml2js');  
 
  
-  const   generateXMLDE =(params, data)=> {
+  const   generateXMLDE =(empresa, venta)=> {
     return new Promise((resolve, reject) => {
       try { 
 
-        resolve(generateXMLDeService(params, data));
+        resolve(generateXMLDeService(empresa, venta));
       } catch (error) {
         reject(error);
       }
     });
   }
  
-  const  generateXMLDeService =(params, data) => {
+  const  generateXMLDeService =(empresa, venta) => {
     removeUnderscoreAndPutCamelCase(data);
 
     addDefaultValues(data);
@@ -51,7 +51,7 @@ const xml2js = require('xml2js');
     }
 
     //['gDtipDE']=E001
-    json['rDE']['DE']['gDtipDE']['gCamItem'] = generateDatosItemsOperacion(  data, data.detalles);
+    json['rDE']['DE']['gDtipDE']['gCamItem'] = generateDatosItemsOperacion( data);
 
     let gCamEsp = generateDatosComplementariosComercialesDeUsoEspecificos( data);
     if (gCamEsp) {

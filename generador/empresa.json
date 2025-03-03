@@ -1,0 +1,77 @@
+{
+  "id": 1,
+  "razonSocial": "DE generado en ambiente de prueba - sin valor comercial ni fiscal",
+  "nombreFantasia": "CAVALLARO S.A.C.e.I",
+  "idCSC": "1",
+  "csc": "ABCD0000000000000000000000000000",
+  "codMoneda": "PYG",
+  "simboloMoneda": "Gs",
+  "tipoContId": 2,
+  "tipoTransaId": 1,
+  "tipoImpId": 1,
+  "numCasa": 1,
+  "codDepartamento": 12,
+  "codCiudad": 153,
+  "codBarrio": 3568,
+  "ruc": "80003110-5",
+  "telefono": "021578603",
+  "email": "info@cavallaro.com.py",
+  "img": "grupocavallaro3.png",
+  "web": "www.cavallaro.com.py",
+  "generarXml": "NO",
+  "envioXml": "NO",
+  "moneda": {
+    "codigo": "PYG",
+    "descripcion": "Guarani"
+  },
+  "departamento": {
+    "codigo": 12,
+    "descripcion": "CENTRAL"
+  },
+  "ciudad": {
+    "codigo": 153,
+    "descripcion": "CAPIATA",
+    "codDepartamento": 12
+  },
+  "barrio": {
+    "codigo": 3568,
+    "descripcion": "CAPIATA",
+    "codCiudad": 153
+  },
+  "tipoContribuyente": {
+    "id": "28",
+    "codigo": "2",
+    "tabla": "iTipCont",
+    "descripcion": "Persona Jurídica",
+    "activo": true
+  },
+  "tipoTransaccion": {
+    "id": "9",
+    "codigo": "1",
+    "tabla": "iTipTra",
+    "descripcion": "Venta de mercadería",
+    "activo": true
+  },
+  "tipoImpuesto": {
+    "id": "22",
+    "codigo": "1",
+    "tabla": "iTImp",
+    "descripcion": "IVA",
+    "activo": true
+  },
+  "actividades": [
+    {
+      "cActEco": "20130",
+      "dDesActEco": "FABRICACIÓN DE PLÁSTICOS Y CAUCHO SINTÉTICO EN FORMAS PRIMARIAS"
+    },
+    {
+      "cActEco": "20931",
+      "dDesActEco": "FABRICACIÓN DE JABONES, DETERGENTES Y PREPARADOS DE LIMPIEZA"
+    }
+  ],
+  "certificado": {
+    "cert": "-----BEGIN CERTIFICATE-----\r\nMIII+zCCBuOgAwIBAgIIZYUC+RitQLEwDQYJKoZIhvcNAQELBQAwWjEaMBgGA1UE\r\nAwwRQ0EtRE9DVU1FTlRBIFMuQS4xFjAUBgNVBAUTDVJVQzgwMDUwMTcyLTExFzAV\r\nBgNVBAoMDkRPQ1VNRU5UQSBTLkEuMQswCQYDVQQGEwJQWTAeFw0yNDA1MDgxMzU4\r\nMDBaFw0yNTA1MDgxMzU4MDBaMIGuMSMwIQYDVQQDDBpKT1NFIE9TQ0FSIENBVkFM\r\nTEFSTyBST0pBUzERMA8GA1UEBRMIQ0k1MDg4NTQxEzARBgNVBCoMCkpPU0UgT1ND\r\nQVIxGDAWBgNVBAQMD0NBVkFMTEFSTyBST0pBUzELMAkGA1UECwwCRjExKzApBgNV\r\nBAoMIkNFUlRJRklDQURPIENVQUxJRklDQURPIFRSSUJVVEFSSU8xCzAJBgNVBAYT\r\nAlBZMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAieNxWKtqsaaYkyjo\r\n+mnzM1TSWdO4OrRd4sxkLmB6mNCS6Pp418t93e46yqs7BAxl80WYVBb8aJfVKTZs\r\nX8UlM/kjJknYzM8i8GW8QftfLiOmOGxI0eCsDaCTqSnyPQfu95RTPYNYurldjueW\r\n9jpokFBk7YaQ/01a1JuTHPz5ro0ElmGiuJyzNmCtS/1gYP3XhEp8ywd1Qxn58FX1\r\nVuVeXGUTd8WjR9rjIHprMMTHAeXjkQZfVHPyFBDNCUtuv+Gor+JHi/tqtyMe/+Up\r\nPOxHP9xN23jKwlMopLcUq6+nhk3ZJ71ET1FkojtYFE1Is0KCBQR5Uzze2SccNrH7\r\nlti9YwIDAQABo4IEbjCCBGowDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBShPYUr\r\nzdgslh85AgyfUztY2JULezCBlAYIKwYBBQUHAQEEgYcwgYQwVQYIKwYBBQUHMAKG\r\nSWh0dHBzOi8vd3d3LmRpZ2l0by5jb20ucHkvdXBsb2Fkcy9jZXJ0aWZpY2Fkby1k\r\nb2N1bWVudGEtc2EtMTUzNTExNzc3MS5jcnQwKwYIKwYBBQUHMAGGH2h0dHBzOi8v\r\nd3d3LmRpZ2l0by5jb20ucHkvb2NzcC8wgeAGA1UdEQSB2DCB1YEdY29udGFiaWxp\r\nZGFkQGNhdmFsbGFyby5jb20ucHmkgbMwgbAxKTAnBgNVBA0MIEZJUk1BIEVMRUNU\r\nUk9OSUNBIGRlIG5pdmVsIG1lZGlvMRgwFgYDVQQMDA9WSUNFIFBSRVNJREVOVEUx\r\nFjAUBgNVBAUTDVJVQzgwMDAzMTEwLTUxEzARBgNVBAsMCkRJUkVDVE9SSU8xPDA6\r\nBgNVBAoMMyJDQVZBTExBUk8gU09DSUVEQUQgQU5PTklNQSBDT01FUkNJQUwgRSBJ\r\nTkRVU1RSSUFMIjCCAeUGA1UdIASCAdwwggHYMIIB1AYNKwYBBAGC+TsBAQEMATCC\r\nAcEwLwYIKwYBBQUHAgEWI2h0dHBzOi8vd3d3LmRpZ2l0by5jb20ucHkvZGVzY2Fy\r\nZ2FzMIIBjAYIKwYBBQUHAgIwggF+HoIBegBDAGUAcgB0AGkAZgBpAGMAYQBkAG8A\r\nIABjAHUAYQBsAGkAZgBpAGMAYQBkAG8AIABkAGUAIABmAGkAcgBtAGEAIABlAGwA\r\nZQBjAHQAcgDzAG4AaQBjAGEAIAB0AGkAcABvACAARgAxACAAKABjAGwAYQB2AGUA\r\ncwAgAGUAbgAgAG0A8wBkAHUAbABvACAAcwBvAGYAdAB3AGEAcgBlACkALAAgAHMA\r\ndQBqAGUAdABhACAAYQAgAGwAYQBzACAAYwBvAG4AZABpAGMAaQBvAG4AZQBzACAA\r\nZABlACAAdQBzAG8AIABlAHgAcAB1AGUAcwB0AGEAcwAgAGUAbgAgAGwAYQAgAEQA\r\nZQBjAGwAYQByAGEAYwBpAPMAbgAgAGQAZQAgAFAAcgDhAGMAdABpAGMAYQBzACAA\r\nZABlACAAQwBlAHIAdABpAGYAaQBjAGEAYwBpAPMAbgAgAGQAZQAgAEQATwBDAFUA\r\nTQBFAE4AVABBACAAUwAuAEEALjAqBgNVHSUBAf8EIDAeBggrBgEFBQcDAgYIKwYB\r\nBQUHAwQGCCsGAQUFBwMBMHsGA1UdHwR0MHIwNKAyoDCGLmh0dHBzOi8vd3d3LmRp\r\nZ2l0by5jb20ucHkvY3JsL2RvY3VtZW50YV9jYS5jcmwwOqA4oDaGNGh0dHBzOi8v\r\nd3d3LmRvY3VtZW50YS5jb20ucHkvZGlnaXRvL2RvY3VtZW50YV9jYS5jcmwwHQYD\r\nVR0OBBYEFMj7hsl1/NPag4IDEZijyI5zQY3oMA4GA1UdDwEB/wQEAwIF4DANBgkq\r\nhkiG9w0BAQsFAAOCAgEAno84o7HJ4wdJ8AEzpGVsdpTSaIIBQoUxG5JVr7fJ/lr3\r\nXalhjhumhPlMk6O1dd+k/Ce6myv61VrZEA5ancu1sJWvm0SxBbfhuVuy3kS0hjFh\r\neDk5CRhDi+Sx3dS8gIG7JzVi4SWbO5plECg8a26VKRAYox6zTG/Uzac+EtWo7zrr\r\n+rViIbK8N4np7QzgoIesMtMNmfNlvjADcUJUyJBh9UvSm8sJIZWE015oa4yNQSrD\r\nhs1PhYhoVN2U0i/YPfCZ1JNw/E2j7YYkhZiXMlAqH5UMup9eA4gMoUbVpTUCT7Y3\r\nM5gAwxffU4Iq4Im0WXSsopHSjxSkzJOdWKmR4WyxusJm+Mv33SrMxPrFXM1HfePG\r\nCtfW6ITjF60y1jTwcUxJ1PXuJ+sNcbP+l7UQm9Qe/1Seo/p/qNzM/0r8UH7bUrzO\r\nkDc/oUpzZWLov3XdMkwVWl36KtJZzTqMymUdMQZWQfWb15X9Z6RUJVKPlArEkWMj\r\nL81LrDZW6YEY7VkgEG2wzvVaaMOUraGrxGTtDUA/qaEDwWjEohQJH/+/VLQ+6weD\r\nDCqF6imsJuGSIytGA9p0t8YV+zgrENtNUjSrlP8lNTlfjvICcFAORYWdOsZvWcwA\r\n0ctEyt5WPdczm0zVbAcZR+u/0L5JJ97U86C6QRsMtoK2bhU0NrGoRuYsuDFXkQY=\r\n-----END CERTIFICATE-----\r\n",
+    "key": "-----BEGIN RSA PRIVATE KEY-----\r\nMIIEogIBAAKCAQEAieNxWKtqsaaYkyjo+mnzM1TSWdO4OrRd4sxkLmB6mNCS6Pp4\r\n18t93e46yqs7BAxl80WYVBb8aJfVKTZsX8UlM/kjJknYzM8i8GW8QftfLiOmOGxI\r\n0eCsDaCTqSnyPQfu95RTPYNYurldjueW9jpokFBk7YaQ/01a1JuTHPz5ro0ElmGi\r\nuJyzNmCtS/1gYP3XhEp8ywd1Qxn58FX1VuVeXGUTd8WjR9rjIHprMMTHAeXjkQZf\r\nVHPyFBDNCUtuv+Gor+JHi/tqtyMe/+UpPOxHP9xN23jKwlMopLcUq6+nhk3ZJ71E\r\nT1FkojtYFE1Is0KCBQR5Uzze2SccNrH7lti9YwIDAQABAoIBAB6AWlVT7dEIWh3L\r\nYeXqw+pp6/IE3G7X8SC3N73uh5AAK08wAMUzdU8/YG/ueqqFl5O9pFmNkB4O4A8y\r\nw7xXnsglZzoUAcokU8U7q+4ojcBmEGHQyjbq7QRCrgcwiS4o8BqCC/vCb0E2udRf\r\ntEwZVYH+1qSYLMDcuqfnFh7GcvDCWzUSapcZlCbIMKaX4hFGmIn5EK9SqxjN6n22\r\nIr3l0P7p+Vk1mVyTRKqzaMjJ1FL699YSTXXySqGVAjWmOpKjcBk2rwZxhJwv64SE\r\neAqwIoXOuVMKG4C3Sb7HlS/k0JOS1uF5YQ95oX1bBIwq76kB00v4xrx3+SvuM7wl\r\nxuezonkCgYEA0+lZDCwvic9C3yHNMYVsC7jW4Pp9QXISzWk0P1VkGMfPiJeYtIah\r\nYMtfiQezHXPaV3PXVsVzit4L6fPFFXOJgkIbEt1YgX5JWPMWjk2XqJ4tajgepnwt\r\ns8FHLTfVXLhaocG/oMhGfqchpNAM2OChnGZ+U6t0xvWbRiDbIQCtZncCgYEAppOK\r\ndQFcNG7l30evyq0mgRsC+BM7Iu0kAW3i2u4NgJ5eH9wmdZy2dWyklBHRsze0uNxb\r\nEK1hDrCGVHW0ZiyBWlENE9on4YuyT7Xj+uztAvhUpnjbe6cq56/wLaxcZOW6qjFh\r\na1t708HXbat+i8KRbCXTHAJk6PiWxeLQWr7zn3UCgYB3PmGbVenSNEy+3nhmm1t3\r\nJSXVJ18ASr6F0+NQmC5hO15u0E9fljqNCyPRKgICWsTMXSUZcLZZuCUgGsoWDhOc\r\ntrIhZWh+RZ/ka7WPkd37RjbsBHRK3qmg8uuoaDipmht11l6MjOYOMuHdqizwhUar\r\niYkgb+SgaGhdh/OGmKj6dQKBgGLA03O8Y7J+EG+Hq1Mnxc0Ce4cgt41kM1VZlQUf\r\n3gdjW//dXzuYtZ710rgpvD1YiB6UHLTNZN31jx2hTlrIhcNKi8s6KSyQyhxxg//t\r\n2DFLkbvDqLMtDsWeS3B4X6o9e6WMcunXqZiHsbTF19b5eYc5AWf4j2SCg7g7WDSE\r\nQiBFAoGAXx+WdXgn5sheTXg9rmf11l+C7GG209yFUHoySU6tZ5xHouuRNDyZYJh4\r\n5FpoRIgfI3rtTmDy5axgvaoLRHDYF8o5YAA0O8oys8hF1wK7U+n7aC5BoxmMvADo\r\nb8f6RxKUsRtFi0DSmXNauXf49MKZLl8T1PMHNmzxU/yJeAuVhe8=\r\n-----END RSA PRIVATE KEY-----\r\n",
+    "password": "q3rjp3%0"
+  }
+}

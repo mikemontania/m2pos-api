@@ -98,10 +98,10 @@ const realizaTareas =async () =>{
           }
           console.log(`✅ Se encontraron ${empresas.length} empresas.`);
 
-        await generarXml(empresas);
+        /*await generarXml(empresas);
         await envioLoteXml(empresas);
         await consultaLoteXml(empresas);
-        await generarInutilizacion(empresas);   
+        await generarInutilizacion(empresas);   */
     } catch (error) {
         console.error('❌ Error al realizar jobs... :', error);
     }

@@ -1,8 +1,8 @@
 const xmlbuilder = require("xmlbuilder");
 const VentaXml = require("../models/ventaXml.model");
 const fs = require("fs"); 
-const { generateDatosItemsOperacion } = require("./service/jsonDteItem.service");
-const { generateDatosTotales } = require("./service/jsonDteTotales.service");
+const { generateDatosItemsOperacion } = require("./service/generateDteItem.service");
+const { generateDatosTotales } = require("./service/generateDteTotales.service");
 const { signXML } = require("./service/signxml.service"); 
 const { generateQR } = require("./service/generateQR.service");
 const { normalizeXML } = require("./service/util");

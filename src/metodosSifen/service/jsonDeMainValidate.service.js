@@ -1,5 +1,5 @@
 
-const { defaultConfig } = require("./config");
+
 const { tiposDocumentos, tiposRegimenes, tiposEmisiones, tiposConstancias, tiposDocumentosImpresos, tiposDocumentosAsociados, caracteristicasCargas, unidadesMedidas, tiposDocumentosIdentidades, validateDepartamentoDistritoCiudad, departamentos, distritos, ciudades, modalidadesTransportes, tiposTransportes, condicionesNegociaciones, monedas, condicionesCreditosTipos, condicionesTiposPagos, tarjetasCreditosTipos, condicionesOperaciones, remisionesResponsables, remisionesMotivos, notasCreditosMotivos, naturalezaVendedorAutofactura, indicadoresPresencias, paises, tiposDocumentosReceptor, tiposOperaciones, obligaciones, tiposTransacciones, globalPorItem, tiposImpuestos } = require("./constants.service");
 const { generateDatosItemsOperacionValidate } = require("./jsonDteItemValidate.service");
 const { leftZero, isIsoDate } = require("./util");
@@ -2559,12 +2559,7 @@ const generateDatosTransportistaValidate = (data) => {
 }
 
 const generateDatosTotalesValidate = (data) => {
-  /*let temporalTotal = jsonDteTotales.generateDatosTotales(params, data, data.items);
-  console.log("temporalTotal", temporalTotal);
-
-  if (data.descuentoGlobal > 0) {
-    console.log("temporalTotal", data.descuentoGlobal);
-  }*/
+ 
 
   if (data['moneda'] != 'PYG' && data['condicionTipoCambio'] == 1) {
     if (!data['cambio']) {
