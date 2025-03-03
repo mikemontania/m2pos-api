@@ -20,6 +20,19 @@ const Cliente = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    tipoOperacionId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isIn: [[1, 2, 3, 4]] // Solo permite estos valores
+      },
+      comment: `  
+        1 = B2B (Business to Business)  
+        2 = B2C (Business to Consumer)  
+        3 = B2G (Business to Government)  
+        4 = B2F (Business to Freelancer o servicios a empresas o profesionales)  
+      `
+    },
     listaPrecioId: {
       type: DataTypes.INTEGER,
       allowNull: false

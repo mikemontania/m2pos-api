@@ -126,6 +126,7 @@ const create = async (req, res) => {
       direccion,
       telefono,
       cel,
+      tipoOperacionId,
       email,
       excentoIva,
       latitud,
@@ -177,6 +178,7 @@ const create = async (req, res) => {
       direccion,
       telefono,
       cel,
+      tipoOperacionId,
       email,
       excentoIva,
       latitud,
@@ -207,6 +209,7 @@ const update = async (req, res) => {
       direccion,
       telefono,
       cel,
+      tipoOperacionId,
       email,
       excentoIva,
       latitud,
@@ -245,6 +248,7 @@ const update = async (req, res) => {
     existingClient.direccion = direccion;
     existingClient.telefono = telefono;
     existingClient.cel = cel;
+    existingClient.tipoOperacionId = tipoOperacionId; 
     existingClient.email = email;
     existingClient.excentoIva = excentoIva;
     existingClient.latitud = latitud;

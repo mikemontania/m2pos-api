@@ -285,10 +285,13 @@ const createGCamFE = () => {
 };
 const createGDatRec = cabecera => {
   const [dRucRec, dDVRec] = cabecera.cliente.nroDocumento.split("-");
-  const iNatRec = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2; // 1= contribuyente, 2= no contribuyente
-  const iTiOpe = cabecera.cliente.nroDocumento.includes("-") ? 1 : 2;
-/**
- * iTiOpe
+  const iTiOpe = cabecera.cliente.tipoOperacionId;
+  /*1 = B2B (Business to Business)  
+  2 = B2C (Business to Consumer)  
+  3 = B2G (Business to Government)  
+  4 = B2F (Business to Freelancer o servicios a empresas o profesionales)  */
+  const iNatRec = (iTiOpe == 1) ? 1 : 2; // 1= contribuyente, 2= no contribuyente
+/**iTiOpe
 1= B2B
 2= B2C
 3= B2G
