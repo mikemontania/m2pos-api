@@ -8,46 +8,38 @@ const { generateDatosDocumentoAsociado } = require("./jsonDteIdentificacionDocum
 const { generateDatosItemsOperacion } = require("./jsonDteItem.service");
 const { generateDatosTotales } = require("./jsonDteTotales.service");
 const { generateDatosTransporte } = require("./jsonDteTransporte.service");
-const { leftZero } = require("./util");
+const { leftZero, normalizeXML } = require("./util");
 const xml2js = require('xml2js');  
 
  
-  const   generateXMLDE =(empresa, venta)=> {
+  const   generateXMLDE =(params, data)=> {
     return new Promise((resolve, reject) => {
       try { 
 
-        resolve(generateXMLDeService(empresa, venta));
+        resolve(generateXMLDeService(params, data));
       } catch (error) {
         reject(error);
       }
     });
   }
  
-  const  generateXMLDeService =(empresa, venta) => {
-    removeUnderscoreAndPutCamelCase(data);
-
+  const  generateXMLDeService =(params, data) => {
+    let json = {};
+  
     addDefaultValues(data);
 
-    if (validateError) {
-      validateValues({ ...params }, { ...data });
-    }
-
-    json = {};
-
-    generateCodigoControl(params, data); //Luego genera el código de Control
-
-    generateRte();
+    generateRte(json);
 
     json['rDE']['DE'] = generateDe(params, data);
     //---
-    generateDatosOperacion(params, data);
-    generateDatosTimbrado(params, data);
-    generateDatosGenerales(params, data);
+    generateDatosOperacion(params, data,json);
+    generateDatosTimbrado(params, data,json);
+    generateDatosGenerales(params, data,json);
     //---
-    generateDatosEspecificosPorTipoDE(  data);
+    generateDatosEspecificosPorTipoDE(  data,json);
 
     if (data['tipoDocumento'] == 1 || data['tipoDocumento'] == 4) {
-      generateDatosCondicionOperacionDE(  data);
+      generateDatosCondicionOperacionDE(  data,json);
     }
 
     //['gDtipDE']=E001
@@ -71,21 +63,9 @@ const xml2js = require('xml2js');
     }
 
     if (data['complementarios']) {
-      json['rDE']['DE']['gCamGen'] = generateDatosComercialesUsoGeneral(
-      
-        data 
-      );
+      json['rDE']['DE']['gCamGen'] = generateDatosComercialesUsoGeneral(data);
     }
-
-    if (data['tipoDocumento'] == 4 || data['tipoDocumento'] == 5 || data['tipoDocumento'] == 6) {
-      if (!data['documentoAsociado']) {
-        /*throw new Error(
-          'Documento asociado es obligatorio para el tipo de documento electrónico (' +
-            data['tipoDocumento'] +
-            ') seleccionado',
-        );*/
-      }
-    }
+ 
     if (
       data['tipoDocumento'] == 1 ||
       data['tipoDocumento'] == 4 ||
@@ -95,11 +75,7 @@ const xml2js = require('xml2js');
     ) {
       if (data['documentoAsociado']) {
         if (!Array.isArray(data['documentoAsociado'])) {
-          json['rDE']['DE']['gCamDEAsoc'] = generateDatosDocumentoAsociado(
-            
-            data['documentoAsociado'],
-            data,
-          );
+          json['rDE']['DE']['gCamDEAsoc'] = generateDatosDocumentoAsociado( data['documentoAsociado'],  data );
         } else {
           //Caso sea un array.
           json['rDE']['DE']['gCamDEAsoc'] = new Array();
@@ -107,9 +83,7 @@ const xml2js = require('xml2js');
           for (var i = 0; i < data['documentoAsociado'].length; i++) {
             const dataDocumentoAsociado = data['documentoAsociado'][i];
 
-            json['rDE']['DE']['gCamDEAsoc'].push(
-              generateDatosDocumentoAsociado(  dataDocumentoAsociado, data),
-            );
+            json['rDE']['DE']['gCamDEAsoc'].push(generateDatosDocumentoAsociado(  dataDocumentoAsociado, data));
           }
         }
       }
@@ -125,632 +99,8 @@ const xml2js = require('xml2js');
 
     return normalizeXML(xml); //Para firmar tiene que estar normalizado
   }
-
-  /**
-   * Genera el CDC para la Factura
-   * Corresponde al Id del DE
-   
-   */
-  const generateCodigoControl = (params, data) => {
-    if (data.cdc && (data.cdc + '').length == 44) {
-      //Caso ya se le pase el CDC
-      codigoSeguridad = data.cdc.substring(34, 43);
-      codigoControl = data.cdc;
-
-      //Como se va utilizar el CDC enviado como parametro, va a verificar que todos los datos del XML coincidan con el CDC.
-      const tipoDocumentoCDC = codigoControl.substring(0, 2);
-      const establecimientoCDC = codigoControl.substring(11, 14);
-      const puntoCDC = codigoControl.substring(14, 17);
-      const numeroCDC = codigoControl.substring(17, 24);
-      const fechaCDC = codigoControl.substring(25, 33);
-      const tipoEmisionCDC = codigoControl.substring(33, 34);
-
-      const establecimiento = leftZero(data['establecimiento'], 3);
-
-      const punto = leftZero(data['punto'], 3);
-
-      const numero = leftZero(data['numero'], 7);
-
-      const fecha =
-        (data['fecha'] + '').substring(0, 4) +
-        (data['fecha'] + '').substring(5, 7) +
-        (data['fecha'] + '').substring(8, 10);
-    } else {
-      validateCamposDelCDC(params, data);
-
-      codigoSeguridad = leftZero(data.codigoSeguridadAleatorio, 9);
-      codigoControl = jsonDteAlgoritmos.generateCodigoControl(params, data, codigoSeguridad);
-    }
-  }
-
-  const  validateCamposDelCDC =(params, data)  =>{
-    //Validar campos básicos para el código de control
-    if (!params.ruc) {
-      throw new Error('Debe completar Tipo de Documento en params.ruc');
-    }
-    if (!data.tipoDocumento) {
-      throw new Error('Debe completar Tipo de Documento en data.tipoDocumento');
-    }
-    if (!data.establecimiento) {
-      throw new Error('Debe completar Establecimiento de la Emisión en data.establecimiento');
-    }
-    if (!data.punto) {
-      throw new Error('Debe completar el Punto de emisión en data.punto');
-    }
-    if (!data.numero) {
-      throw new Error('Debe completar el Número de Documento en data.numero');
-    }
-    if (!data.fecha) {
-      throw new Error('Debe completar la Fecha de Emisión en data.fecha');
-    }
-
-    if (!(params.ruc.indexOf('-') >= 0)) {
-      throw new Error('El RUC del Emisor debe contener el DV en params.ruc');
-    }
-
-    let rucEmisor = params['ruc'].split('-')[0];
-    let dvEmisor = params['ruc'].split('-')[1];
-
-    if ((rucEmisor + '').length > 8) {
-      throw new Error('La parte del RUC del Emisor no puede superar los 8 caracteres');
-    }
-    if ((dvEmisor + '').length > 1) {
-      throw new Error('El DV del RUC del Emisor no puede superar 1 caracter');
-    }
-
-    if ((data.tipoDocumento + '').length > 1) {
-      throw new Error('El Tipo de Documento no puede superar 1 digito en data.tipoDocumento');
-    }
-    if ((data.establecimiento + '').length > 3) {
-      throw new Error('El Establecimiento no puede superar 3 digitos en data.establecimiento');
-    }
-    if ((data.punto + '').length > 3) {
-      throw new Error('El Punto de Emisión no puede superar 3 digitos en data.punto');
-    }
-    if ((data.numero + '').length > 7) {
-      throw new Error('El Número de Documento no puede superar 7 digitos en data.numero');
-    }
-    if ((data.fecha + '').length > 19) {
-      throw new Error('La Fecha de Emisión no puede superar los 19 caracteres en data.fecha');
-    }
-  }
-
-  /**
-   * Si los valores vienen en underscore, crea los valores en formato variableJava que
-   * sera utilizado dentro del proceso,
-   *
-   * Ej. si viene tipo_documento crea una variable tipoDocumento, con el mismo valor.
-   *
-   * @param data
-   */
-  const  removeUnderscoreAndPutCamelCase =(data)  =>{
-    const regExpOnlyNumber = new RegExp(/^\d+$/);
-
-    if (data.tipo_documento) {
-      data.tipoDocumento = data.tipo_documento;
-    }
-
-    if (data.tipo_contribuyente) {
-      data.tipoContribuyente = data.tipo_contribuyente;
-    }
-
-    if (data.tipo_emision) {
-      data.tipoEmision = data.tipo_emision;
-    }
-
-    if (data.tipo_transaccion) {
-      data.tipoTransaccion = data.tipo_transaccion;
-    }
-
-    if (data.tipo_impuesto) {
-      data.tipoImpuesto = data.tipo_impuesto;
-    }
-
-    if (data.condicion_anticipo) {
-      data.condicionAnticipo = data.condicion_anticipo;
-    }
-
-    if (data.anticipo_global) {
-      data.anticipoGlobal = data.anticipo_global;
-    }
-
-    if (data.condicion_tipo_cambio) {
-      data.condicionTipoCambio = data.condicion_tipo_cambio;
-    }
-
-    if (data.descuento_global) {
-      data.descuentoGlobal = data.descuento_global;
-    }
-
-    //Objeto Cliente
-    if (data.cliente?.razon_social) {
-      data.cliente.razonSocial = data.cliente.razon_social;
-    }
-    if (data.cliente?.nombre_fantasia) {
-      data.cliente.nombreFantasia = data.cliente.nombre_fantasia;
-    }
-    if (data.cliente?.tipo_operacion) {
-      data.cliente.tipoOperacion = data.cliente.tipo_operacion;
-    }
-
-    //Campo que puede ser un numero = 0, hay que validar de esta forma
-    if (typeof data.cliente != 'undefined' && typeof data.cliente.numero_casa != 'undefined') {
-      if (data.cliente.numero_casa != null) {
-        data.cliente.numeroCasa = data.cliente.numero_casa + '';
-      }
-    }
-    if (data.cliente?.tipo_contribuyente) {
-      data.cliente.tipoContribuyente = data.cliente.tipo_contribuyente;
-    }
-    if (data.cliente?.documento_tipo) {
-      data.cliente.documentoTipo = data.cliente.documento_tipo;
-    }
-    if (data.cliente?.documento_tipo_descripcion) {
-      data.cliente.documentoTipoDescripcion = data.cliente.documento_tipo_descripcion;
-    }
-    if (data.cliente?.documento_numero) {
-      data.cliente.documentoNumero = data.cliente.documento_numero;
-    }
-
-    //Usuario
-    if (data.usuario?.documento_tipo) {
-      data.usuario.documentoTipo = data.usuario.documento_tipo;
-    }
-    if (data.usuario?.documento_tipo_descripcion) {
-      data.usuario.documentoTipoDescripcion = data.usuario.documento_tipo_descripcion;
-    }
-    if (data.usuario?.documento_numero) {
-      data.usuario.documentoNumero = data.usuario.documento_numero;
-    }
-
-    //Factura
-    if (data.factura?.fecha_envio) {
-      data.factura.fechaEnvio = data.usuario.fecha_envio;
-    }
-
-    //AutoFactura
-    if (data.auto_factura) {
-      data.autoFactura = { ...data.auto_factura };
-    }
-
-    if (data.autoFactura?.tipo_vendedor) {
-      data.autoFactura.tipoVendedor = data.autoFactura.tipo_vendedor;
-    }
-
-    if (data.autoFactura?.documento_tipo) {
-      data.autoFactura.documentoTipo = data.autoFactura.documento_tipo;
-    }
-
-    if (data.autoFactura?.documento_numero) {
-      data.autoFactura.documentoNumero = data.autoFactura.documento_numero;
-    }
-
-    if (
-      data.autoFactura != null &&
-      typeof data.autoFactura != 'undefined' &&
-      data.autoFactura.numero_casa != null &&
-      typeof data.autoFactura.numero_casa != 'undefined'
-    ) {
-      if (data.autoFactura.numero_casa != null) {
-        data.autoFactura.numeroCasa = data.autoFactura.numero_casa + '';
-      }
-    }
-
-    /*if (data.autoFactura?.numero_casa) {
-      data.autoFactura.numeroCasa = data.autoFactura.numero_casa;
-    }*/
-
-    //Remision
-    if (data.nota_credito_debito) {
-      data.notaCreditoDebito = data.nota_credito_debito;
-    }
-
-    //Remision
-    if (data.remision?.tipo_responsable) {
-      data.remision.tipoResponsable = data.remision.tipo_responsable;
-    }
-
-    if (data.remision?.fecha_factura) {
-      data.remision.fechaFactura = data.remision.fecha_factura;
-    }
-
-    if (data.remision?.costo_flete) {
-      data.remision.costoFlete = data.remision.costo_flete;
-    }
-
-    //Documento Asociado
-    if (data.documento_asociado) {
-      data.documentoAsociado = { ...data.documento_asociado };
-    }
-
-    if (data.documentoAsociado?.numero_retencion) {
-      data.documentoAsociado.numeroRetencion = data.documentoAsociado.numero_retencion;
-    }
-
-    if (data.documentoAsociado?.resolucion_credito_fiscal) {
-      data.documentoAsociado.resolucionCreditoFiscal = data.documentoAsociado.resolucion_credito_fiscal;
-    }
-
-    if (data.documentoAsociado?.tipo_documento_impreso) {
-      data.documentoAsociado.tipoDocumentoImpreso = data.documentoAsociado.tipo_documento_impreso;
-    }
-
-    if (data.documentoAsociado?.constancia_tipo) {
-      data.documentoAsociado.constanciaTipo = data.documentoAsociado.constancia_tipo;
-    }
-
-    if (data.documentoAsociado?.constancia_numero) {
-      data.documentoAsociado.constanciaNumero = data.documentoAsociado.constancia_numero;
-    }
-
-    if (data.documentoAsociado?.constancia_control) {
-      data.documentoAsociado.constanciaControl = data.documentoAsociado.constancia_control;
-    }
-
-    if (data.documentoAsociado?.ruc_fusionado) {
-      data.documentoAsociado.rucFusionado = data.documentoAsociado.ruc_fusionado;
-    }
-
-    //Condicion entregas
-    if (data.condicion?.entregas && data.condicion?.entregas.length > 0) {
-      for (let i = 0; i < data.condicion.entregas.length; i++) {
-        const entrega = data.condicion.entregas[i];
-
-        if (entrega.info_tarjeta) {
-          entrega.infoTarjeta = { ...entrega.info_tarjeta };
-        }
-
-        if (entrega.infoTarjeta?.razon_social) {
-          entrega.infoTarjeta.razonSocial = entrega.infoTarjeta.razon_social;
-        }
-
-        if (entrega.infoTarjeta?.medio_pago) {
-          entrega.infoTarjeta.medioPago = entrega.infoTarjeta.medio_pago;
-        }
-
-        if (entrega.infoTarjeta?.codigo_autorizacion) {
-          entrega.infoTarjeta.codigoAutorizacion = entrega.infoTarjeta.codigo_autorizacion;
-        }
-
-        if (entrega.info_cheque) {
-          entrega.infoCheque = { ...entrega.info_cheque };
-        }
-
-        if (entrega.infoCheque?.numero_cheque) {
-          entrega.infoCheque.numeroCheque = entrega.infoCheque.numero_cheque;
-        }
-      }
-    }
-
-    if (data.condicion?.monto_entrega) {
-      data.condicion.montoEntrega = data.condicion.monto_entrega;
-    }
-
-    if (data.condicion?.credito) {
-      if (data.condicion.credito.info_cuotas) {
-        data.condicion.credito.infoCuotas = [...data.condicion.credito.info_cuotas];
-      }
-    }
-
-    //Items
-    if (data.items && data.items?.length > 0) {
-      for (let i = 0; i < data.items.length; i++) {
-        const item = data.items[i];
-
-        if (item.partida_arancelaria) {
-          item.partidaArancelaria = item.partida_arancelaria;
-        }
-        if (item.unidad_medida) {
-          item.unidadMedida = item.unidad_medida;
-        }
-
-        //if (item.precio_unitario) {
-        //Los valores numericos que pueden aceptar 0 hay que validar de esta manera.
-        if (item['precio_unitario'] != null && (item['precio_unitario'] + '').length > 0) {
-          item.precioUnitario = item.precio_unitario;
-        }
-        if (item.tolerancia_cantidad) {
-          item.toleranciaCantidad = item.tolerancia_cantidad;
-        }
-        if (item.tolerancia_porcentaje) {
-          item.toleranciaPorcentaje = item.tolerancia_porcentaje;
-        }
-        if (item.cdc_anticipo) {
-          item.cdcAnticipo = item.cdc_anticipo;
-        }
-
-        //if (item.iva_tipo) {
-        if (typeof item.iva_tipo != 'undefined') {
-          item.ivaTipo = item.iva_tipo;
-        }
-        //if (item.iva_base) {
-        if (typeof item.iva_base != 'undefined') {
-          item.ivaBase = item.iva_base;
-        }
-        if (item.numero_serie) {
-          item.numeroSerie = item.numero_serie;
-        }
-        if (item.numero_pedido) {
-          item.numeroPedido = item.numero_pedido;
-        }
-        if (item.numero_seguimiento) {
-          item.numeroSeguimiento = item.numero_seguimiento;
-        }
-
-        //DNCP
-        if (item.dncp) {
-          if (item.dncp.codigo_nivel_general) {
-            item.dncp.codigoNivelGeneral = item.dncp.codigo_nivel_general;
-          }
-
-          if (item.dncp.codigo_nivel_especifico) {
-            item.dncp.codigoNivelEspecifico = item.dncp.codigo_nivel_especifico;
-          }
-
-          if (item.dncp.codigo_gtin_producto) {
-            item.dncp.codigoGtinProducto = item.dncp.codigo_gtin_producto;
-          }
-
-          if (item.dncp.codigo_nivel_paquete) {
-            item.dncp.codigoNivelPaquete = item.dncp.codigo_nivel_paquete;
-          }
-        }
-
-        //Importador
-        if (item.importador) {
-          if (item.importador.registro_importador) {
-            item.importador.registroImportador = item.importador.registro_importador;
-          }
-
-          if (item.registro_senave) {
-            item.registroSenave = item.registro_senave;
-          }
-
-          if (item.registro_entidad_comercial) {
-            item.registroEntidadComercial = item.registro_entidad_comercial;
-          }
-        }
-        //Sector Automotor
-        if (item.sector_automotor) {
-          if (item.sector_automotor.capacidad_motor) {
-            item.sector_automotor.capacidadMotor = item.sector_automotor.capacidad_motor;
-          }
-
-          if (item.sector_automotor.capacidad_pasajeros) {
-            item.sector_automotor.capacidadPasajeros = item.sector_automotor.capacidad_pasajeros;
-          }
-
-          if (item.sector_automotor.peso_bruto) {
-            item.sector_automotor.pesoBruto = item.sector_automotor.peso_bruto;
-          }
-
-          if (item.sector_automotor.peso_neto) {
-            item.sector_automotor.pesoNeto = item.sector_automotor.peso_neto;
-          }
-
-          if (item.sector_automotor.tipo_combustible) {
-            item.sector_automotor.tipoCombustible = item.sector_automotor.tipo_combustible;
-          }
-
-          if (item.sector_automotor.numero_motor) {
-            item.sector_automotor.numeroMotor = item.sector_automotor.numero_motor;
-          }
-
-          if (item.sector_automotor.capacidad_traccion) {
-            item.sector_automotor.capacidadTraccion = item.sector_automotor.capacidad_traccion;
-          }
-
-          if (item.sector_automotor.tipo_vehiculo) {
-            item.sector_automotor.tipoVehiculo = item.sector_automotor.tipo_vehiculo;
-          }
-        }
-      }
-    }
-
-    //Detalle de Tranposte
-    if (data.detalle_transporte) {
-      data.detalleTransporte = { ...data.detalle_transporte };
-    }
-    if (data.transporte) {
-      //Nueva version quedara solamente data.trasnsporte
-      data.detalleTransporte = { ...data.transporte };
-    }
-
-    if (data.detalleTransporte?.tipo_responsable) {
-      data.detalleTransporte.tipoResponsable = data.detalleTransporte.tipo_responsable;
-    }
-
-    if (data.detalleTransporte?.condicion_negociacion) {
-      data.detalleTransporte.condicionNegociacion = data.detalleTransporte.condicion_negociacion;
-    }
-
-    if (data.detalleTransporte?.numero_manifiesto) {
-      data.detalleTransporte.numeroManifiesto = data.detalleTransporte.numero_manifiesto;
-    }
-    if (data.detalleTransporte?.numero_despacho_importacion) {
-      data.detalleTransporte.numeroDespachoImportacion = data.detalleTransporte.numero_despacho_importacion;
-    }
-    if (data.detalleTransporte?.inicio_estimado_translado) {
-      data.detalleTransporte.inicioEstimadoTranslado = data.detalleTransporte.inicio_estimado_translado;
-    }
-    if (data.detalleTransporte?.fin_estimado_translado) {
-      data.detalleTransporte.finEstimadoTranslado = data.detalleTransporte.fin_estimado_translado;
-    }
-    if (data.detalleTransporte?.pais_destino) {
-      data.detalleTransporte.paisDestino = data.detalleTransporte.pais_destino;
-    }
-    if (data.detalleTransporte?.pais_destino_nombre) {
-      data.detalleTransporte.paisDestinoNombre = data.detalleTransporte.pais_destino_nombre;
-    }
-
-    //Falta los de salida, entrega, etc.
-
-    //Detalle de Transporte Salida
-    if (data.detalleTransporte?.salida?.numero_casa) {
-      //Nueva version quedara solamente data.trasnsporte
-      data.detalleTransporte.salida.numeroCasa = data.detalleTransporte.salida.numero_casa;
-    }
-    if (data.detalleTransporte?.salida?.complemento_direccion1) {
-      data.detalleTransporte.salida.complementoDireccion1 = data.detalleTransporte.salida.complemento_direccion1;
-    }
-    if (data.detalleTransporte?.salida?.complemento_direccion2) {
-      data.detalleTransporte.salida.complementoDireccion2 = data.detalleTransporte.salida.complemento_direccion2;
-    }
-    if (data.detalleTransporte?.salida?.departamento_descripcion) {
-      data.detalleTransporte.salida.departamentoDescripcion = data.detalleTransporte.salida.departamento_descripcion;
-    }
-    if (data.detalleTransporte?.salida?.distrito_descripcion) {
-      data.detalleTransporte.salida.distritoDescripcion = data.detalleTransporte.salida.distrito_descripcion;
-    }
-    if (data.detalleTransporte?.salida?.ciudad_descripcion) {
-      data.detalleTransporte.salida.ciudadDescripcion = data.detalleTransporte.salida.ciudad_descripcion;
-    }
-    if (data.detalleTransporte?.salida?.pais_descripcion) {
-      data.detalleTransporte.salida.paisDescripcion = data.detalleTransporte.salida.pais_descripcion;
-    }
-    if (data.detalleTransporte?.salida?.telefono_contacto) {
-      data.detalleTransporte.salida.telefonoContacto = data.detalleTransporte.salida.telefono_contacto;
-    }
-
-    //Detalle de Transporte Entrega
-    if (data.detalleTransporte?.entrega?.numero_casa) {
-      //Nueva version quedara solamente data.trasnsporte
-      data.detalleTransporte.entrega.numeroCasa = data.detalleTransporte.entrega.numero_casa;
-    }
-    if (data.detalleTransporte?.entrega?.complemento_direccion1) {
-      data.detalleTransporte.entrega.complementoDireccion1 = data.detalleTransporte.entrega.complemento_direccion1;
-    }
-    if (data.detalleTransporte?.entrega?.complemento_direccion2) {
-      data.detalleTransporte.entrega.complementoDireccion2 = data.detalleTransporte.entrega.complemento_direccion2;
-    }
-    if (data.detalleTransporte?.entrega?.departamento_descripcion) {
-      data.detalleTransporte.entrega.departamentoDescripcion = data.detalleTransporte.entrega.departamento_descripcion;
-    }
-    if (data.detalleTransporte?.entrega?.distrito_descripcion) {
-      data.detalleTransporte.entrega.distritoDescripcion = data.detalleTransporte.entrega.distrito_descripcion;
-    }
-    if (data.detalleTransporte?.entrega?.ciudad_descripcion) {
-      data.detalleTransporte.entrega.ciudadDescripcion = data.detalleTransporte.entrega.ciudad_descripcion;
-    }
-    if (data.detalleTransporte?.entrega?.pais_descripcion) {
-      data.detalleTransporte.entrega.paisDescripcion = data.detalleTransporte.entrega.pais_descripcion;
-    }
-    if (data.detalleTransporte?.entrega?.telefono_contacto) {
-      data.detalleTransporte.entrega.telefonoContacto = data.detalleTransporte.entrega.telefono_contacto;
-    }
-
-    // Detalle de Transporte Vehiculo
-    if (data.detalleTransporte?.vehiculo?.documento_tipo) {
-      data.detalleTransporte.vehiculo.documentoTipo = data.detalleTransporte.vehiculo.documento_tipo;
-    }
-    if (data.detalleTransporte?.vehiculo?.documento_numero) {
-      data.detalleTransporte.vehiculo.documentoNumero = data.detalleTransporte.vehiculo.documento_numero;
-    }
-    if (data.detalleTransporte?.vehiculo?.numero_matricula) {
-      data.detalleTransporte.vehiculo.numeroMatricula = data.detalleTransporte.vehiculo.numero_matricula;
-    }
-    if (data.detalleTransporte?.vehiculo?.numero_vuelo) {
-      data.detalleTransporte.vehiculo.numeroVuelo = data.detalleTransporte.vehiculo.numero_vuelo;
-    }
-
-    // Detalle de Transporte Transportista
-    if (data.detalleTransporte?.transportista?.documento_tipo) {
-      data.detalleTransporte.transportista.documentoTipo = data.detalleTransporte.transportista.documento_tipo;
-    }
-    if (data.detalleTransporte?.transportista?.documento_numero) {
-      data.detalleTransporte.transportista.documentoNumero = data.detalleTransporte.transportista.documento_numero;
-    }
-    if (data.detalleTransporte?.transportista?.pais_descripcion) {
-      data.detalleTransporte.transportista.paisDescripcion = data.detalleTransporte.transportista.pais_descripcion;
-    }
-
-    // Detalle de Transporte Transportista Chofer
-    if (data.detalleTransporte?.transportista?.chofer?.documento_numero) {
-      data.detalleTransporte.transportista.chofer.documentoNumero =
-        data.detalleTransporte.transportista.chofer.documento_numero;
-    }
-
-    // Data Complementarios
-    if (data.complementarios?.orden_compra) {
-      data.complementarios.ordenCompra = data.complementarios.orden_compra;
-    }
-    if (data.complementarios?.orden_venta) {
-      data.complementarios.ordenVenta = data.complementarios.orden_venta;
-    }
-    if (data.complementarios?.numero_asiento) {
-      data.complementarios.numeroAsiento = data.complementarios.numero_asiento;
-    }
-
-    // Data complementarios carga
-    if (data.complementarios?.carga?.orden_compra) {
-      data.complementarios.carga.ordenCompra = data.complementarios.carga.orden_compra;
-    }
-    if (data.complementarios?.carga?.orden_venta) {
-      data.complementarios.carga.ordenVenta = data.complementarios.carga.orden_venta;
-    }
-    if (data.complementarios?.carga?.numero_asiento) {
-      data.complementarios.carga.numeroAsiento = data.complementarios.carga.numero_asiento;
-    }
-
-    //Sector Energia
-    if (data.sector_energia_electrica) {
-      data.sectorEnergiaElectrica = { ...data.sector_energia_electrica };
-    }
-
-    if (data.sectorEnergiaElectrica?.numero_medidor) {
-      data.sectorEnergiaElectrica.numeroMedidor = data.sectorEnergiaElectrica.numero_medidor;
-    }
-
-    if (data.sectorEnergiaElectrica?.codigo_actividad) {
-      data.sectorEnergiaElectrica.codigoActividad = data.sectorEnergiaElectrica.codigo_actividad;
-    }
-
-    if (data.sectorEnergiaElectrica?.codigo_categoria) {
-      data.sectorEnergiaElectrica.codigoCategoria = data.sectorEnergiaElectrica.codigo_categoria;
-    }
-
-    if (data.sectorEnergiaElectrica?.lectura_anterior) {
-      data.sectorEnergiaElectrica.lecturaAnterior = data.sectorEnergiaElectrica.lectura_anterior;
-    }
-
-    if (data.sectorEnergiaElectrica?.lectura_actual) {
-      data.sectorEnergiaElectrica.lecturaActual = data.sectorEnergiaElectrica.lectura_actual;
-    }
-
-    //Sector Seguros
-    if (data.sector_seguros) {
-      data.sectorSeguros = { ...data.sector_seguros };
-    }
-
-    if (data.sectorSeguros?.codigo_aseguradora) {
-      data.sectorSeguros.codigoAseguradora = data.sectorSeguros.codigo_aseguradora;
-    }
-
-    if (data.sectorSeguros?.codigo_poliza) {
-      data.sectorSeguros.codigoPoliza = data.sectorSeguros.codigo_poliza;
-    }
-
-    if (data.sectorSeguros?.numero_poliza) {
-      data.sectorSeguros.numeroPoliza = data.sectorSeguros.numero_poliza;
-    }
-
-    if (data.sectorSeguros?.vigencia_unidad) {
-      data.sectorSeguros.vigenciaUnidad = data.sectorSeguros.vigencia_unidad;
-    }
-
-    if (data.sectorSeguros?.inicio_vigencia) {
-      data.sectorSeguros.inicioVigencia = data.sectorSeguros.inicio_vigencia;
-    }
-
-    if (data.sectorSeguros?.fin_vigencia) {
-      data.sectorSeguros.finVigencia = data.sectorSeguros.fin_vigencia;
-    }
-
-    if (data.sectorSeguros?.codigo_interno_item) {
-      data.sectorSeguros.codigoInternoItem = data.sectorSeguros.codigo_interno_item;
-    }
-  }
-
+ 
+ 
   /**
    * Añade algunos valores por defecto al JSON de entrada, valido para
    * todas las operaciones
@@ -799,7 +149,7 @@ const xml2js = require('xml2js');
     }
   }
 
-  const  generateRte  =()  =>{
+  const  generateRte  =(json)  =>{
     json = {
       rDE: {
         $: {
@@ -854,14 +204,14 @@ const xml2js = require('xml2js');
      * @param data 
      * @param options 
      */
-  const  generateDatosOperacion =(params, data)  =>{
+  const  generateDatosOperacion =(params, data,json)  =>{
     if (params['ruc'].indexOf('-') == -1) {
       //throw new Error('RUC debe contener dígito verificador en params.ruc');
     }
     const rucEmisor = params['ruc'].split('-')[0];
     const dvEmisor = params['ruc'].split('-')[1];
 
-    const id =  generateCodigoControl(params, data, codigoSeguridad);
+    const id =  data.cdc;
     const digitoVerificador = calcularDigitoVerificador(rucEmisor, 11);
 
     if (id.length != 44) {
@@ -906,7 +256,7 @@ const xml2js = require('xml2js');
      * @param data 
      * @param options 
      */
-  const  generateDatosTimbrado =(params, data) => {
+  const  generateDatosTimbrado =(params, data,json) => {
     json['rDE']['DE']['gTimb'] = {
       iTiDE: data['tipoDocumento'],
       dDesTiDE: data['tipoDocumentoDescripcion'],
@@ -940,20 +290,20 @@ const xml2js = require('xml2js');
      * @param data 
      * @param options 
      */
-  const  generateDatosGenerales =(params, data) => {
+  const  generateDatosGenerales =(params, data,json) => {
     json['rDE']['DE']['gDatGralOpe'] = {
       dFeEmiDE: data['fecha'],
     };
-    generateDatosGeneralesInherentesOperacion(params, data);
-    generateDatosGeneralesEmisorDE(params, data);
+    generateDatosGeneralesInherentesOperacion(params, data,json);
+    generateDatosGeneralesEmisorDE(params, data,json);
     if (defaultConfig.userObjectRemove == false) {
       //Si está TRUE no crea el objeto usuario
       if (data['usuario']) {
         //No es obligatorio
-        generateDatosGeneralesResponsableGeneracionDE(  data);
+        generateDatosGeneralesResponsableGeneracionDE(  data,json);
       }
     }
-    generateDatosGeneralesReceptorDE( data);
+    generateDatosGeneralesReceptorDE( data,json);
   }
 
   /**
@@ -970,7 +320,7 @@ const xml2js = require('xml2js');
         </gOpeCom>
  
      */
-  const  generateDatosGeneralesInherentesOperacion =(params, data) => {
+  const  generateDatosGeneralesInherentesOperacion =(params, data,json) => {
     if (data['tipoDocumento'] == 7) {
       //C002
       return; //No informa si el tipo de documento es 7
@@ -1049,7 +399,7 @@ const xml2js = require('xml2js');
    * @param data
    * @param options
    */
-  const  generateDatosGeneralesEmisorDE =(params, data) => {
+  const  generateDatosGeneralesEmisorDE =(params, data,json) => {
     if (!(params && params.establecimientos)) {
       //throw new Error('Debe proveer un Array con la información de los establecimientos en params');
     }
@@ -1159,7 +509,7 @@ const xml2js = require('xml2js');
    * Datos generales del responsable de generacion del DE
    
    */
-  const  generateDatosGeneralesResponsableGeneracionDE=( data) => {
+  const  generateDatosGeneralesResponsableGeneracionDE=( data,json) => {
     json['rDE']['DE']['gDatGralOpe']['gEmis']['gRespDE'] = {
       iTipIDRespDE: data['usuario']['documentoTipo'],
       dDTipIDRespDE: tiposDocumentosIdentidades.filter(
@@ -1203,7 +553,7 @@ const xml2js = require('xml2js');
             </gDatRec>
     
      */
-  const  generateDatosGeneralesReceptorDE =(  data)  =>{
+  const  generateDatosGeneralesReceptorDE =(  data,json)  =>{
     json['rDE']['DE']['gDatGralOpe']['gDatRec'] = {
       iNatRec: data['cliente']['contribuyente'] ? 1 : 2,
       iTiOpe: +data['cliente']['tipoOperacion'],
@@ -1308,22 +658,22 @@ const xml2js = require('xml2js');
    * Se dividiran en diferentes métodos por cada tipo de factura.
   
    */
-  const  generateDatosEspecificosPorTipoDE =(  data) => {
+  const  generateDatosEspecificosPorTipoDE =(  data,json) => {
     json['rDE']['DE']['gDtipDE'] = {};
 
     if (+data['tipoDocumento'] === 1) {
-      generateDatosEspecificosPorTipoDE_FacturaElectronica(  data);
+      generateDatosEspecificosPorTipoDE_FacturaElectronica(  data,json);
     }
     if (+data['tipoDocumento'] === 4) {
-      generateDatosEspecificosPorTipoDE_Autofactura(  data);
+      generateDatosEspecificosPorTipoDE_Autofactura(  data,json);
     }
 
     if (+data['tipoDocumento'] === 5 || data['tipoDocumento'] === 6) {
-      generateDatosEspecificosPorTipoDE_NotaCreditoDebito( data);
+      generateDatosEspecificosPorTipoDE_NotaCreditoDebito( data,json);
     }
 
     if (+data['tipoDocumento'] === 7) {
-      generateDatosEspecificosPorTipoDE_RemisionElectronica(  data);
+      generateDatosEspecificosPorTipoDE_RemisionElectronica(  data,json);
     }
   }
 
@@ -1331,7 +681,7 @@ const xml2js = require('xml2js');
    * Datos especificos para la factura electronica
  
    */
-  const  generateDatosEspecificosPorTipoDE_FacturaElectronica =(  data) =>{
+  const  generateDatosEspecificosPorTipoDE_FacturaElectronica =(  data,json) =>{
     if (
       indicadoresPresencias.filter((um) => um.codigo === +data['factura']['presencia']).length ==
       0
@@ -1361,7 +711,7 @@ const xml2js = require('xml2js');
       json['rDE']['DE']['gDtipDE']['gCamFE']['dFecEmNR'] = data['factura']['fechaEnvio'];
     }
     if (data['cliente']['tipoOperacion'] === 3) {
-      generateDatosEspecificosPorTipoDE_ComprasPublicas(  data);
+      generateDatosEspecificosPorTipoDE_ComprasPublicas(  data,json);
     }
   }
 
@@ -1370,7 +720,7 @@ const xml2js = require('xml2js');
    * Dentro de la factura electronica
     
    */
-  const  generateDatosEspecificosPorTipoDE_ComprasPublicas =(  data) =>{
+  const  generateDatosEspecificosPorTipoDE_ComprasPublicas =(  data,json) =>{
     if (!(data['dncp'] && data['dncp']['modalidad'] && data['dncp']['modalidad'].length > 0)) {
       //throw new Error('Debe informar la modalidad de Contratación DNCP en data.dncp.modalidad');
     }
@@ -1396,7 +746,7 @@ const xml2js = require('xml2js');
     };
   }
 
-  const  generateDatosEspecificosPorTipoDE_Autofactura=(  data) =>{
+  const  generateDatosEspecificosPorTipoDE_Autofactura=(  data,json) =>{
     json['rDE']['DE']['gDtipDE']['gCamAE'] = {
       iNatVen: data['autoFactura']['tipoVendedor'], //1=No contribuyente, 2=Extranjero
       dDesNatVen: naturalezaVendedorAutofactura.filter(
@@ -1439,7 +789,7 @@ const xml2js = require('xml2js');
     };
   }
 
-  const  generateDatosEspecificosPorTipoDE_NotaCreditoDebito=(  data) =>{
+  const  generateDatosEspecificosPorTipoDE_NotaCreditoDebito=(  data,json) =>{
     json['rDE']['DE']['gDtipDE']['gCamNCDE'] = {
       iMotEmi: +data['notaCreditoDebito']['motivo'],
       dDesMotEmi: notasCreditosMotivos.filter(
@@ -1448,7 +798,7 @@ const xml2js = require('xml2js');
     };
   }
 
-  const  generateDatosEspecificosPorTipoDE_RemisionElectronica =(  data) =>{
+  const  generateDatosEspecificosPorTipoDE_RemisionElectronica =(  data,json) =>{
     json['rDE']['DE']['gDtipDE']['gCamNRE'] = {
       iMotEmiNR: +data['remision']['motivo'], //E501
       dDesMotEmiNR: remisionesMotivos.filter((nv) => nv.codigo === +data['remision']['motivo'])[0][
@@ -1479,7 +829,7 @@ const xml2js = require('xml2js');
    * E7. Campos que describen la condición de la operación (E600-E699)
    
    */
-  const  generateDatosCondicionOperacionDE =(  data)=> {
+  const  generateDatosCondicionOperacionDE =(  data,json)=> {
     if (!data['condicion']) {
       return;
     }
@@ -1497,11 +847,11 @@ const xml2js = require('xml2js');
     };
 
     //if (data['condicion']['tipo'] === 1) {
-    generateDatosCondicionOperacionDE_Contado(  data);
+    generateDatosCondicionOperacionDE_Contado(  data,json);
     //}
 
     if (data['condicion']['tipo'] === 2) {
-      generateDatosCondicionOperacionDE_Credito(  data);
+      generateDatosCondicionOperacionDE_Credito(  data,json);
     }
   }
 
@@ -1510,7 +860,7 @@ const xml2js = require('xml2js');
    * de la entrega inicial (E605-E619)
  
    */
-  const  generateDatosCondicionOperacionDE_Contado =(  data)=> {
+  const  generateDatosCondicionOperacionDE_Contado =(  data,json)=> {
     if (data['condicion']['entregas'] && data['condicion']['entregas'].length > 0) {
       const entregas = [];
       for (let i = 0; i < data['condicion']['entregas'].length; i++) {
@@ -1620,7 +970,7 @@ const xml2js = require('xml2js');
    * E7.2. Campos que describen la operación a crédito (E640-E649)
  
    */
-  const  generateDatosCondicionOperacionDE_Credito =(  data) =>{
+  const  generateDatosCondicionOperacionDE_Credito =(  data,json) =>{
     if (!data['condicion']['credito']['tipo']) {
       /*throw new Error(
         'El tipo de Crédito en data.condicion.credito.tipo es obligatorio si la condición posee créditos',
