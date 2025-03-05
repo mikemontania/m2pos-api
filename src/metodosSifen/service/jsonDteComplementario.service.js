@@ -128,16 +128,7 @@
     }
 
     if (data['sectorAdicional']['numeroContrato']) {
-      /*if (
-        !(
-          (data['sectorAdicional']['numeroContrato'] + '').length >= 1 &&
-          (data['sectorAdicional']['numeroContrato'] + '').length <= 30
-        )
-      ) {
-        throw new Error(
-          'El numero de Contrato en data.sectorAdicional.numeroContrato debe contener entre 1 y 30 caracteres ',
-        );
-      }*/
+ 
 
       jsonResult['dContrato'] = data['sectorAdicional']['numeroContrato'];
     }

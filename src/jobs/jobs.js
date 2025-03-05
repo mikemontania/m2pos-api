@@ -65,8 +65,8 @@ try {
   const empresasCompletas = await Promise.all(
     empresas.map(async (empresa, index) => {
       const certificado = await loadCertificateAndKey(empresa.id);
-      console.log('************certificado**************',certificado);
-
+/*       console.log('************certificado**************',certificado);
+ */
       if (!certificado) return null; // Excluir si el certificado es null 
       return {
         ...empresa,

@@ -82,6 +82,10 @@ const Cliente = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: true
     },
+    nombreFantasia: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
     nroDocumento: {
       type: DataTypes.STRING(30),
       allowNull: false,
@@ -149,7 +153,39 @@ const Cliente = sequelize.define(
       type: DataTypes.DECIMAL(19, 2),
       allowNull: false,
       defaultValue: 0
-    }
+    },
+// Campos requeridos por SIFEN
+naturalezaReceptor: {
+  type: DataTypes.INTEGER,
+  allowNull: false,
+  validate: {
+    isIn: [[1, 2]]
+  },
+  comment: "1= Contribuyente, 2= No contribuyente"
+},
+codigoPais: {
+  type: DataTypes.STRING(3),
+  allowNull: false,
+  comment: "Código de país del receptor según XSD"
+},
+tipoContribuyente: {
+  type: DataTypes.INTEGER,
+  allowNull: true,
+  validate: {
+    isIn: [[1, 2]]
+  },
+  comment: "1= Persona Física, 2= Persona Jurídica. Obligatorio si naturalezaReceptor=1"
+},
+tipoDocIdentidad: {
+  type: DataTypes.INTEGER,
+  allowNull: true,
+  validate: {
+    isIn: [[1, 2, 3, 4, 5, 6, 9]]
+  },
+  comment: "1= Cédula paraguaya, 2= Pasaporte, 3= Cédula extranjera, 4= Carnet de residencia, 5= Innominado, 6= Tarjeta Diplomática, 9= Otro"
+},
+ 
+
   },
   {
     tableName: "clientes",

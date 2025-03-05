@@ -298,7 +298,7 @@ const createGCamFE = () => {
 };
 const createGDatRec = (venta) => {
   const [dRucRec, dDVRec] = venta.cliente.nroDocumento.split("-");
-  const iTiOpe = cabecera.cliente.tipoOperacionId;
+  const iTiOpe = venta.cliente.tipoOperacionId;
   /*1 = B2B (Business to Business)  
   2 = B2C (Business to Consumer)  
   3 = B2G (Business to Government)  

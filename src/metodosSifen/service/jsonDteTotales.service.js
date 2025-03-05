@@ -145,7 +145,7 @@ const { defaultConfig } = require("./config");
     let dRedon = 0;
     if (defaultConfig.redondeoSedeco) {
       if (data.moneda === 'PYG') {
-        dRedon = this.redondeoSedeco(dTotOpe);
+        dRedon = redondeoSedeco(dTotOpe);
       } else {
         //Observación: Para monedas extranjeras o cualquier otro cálculo que contenga decimales, las reglas de validación
         //aceptarán redondeos de 50 céntimos (por encima o por debajo)

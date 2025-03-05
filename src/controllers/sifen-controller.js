@@ -30,7 +30,10 @@ const { enviarXml } = require("../metodosSifen/envioLote.service");
 const { actualizarEstadoVentas } = require("../jobs/envioLoteXml.job");
 const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service");
  
-const fs = require("fs");
+const fs = require("fs"); 
+const { formatToParams, formatToData } = require("../metodosSifen/service/formatData.service");
+const { signXML } = require("../metodosSifen/service/signxml.service");
+const { generateQR } = require("../metodosSifen/service/generateQR.service");
 const probarGeneradorXml = async (req, res) => {
   console.log('/*****************Probando*********************/')
   try {
@@ -43,57 +46,41 @@ const probarGeneradorXml = async (req, res) => {
     if (!venta) {
       return res.status(404).json({ error: "Venta no encontrada" });
     } 
+    //fs.writeFileSync('./generador/venta.json', JSON.stringify(venta, null, 2));
+    console.log('/*****************venta.json*********************/')
     // Obtener datos de la empresa
     const empresa = await getEmpresaById(empresaId);
     if (!empresa) {
       return res.status(404).json({ error: `No se encontró la empresa con ID ${empresaId}` });
     }
-  
-    fs.writeFileSync('./generador/venta.json', JSON.stringify(venta, null, 2));
-    fs.writeFileSync('./generador/empresa.json', JSON.stringify(empresa, null, 2));
- 
-    fs.writeFileSync('./generador/params.json', JSON.stringify(params, null, 2));
-    const xml = await generateXMLDE(empresa,venta);
-    
+    //fs.writeFileSync('./generador/empresa.json', JSON.stringify(empresa, null, 2));
+    console.log('/*****************empresa.json*********************/')
+    const params = await formatToParams(venta,empresa);
+   // fs.writeFileSync('./generador/params.json', JSON.stringify(params, null, 2));
+    console.log('/*****************params.json*********************/')
 
-    fs.writeFileSync('./generador/xmlgenerado.xml', xml);
- 
-    return res.status(200).json({ data: respuesta.respuesta });
+    const data = await formatToData(venta,empresa); 
+    //fs.writeFileSync('./generador/data.json', JSON.stringify(data, null, 2));
+    console.log('/*****************data.json*********************/')
+
+    let xmlBase = await generateXMLDE(params,data);  
+    xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
+    
+    const xmlFirmado =await signXML(xmlBase,empresa.certificado) 
+    const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc); 
+    fs.writeFileSync('./generador/xmlgenerado.xml', xmlFirmadoConQr); 
+
+    return res.status(200).json({ data: xmlFirmadoConQr });
 
   } catch (error) {
-    console.error('❌ Error probando genrador de xml:', error.message);
+    console.error('❌ Error probando genrador de xml:', error);
     return res.status(500).json({ error: "Error al reintentar" });
   }
 };
 
 
 
-const formatToParams =(venta, empresa) =>{
-  return { 
-      ruc: empresa.ruc,
-      razonSocial: empresa.razonSocial,
-      nombreFantasia: empresa.nombreFantasia,
-      actividadesEconomicas: empresa.actividades.map(act => ({
-          codigo: act.cActEco,
-          descripcion: act.dDesActEco
-      })),
-      timbradoNumero: venta.timbrado,
-      timbradoFecha: venta.fechaInicio,
-      tipoContribuyente: empresa.tipoContId,
-      tipoRegimen: empresa.tipoImpId,
-      establecimientos: [
-          {
-              codigo: venta.sucursalId.toString().padStart(3, '0'),
-              direccion: venta.sucursal.direccion,
-              numeroCasa: empresa.numCasa.toString(),
-              complementoDireccion1: venta.sucursal.descripcion,
-              complementoDireccion2: empresa.ciudad.descripcion,
-              telefono: venta.sucursal.telefono,
-              email: venta.sucursal.email
-          }
-      ]
-  };
-}
+
 
 
 // Definir las URLs completas para cada servicio
@@ -251,7 +238,7 @@ const reintentar = async (req, res) => {
     return res.status(200).json({ data: respuesta.respuesta });
 
   } catch (error) {
-    console.error('❌ Error al reintentar venta:', error.message);
+    console.error('❌ Error al reintentar venta:', error );
     return res.status(500).json({ error: "Error al reintentar" });
   }
 };
@@ -372,8 +359,8 @@ const getEmpresaById = async (id) => {
  
     // Cargar certificado
     const certificado = await loadCertificateAndKey(empresa.id);
-    console.log('************certificado**************', certificado);
-
+/*     console.log('************certificado**************', certificado);
+ */
     if (!certificado) {
       console.warn(`⚠️ No se encontró certificado para la empresa ID: ${empresa.id}`);
       return null;
