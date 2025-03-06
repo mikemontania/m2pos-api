@@ -316,8 +316,7 @@ const populateDB = async () => {
       email: "info@cavallaro.com.py",
       web: "www.cavallaro.com.py",
       img: "grupocavallaro3.png",
-      generarXml: "SI",
-      envioXml: "SI",
+      modoSifen: "SI" 
     });
 
     // Crear actividades si no existen y asociarlas a la empresa
@@ -717,7 +716,7 @@ const populateDB = async () => {
       numeroFin: 999999999,
       serie: "001-001",
       timbrado: "12559587",
-      ultimoNumero: 200605,
+      ultimoNumero: 200606,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true

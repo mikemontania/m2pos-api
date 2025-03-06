@@ -121,7 +121,7 @@ const create = async (req, res) => {
       
       listaPrecioId,
       formaVentaId, 
-      razonSocial,
+      razonSocial,nombreFantasia,
       nroDocumento,
       direccion,
       telefono,
@@ -134,7 +134,7 @@ const create = async (req, res) => {
       predeterminado,
       empleado,
       propietario,
-      activo
+      activo,naturalezaReceptor,codigoPais,tipoContribuyente,tipoDocIdentidad
     } = req.body;
 
     // Verificar si ya existe un cliente con predeterminado o propietario true
@@ -173,7 +173,7 @@ const create = async (req, res) => {
       usuarioModificacionId:id,
       empresaId,
       listaPrecioId, 
-      razonSocial,
+      razonSocial,nombreFantasia,
       nroDocumento,
       direccion,
       telefono,
@@ -187,7 +187,7 @@ const create = async (req, res) => {
       empleado,
       propietario,
       activo,
-      formaVentaId, 
+      formaVentaId, naturalezaReceptor,codigoPais,tipoContribuyente,tipoDocIdentidad
     });
 
     res.status(201).json(cliente);
@@ -217,7 +217,7 @@ const update = async (req, res) => {
       predeterminado,
       empleado,
       propietario,
-      activo,
+      activo,naturalezaReceptor,codigoPais,tipoContribuyente,tipoDocIdentidad,nombreFantasia
     } = req.body;
   // Verificar si el cliente existe
   if (propietario || predeterminado) {
@@ -258,6 +258,11 @@ const update = async (req, res) => {
     existingClient.propietario = propietario;
     existingClient.activo = activo;
 
+    existingClient.nombreFantasia = nombreFantasia;
+    existingClient.naturalezaReceptor = naturalezaReceptor;
+    existingClient.codigoPais = codigoPais;
+    existingClient.tipoContribuyente = tipoContribuyente;
+    existingClient.tipoDocIdentidad = tipoDocIdentidad; 
     // Guardar los cambios en la base de datos
     await existingClient.save();
 

@@ -14,6 +14,12 @@ const Producto = require("../models/producto.model");
 const Unidad = require("../models/unidad.model");
 const VentaDetalle = require("../models/ventaDetalle.model");
  const { generarXML } = require("../metodosSifen/generarXml"); 
+const { formatToParams, formatToData } = require("../metodosSifen/service/formatData.service");
+const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service");
+const VentaXml = require("../models/ventaXml.model");
+const { normalizeXML } = require("../metodosSifen/service/util");
+const { signXML } = require("../metodosSifen/service/signxml.service");
+const { generateQR } = require("../metodosSifen/service/generateQR.service");
 
 const obtenerVentasPendientes = async () => {
   try {
@@ -120,14 +126,36 @@ const generarXml = async ( empresasXml) => {
         if (!ventasPendientes?.length) {
           console.warn(`⚠️ No se encontraron ventas pendientes para empresa ${empresa.razonSocial} id ${empresa.id}.`);
           return;
-        }
-
+        } 
         await Promise.all(
           ventasPendientes.map(async (venta) => {
             try {
-              const xml = await generarXML(empresa, venta);
-              const estado = xml ? 'Procesado' : 'Error';
 
+              const params = await formatToParams(venta,empresa); 
+              const data = await formatToData(venta,empresa);  
+              let xmlBase = await generateXMLDE(params,data);  
+              xmlBase =    normalizeXML(xmlBase);          
+              xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
+              const registro1 = await VentaXml.create({
+                id: null,
+                orden: 1,
+                empresaId:  empresa.id,
+                ventaId:  venta.id,
+                estado: 'GENERADO',
+                  xml:xmlBase,
+              });
+              const xmlFirmado =await signXML(xmlBase,empresa.certificado) 
+              const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc);
+              console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
+              const registro2 = await VentaXml.create({
+                id: null,
+                orden: 2,
+                empresaId:  empresa.id,
+                ventaId:  venta.id,
+                estado: 'FIRMADO',
+                xml:xmlFirmadoConQr,
+              });  
+              const estado = xmlFirmadoConQr ? 'Procesado' : 'Error'; 
              const ventaUpd = await Venta.update(
                 {
                    estado,
@@ -140,7 +168,7 @@ const generarXml = async ( empresasXml) => {
 
                
               console.log(
-                xml?.length
+                xmlFirmadoConQr?.length
                   ? `✅ Venta con CDC ${venta.cdc}, comprobante ${venta.nroComprobante} procesado con éxito.`
                   : `❌ Error al generar XML para CDC ${venta.cdc}, comprobante ${venta.nroComprobante}.`
               );

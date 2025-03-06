@@ -39,6 +39,7 @@ const leftZero = (value, size) => {
   };
   
   const normalizeXML = (xml ) =>{
+    console.log(xml)
     xml = xml.split('\r\n').join('');
     xml = xml.split('\n').join('');
     xml = xml.split('\t').join('');

@@ -85,16 +85,12 @@ const Empresa = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true
     },
-    generarXml: {
+    modoSifen: {
       type: DataTypes.ENUM("SI", "NO"),
       allowNull: false,
       defaultValue: "SI"
     },
-    envioXml: {
-      type: DataTypes.ENUM("SI", "NO"),
-      allowNull: false,
-      defaultValue: "SI"
-    }
+   
   },
   {
     tableName: "empresas",

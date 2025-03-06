@@ -29,13 +29,12 @@ const { cargandoLote, actualizarLote, relacionarVentasConLote } = require("../me
 const { enviarXml } = require("../metodosSifen/envioLote.service");
 const { actualizarEstadoVentas } = require("../jobs/envioLoteXml.job");
 const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service");
- 
-const fs = require("fs"); 
+  
 const { formatToParams, formatToData } = require("../metodosSifen/service/formatData.service");
 const { signXML } = require("../metodosSifen/service/signxml.service");
 const { generateQR } = require("../metodosSifen/service/generateQR.service");
-const probarGeneradorXml = async (req, res) => {
-  console.log('/*****************Probando*********************/')
+
+const probarGeneradorXml = async (req, res) => { 
   try {
     // Obtener empresaId del usuario autenticado
     const { empresaId } = req.usuario;
@@ -46,30 +45,21 @@ const probarGeneradorXml = async (req, res) => {
     if (!venta) {
       return res.status(404).json({ error: "Venta no encontrada" });
     } 
-    //fs.writeFileSync('./generador/venta.json', JSON.stringify(venta, null, 2));
-    console.log('/*****************venta.json*********************/')
+ 
     // Obtener datos de la empresa
     const empresa = await getEmpresaById(empresaId);
     if (!empresa) {
       return res.status(404).json({ error: `No se encontró la empresa con ID ${empresaId}` });
     }
-    //fs.writeFileSync('./generador/empresa.json', JSON.stringify(empresa, null, 2));
-    console.log('/*****************empresa.json*********************/')
-    const params = await formatToParams(venta,empresa);
-   // fs.writeFileSync('./generador/params.json', JSON.stringify(params, null, 2));
-    console.log('/*****************params.json*********************/')
-
-    const data = await formatToData(venta,empresa); 
-    //fs.writeFileSync('./generador/data.json', JSON.stringify(data, null, 2));
-    console.log('/*****************data.json*********************/')
-
+ 
+    const params = await formatToParams(venta,empresa); 
+    const data = await formatToData(venta,empresa);  
     let xmlBase = await generateXMLDE(params,data);  
     xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
     
     const xmlFirmado =await signXML(xmlBase,empresa.certificado) 
     const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc); 
-    fs.writeFileSync('./generador/xmlgenerado.xml', xmlFirmadoConQr); 
-
+ 
     return res.status(200).json({ data: xmlFirmadoConQr });
 
   } catch (error) {
@@ -78,11 +68,7 @@ const probarGeneradorXml = async (req, res) => {
   }
 };
 
-
-
-
-
-
+ 
 // Definir las URLs completas para cada servicio
  
 const obtenerVenta = async (id) => {
@@ -291,10 +277,14 @@ const anular = async (req, res) => {
     }
 
     // Enviar evento de anulación
-    const respuesta = await envioEventoXml(tipoAnulacion, venta, empresa);
+    let respuesta = await envioEventoXml(tipoAnulacion, venta, empresa);
     const json = await extraeRespEvento(respuesta);
     console.log("Respuesta del evento:", json);
 
+    if (json.codigo = '4002') {
+       respuesta = await envioEventoXml(2, venta, empresa);
+    }
+ 
     // Registrar el evento en la base de datos
     await VentaXml.create({
       orden: 3,
@@ -317,13 +307,13 @@ const anular = async (req, res) => {
     return res.status(500).json({ error: "Error al anular" });
   }
 };
-
-
+ 
 const getEmpresaById = async (id) => {
   const tablas = ['iTiDE', 'iTipTra', 'iTImp', 'iTipCont'];
   try { 
     // Obtener empresas que generan XML
-    let empresa = await Empresa.findByPk(id, { 
+    let empresa = await Empresa.findOne({ 
+      where: { id, modoSifen: 'SI' }, // Agregamos la condición aquí
       include: [
         { model: Moneda, as: 'moneda' },
         { model: Departamento, as: 'departamento' },

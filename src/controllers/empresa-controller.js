@@ -34,8 +34,7 @@ const update= async (req, res) => {
       codCiudad,
       codBarrio, 
       web,
-      generarXml, 
-      envioXml} = req.body;
+      modoSifen } = req.body;
 
     // Buscar la empresa por su ID
     const empresa = await Empresa.findByPk(id);
@@ -53,8 +52,7 @@ const update= async (req, res) => {
         codCiudad,
         codBarrio,  
         web,
-        generarXml,
-         envioXml });
+        modoSifen  });
 
       // Responder con la empresa actualizada
       res.status(200).json(empresa);

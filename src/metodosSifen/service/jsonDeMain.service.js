@@ -23,8 +23,6 @@ const {
   globalPorItem,
   obligaciones
 } = require("./constants.service");
-const { validateValues } = require("./jsonDeMainValidate.service");
-const { calcularDigitoVerificador } = require("./jsonDteAlgoritmos.service");
 const {
   generateDatosComplementariosComercialesDeUsoEspecificos
 } = require("./jsonDteComplementario.service");
@@ -52,30 +50,25 @@ const generateXMLDE = (params, data) => {
 
 const generateXMLDeService = (params, data) => {
   try {
-  
-    let json = {   };
-
-     
+    let json = {};
     addDefaultValues(data);
     json = {
       rDE: {
         $: {
-          xmlns: 'http://ekuatia.set.gov.py/sifen/xsd',
-          'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-          'xsi:schemaLocation': 'http://ekuatia.set.gov.py/sifen/xsd siRecepDE_v150.xsd',
+          xmlns: "http://ekuatia.set.gov.py/sifen/xsd",
+          "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+          "xsi:schemaLocation":
+            "http://ekuatia.set.gov.py/sifen/xsd siRecepDE_v150.xsd"
         },
-        dVerFor:  process.env.EKUATIA_VERSION,
-      },
+        dVerFor: process.env.EKUATIA_VERSION
+      }
     };
-
 
     let fechaFirmaDigital = new Date();
     if (data.fechaFirmaDigital) {
       fechaFirmaDigital = new Date(data.fechaFirmaDigital);
     }
-
     let digitoVerificadorString = data.cdc + "";
-
     json["rDE"]["DE"] = {
       $: {
         Id: data.cdc
@@ -87,33 +80,33 @@ const generateXMLDeService = (params, data) => {
       dFecFirma: convertToJSONFormat(fechaFirmaDigital),
       dSisFact: 1
     };
-     //---
+    //---
     generateDatosOperacion(params, data, json);
-     generateDatosTimbrado(params, data, json);
-     generateDatosGenerales(params, data, json);
-     //---
+    generateDatosTimbrado(params, data, json);
+    generateDatosGenerales(params, data, json);
+    //---
     generateDatosEspecificosPorTipoDE(data, json);
-     if (data["tipoDocumento"] == 1 || data["tipoDocumento"] == 4) {
+    if (data.tipoDocumento == 1 || data.tipoDocumento == 4) {
       generateDatosCondicionOperacionDE(data, json);
-     }
+    }
 
     //['gDtipDE']=E001
     json["rDE"]["DE"]["gDtipDE"]["gCamItem"] = generateDatosItemsOperacion(
       data
     );
-     let gCamEsp = generateDatosComplementariosComercialesDeUsoEspecificos(data);
-     if (gCamEsp) {
+    let gCamEsp = generateDatosComplementariosComercialesDeUsoEspecificos(data);
+    if (gCamEsp) {
       json["rDE"]["DE"]["gDtipDE"]["gCamEsp"] = gCamEsp;
-     }
+    }
 
-    if (data["tipoDocumento"] == 1 || data["tipoDocumento"] == 7) {
+    if (data.tipoDocumento == 1 || data.tipoDocumento == 7) {
       //1 Opcional, 7 Obligatorio
       if (data["detalleTransporte"]) {
         json["rDE"]["DE"]["gDtipDE"]["gTransp"] = generateDatosTransporte(data);
       }
     }
 
-    if (data["tipoDocumento"] != 7) {
+    if (data.tipoDocumento != 7) {
       const items = json["rDE"]["DE"]["gDtipDE"]["gCamItem"];
       json["rDE"]["DE"]["gTotSub"] = generateDatosTotales(data, items);
     }
@@ -123,11 +116,11 @@ const generateXMLDeService = (params, data) => {
     }
 
     if (
-      data["tipoDocumento"] == 1 ||
-      data["tipoDocumento"] == 4 ||
-      data["tipoDocumento"] == 5 ||
-      data["tipoDocumento"] == 6 ||
-      data["tipoDocumento"] == 7
+      data.tipoDocumento == 1 ||
+      data.tipoDocumento == 4 ||
+      data.tipoDocumento == 5 ||
+      data.tipoDocumento == 6 ||
+      data.tipoDocumento == 7
     ) {
       if (data["documentoAsociado"]) {
         if (!Array.isArray(data["documentoAsociado"])) {
@@ -172,19 +165,19 @@ const generateXMLDeService = (params, data) => {
 const addDefaultValues = data => {
   try {
     if (
-      tiposDocumentos.filter(um => um.codigo === +data["tipoDocumento"])
+      tiposDocumentos.filter(um => um.codigo === +data.tipoDocumento)
         .length == 0
     ) {
       //No quitar este throw
       throw new Error(
         "Tipo de Documento '" +
-          data["tipoDocumento"] +
+          data.tipoDocumento +
           "' en data.tipoDocumento no válido. Valores: " +
           tiposDocumentos.map(a => a.codigo + "-" + a.descripcion)
       );
     }
     data["tipoDocumentoDescripcion"] = tiposDocumentos.filter(
-      td => td.codigo == +data["tipoDocumento"]
+      td => td.codigo == +data.tipoDocumento
     )[0]["descripcion"];
 
     if (!data["tipoEmision"]) {
@@ -216,30 +209,6 @@ const addDefaultValues = data => {
     }
   } catch (error) {
     console.error("error", error.message);
-  }
-};
-
-const generateRte = json => {
-  json = {
-    rDE: {
-      $: {
-        xmlns: "http://ekuatia.set.gov.py/sifen/xsd",
-        "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        "xsi:schemaLocation":
-          "http://ekuatia.set.gov.py/sifen/xsd siRecepDE_v150.xsd"
-      },
-      dVerFor: process.env.EKUATIA_VERSION
-    }
-  };
-};
-
-const generateDe = (params, data) => {
-  try {
-    console.log("DE", jsonResult);
-    return jsonResult;
-  } catch (error) {
-    console.log(error);
-    return null;
   }
 };
 
@@ -299,7 +268,7 @@ const generateDatosOperacion = (params, data, json) => {
      */
 const generateDatosTimbrado = (params, data, json) => {
   json["rDE"]["DE"]["gTimb"] = {
-    iTiDE: data["tipoDocumento"],
+    iTiDE: data.tipoDocumento,
     dDesTiDE: data["tipoDocumentoDescripcion"],
     dNumTim: params["timbradoNumero"],
     dEst: leftZero(data["establecimiento"], 3),
@@ -339,7 +308,9 @@ const generateDatosGenerales = (params, data, json) => {
     json["rDE"]["DE"]["gDatGralOpe"] = {
       dFeEmiDE: data["fecha"]
     };
-    console.log("generateDatosGeneralesInherentesOperacion(params, data, json);");
+    console.log(
+      "generateDatosGeneralesInherentesOperacion(params, data, json);"
+    );
     generateDatosGeneralesInherentesOperacion(params, data, json);
     console.log("generateDatosGeneralesEmisorDE(params, data, json);");
     generateDatosGeneralesEmisorDE(params, data, json);
@@ -373,7 +344,7 @@ const generateDatosGenerales = (params, data, json) => {
  
      */
 const generateDatosGeneralesInherentesOperacion = (params, data, json) => {
-  if (data["tipoDocumento"] == 7) {
+  if (data.tipoDocumento == 7) {
     //C002
     return; //No informa si el tipo de documento es 7
   }
@@ -385,7 +356,7 @@ const generateDatosGeneralesInherentesOperacion = (params, data, json) => {
 
   json["rDE"]["DE"]["gDatGralOpe"]["gOpeCom"] = {};
 
-  if (data["tipoDocumento"] == 1 || data["tipoDocumento"] == 4) {
+  if (data.tipoDocumento == 1 || data.tipoDocumento == 4) {
     //Obligatorio informar iTipTra D011
     if (!data["tipoTransaccion"]) {
       //throw new Error('Debe proveer el Tipo de Transacción en data.tipoTransaccion');
@@ -460,138 +431,141 @@ const generateDatosGeneralesInherentesOperacion = (params, data, json) => {
    * @param data
    * @param options
    */
-const generateDatosGeneralesEmisorDE = (params, data, json) => { 
- try {
-  
-   //Validar si el establecimiento viene en params
-   let establecimiento = leftZero(data["establecimiento"], 3);
-   //let punto = leftZero(data['punto'], 3);
- 
-   if (
-     params.establecimientos.filter(um => um.codigo === establecimiento)
-       .length == 0
-   ) {
-      
-   }
-   if (params["ruc"].indexOf("-") == -1) {
-     //throw new Error('RUC debe contener dígito verificador en params.ruc');
-   }
- 
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"] = {};
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dRucEm"] = params["ruc"].split(
-     "-"
-   )[0];
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDVEmi"] = params["ruc"].split(
-     "-"
-   )[1];
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["iTipCont"] =
-     params["tipoContribuyente"];
-   if (typeof params["tipoRegimen"] != undefined) {
-     json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["cTipReg"] =
-       params["tipoRegimen"];
-   }
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dNomEmi"] = params["razonSocial"];
-   if (params["nombreFantasia"] && (params["nombreFantasia"] + "").length > 0) {
-     json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dNomFanEmi"] =
-       params["nombreFantasia"];
-   }
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDirEmi"] = params[
-     "establecimientos"
-   ].filter(e => e.codigo === establecimiento)[0]["direccion"];
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dNumCas"] = params[
-     "establecimientos"
-   ].filter(e => e.codigo === establecimiento)[0]["numeroCasa"];
- 
-   let dCompDir1 = params["establecimientos"].filter(
-     e => e.codigo === establecimiento
-   )[0]["complementoDireccion1"];
-   if (dCompDir1 && (dCompDir1 + "").length > 1) {
-     json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dCompDir1"] = dCompDir1;
-   }
- 
-   let dCompDir2 = params["establecimientos"].filter(
-     e => e.codigo === establecimiento
-   )[0]["complementoDireccion2"];
-   if (dCompDir2 && (dCompDir2 + "").length > 1) {
-     json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dCompDir2"] = dCompDir2;
-   }
- 
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["cDepEmi"] = params["establecimientos"
-   ].filter(e => e.codigo === establecimiento)[0]["departamento"];
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"][
-     "dDesDepEmi"
-   ] = departamentos.filter(
-     td =>
-       td.codigo ===
-       params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
-         "departamento"
-       ]
-   )[0]["descripcion"];
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["cDisEmi"] = params[
-     "establecimientos"
-   ].filter(e => e.codigo === establecimiento)[0]["distrito"];
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDesDisEmi"] = distritos.filter(
-     td =>
-       td.codigo ===
-       params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
-         "distrito"
-       ]
-   )[0]["descripcion"];
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["cCiuEmi"] = params[
-     "establecimientos"
-   ].filter(e => e.codigo === establecimiento)[0]["ciudad"];
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDesCiuEmi"] = ciudades.filter(
-     td =>
-       td.codigo ===
-       params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
-         "ciudad"
-       ]
-   )[0]["descripcion"];
-   json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dTelEmi"] = params[
-     "establecimientos"
-   ].filter(e => e.codigo === establecimiento)[0]["telefono"];
- 
-   if (
-     params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
-       "email"
-     ]
-   ) {
-     let email = new String(
-       params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
-         "email"
-       ]
-     ); //Hace una copia, para no alterar.
- 
-     //Verificar si tiene varios correos.
-     if (email.indexOf(",") > -1) {
-       //Si el Email tiene , (coma) entonces va enviar solo el primer valor, ya que la SET no acepta Comas
-       email = email.split(",")[0].trim();
-     }
- 
-     json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dEmailE"] = email.trim();
-   }
-   /* json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDenSuc"] = params["establecimientos"].filter(e => e.codigo === establecimiento)[0]["denominacion"];
+const generateDatosGeneralesEmisorDE = (params, data, json) => {
+  try {
+    //Validar si el establecimiento viene en params
+    let establecimiento = leftZero(data["establecimiento"], 3);
+    //let punto = leftZero(data['punto'], 3);
+
+    if (
+      params.establecimientos.filter(um => um.codigo === establecimiento)
+        .length == 0
+    ) {
+    }
+    if (params["ruc"].indexOf("-") == -1) {
+      //throw new Error('RUC debe contener dígito verificador en params.ruc');
+    }
+
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"] = {};
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dRucEm"] = params["ruc"].split(
+      "-"
+    )[0];
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDVEmi"] = params["ruc"].split(
+      "-"
+    )[1];
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["iTipCont"] =
+      params["tipoContribuyente"];
+    if (typeof params["tipoRegimen"] != undefined) {
+      json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["cTipReg"] =
+        params["tipoRegimen"];
+    }
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dNomEmi"] =
+      params["razonSocial"];
+    if (
+      params["nombreFantasia"] &&
+      (params["nombreFantasia"] + "").length > 0
+    ) {
+      json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dNomFanEmi"] =
+        params["nombreFantasia"];
+    }
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDirEmi"] = params[
+      "establecimientos"
+    ].filter(e => e.codigo === establecimiento)[0]["direccion"];
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dNumCas"] = params[
+      "establecimientos"
+    ].filter(e => e.codigo === establecimiento)[0]["numeroCasa"];
+
+    let dCompDir1 = params["establecimientos"].filter(
+      e => e.codigo === establecimiento
+    )[0]["complementoDireccion1"];
+    if (dCompDir1 && (dCompDir1 + "").length > 1) {
+      json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dCompDir1"] = dCompDir1;
+    }
+
+    let dCompDir2 = params["establecimientos"].filter(
+      e => e.codigo === establecimiento
+    )[0]["complementoDireccion2"];
+    if (dCompDir2 && (dCompDir2 + "").length > 1) {
+      json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dCompDir2"] = dCompDir2;
+    }
+
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["cDepEmi"] = params[
+      "establecimientos"
+    ].filter(e => e.codigo === establecimiento)[0]["departamento"];
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"][
+      "dDesDepEmi"
+    ] = departamentos.filter(
+      td =>
+        td.codigo ===
+        params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
+          "departamento"
+        ]
+    )[0]["descripcion"];
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["cDisEmi"] = params[
+      "establecimientos"
+    ].filter(e => e.codigo === establecimiento)[0]["distrito"];
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDesDisEmi"] = distritos.filter(
+      td =>
+        td.codigo ===
+        params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
+          "distrito"
+        ]
+    )[0]["descripcion"];
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["cCiuEmi"] = params[
+      "establecimientos"
+    ].filter(e => e.codigo === establecimiento)[0]["ciudad"];
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDesCiuEmi"] = ciudades.filter(
+      td =>
+        td.codigo ===
+        params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
+          "ciudad"
+        ]
+    )[0]["descripcion"];
+    json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dTelEmi"] = params[
+      "establecimientos"
+    ].filter(e => e.codigo === establecimiento)[0]["telefono"];
+
+    if (
+      params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
+        "email"
+      ]
+    ) {
+      let email = new String(
+        params["establecimientos"].filter(e => e.codigo === establecimiento)[0][
+          "email"
+        ]
+      ); //Hace una copia, para no alterar.
+
+      //Verificar si tiene varios correos.
+      if (email.indexOf(",") > -1) {
+        //Si el Email tiene , (coma) entonces va enviar solo el primer valor, ya que la SET no acepta Comas
+        email = email.split(",")[0].trim();
+      }
+
+      json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dEmailE"] = email.trim();
+    }
+    /* json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["dDenSuc"] = params["establecimientos"].filter(e => e.codigo === establecimiento)[0]["denominacion"];
   */
-   if (
-     params["actividadesEconomicas"] &&
-     params["actividadesEconomicas"].length > 0
-   ) {
-     json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["gActEco"] = [];
-     for (let i = 0; i < params["actividadesEconomicas"].length; i++) {
-       const actividadEconomica = params["actividadesEconomicas"][i];
-       console.log(actividadEconomica)
-       const gActEco = {
-         cActEco: actividadEconomica.codigo,
-         dDesActEco: actividadEconomica.descripcion
-       };
-       json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["gActEco"].push(gActEco);
-     }
-   } else {
-     //throw new Error('Debe proveer el array de actividades económicas en params.actividadesEconomicas');
-   }
- } catch (error) {
-  console.error('❌ ❌ Error generateDatosGeneralesEmisorDE', error.message)
- }
+    if (
+      params["actividadesEconomicas"] &&
+      params["actividadesEconomicas"].length > 0
+    ) {
+      json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["gActEco"] = [];
+      for (let i = 0; i < params["actividadesEconomicas"].length; i++) {
+        const actividadEconomica = params["actividadesEconomicas"][i];
+        console.log(actividadEconomica);
+        const gActEco = {
+          cActEco: actividadEconomica.codigo,
+          dDesActEco: actividadEconomica.descripcion
+        };
+        json["rDE"]["DE"]["gDatGralOpe"]["gEmis"]["gActEco"].push(gActEco);
+      }
+    } else {
+      //throw new Error('Debe proveer el array de actividades económicas en params.actividadesEconomicas');
+    }
+  } catch (error) {
+    console.error("❌ ❌ Error generateDatosGeneralesEmisorDE", error.message);
+  }
 };
 
 /**
@@ -649,7 +623,7 @@ const generateDatosGeneralesReceptorDE = (data, json) => {
   try {
     json["rDE"]["DE"]["gDatGralOpe"]["gDatRec"] = {
       iNatRec: data["cliente"]["contribuyente"] ? 1 : 2,
-      iTiOpe: +data["cliente"]["tipoOperacion"],
+      iTiOpe: +data.cliente.tipoOperacion,
       cPaisRec: data["cliente"]["pais"],
       dDesPaisRe: paises.filter(
         pais => pais.codigo === data["cliente"]["pais"]
@@ -723,18 +697,19 @@ const generateDatosGeneralesReceptorDE = (data, json) => {
     //
     if (
       data["cliente"]["departamento"] &&
-      +data["cliente"]["tipoOperacion"] != 4
+      +data.cliente.tipoOperacion != 4
     ) {
-      json["rDE"]["DE"]["gDatGralOpe"]["gDatRec"]["cDepRec"] = +data["cliente"]["departamento"];
-      json["rDE"]["DE"]["gDatGralOpe"]["gDatRec"][ "dDesDepRec" ] = departamentos.filter(
+      json["rDE"]["DE"]["gDatGralOpe"]["gDatRec"]["cDepRec"] = +data["cliente"][
+        "departamento"
+      ];
+      json["rDE"]["DE"]["gDatGralOpe"]["gDatRec"][
+        "dDesDepRec"
+      ] = departamentos.filter(
         td => td.codigo === +data["cliente"]["departamento"]
       )[0]["descripcion"];
     }
 
-    if (
-      data["cliente"]["distrito"] &&
-      +data["cliente"]["tipoOperacion"] != 4
-    ) {
+    if (data["cliente"]["distrito"] && +data.cliente.tipoOperacion != 4) {
       json["rDE"]["DE"]["gDatGralOpe"]["gDatRec"]["cDisRec"] = +data["cliente"][
         "distrito"
       ];
@@ -745,10 +720,7 @@ const generateDatosGeneralesReceptorDE = (data, json) => {
       ];
     }
 
-    if (
-      data["cliente"]["ciudad"] &&
-      +data["cliente"]["tipoOperacion"] != 4
-    ) {
+    if (data["cliente"]["ciudad"] && +data.cliente.tipoOperacion != 4) {
       json["rDE"]["DE"]["gDatGralOpe"]["gDatRec"]["cCiuRec"] = +data["cliente"][
         "ciudad"
       ];
@@ -801,18 +773,18 @@ const generateDatosGeneralesReceptorDE = (data, json) => {
 const generateDatosEspecificosPorTipoDE = (data, json) => {
   json["rDE"]["DE"]["gDtipDE"] = {};
 
-  if (+data["tipoDocumento"] === 1) {
+  if (+data.tipoDocumento === 1) {
     generateDatosEspecificosPorTipoDE_FacturaElectronica(data, json);
   }
-  if (+data["tipoDocumento"] === 4) {
+  if (+data.tipoDocumento === 4) {
     generateDatosEspecificosPorTipoDE_Autofactura(data, json);
   }
 
-  if (+data["tipoDocumento"] === 5 || data["tipoDocumento"] === 6) {
+  if (+data.tipoDocumento === 5 || data.tipoDocumento === 6) {
     generateDatosEspecificosPorTipoDE_NotaCreditoDebito(data, json);
   }
 
-  if (+data["tipoDocumento"] === 7) {
+  if (+data.tipoDocumento === 7) {
     generateDatosEspecificosPorTipoDE_RemisionElectronica(data, json);
   }
 };
@@ -851,7 +823,7 @@ const generateDatosEspecificosPorTipoDE_FacturaElectronica = (data, json) => {
     json["rDE"]["DE"]["gDtipDE"]["gCamFE"]["dFecEmNR"] =
       data["factura"]["fechaEnvio"];
   }
-  if (data["cliente"]["tipoOperacion"] === 3) {
+  if (data.cliente.tipoOperacion === 3) {
     generateDatosEspecificosPorTipoDE_ComprasPublicas(data, json);
   }
 };
@@ -861,52 +833,16 @@ const generateDatosEspecificosPorTipoDE_FacturaElectronica = (data, json) => {
    * Dentro de la factura electronica
     
    */
-const generateDatosEspecificosPorTipoDE_ComprasPublicas = (data, json) => {
-  if (
-    !(
-      data["dncp"] &&
-      data["dncp"]["modalidad"] &&
-      data["dncp"]["modalidad"].length > 0
-    )
-  ) {
-    //throw new Error('Debe informar la modalidad de Contratación DNCP en data.dncp.modalidad');
-  }
-  if (
-    !(
-      data["dncp"] &&
-      data["dncp"]["entidad"] &&
-      data["dncp"]["entidad"].length > 0
-    )
-  ) {
-    //throw new Error('Debe informar la entidad de Contratación DNCP en data.dncp.entidad');
-  }
-  if (
-    !(data["dncp"] && data["dncp"]["año"] && data["dncp"]["año"].length > 0)
-  ) {
-    //throw new Error('Debe informar la año de Contratación DNCP en data.dncp.año');
-  }
-  if (
-    !(
-      data["dncp"] &&
-      data["dncp"]["secuencia"] &&
-      data["dncp"]["secuencia"].length > 0
-    )
-  ) {
-    //throw new Error('Debe informar la secuencia de Contratación DNCP en data.dncp.secuencia');
-  }
-  if (
-    !(data["dncp"] && data["dncp"]["fecha"] && data["dncp"]["fecha"].length > 0)
-  ) {
-    //throw new Error('Debe informar la fecha de emisión de código de Contratación DNCP en data.dncp.fecha');
-  }
-
-  json["rDE"]["DE"]["gDtipDE"]["gCamFE"]["gCompPub"] = {
-    dModCont: data["dncp"]["modalidad"],
-    dEntCont: data["dncp"]["entidad"],
-    dAnoCont: data["dncp"]["año"],
-    dSecCont: data["dncp"]["secuencia"],
-    dFeCodCont: data["dncp"]["fecha"]
-  };
+const generateDatosEspecificosPorTipoDE_ComprasPublicas = (data, json) => { 
+ 
+  console.log("JSON.stringify ", JSON.stringify(data.factura, null, 2)); 
+    json["rDE"]["DE"]["gDtipDE"]["gCamFE"]["gCompPub"] = {
+      dModCont: data.factura.dncp.modalidad ,
+      dEntCont: data.factura.dncp.entidad ,
+      dAnoCont: data.factura.dncp.periodo  ,
+      dSecCont:  data.factura.dncp.secuencia ,
+      dFeCodCont: data.factura.dncp.fecha  
+    }; 
 };
 
 const generateDatosEspecificosPorTipoDE_Autofactura = (data, json) => {

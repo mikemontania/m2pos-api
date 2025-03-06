@@ -22,7 +22,7 @@ const tablas = ['iTiDE', 'iTipTra', 'iTImp', 'iTipCont'];
 try {
   // Obtener empresas que generan XML
   const empresas = await Empresa.findAll({
-    where: { generarXml: 'SI',envioXml: 'SI'  },
+    where: { modoSifen: 'SI'   },
     include: [
       { model: Moneda, as: 'moneda' },
       { model: Departamento, as: 'departamento' },
@@ -87,9 +87,8 @@ try {
 }
 };
 const realizaTareas =async () =>{
-
-
-
+  
+  
     try {
       const empresas = await getEmpresas();
         if (!empresas?.length) {
@@ -97,11 +96,10 @@ const realizaTareas =async () =>{
             return;
           }
           console.log(`✅ Se encontraron ${empresas.length} empresas.`);
-
-        /*await generarXml(empresas);
+        await generarXml(empresas);
         await envioLoteXml(empresas);
         await consultaLoteXml(empresas);
-        await generarInutilizacion(empresas);   */
+        await generarInutilizacion(empresas);    
     } catch (error) {
         console.error('❌ Error al realizar jobs... :', error);
     }

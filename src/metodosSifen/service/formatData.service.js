@@ -2,8 +2,6 @@ const { formatDateToLocalISO } = require("../generarXml");
 const { paises } = require("./constants.service");
 
 const formatToParams = (venta, empresa) => {
-
-    
   try {
     return {
       ruc: empresa.ruc,
@@ -37,6 +35,7 @@ const formatToParams = (venta, empresa) => {
     };
   } catch (error) {
     console.error("❌ Error formatToParams:", error.message);
+    return null;
   }
 };
 
@@ -62,10 +61,10 @@ const formatToData = (venta, empresa) => {
       toleranciaPorcentaje: 1, //nota remision
       cdcAnticipo: "", //nota remision
       dncp: {
-        codigoNivelGeneral: "1111111",
-        codigoNivelEspecifico: "1111111",
-        codigoGtinProducto: "1111111",
-        codigoNivelPaquete: "1111111"
+        codigoNivelGeneral: "00000000",
+        codigoNivelEspecifico: "000",
+      /*   codigoGtinProducto: "1111111",
+        codigoNivelPaquete: "1111111" */
       },
       ivaTipo: detalle.ivaTipo,
       ivaBase: detalle.ivaBase,
@@ -131,8 +130,8 @@ const formatToData = (venta, empresa) => {
         fechaEnvio: venta.fechaVenta,
         dncp: {
           modalidad: "00",
-          entidad: 111111,
-          año: 11,
+          entidad: 11111,
+          periodo: 11,
           secuencia: 1111111,
           fecha: venta.fechaVenta
         }
@@ -160,6 +159,7 @@ const formatToData = (venta, empresa) => {
     };
   } catch (error) {
     console.error("❌ Error formatToData:", error.message);
+    return null;
   }
 };
 
