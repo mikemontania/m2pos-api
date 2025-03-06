@@ -41,14 +41,14 @@ const loadCertificateAndKey = async empresaId => {
     const certificados = await Certificado.findAll({ where: condiciones });
     if (certificados.length === 0)
       throw new Error("No se encontró un certificado activo para la empresa");
-    console.log("Certificado", certificados[0]);
-    console.log(certificados[0].passphrase);
+   // console.log("Certificado", certificados[0]);
+   // console.log(certificados[0].passphrase);
 
     const password = decryptPassphrase(certificados[0].passphrase);
 
     const path = `./src/certificado/${certificados[0].path}`;
-    console.log("password", password);
-    console.log("path", path);
+  //  console.log("password", password);
+   // console.log("path", path);
     const p12File = fs.readFileSync(path);
     const p12Asn1 = forge.asn1.fromDer(p12File.toString("binary"), true);
     let p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, false, password);
@@ -88,8 +88,8 @@ const firmarXml = async (xmlString, empresaId) => {
   const certificados = await Certificado.findAll({ where: condiciones });
   if (certificados.length === 0)
     throw new Error("No se encontró un certificado activo para la empresa");
-  console.log("Certificado", certificados[0]);
-  console.log(certificados[0].passphrase);
+ // console.log("Certificado", certificados[0]);
+ // console.log(certificados[0].passphrase);
 
   const passCert = decryptPassphrase(certificados[0].passphrase);
   const pathCert = `./src/certificado/${certificados[0].path}`;
@@ -99,7 +99,7 @@ const firmarXml = async (xmlString, empresaId) => {
       xmlsign
         .signXML(xmlString, pathCert, passCert)
         .then(signedXml => {
-          console.log("XML firmado:", signedXml);
+      //    console.log("XML firmado:", signedXml);
           resolve(signedXml); // Resolver la promesa con el XML firmado
         })
         .catch(err => {

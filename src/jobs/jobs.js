@@ -65,8 +65,8 @@ try {
   const empresasCompletas = await Promise.all(
     empresas.map(async (empresa, index) => {
       const certificado = await loadCertificateAndKey(empresa.id);
-      console.log('************certificado**************',certificado);
-
+/*       console.log('************certificado**************',certificado);
+ */
       if (!certificado) return null; // Excluir si el certificado es null 
       return {
         ...empresa,
@@ -98,10 +98,10 @@ const realizaTareas =async () =>{
           }
           console.log(`✅ Se encontraron ${empresas.length} empresas.`);
 
-        await generarXml(empresas);
+        /*await generarXml(empresas);
         await envioLoteXml(empresas);
         await consultaLoteXml(empresas);
-        await generarInutilizacion(empresas);   
+        await generarInutilizacion(empresas);   */
     } catch (error) {
         console.error('❌ Error al realizar jobs... :', error);
     }

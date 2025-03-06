@@ -28,7 +28,60 @@ const { generarXML } = require("../metodosSifen/generarXml");
 const { cargandoLote, actualizarLote, relacionarVentasConLote } = require("../metodosSifen/service/createLote.service");
 const { enviarXml } = require("../metodosSifen/envioLote.service");
 const { actualizarEstadoVentas } = require("../jobs/envioLoteXml.job");
+const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service");
  
+const fs = require("fs"); 
+const { formatToParams, formatToData } = require("../metodosSifen/service/formatData.service");
+const { signXML } = require("../metodosSifen/service/signxml.service");
+const { generateQR } = require("../metodosSifen/service/generateQR.service");
+const probarGeneradorXml = async (req, res) => {
+  console.log('/*****************Probando*********************/')
+  try {
+    // Obtener empresaId del usuario autenticado
+    const { empresaId } = req.usuario;
+    const { id } = req.params;
+
+    // Buscar la venta por ID
+    let venta = await obtenerVenta(id);
+    if (!venta) {
+      return res.status(404).json({ error: "Venta no encontrada" });
+    } 
+    //fs.writeFileSync('./generador/venta.json', JSON.stringify(venta, null, 2));
+    console.log('/*****************venta.json*********************/')
+    // Obtener datos de la empresa
+    const empresa = await getEmpresaById(empresaId);
+    if (!empresa) {
+      return res.status(404).json({ error: `No se encontró la empresa con ID ${empresaId}` });
+    }
+    //fs.writeFileSync('./generador/empresa.json', JSON.stringify(empresa, null, 2));
+    console.log('/*****************empresa.json*********************/')
+    const params = await formatToParams(venta,empresa);
+   // fs.writeFileSync('./generador/params.json', JSON.stringify(params, null, 2));
+    console.log('/*****************params.json*********************/')
+
+    const data = await formatToData(venta,empresa); 
+    //fs.writeFileSync('./generador/data.json', JSON.stringify(data, null, 2));
+    console.log('/*****************data.json*********************/')
+
+    let xmlBase = await generateXMLDE(params,data);  
+    xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
+    
+    const xmlFirmado =await signXML(xmlBase,empresa.certificado) 
+    const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc); 
+    fs.writeFileSync('./generador/xmlgenerado.xml', xmlFirmadoConQr); 
+
+    return res.status(200).json({ data: xmlFirmadoConQr });
+
+  } catch (error) {
+    console.error('❌ Error probando genrador de xml:', error);
+    return res.status(500).json({ error: "Error al reintentar" });
+  }
+};
+
+
+
+
+
 
 // Definir las URLs completas para cada servicio
  
@@ -136,6 +189,7 @@ const obtenerXmlFirmados = async (empresaId, ventaId) => {
 
 
 
+
 const reintentar = async (req, res) => {
   try {
     // Obtener empresaId del usuario autenticado
@@ -184,7 +238,7 @@ const reintentar = async (req, res) => {
     return res.status(200).json({ data: respuesta.respuesta });
 
   } catch (error) {
-    console.error('❌ Error al reintentar venta:', error.message);
+    console.error('❌ Error al reintentar venta:', error );
     return res.status(500).json({ error: "Error al reintentar" });
   }
 };
@@ -305,8 +359,8 @@ const getEmpresaById = async (id) => {
  
     // Cargar certificado
     const certificado = await loadCertificateAndKey(empresa.id);
-    console.log('************certificado**************', certificado);
-
+/*     console.log('************certificado**************', certificado);
+ */
     if (!certificado) {
       console.warn(`⚠️ No se encontró certificado para la empresa ID: ${empresa.id}`);
       return null;
@@ -331,5 +385,5 @@ const getEmpresaById = async (id) => {
 module.exports = { 
   anular,
   consultarcdc,
-  reintentar
+  reintentar,probarGeneradorXml
 };

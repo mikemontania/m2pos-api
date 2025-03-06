@@ -12,9 +12,7 @@ const generateQR = (xml, idCSC, CSC) => {
 
     let qrLink = process.env.EKUATIA_URL;
 
-    let qr = "";
-    const nVersion = obj["rDE"]["dVerFor"][0];
-
+    let qr = ""; 
     qr += "nVersion=" + process.env.EKUATIA_VERSION + "&";
 
     const id = obj["rDE"]["DE"][0]["$"]["Id"];
