@@ -14,7 +14,7 @@ const actualizarLote = async (loteId,json, respuestaId) => {
     // Determinar estado basado en el código de respuesta 
      const actualizado = await Envio.update(
       {
-        estado: 'CONCLUIDO', 
+        estado: 'RESPONDIDO', 
         codigo:json?.codigo,
         obs:json?.observacion|| '',
         respuestaConsultaId: respuestaId,
@@ -25,8 +25,8 @@ const actualizarLote = async (loteId,json, respuestaId) => {
       }
     ); 
   //  console.log(actualizado)
-    console.log(`✅ Lote actualizado con ID: ${loteId}, Estado: CONCLUIDO`);  
-    return {id:loteId,estado:'CONCLUIDO',...json};
+    console.log(`✅ Lote actualizado con ID: ${loteId}, Estado: RESPONDIDO`);  
+    return {id:loteId,estado:'RESPONDIDO',...json};
   } catch (error) {
     console.error("❌ Error al actualizar el lote:", error);
     throw error;
@@ -62,7 +62,7 @@ const actualizarVentasDesdeSifen = async (res) => {
           orden: 3,
           empresaId: venta.empresaId,
           ventaId: venta.id,
-          estado: 'CONCLUIDO',
+          estado: 'RESPONDIDO',
           xml: xmlRespuesta
         });
 
@@ -136,7 +136,7 @@ const consultaLoteXml = async (empresasXml) => {
                   await actualizarVentasDesdeSifen(respuesta.respuesta); 
                   await actualizarLote(lote.id, json,  respuesta.id);
                   //console.log(loteActualizado)
-                  console.log(`✅ Lote con id ${lote.numeroLote} se ha concluido.` );  
+                  console.log(`✅ Lote con id ${lote.numeroLote} se ha RESPONDIDO.` );  
                 } catch (error) {
                   console.error(`❌ Error consultando lote la venta ${lote.id}:`, error); 
                 }

@@ -290,7 +290,7 @@ const anular = async (req, res) => {
       orden: 3,
       empresaId: empresa.id,
       ventaId: venta.id,
-      estado: 'CONCLUIDO',
+      estado: 'RESPONDIDO',
       xml: respuesta,
     });
 
