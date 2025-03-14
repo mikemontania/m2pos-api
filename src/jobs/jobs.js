@@ -1,7 +1,6 @@
 const { consultaLoteXml } = require("./consultaLoteXml.job");
 const { envioLoteXml } = require("./envioLoteXml.job");
-const { generarInutilizacion } = require("./generadorInutilizacion.job");
-const { generarXml } = require("./generadorXml.job");
+ const { generarXml } = require("./generadorXml.job");
 const cron = require("node-cron"); 
 // Asegúrate de importar el modelo adecuado
  const Empresa = require("../models/empresa.model"); 
@@ -98,8 +97,7 @@ const realizaTareas =async () =>{
           console.log(`✅ Se encontraron ${empresas.length} empresas.`);
         await generarXml(empresas);
         await envioLoteXml(empresas);
-        await consultaLoteXml(empresas);
-        await generarInutilizacion(empresas);    
+        await consultaLoteXml(empresas);  
     } catch (error) {
         console.error('❌ Error al realizar jobs... :', error);
     }

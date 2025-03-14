@@ -7,6 +7,8 @@ const xml2js = require('xml2js');
 const { generateXMLEvento } = require("./service/eventoMain.service");
 
  const loadData = (tipo,venta, empresa) =>{
+    console.log(tipo)
+    console.log(typeof(tipo))
     let data;
     switch (tipo) {
         case 1:
@@ -52,12 +54,13 @@ const { generateXMLEvento } = require("./service/eventoMain.service");
     return data
  }
 const envioEventoXml = (tipo,venta, empresa) => {
-   
+    console.log(tipo)
     return new Promise(async (resolve, reject) => {
         try {
         const { cert, key } = empresa.certificado; 
 
         const  data = await loadData(tipo,venta, empresa);
+        console.log(data)
 
         const soapXMLData = await generateXMLEvento(data);
 

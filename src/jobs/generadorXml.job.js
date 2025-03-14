@@ -4,22 +4,20 @@ const cron = require("node-cron");
 const Sucursal = require("../models/sucursal.model");
 const Cliente = require("../models/cliente.model");
 const TablaSifen = require("../models/tablaSifen.model"); 
-require("dotenv").config(); // Cargar variables de entorno
-const { Op } = require("sequelize");
+require("dotenv").config(); // Cargar variables de entorno 
  const FormaVenta = require("../models/formaVenta.model");
 const Variante = require("../models/variante.model");
 const Presentacion = require("../models/presentacion.model");
 const Variedad = require("../models/variedad.model");
 const Producto = require("../models/producto.model");
 const Unidad = require("../models/unidad.model");
-const VentaDetalle = require("../models/ventaDetalle.model");
- const { generarXML } = require("../metodosSifen/generarXml"); 
+const VentaDetalle = require("../models/ventaDetalle.model"); 
 const { formatToParams, formatToData } = require("../metodosSifen/service/formatData.service");
-const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service");
-const VentaXml = require("../models/ventaXml.model");
+const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service"); 
 const { normalizeXML } = require("../metodosSifen/service/util");
 const { signXML } = require("../metodosSifen/service/signxml.service");
 const { generateQR } = require("../metodosSifen/service/generateQR.service");
+const { crearVentaXml } = require("../controllers/ventaXml-controller");
 
 const obtenerVentasPendientes = async () => {
   try {
@@ -136,25 +134,11 @@ const generarXml = async ( empresasXml) => {
               let xmlBase = await generateXMLDE(params,data);  
               xmlBase =    normalizeXML(xmlBase);          
               xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
-              const registro1 = await VentaXml.create({
-                id: null,
-                orden: 1,
-                empresaId:  empresa.id,
-                ventaId:  venta.id,
-                estado: 'GENERADO',
-                  xml:xmlBase,
-              });
+              await crearVentaXml(empresa.id, venta.id, xmlBase, 1  ,'GENERADO'  )  
               const xmlFirmado =await signXML(xmlBase,empresa.certificado) 
               const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc);
               console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
-              const registro2 = await VentaXml.create({
-                id: null,
-                orden: 2,
-                empresaId:  empresa.id,
-                ventaId:  venta.id,
-                estado: 'FIRMADO',
-                xml:xmlFirmadoConQr,
-              });  
+              await crearVentaXml(empresa.id, venta.id, xmlFirmadoConQr, 2  ,'FIRMADO'  ) 
               const estado = xmlFirmadoConQr ? 'Procesado' : 'Error'; 
              const ventaUpd = await Venta.update(
                 {

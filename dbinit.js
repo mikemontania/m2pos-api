@@ -54,200 +54,199 @@ const populateDB = async () => {
       await Moneda.bulkCreate(monedas, { ignoreDuplicates: true });
     }
 
-    const iTiDE1 = await TablaSifen.create({ 
+    const iTiDE1 = await TablaSifen.create({
       codigo: "1",
       descripcion: "Factura electrónica",
       tabla: "iTiDE"
     });
-    const iTiDE2 = await TablaSifen.create({ 
+    const iTiDE2 = await TablaSifen.create({
       codigo: "8",
       descripcion: "Comprobante de retención electrónico",
       tabla: "iTiDE"
     });
-    const iTiDE3 = await TablaSifen.create({ 
+    const iTiDE3 = await TablaSifen.create({
       codigo: "2",
       descripcion: "Factura electrónica de exportación",
       tabla: "iTiDE"
     });
-    const iTiDE4 = await TablaSifen.create({ 
+    const iTiDE4 = await TablaSifen.create({
       codigo: "3",
       descripcion: "Factura electrónica de importación",
       tabla: "iTiDE"
     });
-    const iTiDE5 = await TablaSifen.create({ 
+    const iTiDE5 = await TablaSifen.create({
       codigo: "4",
       descripcion: "Autofactura electrónica",
       tabla: "iTiDE"
     });
-    const iTiDE6 = await TablaSifen.create({ 
+    const iTiDE6 = await TablaSifen.create({
       codigo: "5",
       descripcion: "Nota de crédito electrónica",
       tabla: "iTiDE"
     });
-    const iTiDE7 = await TablaSifen.create({ 
+    const iTiDE7 = await TablaSifen.create({
       codigo: "6",
       descripcion: "Nota de débito electrónica",
       tabla: "iTiDE"
     });
-    const iTiDE8 = await TablaSifen.create({ 
+    const iTiDE8 = await TablaSifen.create({
       codigo: "7",
       descripcion: "Nota de remisión electrónica",
       tabla: "iTiDE"
     });
 
-    const iTipTra1 = await TablaSifen.create({ 
+    const iTipTra1 = await TablaSifen.create({
       codigo: "1",
       descripcion: "Venta de mercadería",
       tabla: "iTipTra"
     });
-    const iTipTra2 = await TablaSifen.create({ 
+    const iTipTra2 = await TablaSifen.create({
       codigo: "2",
       descripcion: "Prestación de servicios",
       tabla: "iTipTra"
     });
-    const iTipTra3 = await TablaSifen.create({ 
+    const iTipTra3 = await TablaSifen.create({
       codigo: "3",
       descripcion: "Mixto (Venta de mercadería y servicios)",
       tabla: "iTipTra"
     });
-    const iTipTra4 = await TablaSifen.create({ 
+    const iTipTra4 = await TablaSifen.create({
       codigo: "4",
       descripcion: "Venta de activo fijo",
       tabla: "iTipTra"
     });
-    const iTipTra5 = await TablaSifen.create({ 
+    const iTipTra5 = await TablaSifen.create({
       codigo: "5",
       descripcion: "Venta de divisas",
       tabla: "iTipTra"
     });
-    const iTipTra6 = await TablaSifen.create({ 
+    const iTipTra6 = await TablaSifen.create({
       codigo: "6",
       descripcion: "Compra de divisas",
       tabla: "iTipTra"
     });
-    const iTipTra7 = await TablaSifen.create({ 
+    const iTipTra7 = await TablaSifen.create({
       codigo: "7",
       descripcion: "Promoción o entrega de muestras",
       tabla: "iTipTra"
     });
-    const iTipTra8 = await TablaSifen.create({ 
+    const iTipTra8 = await TablaSifen.create({
       codigo: "8",
       descripcion: "Donación",
       tabla: "iTipTra"
     });
-    const iTipTra9 = await TablaSifen.create({ 
+    const iTipTra9 = await TablaSifen.create({
       codigo: "9",
       descripcion: "Anticipo",
       tabla: "iTipTra"
     });
-    const iTipTra10 = await TablaSifen.create({ 
+    const iTipTra10 = await TablaSifen.create({
       codigo: "10",
       descripcion: "Compra de productos",
       tabla: "iTipTra"
     });
-    const iTipTra11 = await TablaSifen.create({ 
+    const iTipTra11 = await TablaSifen.create({
       codigo: "11",
       descripcion: "Compra de servicios",
       tabla: "iTipTra"
     });
-    const iTipTra12 = await TablaSifen.create({ 
+    const iTipTra12 = await TablaSifen.create({
       codigo: "12",
       descripcion: "Venta de crédito fiscal",
       tabla: "iTipTra"
     });
-    const iTipTra13 = await TablaSifen.create({ 
+    const iTipTra13 = await TablaSifen.create({
       codigo: "13",
       descripcion: "Muestras médicas",
       tabla: "iTipTra"
     });
 
-    const iTimp1 = await TablaSifen.create({ 
+    const iTimp1 = await TablaSifen.create({
       codigo: "1",
       descripcion: "IVA",
       tabla: "iTImp"
     });
-    const iTimp2 = await TablaSifen.create({ 
+    const iTimp2 = await TablaSifen.create({
       codigo: "2",
       descripcion: "ISC",
       tabla: "iTImp"
     });
-    const iTimp3 = await TablaSifen.create({ 
+    const iTimp3 = await TablaSifen.create({
       codigo: "3",
       descripcion: "Renta",
       tabla: "iTImp"
     });
-    const iTimp4 = await TablaSifen.create({ 
+    const iTimp4 = await TablaSifen.create({
       codigo: "4",
       descripcion: "Ninguno",
       tabla: "iTImp"
     });
-    const iTimp5 = await TablaSifen.create({ 
+    const iTimp5 = await TablaSifen.create({
       codigo: "5",
       descripcion: "IVA - Renta",
       tabla: "iTImp"
     });
 
-    const iTipCont1 = await TablaSifen.create({ 
+    const iTipCont1 = await TablaSifen.create({
       codigo: "1",
       descripcion: "Persona Física",
       tabla: "iTipCont"
     });
-    const iTipCont2 = await TablaSifen.create({ 
+    const iTipCont2 = await TablaSifen.create({
       codigo: "2",
       descripcion: "Persona Jurídica",
       tabla: "iTipCont"
     });
 
-    const cDepEmi = await TablaSifen.create({ 
+    const cDepEmi = await TablaSifen.create({
       codigo: "12",
       descripcion: "CENTRAL",
       tabla: "cDepEmi"
     });
-    const cDisEmi = await TablaSifen.create({ 
+    const cDisEmi = await TablaSifen.create({
       codigo: "153",
       descripcion: "CAPIATA",
       tabla: "cDisEmi"
     });
-    const cCiuEmi = await TablaSifen.create({ 
+    const cCiuEmi = await TablaSifen.create({
       codigo: "3568",
       descripcion: "CAPIATA",
       tabla: "cCiuEmi"
     });
 
-    const iNatRec1 = await TablaSifen.create({ 
+    const iNatRec1 = await TablaSifen.create({
       codigo: "1",
       descripcion: "contribuyente",
       tabla: "iNatRec"
     });
-    const iNatRec2 = await TablaSifen.create({ 
+    const iNatRec2 = await TablaSifen.create({
       codigo: "2",
       descripcion: "no contribuyente",
       tabla: "iNatRec"
     });
 
-    const iTiOpe1 = await TablaSifen.create({ 
+    const iTiOpe1 = await TablaSifen.create({
       codigo: "1",
       descripcion: "B2B",
       tabla: "iTiOpe"
     });
-    const iTiOpe2 = await TablaSifen.create({ 
+    const iTiOpe2 = await TablaSifen.create({
       codigo: "2",
       descripcion: "B2C",
       tabla: "iTiOpe"
     });
     const iTiOpe3 = await TablaSifen.create({
-     
       codigo: "3",
       descripcion: "B2G",
       tabla: "iTiOpe"
     });
-    const iTiOpe4 = await TablaSifen.create({ 
+    const iTiOpe4 = await TablaSifen.create({
       codigo: "4",
       descripcion: "B2F",
       tabla: "iTiOpe"
     });
 
-    const iTiContRec1 = await TablaSifen.create({ 
+    const iTiContRec1 = await TablaSifen.create({
       codigo: "1",
       descripcion: "Persona Física",
       tabla: "iTiContRec"
@@ -294,7 +293,6 @@ const populateDB = async () => {
       tabla: "iIndPres"
     });
 
-
     // Crear empresa
     const empresa = await Empresa.create({
       razonSocial:
@@ -316,7 +314,7 @@ const populateDB = async () => {
       email: "info@cavallaro.com.py",
       web: "www.cavallaro.com.py",
       img: "grupocavallaro3.png",
-      modoSifen: "SI" 
+      modoSifen: "SI"
     });
 
     // Crear actividades si no existen y asociarlas a la empresa
@@ -352,7 +350,6 @@ const populateDB = async () => {
       activo: true
     });
 
-   
     const sucursal = await Sucursal.create({
       descripcion: "CAPIATA",
       direccion: "CARRETERA RUTA MCAL. FRANCISCO SOLANO LOPEZ",
@@ -716,7 +713,7 @@ const populateDB = async () => {
       numeroFin: 999999999,
       serie: "001-001",
       timbrado: "12559587",
-      ultimoNumero: 200606,
+      ultimoNumero: 200616,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
@@ -13751,14 +13748,18 @@ const populateDB = async () => {
 
     const cliente1 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "782718-0",
+      naturalezaReceptor: 1,
+      nroDocumento: "782718-0",
       razonSocial: "HERIBERTO GENES",
       telefono: "595981545540",
       direccion: "LAS MERCEDES ASUNCION",
       email: "titogenes@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13768,14 +13769,18 @@ const populateDB = async () => {
     });
     const cliente2 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "473301-0",
+      naturalezaReceptor: 1,
+      nroDocumento: "473301-0",
       razonSocial: "VERONICA JOSEFINA RUIZ LLANO",
       telefono: "99999999",
       direccion: "JULIO CORRE Nº 494",
       email: "veronicaruizllano@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13785,14 +13790,18 @@ const populateDB = async () => {
     });
     const cliente3 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "3772943-8",
+      naturalezaReceptor: 1,
+      nroDocumento: "3772943-8",
       razonSocial: "ROMAN ACOSTA, EVER DANIEL",
       telefono: "595981330880",
       direccion: "CAPIATA, 5TA COMPAÑIA ",
       email: "romanmirian936@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13802,14 +13811,18 @@ const populateDB = async () => {
     });
     const cliente4 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "390437-7",
+      naturalezaReceptor: 1,
+      nroDocumento: "390437-7",
       razonSocial: "SR. MIGUEL ANGEL FLEITAS",
       telefono: "595228634326",
       direccion: "MOTEL FARAON, RUTA II, CAPIATA",
       email: "cecilia.fleitas1904@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13819,14 +13832,18 @@ const populateDB = async () => {
     });
     const cliente5 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "80046129-0",
+      naturalezaReceptor: 1,
+      nroDocumento: "80046129-0",
       razonSocial: "SULTAN S.R.L.",
       telefono: "576777",
       direccion: "SAN LORENZO",
       email: "factura.electronica@cavallaro.com.py",
-      tipoOperacionId:1,tipoContribuyente:2,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 2,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13836,14 +13853,18 @@ const populateDB = async () => {
     });
     const cliente6 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "347277-9",
+      naturalezaReceptor: 1,
+      nroDocumento: "347277-9",
       razonSocial: "LAVANDERIA ESPUMA",
       telefono: "595971259121",
       direccion: "SACRAMENTO C/ CAP. LOMBARDO",
       email: "gladysmonjagata@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13853,14 +13874,18 @@ const populateDB = async () => {
     });
     const cliente7 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "1399523-5",
+      naturalezaReceptor: 1,
+      nroDocumento: "1399523-5",
       razonSocial: "SR. CLAUDE HURARD",
       telefono: "595983669444",
       direccion: "MALUTIN 482 C/ MOISES BERTONI. VILL",
       email: "claudehurard@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13870,14 +13895,18 @@ const populateDB = async () => {
     });
     const cliente8 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "365336-6",
+      naturalezaReceptor: 1,
+      nroDocumento: "365336-6",
       razonSocial: "MARTINEZ PERALTA, SALVADOR",
       telefono: "671212",
       direccion: "16 DE NOVIEMBRE 979 Y CNEL. PAMPLIE",
       email: "gerenciagrupotang@hotmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13887,14 +13916,18 @@ const populateDB = async () => {
     });
     const cliente9 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "1173713-1",
+      naturalezaReceptor: 1,
+      nroDocumento: "1173713-1",
       razonSocial: "EDUARDO AQUINO",
       telefono: "595981292311",
       direccion: "TTE ALEJANDRO MONGES /NIEVE VERA Nº",
       email: "villalbarosa807@gmail.com.py",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13904,14 +13937,18 @@ const populateDB = async () => {
     });
     const cliente10 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "2865013-1",
+      naturalezaReceptor: 1,
+      nroDocumento: "2865013-1",
       razonSocial: "MONGELOS ROMERO, EDITH ROCIO-MOTEL SIRENA",
       telefono: "9999999",
       direccion: "KM 26 RUTA 2 CERCA DEL MOTEL LUNA",
       email: "edyth.rocio@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13921,14 +13958,18 @@ const populateDB = async () => {
     });
     const cliente11 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "1771424-9",
+      naturalezaReceptor: 1,
+      nroDocumento: "1771424-9",
       razonSocial: "RIVEROS CRISTALDO, PEDRO",
       telefono: "595982292029",
       direccion: "MANUEL ORTIZ GUERRERO C/ SANTANI",
       email: "pedroriveros1975@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13938,14 +13979,18 @@ const populateDB = async () => {
     });
     const cliente12 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "80050507-7",
+      naturalezaReceptor: 1,
+      nroDocumento: "80050507-7",
       razonSocial: "LOS LAGOS RESORT HOTEL S.A",
       telefono: "595228629019",
       direccion: "CAPIATA KM 20 R1 AV PEDRO LOPEZ GOD",
       email: "administracion@loslagos.com.py",
-      tipoOperacionId:1,tipoContribuyente:2,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 2,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13955,14 +14000,18 @@ const populateDB = async () => {
     });
     const cliente13 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "1050296-3",
+      naturalezaReceptor: 1,
+      nroDocumento: "1050296-3",
       razonSocial: "COUCHONNAL RAMIREZ, MARICARMEN",
       telefono: "595981476976",
       direccion: "ELIGIO AYALA 1037 E/ BRASIL Y EEUU",
       email: "administracion@giuseppehostalandsuites.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13972,14 +14021,18 @@ const populateDB = async () => {
     });
     const cliente14 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "2999065-3",
+      naturalezaReceptor: 1,
+      nroDocumento: "2999065-3",
       razonSocial: "DIEGO BENDLIN  (SPA)",
       telefono: "595981413996",
       direccion: "TTE 1RO RAMÓN GASPAR C/ CAP. ELÍAS",
       email: "milagros.rassl@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -13989,14 +14042,18 @@ const populateDB = async () => {
     });
     const cliente15 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "2352135-0",
+      naturalezaReceptor: 1,
+      nroDocumento: "2352135-0",
       razonSocial: "HENRY MARTINEZ",
       telefono: "595981831798",
       direccion: "GOIBURU E/ TAROMA Y NAZARETH",
       email: "tatinomanuel@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14006,14 +14063,18 @@ const populateDB = async () => {
     });
     const cliente16 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "80001449-9",
+      naturalezaReceptor: 1,
+      nroDocumento: "80001449-9",
       razonSocial: "APARE PY",
       telefono: "595982101933",
       direccion: "SAAVEDRA 849 - ATYRA",
       email: "albertoatyra@hotmail.com",
-      tipoOperacionId:1,tipoContribuyente:2,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 2,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14023,14 +14084,18 @@ const populateDB = async () => {
     });
     const cliente17 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "80039445-3",
+      naturalezaReceptor: 1,
+      nroDocumento: "80039445-3",
       razonSocial: "O.A.G.E. S.R.L",
       telefono: "595971270271",
       direccion: "8 DE DICIEMBRE Y PLAYA - SAN BERNAR",
       email: "arroyitosuites@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:2,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 2,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14040,14 +14105,18 @@ const populateDB = async () => {
     });
     const cliente18 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "2204022-6",
+      naturalezaReceptor: 1,
+      nroDocumento: "2204022-6",
       razonSocial: "MARIA DE LOS ANGELES MORINIGO",
       telefono: "595981282161",
       direccion: "CAP. LOMBARDO Nº 1467 C/ SACRAMENTO",
       email: "mariangelmorinigo@hotmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14057,14 +14126,18 @@ const populateDB = async () => {
     });
     const cliente19 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "4255760-7",
+      naturalezaReceptor: 1,
+      nroDocumento: "4255760-7",
       razonSocial: "DESP. SAN FRANCISCO - FERMIN BRITEZ",
       telefono: "595986476449",
       direccion: "JAZMIN Y MBURUKUJA",
       email: "ferminbritez81@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14074,14 +14147,18 @@ const populateDB = async () => {
     });
     const cliente20 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "3212901-7",
+      naturalezaReceptor: 1,
+      nroDocumento: "3212901-7",
       razonSocial: "ROJAS, RICHAR ALCIDES",
       telefono: "595 981 202 174",
       direccion: "TIO PERRO, PORVENIR SUR FRENTE A R 027",
       email: "fleitaslisis@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14091,14 +14168,18 @@ const populateDB = async () => {
     });
     const cliente21 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "929238-1",
+      naturalezaReceptor: 1,
+      nroDocumento: "929238-1",
       razonSocial: "MERCEDES CORONEL FLORES",
       telefono: "595981830403",
       direccion: "A METROS DE LOPEZ GODOY",
       email: "mercedescionel@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14108,14 +14189,18 @@ const populateDB = async () => {
     });
     const cliente22 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "1368388-8",
+      naturalezaReceptor: 1,
+      nroDocumento: "1368388-8",
       razonSocial: "DESP. MERCERIA J Y C",
       telefono: "595971988605",
       direccion: "A UNA CDRA Y MEDIA DE VILLA BUENAVE",
       email: "nancyevasilguerorodriguez@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14125,14 +14210,18 @@ const populateDB = async () => {
     });
     const cliente23 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "696149-5",
+      naturalezaReceptor: 1,
+      nroDocumento: "696149-5",
       razonSocial: "JORGE NUÑEZ",
       telefono: "595984907370",
       direccion: "Julio Correa y Teniente Velázquez",
       email: "jorgenunezbritez1962@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14142,14 +14231,18 @@ const populateDB = async () => {
     });
     const cliente24 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "400735-2",
+      naturalezaReceptor: 1,
+      nroDocumento: "400735-2",
       razonSocial: "FRANCISCO SOLANO ACOSTA GONZALEZ",
       telefono: "99999999",
       direccion: "AV. STA TRINIDAD Nº 1431",
       email: "sagpi@hotmail.es",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14159,14 +14252,18 @@ const populateDB = async () => {
     });
     const cliente25 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "80021551-6",
+      naturalezaReceptor: 1,
+      nroDocumento: "80021551-6",
       razonSocial: "IGRAFICA S.A",
       telefono: "670290",
       direccion: "FERNANDO DE LA MORA",
       email: "secretaria@igrafica.com.py",
-      tipoOperacionId:1,tipoContribuyente:2,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 2,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14176,14 +14273,18 @@ const populateDB = async () => {
     });
     const cliente26 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "4638165-1",
+      naturalezaReceptor: 1,
+      nroDocumento: "4638165-1",
       razonSocial: "HERMINIA AQUINO ZARACHO",
       telefono: "595983201238",
       direccion: "VETERINARIA CONSENTIDOS ",
       email: "johanazaracho9@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14193,14 +14294,18 @@ const populateDB = async () => {
     });
     const cliente27 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "2471633-2",
+      naturalezaReceptor: 1,
+      nroDocumento: "2471633-2",
       razonSocial: "WALTER SPAINI",
       telefono: "595981242322",
       direccion: "PROFE ZUNILDA ASETTRINI Nº172 ESQ.S",
       email: "luzrossgonzalez@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14210,14 +14315,18 @@ const populateDB = async () => {
     });
     const cliente28 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "80087901-5",
+      naturalezaReceptor: 1,
+      nroDocumento: "80087901-5",
       razonSocial: "CENTRO CRISTIANO FUENTE DE VIDA",
       telefono: "595982221503",
       direccion: "RUTA 1 KM 20",
       email: "factura.electronica@cavallaro.com.py",
-      tipoOperacionId:1,tipoContribuyente:2,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 2,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14227,14 +14336,18 @@ const populateDB = async () => {
     });
     const cliente29 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "3638073-3",
+      naturalezaReceptor: 1,
+      nroDocumento: "3638073-3",
       razonSocial: "DERLIS PANIAGUA",
       telefono: "595981218961",
       direccion: "TTE MOLAS C/ MANUEL ORTIZ G",
       email: "abg.derlisjavierpaniagua@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14244,14 +14357,18 @@ const populateDB = async () => {
     });
     const cliente30 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "80070476-2",
+      naturalezaReceptor: 1,
+      nroDocumento: "80070476-2",
       razonSocial: "XIMEX SA",
       telefono: "595981480205",
       direccion: "MRA",
       email: "jose2014py@gmail.com",
-      tipoOperacionId:1,tipoContribuyente:2,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 2,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14261,14 +14378,18 @@ const populateDB = async () => {
     });
     const cliente31 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "44444401-7",
+      naturalezaReceptor: 1,
+      nroDocumento: "44444401-7",
       razonSocial: "CLIENTE MOSTRADOR",
       telefono: "999999",
       direccion: "CLIENTES VARIOS",
       email: "factura.electronica@cavallaro.com.py",
-      tipoOperacionId:1,tipoContribuyente:1,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 1,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
@@ -14278,20 +14399,95 @@ const populateDB = async () => {
     });
     const cliente32 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
-      codigoPais:'PRY',formaVentaId: formaVenta.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
       puntos: 0,
-      naturalezaReceptor:1,nroDocumento: "80003110-5",
+      naturalezaReceptor: 1,
+      nroDocumento: "80003110-5",
       razonSocial: "CAVALLARO S.A.C.E.I.",
       telefono: "59521579717",
       direccion: "RUTA 1 MCAL. FRANCISCO S.LOPEZ KM.1",
       email: "factura.electronica@cavallaro.com.py",
-      tipoOperacionId:1,tipoContribuyente:2,excentoIva: false,
+      tipoOperacionId: 1,
+      tipoContribuyente: 2,
+      excentoIva: false,
       activo: true,
       empresaId: empresa.id,
       latitud: 0,
       longitud: 0,
       predeterminado: false,
       propietario: true
+    });
+
+    const cliente33 = await Cliente.create({
+      listaPrecioId: listaPrecio.id,
+      codigoPais: "PRY",
+      formaVentaId: formaVenta.id,
+      puntos: 0,
+      naturalezaReceptor: 1,
+      nroDocumento: "80009491-5",
+      razonSocial: "Municipalidad de Asunción".toUpperCase(),
+      telefono: "0216273000",
+      direccion: "Av. Mariscal López 5556, Asunción 001417".toUpperCase(),
+      email: "factura.electronica@cavallaro.com.py",
+      tipoOperacionId: 3,
+      tipoContribuyente: 2,
+      excentoIva: false,
+      activo: true,
+      empresaId: empresa.id,
+      latitud: 0,
+      longitud: 0,
+      predeterminado: false,
+      propietario: false
+    });
+
+    const cliente34 = await Cliente.create( {
+      tipoOperacionId: 4,
+      empresaId: empresa.id,
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
+      razonSocial: "CAROLINA ALEXANDRA ROZZO ORTIZ",
+      nroDocumento: "1062929423",
+      direccion: "ASUNCION",
+      telefono: "0216273000",
+      cel: "0982999999",
+      email: "factura.electronica@cavallaro.com.py",
+      excentoIva: true,
+      latitud: 0,
+      longitud: 0,
+      predeterminado: false,
+      empleado: false,
+      propietario: false,
+      activo: true,
+      puntos: 0.00,
+      naturalezaReceptor: 2,
+      codigoPais: "PRY",
+      tipoContribuyente: 1,
+      tipoDocIdentidad: 3
+    });
+    const cliente35 = await Cliente.create({
+      tipoOperacionId: 1,
+      empresaId: empresa.id,
+      listaPrecioId: listaPrecio.id,
+      formaVentaId: formaVenta.id,
+      razonSocial: "DUARTE CALABRESE, LIZ ANTONELLA",
+      nroDocumento: "4673892-4",
+      direccion: "ITURBE CASI YATAITY CORA",
+      telefono: "0216273000",
+      cel: "0994231169",
+      email: "factura.electronica@cavallaro.com.py",
+      excentoIva: true,
+      latitud: 0,
+      longitud: 0,
+      predeterminado: false,
+      empleado: false,
+      propietario: false,
+      activo: true,
+      puntos: 0.00,
+      naturalezaReceptor: 1,
+      codigoPais: "PRY",
+      tipoContribuyente: 1,
+      tipoDocIdentidad: null
     });
 
     console.log("Registros creados exitosamente!");

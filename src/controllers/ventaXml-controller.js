@@ -15,6 +15,26 @@ const getById = async (req, res) => {
   }
 };
 
+
+const crearVentaXml = async (empresaId, ventaId, xml, orden  , estado  ) => {
+  try {
+    const registro = await VentaXml.create({
+      id: null,  // Sequelize maneja automáticamente el ID si es autoincremental
+      orden,
+      empresaId,
+      ventaId,
+      estado,
+      xml
+    });
+
+    return registro; // Devuelve el registro creado
+  } catch (error) {
+    console.error('❌ Error al crear registro en VentaXml:', error);
+    throw new Error('No se pudo registrar la venta XML');
+  }
+};
+
+
 const create = async (req, res) => {
   const { empresaId } = req.usuario;
 
@@ -70,5 +90,6 @@ module.exports = {
   getById,
   create,
   update,
-  findByVentaId
+  findByVentaId,
+  crearVentaXml
 };

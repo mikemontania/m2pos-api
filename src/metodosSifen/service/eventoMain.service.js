@@ -1,25 +1,36 @@
 const xml2js = require("xml2js");
 const { convertToJSONFormat, normalizeXML, leftZero } = require("./util");
- const VentaXml = require("../../models/ventaXml.model");
 const fs = require("fs");
 const { signXMLEvento } = require("./signxml.service");
+const { crearVentaXml } = require("../../controllers/ventaXml-controller");
 
-const generateXMLEvento = (data) => {
-   return new Promise(async (resolve, reject) => {
+const generateXMLEvento = data => {
+  return new Promise(async (resolve, reject) => {
     try {
       let xmlGenerado = await generateXMLEventoService(data);
-     const  xmlSinEncoding= xmlGenerado.replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>',"");
-
-      if (xmlSinEncoding)  fs.writeFileSync(`./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_generado.xml`, xmlSinEncoding); 
-      
+      const xmlSinEncoding = xmlGenerado.replace(
+        '<?xml version="1.0" encoding="UTF-8" standalone="no"?>',
+        ""
+      );
+      if (xmlSinEncoding)
+        fs.writeFileSync(
+          `./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_generado.xml`,
+          xmlSinEncoding
+        );
       let soapXMLData = envelopeEvent(data.id, xmlSinEncoding);
-      if (soapXMLData)  fs.writeFileSync(`./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_soap.xml`, soapXMLData); 
-      await VentaXml.create({     id: null,     orden: 1,     empresaId:  data.empresaId,     ventaId:  data.id,     estado: 'GENERADO',     xml:soapXMLData     });  
-
-       const xmlFirmado =await signXMLEvento(soapXMLData, data.certificado);
-       if (xmlFirmado)  fs.writeFileSync(`./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_firmado.xml`, xmlFirmado); 
-
-       await VentaXml.create({id: null,orden:2,empresaId:  data.empresaId, ventaId:  data.id,   estado: 'FIRMADO',   xml:xmlFirmado,    });  
+      if (soapXMLData)
+        fs.writeFileSync(
+          `./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_soap.xml`,
+          soapXMLData
+        );
+      await crearVentaXml(data.empresaId, data.id, soapXMLData, 1, "GENERADO");
+      const xmlFirmado = await signXMLEvento(soapXMLData, data.certificado);
+      if (xmlFirmado)
+        fs.writeFileSync(
+          `./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_firmado.xml`,
+          xmlFirmado
+        );
+      await crearVentaXml(data.empresaId, data.id, xmlFirmado, 2, "FIRMADO");
       resolve(xmlFirmado);
     } catch (error) {
       reject(error);

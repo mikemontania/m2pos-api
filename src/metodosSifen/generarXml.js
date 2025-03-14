@@ -6,6 +6,7 @@ const { generateDatosTotales } = require("./service/generateDteTotales.service")
 const { signXML } = require("./service/signxml.service"); 
 const { generateQR } = require("./service/generateQR.service");
 const { normalizeXML } = require("./service/util");
+const { crearVentaXml } = require("../controllers/ventaXml-controller");
  
 const generarXML = async (empresa, venta) => {
    
@@ -105,26 +106,16 @@ const generarXML = async (empresa, venta) => {
     let xmlBase = xml.end({ pretty: false });
     xmlBase =    normalizeXML(xmlBase);          
     xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
-    const registro1 = await VentaXml.create({
-      id: null,
-      orden: 1,
-      empresaId:  empresa.id,
-      ventaId:  venta.id,
-      estado: 'GENERADO',
-        xml:xmlBase,
-    });
+    
+    await crearVentaXml(empresa.id, venta.id, xmlBase, 1, "GENERADO");
+
     const xmlFirmado =await signXML(xmlBase,empresa.certificado)
     
     const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc);
     console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
-    const registro2 = await VentaXml.create({
-      id: null,
-      orden: 2,
-      empresaId:  empresa.id,
-      ventaId:  venta.id,
-      estado: 'FIRMADO',
-      xml:xmlFirmadoConQr,
-    }); 
+ 
+    await crearVentaXml(empresa.id, venta.id, xmlFirmadoConQr, 2, "FIRMADO");
+
   
     if (xmlFirmadoConQr)  fs.writeFileSync(`./xmlfirmado_${venta.cdc}.xml`, xmlFirmadoConQr);
 
@@ -134,14 +125,8 @@ const generarXML = async (empresa, venta) => {
     console.error(error)
     console.error(JSON.stringify(error, null, 2)); 
 
-    const registroERROR = await VentaXml.create({
-      id: null,
-      orden: 0,
-      empresaId:  empresa.id,
-      ventaId:  venta.id,
-      estado: 'ERROR',
-      xml: JSON.stringify(error, Object.getOwnPropertyNames(error)), // ✅
-    }); 
+    await crearVentaXml(empresa.id, venta.id, JSON.stringify(error, Object.getOwnPropertyNames(error)), 0, "ERROR");
+ 
     return null;
   }
 };

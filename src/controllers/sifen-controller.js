@@ -27,50 +27,60 @@ const EnvioVenta = require("../models/envioVenta");
 const { generarXML } = require("../metodosSifen/generarXml");
 const { cargandoLote, actualizarLote, relacionarVentasConLote } = require("../metodosSifen/service/createLote.service");
 const { enviarXml } = require("../metodosSifen/envioLote.service");
-const { actualizarEstadoVentas } = require("../jobs/envioLoteXml.job");
-const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service");
-  
-const { formatToParams, formatToData } = require("../metodosSifen/service/formatData.service");
-const { signXML } = require("../metodosSifen/service/signxml.service");
-const { generateQR } = require("../metodosSifen/service/generateQR.service");
+const { actualizarEstadoVentas } = require("../jobs/envioLoteXml.job"); 
+const { crearVentaXml } = require("./ventaXml-controller");  
+const { parseStringPromise, Builder } = require("xml2js");
+const path = require('path'); 
+const { createKude } = require("../metodosSifen/kudejs/pdfKude");
 
-const probarGeneradorXml = async (req, res) => { 
+ 
+
+const getKude = async (req, res) => {
+  
   try {
-    // Obtener empresaId del usuario autenticado
+
     const { empresaId } = req.usuario;
     const { id } = req.params;
 
     // Buscar la venta por ID
-    let venta = await obtenerVenta(id);
-    if (!venta) {
-      return res.status(404).json({ error: "Venta no encontrada" });
-    } 
- 
+    let ventaXml = await  VentaXml.findByPk(id);
+    if (!ventaXml) {
+      return res.status(404).json({ error: "Registro no encontrado" });
+    }
+  
     // Obtener datos de la empresa
     const empresa = await getEmpresaById(empresaId);
     if (!empresa) {
       return res.status(404).json({ error: `No se encontró la empresa con ID ${empresaId}` });
     }
- 
-    const params = await formatToParams(venta,empresa); 
-    const data = await formatToData(venta,empresa);  
-    let xmlBase = await generateXMLDE(params,data);  
-    xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
-    
-    const xmlFirmado =await signXML(xmlBase,empresa.certificado) 
-    const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc); 
- 
-    return res.status(200).json({ data: xmlFirmadoConQr });
+   const xmlFirmado=  ventaXml.xml.toString('utf8');
+   const xmldata = await parseStringPromise(xmlFirmado);
+   const gTimb = xmldata.rDE.DE[0].gTimb[0];
+    //aqui lo que hare es crear un reporte por cada reportName e invocarlo segun el tipoDocumento de momento lo llamare createKude(empresa, xmlFirmado) 
+    const pdfContent = await createKude(xmldata, xmlFirmado, empresa.img);
+    const pdfFilePath =  `${parseInt(gTimb.iTiDE[0])}${gTimb.dNumTim[0]}${gTimb.dEst[0]}${gTimb.dPunExp[0]}${gTimb.dNumDoc[0]}.pdf`
 
+    // Configurar la respuesta HTTP
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `inline; filename=FE-${pdfFilePath}.pdf`
+    );
+
+    // Enviar el contenido del PDF como respuesta
+    pdfContent.pipe(res);
+
+
+/*     // Establecer las cabeceras HTTP
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `inline; filename=FE-${pdfFilePath}`);
+ 
+  res.send(pdfContent); */
   } catch (error) {
-    console.error('❌ Error probando genrador de xml:', error);
-    return res.status(500).json({ error: "Error al reintentar" });
+    console.error("Error in getPdf:", error);
+    res.status(500).json({ error: error?.original?.detail || "Internal Server Error" });
   }
 };
-
- 
-// Definir las URLs completas para cada servicio
- 
 const obtenerVenta = async (id) => {
   try {
     // Obteniendo las ventas pendientes
@@ -130,8 +140,7 @@ const obtenerVenta = async (id) => {
     console.error('Error al obtener venta :', error);
   }
 }; 
-
-
+ 
 const limpiarRegistros = async (ventaId) => {
   try {
     // Eliminar registros en EnvioVenta relacionados con la venta
@@ -170,12 +179,7 @@ const obtenerXmlFirmados = async (empresaId, ventaId) => {
     return null;
   }
 };
-
-
-
-
-
-
+ 
 const reintentar = async (req, res) => {
   try {
     // Obtener empresaId del usuario autenticado
@@ -220,18 +224,16 @@ const reintentar = async (req, res) => {
       console.warn(`⚠️ Fallo en el envío del lote ${lote.numeroLote}.`);
       await actualizarEstadoVentas([venta.id], 'Rechazado');
     }
+    let ventaUpdated = await Venta.findByPk(id);
  
-    return res.status(200).json({ data: respuesta.respuesta });
+    return res.status(200).json({ venta: ventaUpdated });
 
   } catch (error) {
     console.error('❌ Error al reintentar venta:', error );
     return res.status(500).json({ error: "Error al reintentar" });
   }
 };
-
-
-
-
+ 
 const consultarcdc = async (req, res) => { 
   try {
     const { empresaId } = req.usuario;
@@ -254,59 +256,43 @@ const consultarcdc = async (req, res) => {
         }
  
 }
-
- 
 const anular = async (req, res) => {
+   
   try {
     // Obtener empresaId del usuario autenticado
     const { empresaId } = req.usuario;
-    const { id } = req.params;
-
+    const { id, tipo } = req.params; 
+    const evento =  (tipo === 2 ? 'Inutil' : 'Cancel') 
     // Buscar la venta por ID
     let venta = await Venta.findByPk(id);
     if (!venta) {
       return res.status(404).json({ error: "Venta no encontrada" });
-    }
-
-    //inutilizacion 2, cancelacion 1
-    let tipoAnulacion = (venta.dataValues?.estado === 'Pendiente') ? 2 : 1; 
+    } 
     // Obtener datos de la empresa
     const empresa = await getEmpresaById(empresaId);
     if (!empresa) {
       return res.status(404).json({ error: `No se encontró la empresa con ID ${empresaId}` });
-    }
-
+    } 
     // Enviar evento de anulación
-    let respuesta = await envioEventoXml(tipoAnulacion, venta, empresa);
-    const json = await extraeRespEvento(respuesta);
+   
+    let respuesta = await envioEventoXml(+tipo, venta, empresa);
+    let json = await extraeRespEvento(respuesta);
     console.log("Respuesta del evento:", json);
+     await crearVentaXml(empresa.id,venta.id,respuesta,3,evento+json.estado);
+     await Venta.update({estado:evento+json.estado , anulado:true},{where: { id: venta.id }});
+  // Actualizar el estado de la venta en la base de datos
+// Buscar la venta actualizada
+let ventaActualizada = await Venta.findByPk(id);
 
-    if (json.codigo = '4002') {
-       respuesta = await envioEventoXml(2, venta, empresa);
-    }
- 
-    // Registrar el evento en la base de datos
-    await VentaXml.create({
-      orden: 3,
-      empresaId: empresa.id,
-      ventaId: venta.id,
-      estado: 'RESPONDIDO',
-      xml: respuesta,
-    });
-
-    // Si la respuesta es "Aprobado", actualizar la venta como anulada
-    if (json.estado === 'Aprobado') {
-      await Venta.update({ estado: json.estado, anulado: true }, { where: { id: venta.id } });
-      return res.status(200).json({ ok: true });
-    } else {
-      return res.status(400).json({ error: json });
-    }
+// Responder con la venta actualizada
+return res.status(200).json({ venta: ventaActualizada, json });
 
   } catch (error) {
-    console.error('❌ Error al anular venta:', error.message);
+    console.error('❌ Error al anular venta:', error);
     return res.status(500).json({ error: "Error al anular" });
   }
 };
+ 
  
 const getEmpresaById = async (id) => {
   const tablas = ['iTiDE', 'iTipTra', 'iTImp', 'iTipCont'];
@@ -375,5 +361,5 @@ const getEmpresaById = async (id) => {
 module.exports = { 
   anular,
   consultarcdc,
-  reintentar,probarGeneradorXml
+  reintentar ,getKude
 };

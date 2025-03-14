@@ -1,11 +1,11 @@
  // Asegúrate de importar el modelo adecuado
  const Venta = require("../models/venta.model");
  require("dotenv").config(); // Cargar variables de entorno
-const { Op ,literal} = require("sequelize");
- const VentaXml = require("../models/ventaXml.model");
+const { Op ,literal} = require("sequelize"); 
 const Envio = require("../models/envio.model"); 
 const { extraerDatosRespuesta ,extraerRespuestasXml} = require("../metodosSifen/xmlToJson");
  const { consulta } = require("../metodosSifen/service/consulta.service");
+const { crearVentaXml } = require("../controllers/ventaXml-controller");
   
 const actualizarLote = async (loteId,json, respuestaId) => {
   try {
@@ -54,17 +54,10 @@ const actualizarVentasDesdeSifen = async (res) => {
 
       for (const venta of ventas) {
         // Convertir la respuesta en XML (puedes cambiar esta función según tu implementación)
-        const xmlRespuesta = convertirObjetoAXML(item);
+        const xmlRespuesta = convertirObjetoAXML(item); 
+        // Crear un registro en VentaXml 
+        await crearVentaXml(venta.empresaId,venta.id,xmlRespuesta,3,'RESPONDIDO');
 
-        // Crear un registro en VentaXml
-        await VentaXml.create({
-          id: null, // Se autogenerará
-          orden: 3,
-          empresaId: venta.empresaId,
-          ventaId: venta.id,
-          estado: 'RESPONDIDO',
-          xml: xmlRespuesta
-        });
 
         // Actualizar el estado de la venta
         await Venta.update(
