@@ -2,23 +2,22 @@ const fs = require('fs');
 const { titleCase, formatDate } = require('./util.kude');
 
 
- const generarSeccionGeneral = (doc,datosDocumento ,sectionLineLeft,sectionLineRight,headerLineBottom) => {
+ const generarSeccionGeneral = (doc,datosDocumento ,sectionLineLeft,sectionLineRight, generalLineTop,generalLineBottom) => {
    
- console.log({sectionLineLeft,sectionLineRight,headerLineBottom})
-   const sectionLineTop = headerLineBottom +5
-   const sectionLineBottom = headerLineBottom +80
+ 
+   
    const barraVertical1 = 330;  
   // Llamar a la función para dibujar la cuadrícula
-  generarCuadriculaDatosGenerales(doc, sectionLineLeft, sectionLineRight, sectionLineTop, sectionLineBottom, barraVertical1);
+  generarCuadriculaDatosGenerales(doc, sectionLineLeft, sectionLineRight, generalLineTop, generalLineBottom, barraVertical1);
 
     // Agregar los datos dentro de la sección
-   // agregarDatosReceptorOperacion(doc, receptor, operacion, sectionLineLeft, barraVertical1, sectionLineTop);
+   // agregarDatosReceptorOperacion(doc, receptor, operacion, sectionLineLeft, barraVertical1, generalLineTop);
     // Agregar los datos dentro de la sección
-  agregarDatosReceptorOperacion(doc, datosDocumento , sectionLineLeft, barraVertical1, sectionLineTop);
+  agregarDatosReceptorOperacion(doc, datosDocumento , sectionLineLeft, barraVertical1, generalLineTop);
    
     };
  
-    const agregarDatosReceptorOperacion = (doc, datosDocumento, sectionLineLeft, barraVertical1, sectionLineTop) => {
+    const agregarDatosReceptorOperacion = (doc, datosDocumento, sectionLineLeft, barraVertical1, generalLineTop) => {
     
       const { receptor,  operacion,condicionesPago,operacionCom, fechaEmision} =datosDocumento;
       
@@ -42,7 +41,7 @@ const { titleCase, formatDate } = require('./util.kude');
         { titulo: "Email:", valor: receptor?.dEmailRec ?? "" },
         
       ];
-      let yPosDat1 = sectionLineTop + 5;
+      let yPosDat1 = generalLineTop + 5;
       datos.forEach(({ titulo, valor }) => {
         if (titulo) {
           doc.font("Helvetica-Bold").text(titulo, sectionLineLeft + 5, yPosDat1, { continued: true });
@@ -50,7 +49,7 @@ const { titleCase, formatDate } = require('./util.kude');
           yPosDat1 += 12;
         }
       });
-      let yPosDat2 = sectionLineTop + 5;
+      let yPosDat2 = generalLineTop + 5;
 
       datos2.forEach(({ titulo, valor }) => {
         if (titulo) {
@@ -63,32 +62,32 @@ const { titleCase, formatDate } = require('./util.kude');
 
     };
  
-    const generarCuadriculaDatosGenerales = (doc, sectionLineLeft, sectionLineRight, sectionLineTop, sectionLineBottom, barraVertical1) => {
+    const generarCuadriculaDatosGenerales = (doc, sectionLineLeft, sectionLineRight, generalLineTop, generalLineBottom, barraVertical1) => {
       // Línea o margen vertical de la izquierda (borde izquierdo de la sección)
    doc
-   .moveTo(sectionLineLeft, sectionLineTop)  // Inicio en la esquina superior izquierda
-   .lineTo(sectionLineLeft, sectionLineBottom) // Extiende hacia abajo
+   .moveTo(sectionLineLeft, generalLineTop)  // Inicio en la esquina superior izquierda
+   .lineTo(sectionLineLeft, generalLineBottom) // Extiende hacia abajo
    .stroke("#333333"); 
 
  // Línea o margen vertical de la derecha (borde derecho de la sección)
  doc
-   .moveTo(sectionLineRight, sectionLineTop) // Inicio en la esquina superior derecha
-   .lineTo(sectionLineRight, sectionLineBottom) // Extiende hacia abajo
+   .moveTo(sectionLineRight, generalLineTop) // Inicio en la esquina superior derecha
+   .lineTo(sectionLineRight, generalLineBottom) // Extiende hacia abajo
    .stroke("#333333"); 
 
  // Cuadro completo alrededor de la sección (incluye las líneas superior, derecha, inferior e izquierda)
  doc
-   .moveTo(sectionLineLeft, sectionLineTop)  // Esquina superior izquierda
-   .lineTo(sectionLineRight, sectionLineTop) // Línea superior (margen superior)
-   .lineTo(sectionLineRight, sectionLineBottom) // Línea derecha (margen derecho)
-   .lineTo(sectionLineLeft, sectionLineBottom)  // Línea inferior (margen inferior)
-   .lineTo(sectionLineLeft, sectionLineTop) // Línea izquierda (margen izquierdo, cierra el cuadro)
+   .moveTo(sectionLineLeft, generalLineTop)  // Esquina superior izquierda
+   .lineTo(sectionLineRight, generalLineTop) // Línea superior (margen superior)
+   .lineTo(sectionLineRight, generalLineBottom) // Línea derecha (margen derecho)
+   .lineTo(sectionLineLeft, generalLineBottom)  // Línea inferior (margen inferior)
+   .lineTo(sectionLineLeft, generalLineTop) // Línea izquierda (margen izquierdo, cierra el cuadro)
    .stroke("#333333");   
 
  // Línea media vertical que divide la sección en dos partes
  doc
-   .moveTo(barraVertical1, sectionLineTop) // Inicia en la parte superior dentro del cuadro
-   .lineTo(barraVertical1, sectionLineBottom) // Se extiende hacia la parte inferior dentro del cuadro
+   .moveTo(barraVertical1, generalLineTop) // Inicia en la parte superior dentro del cuadro
+   .lineTo(barraVertical1, generalLineBottom) // Se extiende hacia la parte inferior dentro del cuadro
    .stroke("#333333");  // Línea más gruesa y color oscuro (gris oscuro)
     };
  

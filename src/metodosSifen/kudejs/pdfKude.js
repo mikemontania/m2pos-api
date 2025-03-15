@@ -4,6 +4,7 @@ const { generarCabecera } = require("./generaSeccionCabecera.kude");
 const { formatDate, titleCase, separarXmlData } = require("./util.kude");
 const { generarSeccionGeneral } = require("./generaSeccionGenerales.kude");
 const { generaSeccionDetalles } = require("./generaSeccionDetalles.kude");
+const { generaSeccionSubTotal } = require("./generaSeccionSubTotal.kude");
 
 
 const createKude = async (xmldata, xmlFirmado, img) => {
@@ -47,14 +48,28 @@ const createKude = async (xmldata, xmlFirmado, img) => {
   //A4 (595.28 x 841.89)
 const hojaVerticalAlto =841.89;
 const hojaVerticalAncho =595.28;
+const margen =5
+const altoHedader =100;
+const altoGenereal =80;
+const altoDetalle =500;
+const altoSubTotal =80;
 const headerLineLeft = 20;
 const headerLineRight =hojaVerticalAncho-20;
 const headerLineTop = 10;
-const headerLineBottom = headerLineTop + 100;
+const headerLineBottom = headerLineTop + altoHedader;
+const headerLineTotalTop =headerLineBottom+ altoDetalle+margen;
+const generalLineTop = headerLineBottom +margen; 
+const generalLineBottom = headerLineBottom +altoGenereal;
+const detalleLineTop = generalLineBottom + margen;
+const detalleLineBottom = detalleLineTop + altoDetalle;
+const subTotalLineTop = detalleLineBottom + margen;
+const subTotalLineBottom = subTotalLineTop + altoSubTotal;
+
   generarCabecera(doc,datosDocumento, img,headerLineLeft,headerLineRight,headerLineTop,headerLineBottom);
-  generarSeccionGeneral(doc,datosDocumento ,headerLineLeft,headerLineRight,headerLineBottom);
-  generaSeccionDetalles(doc,datosDocumento ,headerLineLeft,headerLineRight,headerLineBottom);
- 
+  generarSeccionGeneral(doc,datosDocumento ,headerLineLeft,headerLineRight, generalLineTop,generalLineBottom);
+  generaSeccionDetalles(doc,datosDocumento ,headerLineLeft,headerLineRight,detalleLineTop,detalleLineBottom);
+  generaSeccionSubTotal(doc,datosDocumento ,headerLineLeft,headerLineRight,subTotalLineTop,subTotalLineBottom);
+
   /*   generateCustomerInformation(doc, invoice);
   generateInvoiceTable(doc, invoice);
   generateFooter(doc); */

@@ -39,7 +39,16 @@ const separarXmlData = xmldata => {
     }
     return "";
   };
+
+
+  // Función para formatear valores con separador de miles
+const formatearConSeparadorMiles = (valor) => {
+  if (typeof valor === 'number' || !isNaN(parseFloat(valor))) {
+    return parseFloat(valor).toLocaleString(); // Formato con separador de miles
+  }
+  return valor; // Si no es un número, retorna el valor original
+}
   module.exports = {
-    formatDate,titleCase,separarXmlData
+    formatDate,titleCase,separarXmlData,formatearConSeparadorMiles
   };
   
