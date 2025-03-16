@@ -3,10 +3,10 @@ const { titleCase, formatDate } = require('./util.kude');
 
 
  const generarSeccionGeneral = (doc,datosDocumento ,sectionLineLeft,sectionLineRight, generalLineTop,generalLineBottom) => {
-   
- 
-   
-   const barraVertical1 = 330;  
+  return new Promise(async (resolve, reject) => {
+try{
+  
+  const barraVertical1 = 330;  
   // Llamar a la función para dibujar la cuadrícula
   generarCuadriculaDatosGenerales(doc, sectionLineLeft, sectionLineRight, generalLineTop, generalLineBottom, barraVertical1);
 
@@ -15,13 +15,20 @@ const { titleCase, formatDate } = require('./util.kude');
     // Agregar los datos dentro de la sección
   agregarDatosReceptorOperacion(doc, datosDocumento , sectionLineLeft, barraVertical1, generalLineTop);
    
+    resolve( ); // Se resuelve cuando todo ha terminado
+  } catch (error) {
+    console.error(error);
+    reject(error);
+  }
+  });
+ 
+   
     };
  
     const agregarDatosReceptorOperacion = (doc, datosDocumento, sectionLineLeft, barraVertical1, generalLineTop) => {
     
       const { receptor,  operacion,condicionesPago,operacionCom, fechaEmision} =datosDocumento;
       
-      console.log('datosGenerales',JSON.stringify({fechaEmision,receptor, operacionCom, operacion,condicionesPago}, null, 2)); 
       const fecha = (fechaEmision) ?fechaEmision.toString().substring(0, 10):'';
   
 

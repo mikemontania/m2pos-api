@@ -20,6 +20,13 @@ const pintaCuadricula = (doc, sectionLineLeft, sectionLineRight, sectionLineTop,
   const titleLineBottom = sectionLineTop + 15;
   doc.moveTo(sectionLineLeft, titleLineBottom).lineTo(sectionLineRight, titleLineBottom).stroke("#333333");
 
+  // Dibujar líneas verticales desde el título hasta la parte inferior de la sección
+  x = sectionLineLeft;
+  columnas.forEach(col => {
+    doc.moveTo(x, sectionLineTop).lineTo(x, sectionLineBottom).stroke("#333333"); // Línea vertical completa
+    x += col.ancho;
+  });
+
   // Línea final de la tabla
   doc.moveTo(sectionLineLeft, sectionLineBottom).lineTo(sectionLineRight, sectionLineBottom).stroke("#333333");
 };
@@ -27,9 +34,6 @@ const pintaCuadricula = (doc, sectionLineLeft, sectionLineRight, sectionLineTop,
 // Función para pintar los valores de la tabla
 const pintaValores = (doc, detalles, y, sectionLineLeft, columnas) => {
   doc.font("Helvetica").fontSize(7);
-
-  // Colores distintos para cada columna (ajústalos si es necesario)
-  const coloresColumnas = ["#FFDDC1", "#D4E157", "#AED581", "#4FC3F7", "#9575CD", "#FF8A65", "#81C784", "#FFB74D"];
 
   detalles.forEach((detalle) => {
     const valores = [
@@ -48,18 +52,10 @@ const pintaValores = (doc, detalles, y, sectionLineLeft, columnas) => {
     else valores[5] = total;
 
     let x = sectionLineLeft;
-
-    // 🔹 Dibujar primero los fondos de color
-    columnas.forEach((col, index) => {
-      doc.rect(x, y, col.ancho, 18).fill(coloresColumnas[index]); // Ajuste de altura para evitar solapamiento
-      x += col.ancho;
-    });
-
-    x = sectionLineLeft; // Reiniciar posición para el texto
     const margenIzquierdo = 5;
     const margenDerecho = 5;
 
-    // 🔹 Escribir el texto
+    // Escribir los valores en las celdas
     valores.forEach((valor, index) => {
       const alineacion = index === 1 ? "left" : "right"; // Descripción alineada a la izquierda, valores a la derecha
       const margen = index === 1 ? margenIzquierdo : margenDerecho;
@@ -73,50 +69,52 @@ const pintaValores = (doc, detalles, y, sectionLineLeft, columnas) => {
       x += columnas[index].ancho;
     });
 
-    // 🔹 Dibujar las líneas verticales después de los colores y el texto
-    x = sectionLineLeft;
-    columnas.forEach((col) => {
-      doc.moveTo(x, y).lineTo(x, y + 18).stroke("#333333"); // Línea vertical alineada con cada columna
-      x += col.ancho;
-    });
-
     // Línea final de la fila
-    doc.moveTo(sectionLineLeft, y + 18).lineTo(x, y + 18).stroke("#333333");
+   /*  doc.moveTo(sectionLineLeft, y + 18).lineTo(x, y + 18).stroke("#333333"); */
 
-    y += 18; // Espaciado entre filas aumentado
+    y += 22; // Espaciado entre filas
   });
-
-  return y;
+ 
 };
 
+// Genera la sección de detalles con cuadrícula
+const generaSeccionDetalles = (doc, datosDocumento, sectionLineLeft, sectionLineRight, sectionLineTop, sectionLineBottom) => { 
+  return new Promise(async (resolve, reject) => {
+    try { 
 
-const generaSeccionDetalles = (doc, datosDocumento, sectionLineLeft, sectionLineRight, sectionLineTop,sectionLineBottom) => { 
-  const { detalles } = datosDocumento;
+
+      const { detalles } = datosDocumento;
  
-  let y = sectionLineTop + 10;
-   //A4 (595.28 x 841.89)
-  // Definir columnas dinámicamente con títulos, anchos y alineaciones ajustadas
-  const columnas = [
-    { titulo: "Código", ancho: 55, alineacion: "left", color: '#D3D3D3' },
-    { titulo: "Descripción", ancho: 170, alineacion: "left", color: '#D3D3D3' },
-    { titulo: "Cantidad", ancho: 55, alineacion: "center", color: '#D3D3D3' },
-    { titulo: "Precio", ancho: 55, alineacion: "center", color: '#D3D3D3' },
-    { titulo: "Descuento", ancho: 55, alineacion: "center", color: '#D3D3D3' },
-    { titulo: "Exenta", ancho: 55, alineacion: "center", color: '#D3D3D3' },
-    { titulo: "5%", ancho: 55, alineacion: "center", color: '#D3D3D3' },
-    { titulo: "10%", ancho: 55, alineacion: "center", color: '#D3D3D3' }
-  ];
+      let y = sectionLineTop + 10;
+    
+      // Definir columnas con títulos y anchos
+      const columnas = [
+        { titulo: "Código", ancho: 55 },
+        { titulo: "Descripción", ancho: 200 },
+        { titulo: "Cant.", ancho: 35 },
+        { titulo: "Precio", ancho: 50 },
+        { titulo: "Descuento", ancho: 50 },
+        { titulo: "Exenta", ancho: 55 },
+        { titulo: "5%", ancho: 55 },
+        { titulo: "10%", ancho: 55 }
+      ];
+    
+      // Pintar cuadrícula con líneas verticales completas
+      pintaCuadricula(doc, sectionLineLeft, sectionLineRight, sectionLineTop, columnas, sectionLineBottom);
+    
+      // Espaciado para el encabezado
+      y += 5;
+    
+      // Pintar los valores en la tabla
+       pintaValores(doc, detalles, y, sectionLineLeft, columnas);
+    resolve( ); // Se resuelve cuando todo ha terminado
+  } catch (error) {
+    console.error(error);
+    reject(error);
+  }
 
-  // Pintar cuadrícula
-  pintaCuadricula(doc, sectionLineLeft, sectionLineRight, sectionLineTop,  columnas,  sectionLineBottom );
-
-  // Espaciado solo para el encabezado
-  y += 20;
-
-  // Pintar los valores de la tabla
-  y = pintaValores(doc, detalles, y, sectionLineLeft, columnas);
-
-
+  });
+ 
 };
 
 module.exports = { generaSeccionDetalles };

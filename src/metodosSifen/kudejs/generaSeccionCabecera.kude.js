@@ -3,39 +3,49 @@ const { titleCase, formatDate } = require('./util.kude');
 
 
 const generarCabecera = (doc, datosDocumento, img, headerLineLeft, headerLineRight, headerLineTop ,headerLineBottom) => { 
+  return new Promise(async (resolve, reject) => {
+    try {
     const { emisor, timbrado } = datosDocumento;
-    const logoPath = `./src/uploads/empresas/${img}`; 
-  /*
-  /A4 (595.28 x 841.89)
-const hojaVerticalAlto =841.89;
-const hojaVerticalAncho =595.28;
-  const headerLineLeft = 20;
-  const headerLineRight =hojaVerticalAncho-20;
-  
-  */
-   
-    const topBloque = headerLineTop + 10;
-    const inicioBloque2 = 100; 
-    const anchoBloque2 = 440;
-    const barraVertical = headerLineLeft + anchoBloque2;
+      const logoPath = `./src/uploads/empresas/${img}`; 
+    /*
+    /A4 (595.28 x 841.89)
+  const hojaVerticalAlto =841.89;
+  const hojaVerticalAncho =595.28;
+    const headerLineLeft = 20;
+    const headerLineRight =hojaVerticalAncho-20;
     
-    // Dibujar la cuadrícula y el logo
-    dibujarCuadricula(doc, headerLineLeft, headerLineRight, headerLineBottom, barraVertical, headerLineTop);
-    agregarLogo(doc, logoPath);
-  
-    // 🏷 Encabezado (SEPARADO DEL BLOQUE 2)
-    doc
-      .fillColor("#000000")
-      .font("Helvetica-Bold")
-      .fontSize(8)
-      .text("KuDE de Factura electrónica", inicioBloque2, topBloque - 8, { width: anchoBloque2, align: 'center' });
-  
-    // 📦 Datos del Emisor
-    dibujarDatosEmisor(doc, emisor, topBloque, inicioBloque2, barraVertical);
-  
-    // 📜 Datos del Timbre
-    dibujarDatosTimbrado(doc, timbrado,emisor, topBloque, barraVertical);
-  };
+    */
+     
+      const topBloque = headerLineTop + 10;
+      const inicioBloque2 = 100; 
+      const anchoBloque2 = 440;
+      const barraVertical = headerLineLeft + anchoBloque2;
+      
+      // Dibujar la cuadrícula y el logo
+      dibujarCuadricula(doc, headerLineLeft, headerLineRight, headerLineBottom, barraVertical, headerLineTop);
+      agregarLogo(doc, logoPath);
+    
+      // 🏷 Encabezado (SEPARADO DEL BLOQUE 2)
+      doc
+        .fillColor("#000000")
+        .font("Helvetica-Bold")
+        .fontSize(8)
+        .text("KuDE de Factura electrónica", inicioBloque2, topBloque - 8, { width: anchoBloque2, align: 'center' });
+    
+      // 📦 Datos del Emisor
+      dibujarDatosEmisor(doc, emisor, topBloque, inicioBloque2, barraVertical);
+    
+      // 📜 Datos del Timbre
+      dibujarDatosTimbrado(doc, timbrado,emisor, topBloque, barraVertical);
+      resolve( ); // Se resuelve cuando todo ha terminado
+
+
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+};
   
   const dibujarCuadricula = (doc, headerLineLeft, headerLineRight, headerLineBottom, barraVertical, headerLineTop) => {
     // Establecer el grosor de las líneas (por ejemplo, 2)

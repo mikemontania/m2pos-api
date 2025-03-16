@@ -3,7 +3,7 @@ const separarXmlData = xmldata => {
     const gTimb = xmldata.rDE.DE[0].gTimb[0];
     return {
       informacionGeneral: {
-        DE: rDE.DE[0],
+        id: rDE.DE[0]["$"].Id, // Aquí accedemos al valor de "Id"
         Signature: rDE.Signature[0],
         gCamFuFD: rDE.gCamFuFD[0]
       },
@@ -40,7 +40,9 @@ const separarXmlData = xmldata => {
     return "";
   };
 
-
+  const formatearId = (id) => {
+    return id.replace(/(.{4})(?=.)/g, '$1 '); // Agregar un espacio cada 4 caracteres
+ };
   // Función para formatear valores con separador de miles
 const formatearConSeparadorMiles = (valor) => {
   if (typeof valor === 'number' || !isNaN(parseFloat(valor))) {
@@ -48,7 +50,11 @@ const formatearConSeparadorMiles = (valor) => {
   }
   return valor; // Si no es un número, retorna el valor original
 }
+
+
+
+
   module.exports = {
-    formatDate,titleCase,separarXmlData,formatearConSeparadorMiles
+    formatDate,titleCase,separarXmlData,formatearConSeparadorMiles,formatearId 
   };
   

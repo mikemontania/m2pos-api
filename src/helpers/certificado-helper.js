@@ -4,8 +4,7 @@ const Certificado = require("../models/certificado.model");
 const { decryptPassphrase } = require("../helpers/encript-helper");
 const { SignedXml } = require("xml-crypto");
 const https = require("https");
-const xmlsign = require("facturacionelectronicapy-xmlsign").default;
-
+ 
 // Función para obtener la clave privada en formato PEM
 const getPrivateKey = p12 => {
   for (let i = 0; i < p12.safeContents.length; i++) {
@@ -80,40 +79,7 @@ const getxml = async () => {
   }
 };
 
-const firmarXml = async (xmlString, empresaId) => {
-  let condiciones = { activo: true };
-  if (empresaId) condiciones.empresaId = empresaId;
-
-  // Solo devolverá un certificado por empresa
-  const certificados = await Certificado.findAll({ where: condiciones });
-  if (certificados.length === 0)
-    throw new Error("No se encontró un certificado activo para la empresa");
- // console.log("Certificado", certificados[0]);
- // console.log(certificados[0].passphrase);
-
-  const passCert = decryptPassphrase(certificados[0].passphrase);
-  const pathCert = `./src/certificado/${certificados[0].path}`;
-  try {
-    // Firmar el XML usando una promesa
-    const xmlFirmado = await new Promise((resolve, reject) => {
-      xmlsign
-        .signXML(xmlString, pathCert, passCert)
-        .then(signedXml => {
-      //    console.log("XML firmado:", signedXml);
-          resolve(signedXml); // Resolver la promesa con el XML firmado
-        })
-        .catch(err => {
-          console.error("Error al firmar el XML:", err);
-          reject(xmlString); // Rechazar la promesa en caso de error
-        });
-    });
-
-    return xmlFirmado; // Devolver el XML firmado
-  } catch (error) {
-    console.error("Error en firmarXml:", error);
-    return xmlString; // Devolver el XML original en caso de error
-  }
-};
+ 
 
 // Función para firmar un XML usando la clave privada
 const signXml = async (xmlData, empresaId) => {
@@ -172,4 +138,4 @@ const signXml = async (xmlData, empresaId) => {
 };
 
 // Exportar las funciones para ser utilizadas en otros archivos del proyecto
-module.exports = { signXml, loadCertificateAndKey, getxml, firmarXml };
+module.exports = { signXml, loadCertificateAndKey, getxml  };
