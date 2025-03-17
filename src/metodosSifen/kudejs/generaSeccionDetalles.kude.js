@@ -78,15 +78,12 @@ const pintaValores = (doc, detalles, y, sectionLineLeft, columnas) => {
 };
 
 // Genera la sección de detalles con cuadrícula
-const generaSeccionDetalles = (doc, datosDocumento, sectionLineLeft, sectionLineRight, sectionLineTop, sectionLineBottom) => { 
+const generaSeccionDetalles = (doc, datosDocumento, sectionLineLeft, sectionLineRight, sectionLineTop) => { 
   return new Promise(async (resolve, reject) => {
     try { 
-
-
       const { detalles } = datosDocumento;
- 
       let y = sectionLineTop + 10;
-    
+      
       // Definir columnas con títulos y anchos
       const columnas = [
         { titulo: "Código", ancho: 55 },
@@ -98,23 +95,30 @@ const generaSeccionDetalles = (doc, datosDocumento, sectionLineLeft, sectionLine
         { titulo: "5%", ancho: 55 },
         { titulo: "10%", ancho: 55 }
       ];
-    
+      
+      // Altura dinámica basada en la cantidad de filas (cada fila ocupa 22px)
+      const alturaFila = 22;
+      const altoDetalle = detalles.length * alturaFila + 20; // +20 para margen del encabezado
+      
+      // Calcular el bottom de la sección
+      const sectionLineBottom = sectionLineTop + altoDetalle;
+
       // Pintar cuadrícula con líneas verticales completas
       pintaCuadricula(doc, sectionLineLeft, sectionLineRight, sectionLineTop, columnas, sectionLineBottom);
-    
+
       // Espaciado para el encabezado
       y += 5;
-    
-      // Pintar los valores en la tabla
-       pintaValores(doc, detalles, y, sectionLineLeft, columnas);
-    resolve( ); // Se resuelve cuando todo ha terminado
-  } catch (error) {
-    console.error(error);
-    reject(error);
-  }
 
+      // Pintar los valores en la tabla
+      pintaValores(doc, detalles, y, sectionLineLeft, columnas);
+
+      // Retornar el nuevo bottom de la sección
+      resolve(sectionLineBottom);
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
   });
- 
 };
 
 module.exports = { generaSeccionDetalles };

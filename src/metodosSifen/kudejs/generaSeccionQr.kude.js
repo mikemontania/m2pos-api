@@ -107,7 +107,7 @@ const generaSeccionTextoDerecha = (doc, informacionGeneral, sectionLineLeft, sec
 
       doc.fontSize(7).text(
         'Si su documento electrónico presenta algún error puede solicitar la modificación dentro de las 72 horas siguientes de la emisión de este comprobante.',  
-        sectionLineLeft + margen, sectionLineTop + 85
+        sectionLineLeft + margen, sectionLineTop + 80
       );
 
       resolve();

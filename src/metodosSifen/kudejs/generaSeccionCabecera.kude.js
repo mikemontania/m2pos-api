@@ -108,7 +108,7 @@ const generarCabecera = (doc, datosDocumento, img, headerLineLeft, headerLineRig
       { titulo: "RUC:", valor: `${emisor?.dRucEm?.[0] ?? "N/D"}-${emisor?.dDVEmi?.[0] ?? ""}`, top: topBloque+20 },
       { titulo: "Vigencia desde:", valor: formatDate(timbrado?.dFeIniT?.[0] ?? "N/D"), top: topBloque + 30 },
       { titulo: "Timbrado N°:", valor: timbrado?.dNumTim?.[0] ?? "N/D", top: topBloque + 40 },
-      { titulo: "Factura Electrónica", valor: '', top: topBloque + 50 },
+      { titulo: timbrado?.dDesTiDE?.[0] , valor: '', top: topBloque + 50 },
       { titulo: "N°:", valor: `${timbrado?.dEst?.[0] ?? "N/D"}-${timbrado?.dPunExp?.[0] ?? "N/D"}-${timbrado?.dNumDoc?.[0] ?? "N/D"}`, top: topBloque + 60 }
     ];
   
