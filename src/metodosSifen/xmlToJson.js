@@ -14,7 +14,29 @@ const xmlToJson = async (xml) => {
         throw error;
     }
 };
- 
+const extraerDatosConsultaCdc = async (xml) => {
+     
+    try {
+            const json  = await xmlToJson(xml);
+            console.log(json)
+            const body = json?.["env:Envelope"]?.["env:Body"]?.["ns2:rEnviConsDeResponse"];
+        
+            console.log('body', body); // Verifica que contiene datos
+        
+            if (!body) {
+              throw new Error("Formato de JSON no válido");
+            }
+        
+            return {
+              fecha : body["ns2:dFecProc"] || null,
+              codigo : body["ns2:dCodRes"] || null,
+              mensaje : body["ns2:dMsgRes"] || null
+            };
+          } catch (error) {
+            console.error("Error al formatear JSON:", error.message);
+            return null;
+          }
+};  
 const extraerDatosRespuesta = async (xml) => {
     try {
         const jsonData = await xmlToJson(xml);
@@ -74,5 +96,6 @@ const json =await xmlToJson(xml);
 module.exports = {
     xmlToJson,
     extraerDatosRespuesta,
-    extraerRespuestasXml
+    extraerRespuestasXml,
+    extraerDatosConsultaCdc
 };

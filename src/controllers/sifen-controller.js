@@ -13,7 +13,7 @@ const Venta = require("../models/venta.model");
 const VentaXml = require("../models/ventaXml.model");
 const { envioEventoXml, extraeRespEvento } = require("../metodosSifen/envioEvento.service");
 const { consulta } = require("../metodosSifen/service/consulta.service");
-const { extraerDatosRespuesta } = require("../metodosSifen/xmlToJson");
+const { extraerDatosRespuesta, extraerDatosConsultaCdc } = require("../metodosSifen/xmlToJson");
 const Sucursal = require("../models/sucursal.model");
 const FormaVenta = require("../models/formaVenta.model");
 const Cliente = require("../models/cliente.model");
@@ -32,6 +32,11 @@ const { crearVentaXml } = require("./ventaXml-controller");
 const { parseStringPromise, Builder } = require("xml2js");
 const path = require('path'); 
 const { createKude } = require("../metodosSifen/kudejs/pdfKude");
+const { formatToParams, formatToData } = require("../metodosSifen/service/formatData.service");
+const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service");
+const { normalizeXML } = require("../metodosSifen/service/util");
+const { signXML } = require("../metodosSifen/service/signxml.service");
+const { generateQR } = require("../metodosSifen/service/generateQR.service");
 
  
 
@@ -202,7 +207,16 @@ const reintentar = async (req, res) => {
     }
    //quitamos los registros anteriores
     const Ok = await limpiarRegistros(venta.id);
-    const generado = await generarXML(empresa,venta);
+    const params = await formatToParams(venta,empresa); 
+    const data = await formatToData(venta,empresa);  
+    let xmlBase = await generateXMLDE(params,data);  
+    xmlBase =    normalizeXML(xmlBase);          
+    xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
+    await crearVentaXml(empresa.id, venta.id, xmlBase, 1  ,'GENERADO'  )  
+    const xmlFirmado =await signXML(xmlBase,empresa.certificado) 
+    const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc);
+    console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
+    await crearVentaXml(empresa.id, venta.id, xmlFirmadoConQr, 2  ,'FIRMADO'  )  
     const xmlfirmado = await obtenerXmlFirmados(empresa.id, venta.id);
      const lote  = await cargandoLote(empresa.id);
      if (!lote) {
@@ -234,6 +248,16 @@ const reintentar = async (req, res) => {
   }
 };
  
+const actualizarEstadoVentasCdc = async (cdc, nuevoEstado) => {
+  try {
+    await Venta.update({ estado: nuevoEstado }, {
+      where: { cdc:  cdc   }
+    });
+    console.log(`✅ Ventas actualizadas a estado: ${nuevoEstado}`);
+  } catch (error) {
+    console.error('❌ Error al actualizar ventas:', error);
+  }
+};
 const consultarcdc = async (req, res) => { 
   try {
     const { empresaId } = req.usuario;
@@ -247,9 +271,14 @@ const consultarcdc = async (req, res) => {
             const data = { id, cdc ,tipoConsulta:"CDC"}
             const respuesta = await consulta(data, empresa.certificado );
             console.log(respuesta);
-            const json = await extraerDatosRespuesta(respuesta.respuesta);
-            
-            return res.status(200).json({data:respuesta.respuesta});
+            const formateado = await extraerDatosConsultaCdc(respuesta.respuesta); 
+            console.log(formateado)
+            if (formateado.codigo =='0420') { 
+              await actualizarEstadoVentasCdc( cdc, 'EstadoDesconocido');
+            }
+            let ventaUpdated = await Venta.findOne({ where: { cdc } });
+
+            return res.status(200).json({data:formateado , venta:ventaUpdated});
         } catch (error) {
           console.error('❌ Error al consultar cdc:', error.message);
           return res.status(500).json({ error: "Error al consultar cdc" });

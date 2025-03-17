@@ -52,7 +52,7 @@ const formatToData = (venta, empresa) => {
       cantidad: detalle.cantidad,
       precioUnitario: detalle.importePrecio,
       cambio: 0,
-      descuento: (detalle.importePrecio*detalle.porcDescuento),
+      descuento: (detalle.importeDescuento/detalle.cantidad),
       anticipo: detalle.anticipo || 0,
       pais: pais.codigo,
       paisDescripcion: pais.descripcion,
