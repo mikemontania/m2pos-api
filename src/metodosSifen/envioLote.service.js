@@ -161,7 +161,7 @@ const enviarLote = (id, xmls, certificado) => {
                 console.log("soapXMLData", soapXMLData);
             }
             //Escribo el archivo para verificacion
-            if (soapXMLData)  fs.writeFileSync(`./soap_request_${id}.xml`, soapXMLData);
+           // if (soapXMLData)  fs.writeFileSync(`./soap_request_${id}.xml`, soapXMLData);
            
 
             const headers = {

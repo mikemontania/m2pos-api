@@ -29,16 +29,15 @@ try{
     
       const { receptor,  operacion,condicionesPago,operacionCom, fechaEmision} =datosDocumento;
       
-      const fecha = (fechaEmision) ?fechaEmision.toString().substring(0, 10):'';
-  
+      const fecha = (fechaEmision) ?fechaEmision.toString().substring(0, 10):''; 
 
       const datos = [
-        { titulo: "Fecha y hora de emisión:", valor: formatDate(fecha) ?? "" },
-        { titulo: "Condición Venta:", valor: condicionesPago?.dDCondOpe?.[0] ?? "" }, 
-        { titulo: "Moneda:", valor: operacionCom?.cMoneOpe?.[0] ?? "" },
+        { titulo: "Fecha y hora de emisión:", valor: formatDate(fecha) ?? "" },//D002
+        { titulo: "Condición Venta:", valor: condicionesPago?.dDCondOpe?.[0] ?? "" }, //E602
+        { titulo: "Moneda:", valor: operacionCom?.cMoneOpe?.[0] ?? "" },//E644
+        { titulo: "Descripción de moneda de la operación:", valor: operacionCom?.dDesMoneOpe?.[0] ?? "" },//E644
         {titulo:   condicionesPago.gPagCred?.[0]?.iCondCred?.[0] == 2 ? condicionesPago.gPagCred?.[0]?.dCuotas?.[0] :  condicionesPago.gPagCred?.[0]?.dPlazoCre?.[0]     ?? ""},
-        { titulo: operacionCom?.cMoneOpe?.[0] !== "PYG" ? "Tipo Cambio:" : "", valor: operacionCom?.cMoneOpe?.[0] !== "PYG" ? (operacionCom?.dCondTiCam?.[0] == 1 ? "Global" : "Por ítem") : "" },
-        { titulo: "Tipo de transacción:", valor: operacionCom?.dDesTipTra ?? "" },
+         { titulo: "Tipo de transacción:", valor: operacionCom?.dDesTipTra ?? "" },
       ];
        const datos2 = [
         { titulo: receptor?.iNatRec == 1 ? "RUC:" : "Documento de identidad:", valor: receptor?.iNatRec == 1 ? `${receptor?.dRucRec ?? ""}-${receptor?.dDVRec ?? ""}` : receptor?.dNumIDRec ?? "" },

@@ -40,6 +40,46 @@ const formatToParams = (venta, empresa) => {
 };
 
 const formatToData = (venta, empresa) => {
+  console.log("venta ", JSON.stringify(venta, null, 2)); 
+  
+  const esContado = venta.formaVenta.id == 1;
+
+  const condicion = esContado
+    ? {
+        tipo: 1,
+        entregas: [
+          {
+            tipo: 1,
+            monto: venta.importeTotal,
+            moneda: "PYG",
+            cambio: 0
+          }
+        ]
+      }
+    : { tipo: 2 ,
+      credito: {
+        tipo: 1,
+        plazo: `${venta.formaVenta.dias} días`,
+        cuotas: 1,
+        montoEntrega: venta.importeTotal,
+        infoCuotas: [
+          {
+            moneda: empresa.codMoneda,
+            monto: venta.importeTotal,
+            vencimiento: venta.fechaVencimiento
+          },
+          {
+            moneda: empresa.codMoneda,
+            monto: venta.importeTotal,
+            vencimiento: venta.fechaVenta
+          }
+        ]
+      }
+    };
+  
+  
+
+
   try {
     const [establecimiento, punto, numero] =
       venta.nroComprobante.split("-") || [];
@@ -101,8 +141,9 @@ const formatToData = (venta, empresa) => {
       anticipoGlobal: 0,
       cambio: 6700,
       cliente: {
-        contribuyente: true,
-        ruc: "2005001-1",
+        contribuyente: (venta.cliente.naturalezaReceptor == 1)?true:false,
+        ruc:  (venta.cliente.naturalezaReceptor == 1)? venta.cliente.nroDocumento:null,
+        documentoNumero: (venta.cliente.naturalezaReceptor == 2)? venta.cliente.nroDocumento:null,
         razonSocial: venta.cliente.razonSocial,
         nombreFantasia: venta.cliente.nombreFantasia,
         tipoOperacion: venta.cliente.tipoOperacionId,
@@ -118,7 +159,6 @@ const formatToData = (venta, empresa) => {
         paisDescripcion: pais.descripcion,
         tipoContribuyente: venta.cliente.tipoContribuyente,
         documentoTipo: venta.cliente.tipoDocIdentidad,
-        documentoNumero: venta.cliente.nroDocumento,
         telefono: venta.cliente.telefono,
         celular: venta.cliente.celular,
         email: venta.cliente.email,
@@ -135,19 +175,8 @@ const formatToData = (venta, empresa) => {
           secuencia: 1111111,
           fecha: venta.fechaVenta
         }
-      },
-
-      condicion: {
-        tipo: +venta.formaVenta.id == 1 ? 1 : 2, //1 es contado 2 es credito
-        entregas: [
-          {
-            tipo: 1,
-            monto: venta.importeTotal,
-            moneda: "PYG",
-            cambio: 0
-          }
-        ]
-      },
+      }, 
+      condicion,    
       items: items,
       sectorEnergiaElectrica: null,
       sectorSeguros: null,
@@ -157,6 +186,7 @@ const formatToData = (venta, empresa) => {
       complementarios: null,
       documentoAsociado: null
     };
+     
   } catch (error) {
     console.error("❌ Error formatToData:", error.message);
     return null;

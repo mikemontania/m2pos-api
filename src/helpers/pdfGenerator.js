@@ -48,19 +48,11 @@ const createInvoice = (cabecera, detalles) => {
     generarCabecera(doc, cabecera, 10);
     generarDatosCliente(doc, cabecera, 100);
     generarDetalles(doc, detalles, 145);
-    generarAhorro(doc, cabecera.importeDescuento, 355);
-    generarTotalTexto(doc, cabecera.importeTotal, 370);
-    generarIva(doc, cabecera, 385);
-    generarCopia(doc, "Original", 400);
-    dividirHoja(doc);
- 
-    generarCabecera(doc, cabecera, 430);
-    generarDatosCliente(doc, cabecera, 520);
-    generarDetalles(doc, detalles, 565);
     generarAhorro(doc, cabecera.importeDescuento, 775);
     generarTotalTexto(doc, cabecera.importeTotal, 790);
     generarIva(doc, cabecera, 805);
-    generarCopia(doc, "Duplicado: Archivo", 820); 
+    generarCopia(doc, "Original", 820); 
+  
   }
   doc.end();
   return doc;

@@ -208,7 +208,8 @@ const reintentar = async (req, res) => {
    //quitamos los registros anteriores
     const Ok = await limpiarRegistros(venta.id);
     const params = await formatToParams(venta,empresa); 
-    const data = await formatToData(venta,empresa);  
+    const data = await formatToData(venta,empresa); 
+    console.log({params,data}) 
     let xmlBase = await generateXMLDE(params,data);  
     xmlBase =    normalizeXML(xmlBase);          
     xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")

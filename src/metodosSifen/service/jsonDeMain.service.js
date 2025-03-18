@@ -153,7 +153,7 @@ const generateXMLDeService = (params, data) => {
 
     return normalizeXML(xml); //Para firmar tiene que estar normalizado
   } catch (error) {
-    console.error("❌ Error generateXMLDeService:", error.message);
+    console.error("❌ Error generateXMLDeService:", error);
   }
 };
 
@@ -931,10 +931,11 @@ const generateDatosEspecificosPorTipoDE_RemisionElectronica = (data, json) => {
    * E7. Campos que describen la condición de la operación (E600-E699)
    
    */
-const generateDatosCondicionOperacionDE = (data, json) => {
+const generateDatosCondicionOperacionDE = (data, json) => { 
   if (!data["condicion"]) {
     return;
   }
+  console.log(data["condicion"])
   if (
     condicionesOperaciones.filter(um => um.codigo === data["condicion"]["tipo"])
       .length == 0

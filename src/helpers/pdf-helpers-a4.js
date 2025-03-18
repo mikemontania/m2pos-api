@@ -149,7 +149,7 @@ const generarDatosCliente = (doc, venta, top) => {
 const generarDetalles = (doc, detalles, top) => {
   const headerLeft = 30;
   const headerRight = 580;
-  const headerBottom = top+210;
+  const headerBottom = top+630;
   const altura = headerBottom; 
   const detallesTop = top+5;
   const barraVertical1 = 80;

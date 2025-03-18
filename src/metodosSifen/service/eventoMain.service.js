@@ -12,24 +12,24 @@ const generateXMLEvento = data => {
         '<?xml version="1.0" encoding="UTF-8" standalone="no"?>',
         ""
       );
-      if (xmlSinEncoding)
+      /* if (xmlSinEncoding)
         fs.writeFileSync(
           `./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_generado.xml`,
           xmlSinEncoding
-        );
+        ); */
       let soapXMLData = envelopeEvent(data.id, xmlSinEncoding);
-      if (soapXMLData)
+    /*   if (soapXMLData)
         fs.writeFileSync(
           `./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_soap.xml`,
           soapXMLData
-        );
+        ); */
       await crearVentaXml(data.empresaId, data.id, soapXMLData, 1, "GENERADO");
       const xmlFirmado = await signXMLEvento(soapXMLData, data.certificado);
       if (xmlFirmado)
-        fs.writeFileSync(
+       /*  fs.writeFileSync(
           `./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_firmado.xml`,
           xmlFirmado
-        );
+        ); */
       await crearVentaXml(data.empresaId, data.id, xmlFirmado, 2, "FIRMADO");
       resolve(xmlFirmado);
     } catch (error) {

@@ -7,7 +7,7 @@ const EnvioRespuesta = require("../../models/envioRespuesta.model");
 const crearRespuesta1 = async ( respuesta, stacktrace = null) => {
     console.log(respuesta)
     try { 
-       if (respuesta)  fs.writeFileSync(`./respuestaLote.xml`, respuesta);
+       //if (respuesta)  fs.writeFileSync(`./respuestaLote.xml`, respuesta);
         let nuevaRespuesta = await EnvioRespuesta.create({
             respuesta:respuesta,
             stacktrace:stacktrace
@@ -26,7 +26,7 @@ const crearRespuesta1 = async ( respuesta, stacktrace = null) => {
  const crearRespuesta = async (lote_id,respuesta, stacktrace = null) => {
     console.log(respuesta)
     try { 
-       if (respuesta)  fs.writeFileSync(`./respuestaLote${lote_id}.xml`, respuesta);
+      // if (respuesta)  fs.writeFileSync(`./respuestaLote${lote_id}.xml`, respuesta);
         let nuevaRespuesta = await EnvioRespuesta.create({
             respuesta:respuesta,
             stacktrace:stacktrace

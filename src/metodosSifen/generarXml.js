@@ -117,7 +117,7 @@ const generarXML = async (empresa, venta) => {
     await crearVentaXml(empresa.id, venta.id, xmlFirmadoConQr, 2, "FIRMADO");
 
   
-    if (xmlFirmadoConQr)  fs.writeFileSync(`./xmlfirmado_${venta.cdc}.xml`, xmlFirmadoConQr);
+   // if (xmlFirmadoConQr)  fs.writeFileSync(`./xmlfirmado_${venta.cdc}.xml`, xmlFirmadoConQr);
 
   return xmlFirmadoConQr;
     
