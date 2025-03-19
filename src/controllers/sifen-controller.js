@@ -9,26 +9,26 @@ const TablaSifen = require("../models/tablaSifen.model");
 const { Op } = require("sequelize");
 const EmpresaActividad = require("../models/empresaActividad.model");
 const Actividad = require("../models/actividad.model");
-const Venta = require("../models/venta.model");
-const VentaXml = require("../models/ventaXml.model");
+const Documento = require("../models/documento.model");
+const DocumentoXml = require("../models/documentoXml.model");
 const { envioEventoXml, extraeRespEvento } = require("../metodosSifen/envioEvento.service");
 const { consulta } = require("../metodosSifen/service/consulta.service");
 const { extraerDatosRespuesta, extraerDatosConsultaCdc } = require("../metodosSifen/xmlToJson");
 const Sucursal = require("../models/sucursal.model");
-const FormaVenta = require("../models/formaVenta.model");
+const CondicionPago = require("../models/condicionPago.model");
 const Cliente = require("../models/cliente.model");
 const Variante = require("../models/variante.model");
 const Presentacion = require("../models/presentacion.model");
 const Variedad = require("../models/variedad.model");
 const Producto = require("../models/producto.model");
 const Unidad = require("../models/unidad.model");
-const VentaDetalle = require("../models/ventaDetalle.model");
-const EnvioVenta = require("../models/envioVenta");
+const DocumentoDetalle = require("../models/documentoDetalle.model");
+const EnvioDocumento = require("../models/envioDocumento");
 const { generarXML } = require("../metodosSifen/generarXml");
-const { cargandoLote, actualizarLote, relacionarVentasConLote } = require("../metodosSifen/service/createLote.service");
+const { cargandoLote, actualizarLote, relacionarDocumentosConLote } = require("../metodosSifen/service/createLote.service");
 const { enviarXml } = require("../metodosSifen/envioLote.service");
-const { actualizarEstadoVentas } = require("../jobs/envioLoteXml.job"); 
-const { crearVentaXml } = require("./ventaXml-controller");  
+const { actualizarEstadoDocumentos } = require("../jobs/envioLoteXml.job"); 
+const { crearDocumentoXml } = require("./documentoXml-controller");  
 const { parseStringPromise, Builder } = require("xml2js");
 const path = require('path'); 
 const { createKude } = require("../metodosSifen/kudejs/pdfKude");
@@ -47,9 +47,9 @@ const getKude = async (req, res) => {
     const { empresaId } = req.usuario;
     const { id } = req.params;
 
-    // Buscar la venta por ID
-    let ventaXml = await  VentaXml.findByPk(id);
-    if (!ventaXml) {
+    // Buscar la documento por ID
+    let documentoXml = await  DocumentoXml.findByPk(id);
+    if (!documentoXml) {
       return res.status(404).json({ error: "Registro no encontrado" });
     }
   
@@ -58,7 +58,7 @@ const getKude = async (req, res) => {
     if (!empresa) {
       return res.status(404).json({ error: `No se encontró la empresa con ID ${empresaId}` });
     }
-   const xmlFirmado=  ventaXml.xml.toString('utf8');
+   const xmlFirmado=  documentoXml.xml.toString('utf8');
    const xmldata = await parseStringPromise(xmlFirmado);
    const gTimb = xmldata.rDE.DE[0].gTimb[0];
     //aqui lo que hare es crear un reporte por cada reportName e invocarlo segun el tipoDocumento de momento lo llamare createKude(empresa, xmlFirmado) 
@@ -86,13 +86,13 @@ const getKude = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail || "Internal Server Error" });
   }
 };
-const obtenerVenta = async (id) => {
+const obtenerDocumento = async (id) => {
   try {
-    // Obteniendo las ventas pendientes
-    const venta = await Venta.findByPk(id,{ 
+    // Obteniendo las documentos pendientes
+    const documento = await Documento.findByPk(id,{ 
       include: [
         { model: Sucursal, as: 'sucursal' },
-        { model: FormaVenta, as: 'formaVenta' },
+        { model: CondicionPago, as: 'condicionPago' },
         { model: Cliente, as: 'cliente' },
         { model: TablaSifen, as: 'tipoDocumento' }
       ],
@@ -100,8 +100,8 @@ const obtenerVenta = async (id) => {
       nest: true
     });
  
-        const detalles = await VentaDetalle.findAll({
-          where: { ventaId: venta.id },
+        const detalles = await DocumentoDetalle.findAll({
+          where: { documentoId: documento.id },
           include: [
             {
               model: Variante,
@@ -119,7 +119,7 @@ const obtenerVenta = async (id) => {
         });
        
         // Procesando cada detalle
-        venta.detalles = detalles.map((detalle) => {
+        documento.detalles = detalles.map((detalle) => {
            
           const descripcion =`${detalle.variante.producto.nombre} ${detalle.variante.presentacion.descripcion} ${detalle.variante.variedad.descripcion} ${detalle.variante.unidad.code}`
  
@@ -140,22 +140,22 @@ const obtenerVenta = async (id) => {
           };
         });
 
-        return venta; // Retornar la venta con sus detalles 
+        return documento; // Retornar la documento con sus detalles 
   } catch (error) {
-    console.error('Error al obtener venta :', error);
+    console.error('Error al obtener documento :', error);
   }
 }; 
  
-const limpiarRegistros = async (ventaId) => {
+const limpiarRegistros = async (documentoId) => {
   try {
-    // Eliminar registros en EnvioVenta relacionados con la venta
-    await EnvioVenta.destroy({
-      where: { ventaId }
+    // Eliminar registros en EnvioDocumento relacionados con la documento
+    await EnvioDocumento.destroy({
+      where: { documentoId }
     });
 
-    // Eliminar registros en VentaXml relacionados con la venta
-    await VentaXml.destroy({
-      where: { ventaId }
+    // Eliminar registros en DocumentoXml relacionados con la documento
+    await DocumentoXml.destroy({
+      where: { documentoId }
     });
 
     return 'OK'; // Confirmación de éxito
@@ -164,11 +164,11 @@ const limpiarRegistros = async (ventaId) => {
     return null;
   }
 };
-const obtenerXmlFirmados = async (empresaId, ventaId) => {
+const obtenerXmlFirmados = async (empresaId, documentoId) => {
   try {
-    const ventasXml = await VentaXml.findAll({
+    const documentosXml = await DocumentoXml.findAll({
       where: {
-        ventaId: ventaId,
+        documentoId: documentoId,
         empresaId: empresaId,
         estado: 'FIRMADO'
       },
@@ -176,9 +176,9 @@ const obtenerXmlFirmados = async (empresaId, ventaId) => {
     });
 
     // Si no hay registros, retornar null
-    if (!ventasXml || ventasXml.length === 0) return null;
+    if (!documentosXml || documentosXml.length === 0) return null;
 
-    return ventasXml[0].xml.toString('utf8'); // Retorna el XML más reciente en formato string
+    return documentosXml[0].xml.toString('utf8'); // Retorna el XML más reciente en formato string
   } catch (error) {
     console.error('❌ Error al obtener XMLs firmados:', error);
     return null;
@@ -191,12 +191,12 @@ const reintentar = async (req, res) => {
     const { empresaId } = req.usuario;
     const { id } = req.params;
 
-    // Buscar la venta por ID
-    let venta = await obtenerVenta(id);
-    if (!venta) {
-      return res.status(404).json({ error: "Venta no encontrada" });
+    // Buscar la documento por ID
+    let documento = await obtenerDocumento(id);
+    if (!documento) {
+      return res.status(404).json({ error: "Documento no encontrada" });
     }
-    if (venta.estado == 'Aprobado' ||venta.estado == 'Recibido' ) {
+    if (documento.estado == 'Aprobado' ||documento.estado == 'Recibido' ) {
       return res.status(404).json({ error: "No se puede reintentar este tipo de documentos" });
     }
  
@@ -206,19 +206,19 @@ const reintentar = async (req, res) => {
       return res.status(404).json({ error: `No se encontró la empresa con ID ${empresaId}` });
     }
    //quitamos los registros anteriores
-    const Ok = await limpiarRegistros(venta.id);
-    const params = await formatToParams(venta,empresa); 
-    const data = await formatToData(venta,empresa); 
+    const Ok = await limpiarRegistros(documento.id);
+    const params = await formatToParams(documento,empresa); 
+    const data = await formatToData(documento,empresa); 
     console.log({params,data}) 
     let xmlBase = await generateXMLDE(params,data);  
     xmlBase =    normalizeXML(xmlBase);          
     xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
-    await crearVentaXml(empresa.id, venta.id, xmlBase, 1  ,'GENERADO'  )  
+    await crearDocumentoXml(empresa.id, documento.id, xmlBase, 1  ,'GENERADO'  )  
     const xmlFirmado =await signXML(xmlBase,empresa.certificado) 
     const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc);
     console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
-    await crearVentaXml(empresa.id, venta.id, xmlFirmadoConQr, 2  ,'FIRMADO'  )  
-    const xmlfirmado = await obtenerXmlFirmados(empresa.id, venta.id);
+    await crearDocumentoXml(empresa.id, documento.id, xmlFirmadoConQr, 2  ,'FIRMADO'  )  
+    const xmlfirmado = await obtenerXmlFirmados(empresa.id, documento.id);
      const lote  = await cargandoLote(empresa.id);
      if (!lote) {
       return res.status(500).json({ error: "Error al obtener el lote" });
@@ -229,34 +229,34 @@ const reintentar = async (req, res) => {
  
     const loteActualizado = await actualizarLote(lote.id, respuesta.respuesta, respuesta.id);
     console.log(loteActualizado)
-    // Crear relación entre el lote y las ventas
-    await relacionarVentasConLote(lote.id, [venta.id]);
-    // Actualizar estado de las ventas según el resultado del envío
+    // Crear relación entre el lote y las documentos
+    await relacionarDocumentosConLote(lote.id, [documento.id]);
+    // Actualizar estado de las documentos según el resultado del envío
     if (loteActualizado.estado === "RECIBIDO") {
       console.log(`📨 Envío exitoso.`);
-      await actualizarEstadoVentas([venta.id], 'Recibido');
+      await actualizarEstadoDocumentos([documento.id], 'Recibido');
     } else {
       console.warn(`⚠️ Fallo en el envío del lote ${lote.numeroLote}.`);
-      await actualizarEstadoVentas([venta.id], 'Rechazado');
+      await actualizarEstadoDocumentos([documento.id], 'Rechazado');
     }
-    let ventaUpdated = await Venta.findByPk(id);
+    let documentoUpdated = await Documento.findByPk(id);
  
-    return res.status(200).json({ venta: ventaUpdated });
+    return res.status(200).json({ documento: documentoUpdated });
 
   } catch (error) {
-    console.error('❌ Error al reintentar venta:', error );
+    console.error('❌ Error al reintentar documento:', error );
     return res.status(500).json({ error: "Error al reintentar" });
   }
 };
  
-const actualizarEstadoVentasCdc = async (cdc, nuevoEstado) => {
+const actualizarEstadoDocumentosCdc = async (cdc, nuevoEstado) => {
   try {
-    await Venta.update({ estado: nuevoEstado }, {
+    await Documento.update({ estado: nuevoEstado }, {
       where: { cdc:  cdc   }
     });
-    console.log(`✅ Ventas actualizadas a estado: ${nuevoEstado}`);
+    console.log(`✅ Documentos actualizadas a estado: ${nuevoEstado}`);
   } catch (error) {
-    console.error('❌ Error al actualizar ventas:', error);
+    console.error('❌ Error al actualizar documentos:', error);
   }
 };
 const consultarcdc = async (req, res) => { 
@@ -275,11 +275,11 @@ const consultarcdc = async (req, res) => {
             const formateado = await extraerDatosConsultaCdc(respuesta.respuesta); 
             console.log(formateado)
             if (formateado.codigo =='0420') { 
-              await actualizarEstadoVentasCdc( cdc, 'EstadoDesconocido');
+              await actualizarEstadoDocumentosCdc( cdc, 'EstadoDesconocido');
             }
-            let ventaUpdated = await Venta.findOne({ where: { cdc } });
+            let documentoUpdated = await Documento.findOne({ where: { cdc } });
 
-            return res.status(200).json({data:formateado , venta:ventaUpdated});
+            return res.status(200).json({data:formateado , documento:documentoUpdated});
         } catch (error) {
           console.error('❌ Error al consultar cdc:', error.message);
           return res.status(500).json({ error: "Error al consultar cdc" });
@@ -293,10 +293,10 @@ const anular = async (req, res) => {
     const { empresaId } = req.usuario;
     const { id, tipo } = req.params; 
     const evento =  (tipo === 2 ? 'Inutil' : 'Cancel') 
-    // Buscar la venta por ID
-    let venta = await Venta.findByPk(id);
-    if (!venta) {
-      return res.status(404).json({ error: "Venta no encontrada" });
+    // Buscar la documento por ID
+    let documento = await Documento.findByPk(id);
+    if (!documento) {
+      return res.status(404).json({ error: "Documento no encontrada" });
     } 
     // Obtener datos de la empresa
     const empresa = await getEmpresaById(empresaId);
@@ -305,20 +305,20 @@ const anular = async (req, res) => {
     } 
     // Enviar evento de anulación
    
-    let respuesta = await envioEventoXml(+tipo, venta, empresa);
+    let respuesta = await envioEventoXml(+tipo, documento, empresa);
     let json = await extraeRespEvento(respuesta);
     console.log("Respuesta del evento:", json);
-     await crearVentaXml(empresa.id,venta.id,respuesta,3,evento+json.estado);
-     await Venta.update({estado:evento+json.estado , anulado:true},{where: { id: venta.id }});
-  // Actualizar el estado de la venta en la base de datos
-// Buscar la venta actualizada
-let ventaActualizada = await Venta.findByPk(id);
+     await crearDocumentoXml(empresa.id,documento.id,respuesta,3,evento+json.estado);
+     await Documento.update({estado:evento+json.estado , anulado:true},{where: { id: documento.id }});
+  // Actualizar el estado de la documento en la base de datos
+// Buscar la documento actualizada
+let documentoActualizada = await Documento.findByPk(id);
 
-// Responder con la venta actualizada
-return res.status(200).json({ venta: ventaActualizada, json });
+// Responder con la documento actualizada
+return res.status(200).json({ documento: documentoActualizada, json });
 
   } catch (error) {
-    console.error('❌ Error al anular venta:', error);
+    console.error('❌ Error al anular documento:', error);
     return res.status(500).json({ error: "Error al anular" });
   }
 };

@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const Cliente = require("../models/cliente.model"); // Asegúrate de que la importación del modelo sea correcta
 const { sequelize } = require("../../dbconfig");
-const FormaVenta = require("../models/formaVenta.model");
+const CondicionPago = require("../models/condicionPago.model");
 const ListaPrecio = require("../models/listaPrecio.model");
 
 // Método para buscar por ID
@@ -81,7 +81,7 @@ const findClientesPaginados = async (req, res) => {
     const { count, rows:clientes } = await Cliente.findAndCountAll({
       where: condiciones,
       include: [
-        { model: FormaVenta, as: "formaVenta", attributes: ["descripcion"] },
+        { model: CondicionPago, as: "condicionPago", attributes: ["descripcion"] },
         { model: ListaPrecio, as: "listaPrecio", attributes: ["descripcion"] },
       ],
       limit: pageSize,
@@ -120,7 +120,7 @@ const create = async (req, res) => {
     const {
       
       listaPrecioId,
-      formaVentaId, 
+      condicionPagoId, 
       razonSocial,nombreFantasia,
       nroDocumento,
       direccion,
@@ -187,7 +187,7 @@ const create = async (req, res) => {
       empleado,
       propietario,
       activo,
-      formaVentaId, naturalezaReceptor,codigoPais,tipoContribuyente,tipoDocIdentidad
+      condicionPagoId, naturalezaReceptor,codigoPais,tipoContribuyente,tipoDocIdentidad
     });
 
     res.status(201).json(cliente);
@@ -203,7 +203,7 @@ const update = async (req, res) => {
     const {
       id,
       listaPrecioId,
-      formaVentaId,
+      condicionPagoId,
       razonSocial,
       nroDocumento,
       direccion,
@@ -242,7 +242,7 @@ const update = async (req, res) => {
     // Actualizar los datos del cliente
     existingClient.usuarioModificacionId=usuarioId;
     existingClient.listaPrecioId = listaPrecioId;
-    existingClient.formaVentaId = formaVentaId;
+    existingClient.condicionPagoId = condicionPagoId;
     existingClient.razonSocial = razonSocial;
     existingClient.nroDocumento = nroDocumento;
     existingClient.direccion = direccion;

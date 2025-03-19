@@ -5,9 +5,9 @@ const Sucursal = require("./sucursal.model");
 const Usuario = require("./usuario.model");
 const Cliente = require("./cliente.model");
 const moment = require("moment");
-const FormaVenta = require("./formaVenta.model");
+const CondicionPago = require("./condicionPago.model");
 const Cobranza = require("./cobranza.model");
-const Venta = require("./venta.model");
+const Documento = require("./documento.model");
 
 const Credito = sequelize.define(
   "Credito",
@@ -26,7 +26,7 @@ const Credito = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    formaVentaId: {
+    condicionPagoId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
@@ -34,7 +34,7 @@ const Credito = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    ventaId: {
+    documentoId: {
       type: DataTypes.INTEGER,
       allowNull: true,
     }, 
@@ -116,8 +116,8 @@ Credito.belongsTo(Sucursal, {
   targetKey: "id",
   as: "sucursal"
 });
-Credito.belongsTo(Venta, {
-  foreignKey: "ventaId",
+Credito.belongsTo(Documento, {
+  foreignKey: "documentoId",
   targetKey: "id", 
 });
 Credito.belongsTo(Usuario, {
@@ -141,9 +141,9 @@ Credito.belongsTo(Cliente, {
   targetKey: "id",
   as: "cliente"
 });
-Credito.belongsTo(FormaVenta, {
-  foreignKey: "formaVentaId",
+Credito.belongsTo(CondicionPago, {
+  foreignKey: "condicionPagoId",
   targetKey: "id",
-  as: "formaVenta"
+  as: "condicionPago"
 });
 module.exports = Credito;

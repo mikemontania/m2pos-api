@@ -1,5 +1,5 @@
 const Envio = require("../../models/envio.model");
-const EnvioVenta = require("../../models/envioVenta");
+const EnvioDocumento = require("../../models/envioDocumento");
 const { extraerDatosRespuesta } = require("../xmlToJson");
 
 const cargandoLote = async (empresaId) => {
@@ -55,18 +55,18 @@ const cargandoLote = async (empresaId) => {
   };
    
 
-  const relacionarVentasConLote = async (loteId, ventasIds) => {
+  const relacionarDocumentosConLote = async (loteId, documentosIds) => {
     try {
-      const registros = ventasIds.map(ventaId => ({
-        ventaId: ventaId,
+      const registros = documentosIds.map(documentoId => ({
+        documentoId: documentoId,
         envioId: loteId
       }));
   
-      await EnvioVenta.bulkCreate(registros);
+      await EnvioDocumento.bulkCreate(registros);
   
-      console.log(`🔗 Relación creada entre ${ventasIds.length} ventas y el lote ${loteId}`);
+      console.log(`🔗 Relación creada entre ${documentosIds.length} documentos y el lote ${loteId}`);
     } catch (error) {
-      console.error("❌ Error al relacionar ventas con el lote:", error);
+      console.error("❌ Error al relacionar documentos con el lote:", error);
       throw error;
     }
   };
@@ -74,5 +74,5 @@ const cargandoLote = async (empresaId) => {
 
 
 module.exports = {
-    cargandoLote  ,actualizarLote,relacionarVentasConLote
+    cargandoLote  ,actualizarLote,relacionarDocumentosConLote
 };

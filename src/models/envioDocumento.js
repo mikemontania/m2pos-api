@@ -1,15 +1,15 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig'); 
-const Venta = require('./venta.model');
+const Documento = require('./documento.model');
 const Envio = require('./envio.model');
 
-const EnvioVenta = sequelize.define('EnvioVenta', {
+const EnvioDocumento = sequelize.define('EnvioDocumento', {
   id: {
     type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true
   },
-  ventaId: {
+  documentoId: {
     type: DataTypes.BIGINT,
     allowNull: false
   },
@@ -18,20 +18,20 @@ const EnvioVenta = sequelize.define('EnvioVenta', {
     allowNull: false
   }
 }, {
-  tableName: 'envios_ventas',
+  tableName: 'envios_documentos',
   timestamps: false,
   underscored: true, // Convierte automáticamente a snake_case
 });
 
-EnvioVenta.belongsTo(Venta, {
-  foreignKey: 'ventaId',
+EnvioDocumento.belongsTo(Documento, {
+  foreignKey: 'documentoId',
   targetKey: 'id',
 });
-EnvioVenta.belongsTo(Envio, {
+EnvioDocumento.belongsTo(Envio, {
   foreignKey: 'envioId', 
   targetKey: 'id',
 });
  
 
-  module.exports = EnvioVenta;
+  module.exports = EnvioDocumento;
   

@@ -11,7 +11,7 @@ const tiposEmisiones = [
 const tiposTransacciones = [
   {
     codigo: 1,
-    descripcion: "Venta de mercadería",
+    descripcion: "Documento de mercadería",
     situacion: 0
   },
   {
@@ -21,17 +21,17 @@ const tiposTransacciones = [
   },
   {
     codigo: 3,
-    descripcion: "Mixto (Venta de mercadería y servicios)",
+    descripcion: "Mixto (Documento de mercadería y servicios)",
     situacion: 1
   },
   {
     codigo: 4,
-    descripcion: "Venta de activo fijo",
+    descripcion: "Documento de activo fijo",
     situacion: 0
   },
   {
     codigo: 5,
-    descripcion: "Venta de divisas",
+    descripcion: "Documento de divisas",
     situacion: 0
   },
   {
@@ -66,7 +66,7 @@ const tiposTransacciones = [
   },
   {
     codigo: 12,
-    descripcion: "Venta de crédito fiscal",
+    descripcion: "Documento de crédito fiscal",
     situacion: 1
   },
   {

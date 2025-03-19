@@ -1,37 +1,37 @@
 const xmlbuilder = require("xmlbuilder");
-const VentaXml = require("../models/ventaXml.model");
+const DocumentoXml = require("../models/documentoXml.model");
 const fs = require("fs"); 
 const { generateDatosItemsOperacion } = require("./service/generateDteItem.service");
 const { generateDatosTotales } = require("./service/generateDteTotales.service");
 const { signXML } = require("./service/signxml.service"); 
 const { generateQR } = require("./service/generateQR.service");
 const { normalizeXML } = require("./service/util");
-const { crearVentaXml } = require("../controllers/ventaXml-controller");
+const { crearDocumentoXml } = require("../controllers/documentoXml-controller");
  
-const generarXML = async (empresa, venta) => {
+const generarXML = async (empresa, documento) => {
    
   try {
     const tipoEmision = {codigo: 1, descripcion: "Normal"};
-    const [establecimiento, puntoExp, numero] = venta.nroComprobante.split("-");
+    const [establecimiento, puntoExp, numero] = documento.nroComprobante.split("-");
     const fechaActualISO = formatDateToLocalISO(new Date());
-    const fechaEmisionISO = formatDateToISO(venta.fechaCreacion);
+    const fechaEmisionISO = formatDateToISO(documento.fechaCreacion);
     const sifenData = {
       tipoImpuesto: empresa.tipoImpId,
-      tipoDocumento: venta.itide,
-      tipoOperacion: venta.cliente.nroDocumento.includes("-") ? 1 : 2,
+      tipoDocumento: documento.itide,
+      tipoOperacion: documento.cliente.nroDocumento.includes("-") ? 1 : 2,
       anticipoGlobal: 0,
       comision: 0,
       condicionTipoCambio: 1,
       cambio: 0,
       moneda: empresa.codMoneda,
-      descuentoGlobal: venta.importeDescuento,
-      importeSubtotal: venta.importeSubtotal,
-      importeTotal: venta.importeTotal
+      descuentoGlobal: documento.importeDescuento,
+      importeSubtotal: documento.importeSubtotal,
+      importeTotal: documento.importeTotal
     };
  
     const sifenDetalles = await generateDatosItemsOperacion(
       sifenData,
-      venta.detalles
+      documento.detalles
     );
     const sifenCab = await generateDatosTotales(sifenData, sifenDetalles.gCamItem);
     let xml = xmlbuilder
@@ -45,8 +45,8 @@ const generarXML = async (empresa, venta) => {
       // Header data
       .ele("dVerFor", process.env.EKUATIA_VERSION)
       .up()
-      .ele("DE", { Id: venta.cdc })
-      .ele("dDVId", venta.cdc.charAt(venta.cdc.length - 1))
+      .ele("DE", { Id: documento.cdc })
+      .ele("dDVId", documento.cdc.charAt(documento.cdc.length - 1))
       .up()
       /*
         La fecha y hora de la firma digital debe ser anterior a la fecha y hora de transmisión al SIFEN
@@ -58,9 +58,9 @@ const generarXML = async (empresa, venta) => {
       .ele("dSisFact", "1")
       .up()
       // Operation data
-      .ele(createGOpeDE(tipoEmision, venta.codigoSeguridad))
+      .ele(createGOpeDE(tipoEmision, documento.codigoSeguridad))
       .up() // Uso de la función modularizada para gOpeDE
-      .ele(createGTimb(venta, establecimiento, puntoExp, numero))
+      .ele(createGTimb(documento, establecimiento, puntoExp, numero))
       .up() // Uso de la función modularizada
       // Campos generales del DE
       .ele("gDatGralOpe")
@@ -75,11 +75,11 @@ const generarXML = async (empresa, venta) => {
       .up()
       //Grupo de campos que identifican al emisor
       .ele(
-        createGEmis(empresa, venta.sucursal)
+        createGEmis(empresa, documento.sucursal)
       )
       .up()
       //Grupo de campos que identifican al receptor
-      .ele(createGDatRec(venta))
+      .ele(createGDatRec(documento))
       .up() // Uso de la función modularizada para gDatRec
       .up() //cierre gDatGralOpe
       // Campos específicos por tipo de Documento Electrónico
@@ -87,15 +87,15 @@ const generarXML = async (empresa, venta) => {
       .ele(createGCamFE())
       .up() //Campos que componen la FE
       //Campos que describen la condición de la operación
-      .ele(createGCamCond(venta.formaVenta, roundTo8Decimals(venta.importeTotal)))
+      .ele(createGCamCond(documento.condicionPago, roundTo8Decimals(documento.importeTotal)))
       .up()
       //Campos que describen los ítems de la operación
-     // .ele(venta.detalles.map(item => createGCamItem(item)))
+     // .ele(documento.detalles.map(item => createGCamItem(item)))
      .ele( sifenDetalles) 
      .up()
       .up()
       //Campos de subtotales y totales
-     // .ele(createGTotSub(venta))
+     // .ele(createGTotSub(documento))
      .ele(sifenCab)
       .up()
       .up() //DE
@@ -107,17 +107,17 @@ const generarXML = async (empresa, venta) => {
     xmlBase =    normalizeXML(xmlBase);          
     xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
     
-    await crearVentaXml(empresa.id, venta.id, xmlBase, 1, "GENERADO");
+    await crearDocumentoXml(empresa.id, documento.id, xmlBase, 1, "GENERADO");
 
     const xmlFirmado =await signXML(xmlBase,empresa.certificado)
     
     const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc);
     console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
  
-    await crearVentaXml(empresa.id, venta.id, xmlFirmadoConQr, 2, "FIRMADO");
+    await crearDocumentoXml(empresa.id, documento.id, xmlFirmadoConQr, 2, "FIRMADO");
 
   
-   // if (xmlFirmadoConQr)  fs.writeFileSync(`./xmlfirmado_${venta.cdc}.xml`, xmlFirmadoConQr);
+   // if (xmlFirmadoConQr)  fs.writeFileSync(`./xmlfirmado_${documento.cdc}.xml`, xmlFirmadoConQr);
 
   return xmlFirmadoConQr;
     
@@ -125,7 +125,7 @@ const generarXML = async (empresa, venta) => {
     console.error(error)
     console.error(JSON.stringify(error, null, 2)); 
 
-    await crearVentaXml(empresa.id, venta.id, JSON.stringify(error, Object.getOwnPropertyNames(error)), 0, "ERROR");
+    await crearDocumentoXml(empresa.id, documento.id, JSON.stringify(error, Object.getOwnPropertyNames(error)), 0, "ERROR");
  
     return null;
   }
@@ -143,11 +143,11 @@ const createGCamFuFD = () => {
     }
   };
 };
-const createGTotSub = (venta) => {
-  const dTotIVA =  Number(venta.importeIva10) + Number(venta.importeIva5);
-  const dBaseGrav5 =(venta.importeIva5 > 0)  ? (venta.importeTotal - venta.importeIva5)  : 0;
-  const dBaseGrav10 =(venta.importeIva10 > 0)  ? (venta.importeTotal - venta.importeIva10)  : 0;
-  const dTBasGraIVA =(venta.importeIva5 > 0 || venta.importeIva10 > 0)  ? (venta.importeTotal - dTotIVA  )  : 0;
+const createGTotSub = (documento) => {
+  const dTotIVA =  Number(documento.importeIva10) + Number(documento.importeIva5);
+  const dBaseGrav5 =(documento.importeIva5 > 0)  ? (documento.importeTotal - documento.importeIva5)  : 0;
+  const dBaseGrav10 =(documento.importeIva10 > 0)  ? (documento.importeTotal - documento.importeIva10)  : 0;
+  const dTBasGraIVA =(documento.importeIva5 > 0 || documento.importeIva10 > 0)  ? (documento.importeTotal - dTotIVA  )  : 0;
 /*   console.log('dTotIVA',dTotIVA)
   console.log('dBaseGrav5',dBaseGrav5)
   console.log('dBaseGrav10',dBaseGrav10)
@@ -157,8 +157,8 @@ const createGTotSub = (venta) => {
       dSubExe: "0",
       dSubExo: "0",
       dSub5: "0",
-      dSub10: venta.importeTotal,
-      dTotOpe: venta.importeTotal,
+      dSub10: documento.importeTotal,
+      dTotOpe: documento.importeTotal,
       dTotDesc: "0",
       dTotDescGlotem: "0",
       dTotAntItem: "0",
@@ -167,9 +167,9 @@ const createGTotSub = (venta) => {
       dDescTotal: "0",
       dAnticipo: "0",
       dRedon: "0",
-      dTotGralOpe: venta.importeTotal,
-      dIVA5: roundTo8Decimals(venta.importeIva5),
-      dIVA10: roundTo8Decimals(venta.importeIva10),
+      dTotGralOpe: documento.importeTotal,
+      dIVA5: roundTo8Decimals(documento.importeIva5),
+      dIVA10: roundTo8Decimals(documento.importeIva10),
       dLiqTotIVA5: "0",
       dLiqTotIVA10: "0",
       dTotIVA: roundTo8Decimals(dTotIVA),
@@ -241,8 +241,8 @@ const formatDateToLocalISO =(date)=> {
 
   return isoString.replace("Z", formattedOffset).substring(0, 19);
 }
-const createGCamCond = (formaVenta, importeTotal) => {
-  if (formaVenta.id == 1) {
+const createGCamCond = (condicionPago, importeTotal) => {
+  if (condicionPago.id == 1) {
     // Contado
     return {
       gCamCond: {
@@ -266,7 +266,7 @@ const createGCamCond = (formaVenta, importeTotal) => {
         gPagCred: {
           iCondCred: "1",
           dDCondCred: "Plazo",
-          dPlazoCre: `${formaVenta.dias} dias`
+          dPlazoCre: `${condicionPago.dias} dias`
         }
       }
     };
@@ -281,9 +281,9 @@ const createGCamFE = () => {
     }
   };
 };
-const createGDatRec = (venta) => {
-  const [dRucRec, dDVRec] = venta.cliente.nroDocumento.split("-");
-  const iTiOpe = venta.cliente.tipoOperacionId;
+const createGDatRec = (documento) => {
+  const [dRucRec, dDVRec] = documento.cliente.nroDocumento.split("-");
+  const iTiOpe = documento.cliente.tipoOperacionId;
   /*1 = B2B (Business to Business)  
   2 = B2C (Business to Consumer)  
   3 = B2G (Business to Government)  
@@ -309,8 +309,8 @@ const createGDatRec = (venta) => {
         iTiContRec: "2",
         dRucRec: dRucRec,
         dDVRec: dDVRec,
-        dNomRec: venta.cliente.razonSocial,
-        dDirRec: venta.cliente.direccion,
+        dNomRec: documento.cliente.razonSocial,
+        dDirRec: documento.cliente.direccion,
         dNumCasRec: "0"
       }
     };
@@ -324,9 +324,9 @@ const createGDatRec = (venta) => {
         dDesPaisRe: "Paraguay",
         iTipIDRec: "1",
         dDTipIDRec: "Cédula paraguaya",
-        dNumIDRec: venta.cliente.nroDocumento,
-        dNomRec: venta.cliente.razonSocial,
-        dDirRec: venta.cliente.direccion,
+        dNumIDRec: documento.cliente.nroDocumento,
+        dNomRec: documento.cliente.razonSocial,
+        dDirRec: documento.cliente.direccion,
         dNumCasRec: "0"
       }
     };
@@ -384,16 +384,16 @@ const createGOpeDE = (tipoEmision, codigoSeguridad) => {
     }
   };
 };
-const createGTimb = (venta, establecimiento, puntoExp, numero) => {
+const createGTimb = (documento, establecimiento, puntoExp, numero) => {
   return {
     gTimb: {
-      iTiDE: venta.tipoDocumento.codigo,
-      dDesTiDE: venta.tipoDocumento.descripcion,
-      dNumTim: venta.timbrado,
+      iTiDE: documento.tipoDocumento.codigo,
+      dDesTiDE: documento.tipoDocumento.descripcion,
+      dNumTim: documento.timbrado,
       dEst: establecimiento,
       dPunExp: puntoExp,
       dNumDoc: numero,
-      dFeIniT: venta.fechaInicio
+      dFeIniT: documento.fechaInicio
     }
   };
 };

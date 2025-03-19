@@ -24,6 +24,10 @@ const Usuario = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true
     },
+    numNcPrefId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     username: {
       type: DataTypes.STRING(50),
       allowNull: true

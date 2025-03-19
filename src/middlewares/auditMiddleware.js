@@ -7,14 +7,14 @@ const Presentacion = require("../models/presentacion.model");
 const Usuario = require("../models/usuario.model");
 const Cliente = require("../models/cliente.model");
 const Empresa = require("../models/empresa.model");
-const FormaVenta = require("../models/formaVenta.model");
+const CondicionPago = require("../models/condicionPago.model");
 const Producto = require("../models/producto.model");
 const Valoracion = require("../models/valoracion.model");
 const Variante = require("../models/variante.model");
 const Variedad = require("../models/variedad.model");
 const ListaPrecio = require("../models/listaPrecio.model");
 const MedioPago = require("../models/medioPago.model");
-const Venta = require("../models/venta.model");
+const Documento = require("../models/documento.model");
 const Marca = require("../models/marca.model");
 const SubCategoria = require("../models/subCategoria.model");
 const Sucursal = require("../models/sucursal.model");
@@ -29,14 +29,14 @@ const routeToModelMap = {
   '/M2POS/presentaciones': Presentacion,
   '/M2POS/clientes': Cliente, 
   '/M2POS/empresas': Empresa,
-  '/M2POS/forma-venta': FormaVenta,
+  '/M2POS/forma-documento': CondicionPago,
   '/M2POS/productos': Producto,
   '/M2POS/valoraciones': Valoracion,
   '/M2POS/variantes': Variante,
   '/M2POS/variedades': Variedad,
   '/M2POS/lista-precio': ListaPrecio,
   '/M2POS/medio-pago': MedioPago,
-  '/M2POS/ventas': Venta,
+  '/M2POS/documentos': Documento,
   '/M2POS/marcas': Marca,
   '/M2POS/subcategorias': SubCategoria,
   '/M2POS/sucursales': Sucursal,

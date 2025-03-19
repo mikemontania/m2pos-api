@@ -86,10 +86,10 @@ const findAll = async (req, res) => {
 const create = async (req, res) => {
   try {
     const { empresaId  } = req.usuario;
-    const {   sucursalId, username, usuario, img, rol, activo, password ,numPrefId} = req.body;
+    const {   sucursalId, username, usuario, img, rol, activo, password ,numPrefId,numNcPrefId} = req.body;
     const salt = Bcryptjs.genSaltSync();
     const passwordEncode = Bcryptjs.hashSync(password, salt);
-    const nuevoUsuario = await Usuario.create({ empresaId, sucursalId, username, usuario,numPrefId, img, rol, activo, password:passwordEncode  });
+    const nuevoUsuario = await Usuario.create({ empresaId, sucursalId, username, usuario,numPrefId,numNcPrefId, img, rol, activo, password:passwordEncode  });
     res.status(201).json(nuevoUsuario);
   } catch (error) {
     console.error(error);
@@ -103,7 +103,7 @@ const update = async (req, res) => {
   try {
     const { id } = req.params;
     const { empresaId } = req.usuario;
-    const { sucursalId, username, usuario,  rol, activo, bloqueado, password,numPrefId } = req.body;
+    const { sucursalId, username, usuario,  rol, activo, bloqueado, password,numPrefId,numNcPrefId } = req.body;
     const usuarioActualizado = await Usuario.findByPk(id);
     
     if (usuarioActualizado) {
@@ -111,10 +111,10 @@ const update = async (req, res) => {
         // Solo actualiza el password si no es vacío ni nulo
         const salt = Bcryptjs.genSaltSync();
         const passwordEncode = Bcryptjs.hashSync(password, salt);
-        await usuarioActualizado.update({ ...usuarioActualizado, empresaId, sucursalId, username, numPrefId,usuario,   rol, activo,intentos:0, bloqueado, password: passwordEncode });
+        await usuarioActualizado.update({ ...usuarioActualizado, empresaId, sucursalId, username, numPrefId,numNcPrefId,usuario,   rol, activo,intentos:0, bloqueado, password: passwordEncode });
       } else {
         // No actualiza el password si es vacío o nulo
-        await usuarioActualizado.update({ ...usuarioActualizado, empresaId, sucursalId, username, numPrefId,usuario,   rol, activo,intentos:0, bloqueado });
+        await usuarioActualizado.update({ ...usuarioActualizado, empresaId, sucursalId, username, numPrefId,numNcPrefId,usuario,   rol, activo,intentos:0, bloqueado });
       }
       
       res.status(200).json(usuarioActualizado);

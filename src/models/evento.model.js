@@ -1,4 +1,4 @@
-const Venta = require("./venta.model");
+const Documento = require("./documento.model");
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Evento= sequelize.define('Evento', {
@@ -38,8 +38,8 @@ const Evento= sequelize.define('Evento', {
   underscored: true, // Convierte automáticamente a snake_case
 });
  
-Evento.belongsTo(Venta, {
-    foreignKey: 'ventaId', 
+Evento.belongsTo(Documento, {
+    foreignKey: 'documentoId', 
     targetKey: 'id',
   });
   Evento.belongsTo(Rang, {

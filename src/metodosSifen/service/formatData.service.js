@@ -1,7 +1,7 @@
 const { formatDateToLocalISO } = require("../generarXml");
 const { paises } = require("./constants.service");
 
-const formatToParams = (venta, empresa) => {
+const formatToParams = (documento, empresa) => {
   try {
     return {
       ruc: empresa.ruc,
@@ -11,14 +11,14 @@ const formatToParams = (venta, empresa) => {
         codigo: act.cActEco,
         descripcion: act.dDesActEco
       })),
-      timbradoNumero: venta.timbrado,
-      timbradoFecha: venta.fechaInicio,
+      timbradoNumero: documento.timbrado,
+      timbradoFecha: documento.fechaInicio,
       tipoContribuyente: empresa.tipoContId,
       tipoRegimen: empresa.tipoImpId,
       establecimientos: [
         {
-          codigo: venta.sucursalId.toString().padStart(3, "0"),
-          direccion: venta.sucursal.direccion,
+          codigo: documento.sucursalId.toString().padStart(3, "0"),
+          direccion: documento.sucursal.direccion,
           numeroCasa: empresa.numCasa.toString(),
           complementoDireccion1: "",
           complementoDireccion2: "",
@@ -28,8 +28,8 @@ const formatToParams = (venta, empresa) => {
           distritoDescripcion: empresa.ciudad.descripcion,
           ciudad: empresa.barrio.codigo,
           ciudadDescripcion: empresa.barrio.descripcion,
-          telefono: venta.sucursal.telefono,
-          email: venta.sucursal.email, 
+          telefono: documento.sucursal.telefono,
+          email: documento.sucursal.email, 
         }
       ]
     };
@@ -39,10 +39,10 @@ const formatToParams = (venta, empresa) => {
   }
 };
 
-const formatToData = (venta, empresa) => {
-  console.log("venta ", JSON.stringify(venta, null, 2)); 
+const formatToData = (documento, empresa) => {
+  console.log("documento ", JSON.stringify(documento, null, 2)); 
   
-  const esContado = venta.formaVenta.id == 1;
+  const esContado = documento.condicionPago.id == 1;
 
   const condicion = esContado
     ? {
@@ -50,7 +50,7 @@ const formatToData = (venta, empresa) => {
         entregas: [
           {
             tipo: 1,
-            monto: venta.importeTotal,
+            monto: documento.importeTotal,
             moneda: "PYG",
             cambio: 0
           }
@@ -59,19 +59,19 @@ const formatToData = (venta, empresa) => {
     : { tipo: 2 ,
       credito: {
         tipo: 1,
-        plazo: `${venta.formaVenta.dias} días`,
+        plazo: `${documento.condicionPago.dias} días`,
         cuotas: 1,
-        montoEntrega: venta.importeTotal,
+        montoEntrega: documento.importeTotal,
         infoCuotas: [
           {
             moneda: empresa.codMoneda,
-            monto: venta.importeTotal,
-            vencimiento: venta.fechaVencimiento
+            monto: documento.importeTotal,
+            vencimiento: documento.fechaVencimiento
           },
           {
             moneda: empresa.codMoneda,
-            monto: venta.importeTotal,
-            vencimiento: venta.fechaVenta
+            monto: documento.importeTotal,
+            vencimiento: documento.fecha
           }
         ]
       }
@@ -82,9 +82,9 @@ const formatToData = (venta, empresa) => {
 
   try {
     const [establecimiento, punto, numero] =
-      venta.nroComprobante.split("-") || [];
-    const pais = paises.find(p => p.codigo == venta.cliente.codigoPais);
-    const items = venta.detalles.map(detalle => ({
+      documento.nroComprobante.split("-") || [];
+    const pais = paises.find(p => p.codigo == documento.cliente.codigoPais);
+    const items = documento.detalles.map(detalle => ({
       codigo: detalle.codigo,
       descripcion: detalle.descripcion,
       observacion: null,
@@ -121,16 +121,16 @@ const formatToData = (venta, empresa) => {
     }));
 
     return {
-      cdc: venta.cdc,
-      codigoSeguridad: venta.codigoSeguridad,
-      tipoDocumento: venta.itide,
+      cdc: documento.cdc,
+      codigoSeguridad: documento.codigoSeguridad,
+      tipoDocumento: documento.itide,
       establecimiento: establecimiento,
-      codigoSeguridadAleatorio: venta.codigoSeguridad,
+      codigoSeguridadAleatorio: documento.codigoSeguridad,
       punto: punto,
       numero: numero,
       descripcion: "",
       observacion: "",
-      fecha: formatDateToLocalISO(venta.fechaCreacion),
+      fecha: formatDateToLocalISO(documento.fechaCreacion),
       tipoEmision: 1,
       tipoTransaccion: empresa.tipoTransaId,
       tipoImpuesto: empresa.tipoImpId,
@@ -141,13 +141,13 @@ const formatToData = (venta, empresa) => {
       anticipoGlobal: 0,
       cambio: 6700,
       cliente: {
-        contribuyente: (venta.cliente.naturalezaReceptor == 1)?true:false,
-        ruc:  (venta.cliente.naturalezaReceptor == 1)? venta.cliente.nroDocumento:null,
-        documentoNumero: (venta.cliente.naturalezaReceptor == 2)? venta.cliente.nroDocumento:null,
-        razonSocial: venta.cliente.razonSocial,
-        nombreFantasia: venta.cliente.nombreFantasia,
-        tipoOperacion: venta.cliente.tipoOperacionId,
-        direccion: venta.cliente.direccion,
+        contribuyente: (documento.cliente.naturalezaReceptor == 1)?true:false,
+        ruc:  (documento.cliente.naturalezaReceptor == 1)? documento.cliente.nroDocumento:null,
+        documentoNumero: (documento.cliente.naturalezaReceptor == 2)? documento.cliente.nroDocumento:null,
+        razonSocial: documento.cliente.razonSocial,
+        nombreFantasia: documento.cliente.nombreFantasia,
+        tipoOperacion: documento.cliente.tipoOperacionId,
+        direccion: documento.cliente.direccion,
         numeroCasa: "0",
         departamento: null,
         departamentoDescripcion: null,
@@ -157,23 +157,23 @@ const formatToData = (venta, empresa) => {
         ciudadDescripcion: null,
         pais: pais.codigo,
         paisDescripcion: pais.descripcion,
-        tipoContribuyente: venta.cliente.tipoContribuyente,
-        documentoTipo: venta.cliente.tipoDocIdentidad,
-        telefono: venta.cliente.telefono,
-        celular: venta.cliente.celular,
-        email: venta.cliente.email,
-        //codigo: venta.cliente.id
+        tipoContribuyente: documento.cliente.tipoContribuyente,
+        documentoTipo: documento.cliente.tipoDocIdentidad,
+        telefono: documento.cliente.telefono,
+        celular: documento.cliente.celular,
+        email: documento.cliente.email,
+        //codigo: documento.cliente.id
       },
 
       factura: {
         presencia: 1,
-        fechaEnvio: venta.fechaVenta,
+        fechaEnvio: documento.fecha,
         dncp: {
           modalidad: "00",
           entidad: 11111,
           periodo: 11,
           secuencia: 1111111,
-          fecha: venta.fechaVenta
+          fecha: documento.fecha
         }
       }, 
       condicion,    

@@ -1,17 +1,17 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');   
-const Venta = require('./venta.model');
+const Documento = require('./documento.model');
 const Variante = require('./variante.model');
 
-const VentaDetalle = sequelize.define('VentaDetalle', {
+const DocumentoDetalle = sequelize.define('DocumentoDetalle', {
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false
   },
-  ventaId: {
+  documentoId: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
@@ -88,19 +88,19 @@ const VentaDetalle = sequelize.define('VentaDetalle', {
     defaultValue:1
   },
 }, {
-  tableName: 'ventas_detalle',
+  tableName: 'documentos_detalle',
   timestamps: false,
   underscored: true, // Convierte automáticamente a snake_case
 });
 
-VentaDetalle.belongsTo(Venta, {
-  foreignKey: 'ventaId',
+DocumentoDetalle.belongsTo(Documento, {
+  foreignKey: 'documentoId',
   targetKey: 'id',
 }); 
-VentaDetalle.belongsTo(Variante, {
+DocumentoDetalle.belongsTo(Variante, {
   foreignKey: 'varianteId',
   as:'variante',
   targetKey: 'id',
 });
  
-module.exports = VentaDetalle;
+module.exports = DocumentoDetalle;

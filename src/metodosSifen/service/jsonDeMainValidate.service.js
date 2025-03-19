@@ -2610,7 +2610,7 @@ const generateDatosTotalesValidate = (data) => {
 const generateDatosComercialesUsoGeneralValidate = (data) => {
   const jsonResult = {
     //dOrdCompra : data['complementarios']['ordenCompra'],
-    //dOrdVta : data['complementarios']['ordenVenta'],
+    //dOrdVta : data['complementarios']['ordenDocumento'],
     //dAsiento : data['complementarios']['numeroAsiento']
   };
 
@@ -2632,7 +2632,7 @@ const generateDatosCargaValidate = (data) => {
   //TODO ALL
   /*const jsonResult = {
     cUniMedTotVol : data['complementarios']['carga']['unidadMedida'], 
-          dDesUniMedTotVol : data['complementarios']['carga']['ordenVenta'],
+          dDesUniMedTotVol : data['complementarios']['carga']['ordenDocumento'],
           dTotVolMerc : data['complementarios']['carga']['totalVolumenMercaderia'],
           cUniMedTotPes : data['complementarios']['carga']['numeroAsiento'],
           dDesUniMedTotPes : data['complementarios']['carga']['numeroAsiento'],

@@ -33,7 +33,7 @@ try{
 
       const datos = [
         { titulo: "Fecha y hora de emisión:", valor: formatDate(fecha) ?? "" },//D002
-        { titulo: "Condición Venta:", valor: condicionesPago?.dDCondOpe?.[0] ?? "" }, //E602
+        { titulo: "Condición Documento:", valor: condicionesPago?.dDCondOpe?.[0] ?? "" }, //E602
         { titulo: "Moneda:", valor: operacionCom?.cMoneOpe?.[0] ?? "" },//E644
         { titulo: "Descripción de moneda de la operación:", valor: operacionCom?.dDesMoneOpe?.[0] ?? "" },//E644
         {titulo:   condicionesPago.gPagCred?.[0]?.iCondCred?.[0] == 2 ? condicionesPago.gPagCred?.[0]?.dCuotas?.[0] :  condicionesPago.gPagCred?.[0]?.dPlazoCre?.[0]     ?? ""},

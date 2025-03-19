@@ -1,7 +1,7 @@
-const Venta = require("./venta.model");
+const Documento = require("./documento.model");
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
-const ErrorVenta = sequelize.define('ErrorVenta', {
+const ErrorDocumento = sequelize.define('ErrorDocumento', {
     id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
@@ -15,23 +15,23 @@ const ErrorVenta = sequelize.define('ErrorVenta', {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    VentaId: {
+    DocumentoId: {
       type: DataTypes.BIGINT,
       allowNull: true,
       
     }
   }, {
-    tableName: 'errores_venta',
+    tableName: 'errores_documento',
     timestamps: false,
     underscored: true, // Convierte automáticamente a snake_case
     
   });
  
-  ErrorVenta.belongsTo(Venta, {
-    foreignKey: 'ventaId', 
+  ErrorDocumento.belongsTo(Documento, {
+    foreignKey: 'documentoId', 
     targetKey: 'id',
   });
    
   
-    module.exports = ErrorVenta;
+    module.exports = ErrorDocumento;
   

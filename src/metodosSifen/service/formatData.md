@@ -337,11 +337,11 @@ El campo Email, si bien puede informarse mas de 1 (uno), en el Sifen solamente s
     },
     "complementarios" : {
         "ordenCompra" : "",
-        "ordenVenta" : "",
+        "ordenDocumento" : "",
         "numeroAsiento" : "",
         "carga" : {
             "ordenCompra" : "",
-            "ordenVenta" : "",
+            "ordenDocumento" : "",
             "numeroAsiento" : ""
         }
     },

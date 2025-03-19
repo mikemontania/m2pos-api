@@ -1,40 +1,40 @@
 const cron = require("node-cron");
 // Asegúrate de importar el modelo adecuado 
-const Venta = require("../models/venta.model");
+const Documento = require("../models/documento.model");
  require("dotenv").config(); // Cargar variables de entorno
 const { Op } = require("sequelize");
- const VentaXml = require("../models/ventaXml.model"); 
+ const DocumentoXml = require("../models/documentoXml.model"); 
 const { enviarLote } = require("../metodosSifen/envioLote.service"); 
-const { cargandoLote, actualizarLote, relacionarVentasConLote } = require("../metodosSifen/service/createLote.service");
+const { cargandoLote, actualizarLote, relacionarDocumentosConLote } = require("../metodosSifen/service/createLote.service");
 
  
-const obtenerVentasProcesadas = async (empresaId) => {
+const obtenerDocumentosProcesadas = async (empresaId) => {
   try {
-    const ventas = await Venta.findAll({
+    const documentos = await Documento.findAll({
       where: {
         empresaId,
         estado: 'Procesado',
       },
       attributes: ['id'],
       order: [['id', 'ASC']], // Ordena por ID ascendente (más antiguas primero)
-      limit: 50, // Obtiene las primeras 50 ventas
+      limit: 50, // Obtiene las primeras 50 documentos
       raw: true,
     });
 
-    return ventas.map(venta => venta.id); // Retorna solo los IDs
+    return documentos.map(documento => documento.id); // Retorna solo los IDs
   } catch (error) {
-    console.error(`❌ Error al obtener ventas procesadas para empresa ${empresaId}:`, error);
+    console.error(`❌ Error al obtener documentos procesadas para empresa ${empresaId}:`, error);
     return [];
   }
 };
 
-const obtenerXmlsFirmados = async (empresaId, ventaIds) => {
+const obtenerXmlsFirmados = async (empresaId, documentoIds) => {
   try {
-    if (!ventaIds?.length) return [];
+    if (!documentoIds?.length) return [];
 
-    const xmls = await VentaXml.findAll({
+    const xmls = await DocumentoXml.findAll({
       where: {
-        ventaId: { [Op.in]: ventaIds },
+        documentoId: { [Op.in]: documentoIds },
         empresaId,
         estado: 'FIRMADO',
       },
@@ -49,14 +49,14 @@ const obtenerXmlsFirmados = async (empresaId, ventaIds) => {
   }
 };
 
-const actualizarEstadoVentas = async (ventaIds, nuevoEstado) => {
+const actualizarEstadoDocumentos = async (documentoIds, nuevoEstado) => {
   try {
-    await Venta.update({ estado: nuevoEstado }, {
-      where: { id: { [Op.in]: ventaIds } }
+    await Documento.update({ estado: nuevoEstado }, {
+      where: { id: { [Op.in]: documentoIds } }
     });
-    console.log(`✅ Ventas actualizadas a estado: ${nuevoEstado}`);
+    console.log(`✅ Documentos actualizadas a estado: ${nuevoEstado}`);
   } catch (error) {
-    console.error('❌ Error al actualizar ventas:', error);
+    console.error('❌ Error al actualizar documentos:', error);
   }
 };
 
@@ -70,21 +70,21 @@ const envioLoteXml = async (empresasXml) => {
       empresasXml.map(async (empresa) => {
         
         let enviado = 0;
-        let ventasIds = [];
+        let documentosIds = [];
         //mientras no se haya enviado y no tengamos ids
-        while (enviado !== 1 && ventasIds != []) {
-          // Obtener ventas procesadas
-          ventasIds = await obtenerVentasProcesadas(empresa.id);
-          console.log('ventasIds', ventasIds)
-          if (ventasIds?.length === 0) {
-            console.log(`🚀 No hay más ventas por procesar para empresa ${empresa.id}.`);
+        while (enviado !== 1 && documentosIds != []) {
+          // Obtener documentos procesadas
+          documentosIds = await obtenerDocumentosProcesadas(empresa.id);
+          console.log('documentosIds', documentosIds)
+          if (documentosIds?.length === 0) {
+            console.log(`🚀 No hay más documentos por procesar para empresa ${empresa.id}.`);
             break;
           }
-          console.log(`📄 Se procesarán ${ventasIds.length} ventas.`);
-          // Obtener XMLs firmados de esas ventas
-          const xmls = await obtenerXmlsFirmados(empresa.id, ventasIds);
+          console.log(`📄 Se procesarán ${documentosIds.length} documentos.`);
+          // Obtener XMLs firmados de esas documentos
+          const xmls = await obtenerXmlsFirmados(empresa.id, documentosIds);
           if (xmls.length === 0) {
-            console.warn('⚠️ No se encontraron XMLs firmados para estas ventas.');
+            console.warn('⚠️ No se encontraron XMLs firmados para estas documentos.');
             break;
           }
 
@@ -99,27 +99,27 @@ const envioLoteXml = async (empresasXml) => {
           // Actualizar el lote con la respuesta
           const loteActualizado = await actualizarLote(lote.id, respuesta.respuesta, respuesta.id);
           console.log(loteActualizado)
-          // Crear relación entre el lote y las ventas
-          await relacionarVentasConLote(lote.id, ventasIds);
-          // Actualizar estado de las ventas según el resultado del envío
+          // Crear relación entre el lote y las documentos
+          await relacionarDocumentosConLote(lote.id, documentosIds);
+          // Actualizar estado de las documentos según el resultado del envío
           if (loteActualizado.estado === "RECIBIDO") {
             console.log(`📨 Envío exitoso de ${xmls.length} XMLs.`);
-            await actualizarEstadoVentas(ventasIds, 'Recibido');
+            await actualizarEstadoDocumentos(documentosIds, 'Recibido');
           } else {
             console.warn(`⚠️ Fallo en el envío de ${lote.numeroLote} XMLs.`);
-            await actualizarEstadoVentas(ventasIds, 'Rechazado');
+            await actualizarEstadoDocumentos(documentosIds, 'Rechazado');
           }
 
         }
       })
     );
   } catch (error) {
-    console.error('❌ Error al revisar ventas pendientes:', error);
+    console.error('❌ Error al revisar documentos pendientes:', error);
   }
 }
 
  
 module.exports = {
   envioLoteXml,
-  actualizarEstadoVentas
+  actualizarEstadoDocumentos
 };

@@ -493,7 +493,7 @@ const { leftZero } = require("./util");
       0
     ) {
      errors.push(
-        "Tipo de Operación de Venta de Automotor '" +
+        "Tipo de Operación de Documento de Automotor '" +
           item['sectorAutomotor']['tipo'] +
           "' en data.items[" +
           i +

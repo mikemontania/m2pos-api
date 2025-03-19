@@ -11,7 +11,7 @@ router.get('/:id', validarJWT,   numeracionController.getById);
 router.get('/paginados/:page/:pageSize?', validarJWT,  numeracionController.findNumeracionesPaginados);
 
 // Ruta para buscar todas las numeraciones
-router.get('/list/:sucursalId', validarJWT,   numeracionController.findAll);
+router.get('/list/:sucursalId/:itide', validarJWT,   numeracionController.findAll);
 
 // Ruta para crear una nueva numeración
 router.post('/', validarJWT,   numeracionController.create);

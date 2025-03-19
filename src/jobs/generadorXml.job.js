@@ -1,32 +1,32 @@
 const cron = require("node-cron");
   // Asegúrate de importar el modelo adecuado
- const Venta = require("../models/venta.model"); 
+ const Documento = require("../models/documento.model"); 
 const Sucursal = require("../models/sucursal.model");
 const Cliente = require("../models/cliente.model");
 const TablaSifen = require("../models/tablaSifen.model"); 
 require("dotenv").config(); // Cargar variables de entorno 
- const FormaVenta = require("../models/formaVenta.model");
+ const CondicionPago = require("../models/condicionPago.model");
 const Variante = require("../models/variante.model");
 const Presentacion = require("../models/presentacion.model");
 const Variedad = require("../models/variedad.model");
 const Producto = require("../models/producto.model");
 const Unidad = require("../models/unidad.model");
-const VentaDetalle = require("../models/ventaDetalle.model"); 
+const DocumentoDetalle = require("../models/documentoDetalle.model"); 
 const { formatToParams, formatToData } = require("../metodosSifen/service/formatData.service");
 const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service"); 
 const { normalizeXML } = require("../metodosSifen/service/util");
 const { signXML } = require("../metodosSifen/service/signxml.service");
 const { generateQR } = require("../metodosSifen/service/generateQR.service");
-const { crearVentaXml } = require("../controllers/ventaXml-controller");
+const { crearDocumentoXml } = require("../controllers/documentoXml-controller");
 
-const obtenerVentasPendientes = async () => {
+const obtenerDocumentosPendientes = async () => {
   try {
-    // Obteniendo las ventas pendientes
-    const ventas = await Venta.findAll({
-      where: { estado: 'Pendiente', anulado:false }, // Filtra por ventas pendientes
+    // Obteniendo las documentos pendientes
+    const documentos = await Documento.findAll({
+      where: { estado: 'Pendiente', anulado:false }, // Filtra por documentos pendientes
       include: [
         { model: Sucursal, as: 'sucursal' },
-        { model: FormaVenta, as: 'formaVenta' },
+        { model: CondicionPago, as: 'condicionPago' },
         { model: Cliente, as: 'cliente' },
         { model: TablaSifen, as: 'tipoDocumento' }
       ],
@@ -39,11 +39,11 @@ const obtenerVentasPendientes = async () => {
     let totalImporteIva10 = 0;
     let totalImporteIvaexe = 0;
 
-    // Obteniendo detalles de cada venta y sus productos
-    const ventasCompletas = await Promise.all(
-      ventas.map(async (venta) => {
-        const detalles = await VentaDetalle.findAll({
-          where: { ventaId: venta.id },
+    // Obteniendo detalles de cada documento y sus productos
+    const documentosCompletas = await Promise.all(
+      documentos.map(async (documento) => {
+        const detalles = await DocumentoDetalle.findAll({
+          where: { documentoId: documento.id },
           include: [
             {
               model: Variante,
@@ -59,12 +59,12 @@ const obtenerVentasPendientes = async () => {
           raw: true,
           nest: true
         });
-        venta.importeDescuento= +(venta.importeDescuento),
-        venta.importeNeto= +(venta.importeNeto),
-        venta.importeSubtotal= +(venta.importeSubtotal),
-        venta.importeTotal= +(venta.importeTotal),
+        documento.importeDescuento= +(documento.importeDescuento),
+        documento.importeNeto= +(documento.importeNeto),
+        documento.importeSubtotal= +(documento.importeSubtotal),
+        documento.importeTotal= +(documento.importeTotal),
         // Procesando cada detalle
-        venta.detalles = detalles.map((detalle) => {
+        documento.detalles = detalles.map((detalle) => {
           
           const importeIva5 = detalle.importeIva5 > 0 ? detalle.importeIva5 : 0;
           const importeIva10 = detalle.importeIva10 > 0 ? detalle.importeIva10 : 0;
@@ -97,19 +97,19 @@ const obtenerVentasPendientes = async () => {
           };
         });
 
-        return venta; // Retornar la venta con sus detalles
+        return documento; // Retornar la documento con sus detalles
       })
     );
 
-    // Imprimiendo las ventas completas
-  //  console.log('ventasCompletas<================================================>');
+    // Imprimiendo las documentos completas
+  //  console.log('documentosCompletas<================================================>');
      
-   // console.log(JSON.stringify(ventasCompletas, null, 2));//mostrar json en consola
+   // console.log(JSON.stringify(documentosCompletas, null, 2));//mostrar json en consola
 
    // console.log('<================================================>');
-    return ventasCompletas; // Retornar el resultado final
+    return documentosCompletas; // Retornar el resultado final
   } catch (error) {
-    console.error('Error al obtener ventas pendientes:', error);
+    console.error('Error al obtener documentos pendientes:', error);
   }
 }; 
 // Función para generar registros xml
@@ -120,44 +120,44 @@ const generarXml = async ( empresasXml) => {
     await Promise.all(
       empresasXml.map(async (empresa) => { 
 
-        const ventasPendientes = await obtenerVentasPendientes(empresa.id);
-        if (!ventasPendientes?.length) {
-          console.warn(`⚠️ No se encontraron ventas pendientes para empresa ${empresa.razonSocial} id ${empresa.id}.`);
+        const documentosPendientes = await obtenerDocumentosPendientes(empresa.id);
+        if (!documentosPendientes?.length) {
+          console.warn(`⚠️ No se encontraron documentos pendientes para empresa ${empresa.razonSocial} id ${empresa.id}.`);
           return;
         } 
         await Promise.all(
-          ventasPendientes.map(async (venta) => {
+          documentosPendientes.map(async (documento) => {
             try {
 
-              const params = await formatToParams(venta,empresa); 
-              const data = await formatToData(venta,empresa);  
+              const params = await formatToParams(documento,empresa); 
+              const data = await formatToData(documento,empresa);  
               let xmlBase = await generateXMLDE(params,data);  
               xmlBase =    normalizeXML(xmlBase);          
               xmlBase = xmlBase.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
-              await crearVentaXml(empresa.id, venta.id, xmlBase, 1  ,'GENERADO'  )  
+              await crearDocumentoXml(empresa.id, documento.id, xmlBase, 1  ,'GENERADO'  )  
               const xmlFirmado =await signXML(xmlBase,empresa.certificado) 
               const xmlFirmadoConQr =await generateQR(xmlFirmado,  empresa.idCSC,  empresa.csc);
               console.log('Este es el xml xmlFirmadoConQr =>',xmlFirmadoConQr)
-              await crearVentaXml(empresa.id, venta.id, xmlFirmadoConQr, 2  ,'FIRMADO'  ) 
+              await crearDocumentoXml(empresa.id, documento.id, xmlFirmadoConQr, 2  ,'FIRMADO'  ) 
               const estado = xmlFirmadoConQr ? 'Procesado' : 'Error'; 
-             const ventaUpd = await Venta.update(
+             const documentoUpd = await Documento.update(
                 {
                    estado,
                  
                 },
                 {
-                  where: { id: venta.id }
+                  where: { id: documento.id }
                 }
               );
 
                
               console.log(
                 xmlFirmadoConQr?.length
-                  ? `✅ Venta con CDC ${venta.cdc}, comprobante ${venta.nroComprobante} procesado con éxito.`
-                  : `❌ Error al generar XML para CDC ${venta.cdc}, comprobante ${venta.nroComprobante}.`
+                  ? `✅ Documento con CDC ${documento.cdc}, comprobante ${documento.nroComprobante} procesado con éxito.`
+                  : `❌ Error al generar XML para CDC ${documento.cdc}, comprobante ${documento.nroComprobante}.`
               );
             } catch (error) {
-              console.error(`❌ Error procesando la venta ${venta.id}:`, error);
+              console.error(`❌ Error procesando la documento ${documento.id}:`, error);
             }
           })
         ); 

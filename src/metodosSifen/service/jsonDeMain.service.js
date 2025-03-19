@@ -335,7 +335,7 @@ const generateDatosGenerales = (params, data, json) => {
      * 
      * <gOpeCom>
             <iTipTra>1</iTipTra>
-            <dDesTipTra>Venta de mercadería</dDesTipTra>
+            <dDesTipTra>Documento de mercadería</dDesTipTra>
             <iTImp>1</iTImp>
             <dDesTImp>IVA</dDesTImp>
             <cMoneOpe>PYG</cMoneOpe>

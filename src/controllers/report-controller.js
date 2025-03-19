@@ -1,10 +1,10 @@
 const fs = require("fs");
 const path = require("path"); // Agrega esta línea para requerir el módulo path
 const { createInvoice } = require("../helpers/pdfGenerator");
-const Venta = require("../models/venta.model");
-const VentaDetalle = require("../models/ventaDetalle.model");
+const Documento = require("../models/documento.model");
+const DocumentoDetalle = require("../models/documentoDetalle.model");
 const Cliente = require("../models/cliente.model");
-const FormaVenta = require("../models/formaVenta.model");
+const CondicionPago = require("../models/condicionPago.model");
 const Sucursal = require("../models/sucursal.model");
 const Empresa = require("../models/empresa.model");
 const Usuario = require("../models/usuario.model");
@@ -38,7 +38,7 @@ const getReporteCobranza = async (req, res) => {
     console.log(fechaDesde);
     console.log(desde);
     if (desde && hasta) {
-      condiciones.fechaVenta = {
+      condiciones.fecha = {
         [Op.gte]: desde, // Mayor o igual que la fecha desde
         [Op.lte]: hasta  // Menor o igual que la fecha hasta
       };
@@ -55,11 +55,11 @@ const getReporteCobranza = async (req, res) => {
       condiciones2.medioPagoId = medioPagoId;
     }
 
-    const ventas = await Venta.findAll({
+    const documentos = await Documento.findAll({
       where: condiciones,
       attributes: [
         "id",
-        "fechaVenta",
+        "fecha",
         "nroComprobante",
         "importeTotal",
         "cobranzaId"
@@ -76,8 +76,8 @@ const getReporteCobranza = async (req, res) => {
 
     let detalles = [];
 
-    for (const venta of ventas) {
-      condiciones2.cobranzaId = venta.cobranzaId;
+    for (const documento of documentos) {
+      condiciones2.cobranzaId = documento.cobranzaId;
 
       const cobranzaDetallesArray = await CobranzaDetalle.findAll({
         where: condiciones2,
@@ -93,7 +93,7 @@ const getReporteCobranza = async (req, res) => {
 
       for (const primerCobranzaDetalle of cobranzaDetalles) {
         detalles.push({
-          ...venta.toJSON(), // Aplicar toJSON() a la venta
+          ...documento.toJSON(), // Aplicar toJSON() a la documento
           importeCobrado: primerCobranzaDetalle.importeCobrado,
           nroRef: primerCobranzaDetalle.nroRef,
           medioPago: primerCobranzaDetalle.medioPago.descripcion
@@ -132,7 +132,7 @@ const getReporteCobranza = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al listar las ventas" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al listar las documentos" });
   }
 };
 
@@ -152,11 +152,11 @@ const getVendedoresPorTotal = async (req, res) => {
         COUNT(v.id) as cantidad,
         SUM(v.total_kg) AS peso,
         SUM(v.importe_total) total
-      FROM ventas v  
+      FROM documentos v  
       JOIN usuarios u ON u.id = v.usuario_creacion_id
       WHERE
         v.anulado = false   AND v.empresa_id = :empresaId
-        AND v.fecha_Venta BETWEEN :fechaDesde AND :fechaHasta
+        AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
       GROUP BY u.id, vendedor ORDER BY total  DESC 
     `;
@@ -235,14 +235,14 @@ const getTopClientes = async (req, res) => {
         SUM(v.importe_total) AS totalImporte,
         COUNT(v.id) AS totalFacturas
       FROM
-        ventas v
+        documentos v
       JOIN
         clientes c ON v.cliente_id = c.id
       WHERE
         v.anulado = false AND v.empresa_id = :empresaId
         AND c.predeterminado = false
         AND c.propietario = false
-        AND v.fecha_venta BETWEEN :fechaDesde AND :fechaHasta
+        AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
 
       GROUP BY
@@ -283,15 +283,15 @@ const getTopVariantes = async (req, res) => {
         SUM(vd.total_kg) AS peso,
         SUM(vd.importe_total) AS totalImporte
       FROM
-        ventas_detalle vd
+        documentos_detalle vd
       JOIN
-        ventas v ON vd.venta_id = v.id
+        documentos v ON vd.documento_id = v.id
       JOIN variantes va ON va.id = vd.variante_id
       JOIN productos pro ON va.producto_id = pro.id
       JOIN presentaciones pre ON va.presentacion_id = pre.id
       JOIN variedades var ON va.variedad_id = var.id
       WHERE v.anulado = false AND v.empresa_id = :empresaId
-        AND v.fecha_Venta BETWEEN :fechaDesde AND :fechaHasta
+        AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
       GROUP BY
       va.id,
@@ -318,7 +318,7 @@ const getTopVariantes = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   "Error al obtener el top de variantes" });
   }
 };
-const getReporteVentasPorSucursal = async (req, res) => {
+const getReporteDocumentosPorSucursal = async (req, res) => {
   try {
     const { fechaDesde, fechaHasta, sucursalId } = req.params;
     const { empresaId } = req.usuario;
@@ -326,21 +326,21 @@ console.log(sucursalId)
     // Ajustar la condición para la sucursal
     const sucursalCondition = sucursalId !== '0' ? "AND s.id = :sucursalId" : "";
 
-    // Realizar la consulta a la base de datos para obtener la cantidad de ventas y totales por sucursal
+    // Realizar la consulta a la base de datos para obtener la cantidad de documentos y totales por sucursal
     const query = `
       SELECT
         s.id AS sucursalId,
         s.descripcion AS sucursalNombre,
-        COUNT(v.id) AS totalVentas,
+        COUNT(v.id) AS totalDocumentos,
         SUM(v.importe_total) AS totalImporte
       FROM
-        ventas v
+        documentos v
       JOIN
         sucursales s ON v.sucursal_id = s.id
       WHERE
         v.anulado = false
         AND v.empresa_id = :empresaId
-        AND v.fecha_venta BETWEEN :fechaDesde AND :fechaHasta
+        AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
       GROUP BY
         s.id, s.descripcion
@@ -362,14 +362,14 @@ console.log(sucursalId)
     console.error(error);
     res
       .status(500)
-      .json({ error: error?.original?.detail ||  "Error al obtener el reporte de ventas por sucursal" });
+      .json({ error: error?.original?.detail ||  "Error al obtener el reporte de documentos por sucursal" });
   }
 };
 const getPdf = async (req, res) => {
   const { empresaId } = req.usuario;
   const { id } = req.params;
   try {
-    const venta = await Venta.findByPk(id, {
+    const documento = await Documento.findByPk(id, {
       include: [
         { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
         {
@@ -378,8 +378,8 @@ const getPdf = async (req, res) => {
           attributes: ["nroDocumento", "razonSocial", "direccion", "telefono"]
         },
         {
-          model: FormaVenta,
-          as: "formaVenta",
+          model: CondicionPago,
+          as: "condicionPago",
           attributes: ["id", "descripcion"]
         },
         {
@@ -399,8 +399,8 @@ const getPdf = async (req, res) => {
         }
       ]
     });
-    if (!venta) {
-      return res.status(404).json({ error: "Venta not found" });
+    if (!documento) {
+      return res.status(404).json({ error: "Documento not found" });
     }
     const  data = await EmpresaActividad.findAll({
       where: {   empresaId },
@@ -410,8 +410,8 @@ const getPdf = async (req, res) => {
       ...d.actividades['dataValues']
      }))
 
-    const detallesVenta = await VentaDetalle.findAll({
-      where: { ventaId: id },
+    const detallesDocumento = await DocumentoDetalle.findAll({
+      where: { documentoId: id },
       include: [
         {
           model: Variante,
@@ -441,23 +441,23 @@ const getPdf = async (req, res) => {
         }
       ]
     });
-    if (detallesVenta.length === 0) {
-      return res.status(404).json({ error: "No details found for this venta" });
+    if (detallesDocumento.length === 0) {
+      return res.status(404).json({ error: "No details found for this documento" });
     }
-    /* console.log(venta)
+    /* console.log(documento)
  */
 
     const cabecera = {
-      ...venta.dataValues,
-      sucursal: { ...venta.dataValues.sucursal.dataValues },
-      empresa: { ...venta.dataValues.empresa.dataValues,actividades },
-      vendedorCreacion: { ...venta.dataValues.vendedorCreacion.dataValues },
-      cliente: { ...venta.dataValues.cliente.dataValues },
-      formaVenta: { ...venta.dataValues.formaVenta.dataValues }
+      ...documento.dataValues,
+      sucursal: { ...documento.dataValues.sucursal.dataValues },
+      empresa: { ...documento.dataValues.empresa.dataValues,actividades },
+      vendedorCreacion: { ...documento.dataValues.vendedorCreacion.dataValues },
+      cliente: { ...documento.dataValues.cliente.dataValues },
+      condicionPago: { ...documento.dataValues.condicionPago.dataValues }
     };
     let detalles = [];
 
-    detallesVenta.forEach(detalle => {
+    detallesDocumento.forEach(detalle => {
       // Acceder a los datos de Variante
       const variante = detalle.variante;
       detalles.push({
@@ -506,7 +506,7 @@ const getPdf = async (req, res) => {
 module.exports = {
   getPdf,
   getReporteCobranza,
-  getReporteVentasPorSucursal ,
+  getReporteDocumentosPorSucursal ,
   getTopVariantes,
   getTopClientes,
   getInformeMediosDePago,  getVendedoresPorTotal

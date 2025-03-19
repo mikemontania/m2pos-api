@@ -55,7 +55,7 @@ const  tiposEmisiones = [
 const  tiposTransacciones = [
   {
     codigo: 1,
-    descripcion: "Venta de mercadería",
+    descripcion: "Documento de mercadería",
     situacion: 0
   },
   {
@@ -65,17 +65,17 @@ const  tiposTransacciones = [
   },
   {
     codigo: 3,
-    descripcion: "Mixto (Venta de mercadería y servicios)",
+    descripcion: "Mixto (Documento de mercadería y servicios)",
     situacion: 1
   },
   {
     codigo: 4,
-    descripcion: "Venta de activo fijo",
+    descripcion: "Documento de activo fijo",
     situacion: 0
   },
   {
     codigo: 5,
-    descripcion: "Venta de divisas",
+    descripcion: "Documento de divisas",
     situacion: 0
   },
   {
@@ -110,7 +110,7 @@ const  tiposTransacciones = [
   },
   {
     codigo: 12,
-    descripcion: "Venta de crédito fiscal",
+    descripcion: "Documento de crédito fiscal",
     situacion: 1
   },
   {
@@ -598,7 +598,7 @@ const  indicadoresPresencias = [
   },
   {
     codigo: 4,
-    descripcion: "Venta a domicilio"
+    descripcion: "Documento a domicilio"
   },
   {
     codigo: 5,
@@ -674,7 +674,7 @@ const  notasCreditosMotivos = [
 const  remisionesMotivos = [
   {
     codigo: 1,
-    descripcion: "Traslado por ventas"
+    descripcion: "Traslado por documentos"
   },
   {
     codigo: 2,
@@ -1279,19 +1279,19 @@ const  relevanciasMercaderias = [
 const  tiposOperacionesVehiculos = [
   {
     codigo: 1,
-    descripcion: "Venta a representante"
+    descripcion: "Documento a representante"
   },
   {
     codigo: 2,
-    descripcion: "Venta al consumidor final"
+    descripcion: "Documento al consumidor final"
   },
   {
     codigo: 3,
-    descripcion: "Venta a gobierno"
+    descripcion: "Documento a gobierno"
   },
   {
     codigo: 4,
-    descripcion: "Venta a flota de vehículos"
+    descripcion: "Documento a flota de vehículos"
   }
 ];
 

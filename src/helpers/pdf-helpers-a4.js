@@ -1,6 +1,6 @@
 const { NumeroALetra } = require("./convertLetter.js");
   
-const generarCabecera = (doc, venta , top) => {
+const generarCabecera = (doc, documento , top) => {
  
   const headerLeft = 30;
   const headerRight = 580;
@@ -12,17 +12,17 @@ const generarCabecera = (doc, venta , top) => {
   const barraVertical = headerLeft + anchoBloque2;
   const anchoBloque3 = headerRight-barraVertical;
   const encabezado = " ";
-  const empresa = venta.empresa.razonSocial;
-  const ruc = venta.empresa.ruc;
+  const empresa = documento.empresa.razonSocial;
+  const ruc = documento.empresa.ruc;
    
 
-  const web =    venta.empresa.web && venta.empresa.web.length > 1      ? `${venta.empresa.web}`  : null;
-  const sucursal = venta.sucursal.descripcion;
-  const direccion = venta.sucursal.direccion;
-  const telefono =    venta.sucursal.telefono && venta.sucursal.telefono.length > 1      ? `Tel: ${venta.sucursal.telefono}`      : null;
-  const cel =    venta.sucursal.cel && venta.sucursal.cel.length > 1      ? `Cel: ${venta.sucursal.cel}`      : null;
-  const timbrado = venta.timbrado;
-  const nroComprobante = venta.nroComprobante;
+  const web =    documento.empresa.web && documento.empresa.web.length > 1      ? `${documento.empresa.web}`  : null;
+  const sucursal = documento.sucursal.descripcion;
+  const direccion = documento.sucursal.direccion;
+  const telefono =    documento.sucursal.telefono && documento.sucursal.telefono.length > 1      ? `Tel: ${documento.sucursal.telefono}`      : null;
+  const cel =    documento.sucursal.cel && documento.sucursal.cel.length > 1      ? `Cel: ${documento.sucursal.cel}`      : null;
+  const timbrado = documento.timbrado;
+  const nroComprobante = documento.nroComprobante;
 
   const datos1 = `${sucursal} ${direccion} `;
   const datos2 = `${telefono} ${cel} ${web}`;
@@ -40,7 +40,7 @@ const generarCabecera = (doc, venta , top) => {
     .lineTo(barraVertical, headerBottom)
     .stroke("#aaaaaa");
   //logo
-     const img =    venta.empresa.img && venta.empresa.img.length > 1      ? `./src/uploads/empresas/${venta.empresa.img}`      : "./src/uploads/empresas/grupocavallaro.png"; 
+     const img =    documento.empresa.img && documento.empresa.img.length > 1      ? `./src/uploads/empresas/${documento.empresa.img}`      : "./src/uploads/empresas/grupocavallaro.png"; 
    doc.image(img, headerLeft  , top , { width: anchoImagen });
  
   //Bloque 2
@@ -52,9 +52,9 @@ const generarCabecera = (doc, venta , top) => {
 const bloque2 = [
   encabezado,
   empresa,
-  venta.empresa.actividades[0]?.descripcion,
-  venta.empresa.actividades[1]?.descripcion,
-  venta.empresa.actividades[2]?.descripcion,
+  documento.empresa.actividades[0]?.descripcion,
+  documento.empresa.actividades[1]?.descripcion,
+  documento.empresa.actividades[2]?.descripcion,
   datos1,
   datos2
 ];
@@ -75,7 +75,7 @@ bloque2.forEach((campo, index) => {
 
 const bloque3 = [
   { texto: "TIMBRADO N°: " + timbrado, top: topBloque, width: anchoBloque3, align: 'left', fontSize: 11 },
-  { texto: "DESDE " + formatDate(venta.fechaInicio)+" AL "+formatDate(venta.fechaFin), top: topBloque + 15, width: anchoBloque3, align: 'left', fontSize: 10 },
+  { texto: "DESDE " + formatDate(documento.fechaInicio)+" AL "+formatDate(documento.fechaFin), top: topBloque + 15, width: anchoBloque3, align: 'left', fontSize: 10 },
   { texto: "RUC: " + ruc, top: topBloque + 30, width: anchoBloque3, align: 'left', fontSize: 12 },
   { texto: "FACTURA", top: topBloque + 45, width: anchoBloque3, align: 'center', fontSize: 14 },
   { texto: "N° " + nroComprobante, top: topBloque + 65, width: anchoBloque3, align: 'left', fontSize: 14 }
@@ -92,7 +92,7 @@ bloque3.forEach(campo => {
 
 };
 
-const generarDatosCliente = (doc, venta, top) => {
+const generarDatosCliente = (doc, documento, top) => {
   const headerLeft = 30;
   const headerRight = 580;
   const headerBottom = top + 45; 
@@ -115,15 +115,15 @@ const generarDatosCliente = (doc, venta, top) => {
 
   const titulo1 = ["RAZÓN SOCIAL:", "RUC:", "DIRECCIÓN:", "CEL/TEL.:"];
   const data1 = [
-    capitalize(venta.cliente.razonSocial) || "",
-    venta.cliente.nroDocumento || "",
-    venta.cliente.direccion || "",
-    (venta.cliente.cel || "") +
-      (venta.cliente.telefono ? ` ${venta.cliente.telefono}` : "") || ""
+    capitalize(documento.cliente.razonSocial) || "",
+    documento.cliente.nroDocumento || "",
+    documento.cliente.direccion || "",
+    (documento.cliente.cel || "") +
+      (documento.cliente.telefono ? ` ${documento.cliente.telefono}` : "") || ""
   ];
 
   const titulo2 = ["FECHA DE EMISIÓN:", "CONDICIÓN DE VENTA:", "VENDEDOR: "];
-  const data2 = [    formatDate(venta.fechaVenta),    venta.formaVenta.descripcion,    venta.vendedorCreacion.usuario
+  const data2 = [    formatDate(documento.fecha),    documento.condicionPago.descripcion,    documento.vendedorCreacion.usuario
   ]; 
   doc
     .font("Helvetica-Bold")
@@ -364,8 +364,8 @@ const generarTotalTexto = (doc, importeTotal, top) => {
       { width: 52, align: "center" }
     );
 };
-const generarIva = (doc, venta, top) => {
-  const {importeIva5,importeIva10,importeIvaExenta} = venta;
+const generarIva = (doc, documento, top) => {
+  const {importeIva5,importeIva10,importeIvaExenta} = documento;
    const left = 30;
   const right = 580;
   const bottom = top+15;
@@ -381,14 +381,14 @@ const generarIva = (doc, venta, top) => {
     .font("Helvetica-Bold")
     .fontSize(7)
     .text("Liquidacion de iva: ", left + 5, top + 5);
-console.log(venta)
+console.log(documento)
     console.log({importeIva5,importeIva10,importeIvaExenta})
 
   doc
     .font("Helvetica-Bold")
     .fontSize(7)
     .text(
-      "5%: " + new Intl.NumberFormat("es-PY").format(venta.importeIva5),
+      "5%: " + new Intl.NumberFormat("es-PY").format(documento.importeIva5),
       left + 100,
       top + 5
     );
@@ -397,7 +397,7 @@ console.log(venta)
     .font("Helvetica-Bold")
     .fontSize(7)
     .text(
-      "10%: " + new Intl.NumberFormat("es-PY").format(venta.importeIva10),
+      "10%: " + new Intl.NumberFormat("es-PY").format(documento.importeIva10),
       left + 200,
       top + 5
     );
@@ -407,12 +407,12 @@ console.log(venta)
     .fontSize(7)
     .text(
       "Exenta: " +
-        new Intl.NumberFormat("es-PY").format(venta.importeIvaExenta),
+        new Intl.NumberFormat("es-PY").format(documento.importeIvaExenta),
       left + 350,
       top + 5
     ); */
 
-  const total = +venta.importeIva5 + +venta.importeIva10 + +venta.importeIvaExenta;
+  const total = +documento.importeIva5 + +documento.importeIva10 + +documento.importeIvaExenta;
   doc
     .font("Helvetica-Bold")
     .fontSize(7)

@@ -16,7 +16,7 @@ const Variante = require("./src/models/variante.model");
 const ListaPrecio = require("./src/models/listaPrecio.model");
 const Cliente = require("./src/models/cliente.model");
 const Valoracion = require("./src/models/valoracion.model");
-const FormaVenta = require("./src/models/formaVenta.model");
+const CondicionPago = require("./src/models/condicionPago.model");
 const Numeracion = require("./src/models/numeracion.model");
 const Banco = require("./src/models/banco.model");
 const MedioPago = require("./src/models/medioPago.model");
@@ -97,7 +97,7 @@ const populateDB = async () => {
 
     const iTipTra1 = await TablaSifen.create({
       codigo: "1",
-      descripcion: "Venta de mercadería",
+      descripcion: "Documento de mercadería",
       tabla: "iTipTra"
     });
     const iTipTra2 = await TablaSifen.create({
@@ -107,17 +107,17 @@ const populateDB = async () => {
     });
     const iTipTra3 = await TablaSifen.create({
       codigo: "3",
-      descripcion: "Mixto (Venta de mercadería y servicios)",
+      descripcion: "Mixto (Documento de mercadería y servicios)",
       tabla: "iTipTra"
     });
     const iTipTra4 = await TablaSifen.create({
       codigo: "4",
-      descripcion: "Venta de activo fijo",
+      descripcion: "Documento de activo fijo",
       tabla: "iTipTra"
     });
     const iTipTra5 = await TablaSifen.create({
       codigo: "5",
-      descripcion: "Venta de divisas",
+      descripcion: "Documento de divisas",
       tabla: "iTipTra"
     });
     const iTipTra6 = await TablaSifen.create({
@@ -152,7 +152,7 @@ const populateDB = async () => {
     });
     const iTipTra12 = await TablaSifen.create({
       codigo: "12",
-      descripcion: "Venta de crédito fiscal",
+      descripcion: "Documento de crédito fiscal",
       tabla: "iTipTra"
     });
     const iTipTra13 = await TablaSifen.create({
@@ -274,7 +274,7 @@ const populateDB = async () => {
     });
     const iIndPres4 = await TablaSifen.create({
       codigo: "4",
-      descripcion: "Venta a domicilio",
+      descripcion: "Documento a domicilio",
       tabla: "iIndPres"
     });
     const iIndPres5 = await TablaSifen.create({
@@ -314,7 +314,7 @@ const populateDB = async () => {
       email: "info@cavallaro.com.py",
       web: "www.cavallaro.com.py",
       img: "grupocavallaro3.png",
-      modoSifen: "SI"
+      modoSifen: "NO"
     });
 
     // Crear actividades si no existen y asociarlas a la empresa
@@ -713,7 +713,7 @@ const populateDB = async () => {
       numeroFin: 999999999,
       serie: "001-001",
       timbrado: "12559587",
-      ultimoNumero: 2006231,
+      ultimoNumero: 2006243,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
@@ -827,12 +827,31 @@ const populateDB = async () => {
       tipoImpresion: "TICKET",
       activo: true
     });
+    const numeracion9 = await Numeracion.create({
+      empresaId: empresa.id,
+      sucursalId: sucursal.id,
+      inicioTimbrado: "2022-06-17",
+      finTimbrado: "9999-12-31",
+      itide: iTiDE6.codigo,
+      numeroInicio: 1,
+      numeroFin: 999999999,
+      serie: "001-001",
+      timbrado: "12559587",
+      ultimoNumero: 611968,
+      tipoComprobante: "TICKET",
+      tipoImpresion: "TICKET",
+      activo: true
+    });
+
+
+
     // Crear usuario asociado a la empresa y sucursal
     const salt = Bcryptjs.genSaltSync();
     const userAdmin = await Usuario.create({
       empresaId: empresa.id,
       sucursalId: sucursal.id,
-      numPrefId: numeracion1.id,
+      numPrefId:  numeracion1.id,
+      numNcPrefId:null,
       username: "admin@admin.com",
       usuario: "Miguel Montania",
       password: Bcryptjs.hashSync("123456", salt),
@@ -5407,7 +5426,7 @@ const populateDB = async () => {
       activo: true,
       empresaId: empresa.id
     });
-    const formaVenta = await FormaVenta.create({
+    const condicionPago = await CondicionPago.create({
       descripcion: "contado",
       dias: 0,
       activo: true,
@@ -5416,7 +5435,7 @@ const populateDB = async () => {
       predeterminado: true
     });
 
-    const formaVenta2 = await FormaVenta.create({
+    const condicionPago2 = await CondicionPago.create({
       descripcion: "credito 15",
       dias: 15,
       activo: true,
@@ -5424,7 +5443,7 @@ const populateDB = async () => {
       color: "#45A137",
       predeterminado: false
     });
-    const formaVenta3 = await FormaVenta.create({
+    const condicionPago3 = await CondicionPago.create({
       descripcion: "credito 20",
       dias: 20,
       activo: true,
@@ -5432,7 +5451,7 @@ const populateDB = async () => {
       color: "#45A137",
       predeterminado: false
     });
-    const formaVenta4 = await FormaVenta.create({
+    const condicionPago4 = await CondicionPago.create({
       descripcion: "credito 25",
       dias: 25,
       activo: true,
@@ -5440,7 +5459,7 @@ const populateDB = async () => {
       color: "#45A137",
       predeterminado: false
     });
-    const formaVenta5 = await FormaVenta.create({
+    const condicionPago5 = await CondicionPago.create({
       descripcion: "credito 30",
       dias: 30,
       activo: true,
@@ -13749,7 +13768,7 @@ const populateDB = async () => {
     const cliente1 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "782718-0",
@@ -13770,7 +13789,7 @@ const populateDB = async () => {
     const cliente2 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "473301-0",
@@ -13791,7 +13810,7 @@ const populateDB = async () => {
     const cliente3 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "3772943-8",
@@ -13812,7 +13831,7 @@ const populateDB = async () => {
     const cliente4 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "390437-7",
@@ -13833,7 +13852,7 @@ const populateDB = async () => {
     const cliente5 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "80046129-0",
@@ -13854,7 +13873,7 @@ const populateDB = async () => {
     const cliente6 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "347277-9",
@@ -13875,7 +13894,7 @@ const populateDB = async () => {
     const cliente7 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "1399523-5",
@@ -13896,7 +13915,7 @@ const populateDB = async () => {
     const cliente8 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "365336-6",
@@ -13917,7 +13936,7 @@ const populateDB = async () => {
     const cliente9 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "1173713-1",
@@ -13938,7 +13957,7 @@ const populateDB = async () => {
     const cliente10 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "2865013-1",
@@ -13959,7 +13978,7 @@ const populateDB = async () => {
     const cliente11 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "1771424-9",
@@ -13980,7 +13999,7 @@ const populateDB = async () => {
     const cliente12 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "80050507-7",
@@ -14001,7 +14020,7 @@ const populateDB = async () => {
     const cliente13 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "1050296-3",
@@ -14022,7 +14041,7 @@ const populateDB = async () => {
     const cliente14 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "2999065-3",
@@ -14043,7 +14062,7 @@ const populateDB = async () => {
     const cliente15 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "2352135-0",
@@ -14064,7 +14083,7 @@ const populateDB = async () => {
     const cliente16 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "80001449-9",
@@ -14085,7 +14104,7 @@ const populateDB = async () => {
     const cliente17 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "80039445-3",
@@ -14106,7 +14125,7 @@ const populateDB = async () => {
     const cliente18 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "2204022-6",
@@ -14127,7 +14146,7 @@ const populateDB = async () => {
     const cliente19 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "4255760-7",
@@ -14148,7 +14167,7 @@ const populateDB = async () => {
     const cliente20 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "3212901-7",
@@ -14169,7 +14188,7 @@ const populateDB = async () => {
     const cliente21 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "929238-1",
@@ -14190,7 +14209,7 @@ const populateDB = async () => {
     const cliente22 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "1368388-8",
@@ -14211,7 +14230,7 @@ const populateDB = async () => {
     const cliente23 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "696149-5",
@@ -14232,7 +14251,7 @@ const populateDB = async () => {
     const cliente24 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "400735-2",
@@ -14253,7 +14272,7 @@ const populateDB = async () => {
     const cliente25 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "80021551-6",
@@ -14274,7 +14293,7 @@ const populateDB = async () => {
     const cliente26 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "4638165-1",
@@ -14295,7 +14314,7 @@ const populateDB = async () => {
     const cliente27 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "2471633-2",
@@ -14316,7 +14335,7 @@ const populateDB = async () => {
     const cliente28 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "80087901-5",
@@ -14337,7 +14356,7 @@ const populateDB = async () => {
     const cliente29 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "3638073-3",
@@ -14358,7 +14377,7 @@ const populateDB = async () => {
     const cliente30 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "80070476-2",
@@ -14379,7 +14398,7 @@ const populateDB = async () => {
     const cliente31 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "44444401-7",
@@ -14400,7 +14419,7 @@ const populateDB = async () => {
     const cliente32 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "80003110-5",
@@ -14422,7 +14441,7 @@ const populateDB = async () => {
     const cliente33 = await Cliente.create({
       listaPrecioId: listaPrecio.id,
       codigoPais: "PRY",
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       puntos: 0,
       naturalezaReceptor: 1,
       nroDocumento: "80009491-5",
@@ -14445,7 +14464,7 @@ const populateDB = async () => {
       tipoOperacionId: 4,
       empresaId: empresa.id,
       listaPrecioId: listaPrecio.id,
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       razonSocial: "CAROLINA ALEXANDRA ROZZO ORTIZ",
       nroDocumento: "1062929423",
       direccion: "ASUNCION",
@@ -14469,7 +14488,7 @@ const populateDB = async () => {
       tipoOperacionId: 1,
       empresaId: empresa.id,
       listaPrecioId: listaPrecio.id,
-      formaVentaId: formaVenta.id,
+      condicionPagoId: condicionPago.id,
       razonSocial: "DUARTE CALABRESE, LIZ ANTONELLA",
       nroDocumento: "4673892-4",
       direccion: "ITURBE CASI YATAITY CORA",

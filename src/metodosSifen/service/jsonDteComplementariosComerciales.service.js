@@ -4,15 +4,15 @@ const { unidadesMedidas } = require("./constants.service");
   const generateDatosComercialesUsoGeneral = (  data) => {
     const jsonResult = {
       //dOrdCompra : data['complementarios']['ordenCompra'],
-      //dOrdVta : data['complementarios']['ordenVenta'],
+      //dOrdVta : data['complementarios']['ordenDocumento'],
       //dAsiento : data['complementarios']['numeroAsiento']
     };
 
     if (data['complementarios'] && data['complementarios']['ordenCompra']) {
       jsonResult['dOrdCompra'] = data['complementarios']['ordenCompra'];
     }
-    if (data['complementarios'] && data['complementarios']['ordenVenta']) {
-      jsonResult['dOrdVta'] = data['complementarios']['ordenVenta'];
+    if (data['complementarios'] && data['complementarios']['ordenDocumento']) {
+      jsonResult['dOrdVta'] = data['complementarios']['ordenDocumento'];
     }
     if (data['complementarios'] && data['complementarios']['numeroAsiento']) {
       jsonResult['dAsiento'] = data['complementarios']['numeroAsiento'];
@@ -36,7 +36,7 @@ const { unidadesMedidas } = require("./constants.service");
     //TODO ALL
     const jsonResult = {
       /*cUniMedTotVol : data['complementarios']['carga']['unidadMedida'], 
-            dDesUniMedTotVol : data['complementarios']['carga']['ordenVenta'],
+            dDesUniMedTotVol : data['complementarios']['carga']['ordenDocumento'],
             dTotVolMerc : data['complementarios']['carga']['totalVolumenMercaderia'],
             cUniMedTotPes : data['complementarios']['carga']['numeroAsiento'],
             dDesUniMedTotPes : data['complementarios']['carga']['numeroAsiento'],

@@ -6,11 +6,11 @@ const Usuario = require('./usuario.model');
 const ListaPrecio = require('./listaPrecio.model');
 const Cliente = require('./cliente.model');
 const moment = require('moment');
-const FormaVenta = require('./formaVenta.model');
+const CondicionPago = require('./condicionPago.model');
 const Cobranza = require('./cobranza.model');
 const TablaSifen = require('./tablaSifen.model');
 
-const Venta = sequelize.define('Venta', {
+const Documento = sequelize.define('Documento', {
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -29,7 +29,7 @@ const Venta = sequelize.define('Venta', {
     type: DataTypes.INTEGER,
     allowNull: false,
   }, 
-  formaVentaId: {
+  condicionPagoId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   }, 
@@ -80,11 +80,11 @@ const Venta = sequelize.define('Venta', {
       return moment(this.getDataValue('fechaAnulacion')).format('YYYY-MM-DD');
     }
    },
-  fechaVenta: {
+  fecha: {
     type: DataTypes.DATEONLY,
     allowNull: false,
     get() {
-      return moment(this.getDataValue('fechaVenta')).format('YYYY-MM-DD');
+      return moment(this.getDataValue('fecha')).format('YYYY-MM-DD');
     }
    },
    
@@ -170,53 +170,53 @@ const Venta = sequelize.define('Venta', {
     allowNull: false
   },
 }, {
-  tableName: 'ventas',
+  tableName: 'documentos',
   timestamps: false,
   underscored: true, // Convierte automáticamente a snake_case
 });
-Venta.belongsTo(Empresa, {
+Documento.belongsTo(Empresa, {
   foreignKey: 'empresaId',
   targetKey: 'id',
   as:'empresa'
 });
-Venta.belongsTo(Sucursal, {
+Documento.belongsTo(Sucursal, {
   foreignKey: 'sucursalId',
   targetKey: 'id',
   as:'sucursal'
 });
-Venta.belongsTo(Usuario, {
+Documento.belongsTo(Usuario, {
   foreignKey: 'usuarioCreacionId',
   targetKey: 'id',
   as: 'vendedorCreacion' // Alias para la asociación de usuario de creación
 });
-Venta.belongsTo(Cobranza, {
+Documento.belongsTo(Cobranza, {
   foreignKey: 'cobranzaId',
   targetKey: 'id',
   as: 'cobranza' // Alias para la asociación de usuario de creación
 }); 
-Venta.belongsTo(Usuario, {
+Documento.belongsTo(Usuario, {
   foreignKey: 'usuarioAnulacionId',
   targetKey: 'id',
   as: 'vendedorAnulacion' // Alias para la asociación de usuario de anulación
 });
-Venta.belongsTo(ListaPrecio, {
+Documento.belongsTo(ListaPrecio, {
   foreignKey: 'listaPrecioId',
   targetKey: 'id',
   as:'listaPrecio'
 });
-Venta.belongsTo(Cliente, {
+Documento.belongsTo(Cliente, {
   foreignKey: 'clienteId',
   targetKey: 'id',
   as:'cliente'
 });
-Venta.belongsTo(FormaVenta, {
-  foreignKey: 'formaVentaId',
+Documento.belongsTo(CondicionPago, {
+  foreignKey: 'condicionPagoId',
   targetKey: 'id',
-  as:'formaVenta'
+  as:'condicionPago'
 });
-Venta.belongsTo(TablaSifen, {
+Documento.belongsTo(TablaSifen, {
   foreignKey: 'itide',
   targetKey: 'id',
   as :'tipoDocumento'
 });
-module.exports = Venta;
+module.exports = Documento;

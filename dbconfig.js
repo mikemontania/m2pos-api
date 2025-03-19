@@ -15,11 +15,10 @@ const dbConnection = async () => {
     try {
         await sequelize.authenticate();
         
-        if(process.env.DB_INIT == 'true'){
-            //destruye y vuelve a crear  
-            await sequelize.sync({ force: true });
-            
-        }else{
+        if (process.env.DB_INIT == 'true') {
+           
+            await sequelize.sync({ force: true }); // 🔄 Recrea todas las tablas definidas
+        } else {
             //solo crea
             await sequelize.sync();
         }

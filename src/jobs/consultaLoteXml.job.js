@@ -1,11 +1,11 @@
  // Asegúrate de importar el modelo adecuado
- const Venta = require("../models/venta.model");
+ const Documento = require("../models/documento.model");
  require("dotenv").config(); // Cargar variables de entorno
 const { Op ,literal} = require("sequelize"); 
 const Envio = require("../models/envio.model"); 
 const { extraerDatosRespuesta ,extraerRespuestasXml} = require("../metodosSifen/xmlToJson");
  const { consulta } = require("../metodosSifen/service/consulta.service");
-const { crearVentaXml } = require("../controllers/ventaXml-controller");
+const { crearDocumentoXml } = require("../controllers/documentoXml-controller");
   
 const actualizarLote = async (loteId,json, respuestaId) => {
   try {
@@ -32,43 +32,43 @@ const actualizarLote = async (loteId,json, respuestaId) => {
     throw error;
   }
 };
-const actualizarVentasDesdeSifen = async (res) => {
-  console.log('****************************actualizarVentasDesdeSifen**********************************************')
+const actualizarDocumentosDesdeSifen = async (res) => {
+  console.log('****************************actualizarDocumentosDesdeSifen**********************************************')
   console.log('res',res)
   const respuestas =  await  extraerRespuestasXml(res);
   console.log('respuestas',respuestas)
   try {
     for (const item of respuestas) {
-      // Buscar la venta por CDC
-      const ventas = await Venta.findAll({
+      // Buscar la documento por CDC
+      const documentos = await Documento.findAll({
         where: { cdc: item.id },
         attributes: ['id', 'empresaId','cdc'],
         order: [['id', 'ASC']],
         raw: true
       });
 
-      if (!ventas.length) {
-        console.warn(`No se encontró ninguna venta con CDC: ${item.id}`);
+      if (!documentos.length) {
+        console.warn(`No se encontró ninguna documento con CDC: ${item.id}`);
         continue;
       }
 
-      for (const venta of ventas) {
+      for (const documento of documentos) {
         // Convertir la respuesta en XML (puedes cambiar esta función según tu implementación)
         const xmlRespuesta = convertirObjetoAXML(item); 
-        // Crear un registro en VentaXml 
-        await crearVentaXml(venta.empresaId,venta.id,xmlRespuesta,3,'RESPONDIDO');
+        // Crear un registro en DocumentoXml 
+        await crearDocumentoXml(documento.empresaId,documento.id,xmlRespuesta,3,'RESPONDIDO');
 
 
-        // Actualizar el estado de la venta
-        await Venta.update(
+        // Actualizar el estado de la documento
+        await Documento.update(
           { estado: item.dEstRes },
-          { where: { id: venta.id } }
+          { where: { id: documento.id } }
         );
       }
     }
     console.log("Proceso completado con éxito.");
   } catch (error) {
-    console.error("Error al actualizar ventas desde SIFEN:", error);
+    console.error("Error al actualizar documentos desde SIFEN:", error);
   }
 };
 
@@ -126,12 +126,12 @@ const consultaLoteXml = async (empresasXml) => {
                   const respuesta = await consulta(data ,empresa.certificado);
                   console.log(respuesta);
                   const json = await extraerDatosRespuesta(respuesta.respuesta);
-                  await actualizarVentasDesdeSifen(respuesta.respuesta); 
+                  await actualizarDocumentosDesdeSifen(respuesta.respuesta); 
                   await actualizarLote(lote.id, json,  respuesta.id);
                   //console.log(loteActualizado)
                   console.log(`✅ Lote con id ${lote.numeroLote} se ha RESPONDIDO.` );  
                 } catch (error) {
-                  console.error(`❌ Error consultando lote la venta ${lote.id}:`, error); 
+                  console.error(`❌ Error consultando lote la documento ${lote.id}:`, error); 
                 }
               })
             ); 
@@ -139,7 +139,7 @@ const consultaLoteXml = async (empresasXml) => {
       })
     );
   } catch (error) {
-    console.error('❌ Error al revisar ventas pendientes:', error);
+    console.error('❌ Error al revisar documentos pendientes:', error);
   }
 }
  

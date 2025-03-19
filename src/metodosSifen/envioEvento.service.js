@@ -6,15 +6,15 @@ const wsdlEventoDoc = `${process.env.SIFEN_URL}de/ws/eventos/evento.wsdl`;
 const xml2js = require('xml2js');  
 const { generateXMLEvento } = require("./service/eventoMain.service");
 
- const loadData = (tipo,venta, empresa) =>{
+ const loadData = (tipo,documento, empresa) =>{
     console.log(tipo)
     console.log(typeof(tipo))
     let data;
     switch (tipo) {
         case 1:
             data = {
-                id: venta.id,
-                cdc: venta.cdc,
+                id: documento.id,
+                cdc: documento.cdc,
                 tipoEvento:1,
                 empresaId: empresa.id,
                 motivo: "Error de contabilización",
@@ -22,7 +22,7 @@ const { generateXMLEvento } = require("./service/eventoMain.service");
             };
              break; 
         case 2:
-            const [establecimiento, punto, numeroFactura] = venta.nroComprobante.split("-") || [];
+            const [establecimiento, punto, numeroFactura] = documento.nroComprobante.split("-") || [];
 
             if (!establecimiento || !punto || !numeroFactura) {
                 console.error((`[${new Date().toISOString()}] ❌ ERROR: Formato incorrecto en nroComprobante`));
@@ -30,12 +30,12 @@ const { generateXMLEvento } = require("./service/eventoMain.service");
             }
 
             data = {
-                id: venta.id,
-                cdc: venta.cdc,
+                id: documento.id,
+                cdc: documento.cdc,
                 tipoEvento:2,
                 empresaId: empresa.id,
                 version: process.env.EKUATIA_VERSION,
-                timbrado: venta.timbrado,
+                timbrado: documento.timbrado,
                 establecimiento,
                 punto,
                 desde: numeroFactura,
@@ -53,13 +53,13 @@ const { generateXMLEvento } = require("./service/eventoMain.service");
     }
     return data
  }
-const envioEventoXml = (tipo,venta, empresa) => {
+const envioEventoXml = (tipo,documento, empresa) => {
     console.log(tipo)
     return new Promise(async (resolve, reject) => {
         try {
         const { cert, key } = empresa.certificado; 
 
-        const  data = await loadData(tipo,venta, empresa);
+        const  data = await loadData(tipo,documento, empresa);
         console.log(data)
 
         const soapXMLData = await generateXMLEvento(data);
@@ -93,7 +93,7 @@ const envioEventoXml = (tipo,venta, empresa) => {
                 });
 
         } catch (error) {
-            console.error(`❌ error al realizar evento tipo ${tipo} de documento ${venta.cdc} => `, error.message);
+            console.error(`❌ error al realizar evento tipo ${tipo} de documento ${documento.cdc} => `, error.message);
             reject(error);
         }
     });

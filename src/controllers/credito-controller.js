@@ -3,11 +3,11 @@ const Credito = require('../models/credito.model');
 
 const findCredits = async (req, res) => {
   try {
-    const { sucursalId, formaVentaId, clienteId, fecha, pagado, page, pageSize } = req.params;
+    const { sucursalId, condicionPagoId, clienteId, fecha, pagado, page, pageSize } = req.params;
     const { empresaId  } = req.usuario;
     const conditions = {empresaId};
     if (sucursalId) conditions.sucursalId = sucursalId;
-    if (formaVentaId) conditions.formaVentaId = formaVentaId;
+    if (condicionPagoId) conditions.condicionPagoId = condicionPagoId;
     if (clienteId) conditions.clienteId = clienteId;
     if (fecha) conditions.fecha = { [Op.gte]: fecha };
     if (pagado !== undefined) conditions.pagado = pagado;
@@ -41,10 +41,10 @@ const findCredits = async (req, res) => {
 const create  = async (req, res) => {
     try {
         const { empresaId  } = req.usuario;
-      const {   sucursalId, formaVentaId, cobranzaId, pagado, usuarioCreacionId, fechaCreacion, fechaVencimiento, fecha, observacion, importeTotal, clienteId } = req.body;
+      const {   sucursalId, condicionPagoId, cobranzaId, pagado, usuarioCreacionId, fechaCreacion, fechaVencimiento, fecha, observacion, importeTotal, clienteId } = req.body;
   
       const nuevoCredito = await Credito.create({
-        empresaId, sucursalId, formaVentaId, cobranzaId, pagado, usuarioCreacionId, fechaCreacion, fechaVencimiento, fecha, observacion, importeTotal, clienteId
+        empresaId, sucursalId, condicionPagoId, cobranzaId, pagado, usuarioCreacionId, fechaCreacion, fechaVencimiento, fecha, observacion, importeTotal, clienteId
       });
   
       res.status(201).json(nuevoCredito);
@@ -58,13 +58,13 @@ const create  = async (req, res) => {
     const { empresaId  } = req.usuario;
     try {
       const { id } = req.params;
-      const {  sucursalId, formaVentaId, cobranzaId, pagado, usuarioCreacionId, fechaCreacion, fechaVencimiento, fecha, observacion, importeTotal, clienteId } = req.body;
+      const {  sucursalId, condicionPagoId, cobranzaId, pagado, usuarioCreacionId, fechaCreacion, fechaVencimiento, fecha, observacion, importeTotal, clienteId } = req.body;
   
       const creditoExistente = await Credito.findByPk(id);
   
       if (creditoExistente) {
         await creditoExistente.update({
-          empresaId, sucursalId, formaVentaId, cobranzaId, pagado, usuarioCreacionId, fechaCreacion, fechaVencimiento, fecha, observacion, importeTotal, clienteId
+          empresaId, sucursalId, condicionPagoId, cobranzaId, pagado, usuarioCreacionId, fechaCreacion, fechaVencimiento, fecha, observacion, importeTotal, clienteId
         });
   
         res.status(200).json(creditoExistente);

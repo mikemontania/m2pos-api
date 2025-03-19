@@ -2,7 +2,7 @@ const xml2js = require("xml2js");
 const { convertToJSONFormat, normalizeXML, leftZero } = require("./util");
 const fs = require("fs");
 const { signXMLEvento } = require("./signxml.service");
-const { crearVentaXml } = require("../../controllers/ventaXml-controller");
+const { crearDocumentoXml } = require("../../controllers/documentoXml-controller");
 
 const generateXMLEvento = data => {
   return new Promise(async (resolve, reject) => {
@@ -14,23 +14,23 @@ const generateXMLEvento = data => {
       );
       /* if (xmlSinEncoding)
         fs.writeFileSync(
-          `./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_generado.xml`,
+          `./eventos/xmlEvento${data.tipoEvento}DocumentoBase${data.id}_generado.xml`,
           xmlSinEncoding
         ); */
       let soapXMLData = envelopeEvent(data.id, xmlSinEncoding);
     /*   if (soapXMLData)
         fs.writeFileSync(
-          `./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_soap.xml`,
+          `./eventos/xmlEvento${data.tipoEvento}DocumentoBase${data.id}_soap.xml`,
           soapXMLData
         ); */
-      await crearVentaXml(data.empresaId, data.id, soapXMLData, 1, "GENERADO");
+      await crearDocumentoXml(data.empresaId, data.id, soapXMLData, 1, "GENERADO");
       const xmlFirmado = await signXMLEvento(soapXMLData, data.certificado);
       if (xmlFirmado)
        /*  fs.writeFileSync(
-          `./eventos/xmlEvento${data.tipoEvento}VentaBase${data.id}_firmado.xml`,
+          `./eventos/xmlEvento${data.tipoEvento}DocumentoBase${data.id}_firmado.xml`,
           xmlFirmado
         ); */
-      await crearVentaXml(data.empresaId, data.id, xmlFirmado, 2, "FIRMADO");
+      await crearDocumentoXml(data.empresaId, data.id, xmlFirmado, 2, "FIRMADO");
       resolve(xmlFirmado);
     } catch (error) {
       reject(error);

@@ -3,7 +3,7 @@ const router = express.Router();
 const auditoriaController = require('../controllers/auditoria-controller.js');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
-// Rutas para Venta
+// Rutas para Documento
 
 
  

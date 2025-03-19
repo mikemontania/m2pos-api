@@ -82,7 +82,7 @@
   const generateDatosCarga = (  data) => {
     const jsonResult = {
       cUniMedTotVol: data['complementarios']['carga']['unidadMedida'],
-      dDesUniMedTotVol: data['complementarios']['carga']['ordenVenta'],
+      dDesUniMedTotVol: data['complementarios']['carga']['ordenDocumento'],
       dTotVolMerc: data['complementarios']['carga']['numeroAsiento'],
       cUniMedTotPes: data['complementarios']['carga']['numeroAsiento'],
       dDesUniMedTotPes: data['complementarios']['carga']['numeroAsiento'],

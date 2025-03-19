@@ -120,7 +120,7 @@ exterior
     .ele(createGCamFE())
     .up() //Campos que componen la FE
     //Campos que describen la condición de la operación
-    .ele(createGCamCond(cabecera.formaVenta, cabecera.importeTotal))
+    .ele(createGCamCond(cabecera.condicionPago, cabecera.importeTotal))
     .up()
     //Campos que describen los ítems de la operación
     .ele(detalles.map(item => createGCamItem(item)))
@@ -149,19 +149,19 @@ const createGCamFuFD = carQR => {
     }
   };
 };
-const createGTotSub = (venta) => {
-  const dTotIVA = venta.importeIva10 + venta.importeIva5;
-  const dBaseGrav5 =(venta.importeIva5 > 0)  ? (venta.importeTotal - venta.importeIva5)  : 0;
-  const dBaseGrav10 =(venta.importeIva10 > 0)  ? (venta.importeTotal - venta.importeIva10)  : 0;
-  const dTBasGraIVA =(venta.importeIva5 > 0 || venta.importeIva10 > 0)  ? (venta.importeTotal - (venta.importeIva5 + venta.importeIva10)
+const createGTotSub = (documento) => {
+  const dTotIVA = documento.importeIva10 + documento.importeIva5;
+  const dBaseGrav5 =(documento.importeIva5 > 0)  ? (documento.importeTotal - documento.importeIva5)  : 0;
+  const dBaseGrav10 =(documento.importeIva10 > 0)  ? (documento.importeTotal - documento.importeIva10)  : 0;
+  const dTBasGraIVA =(documento.importeIva5 > 0 || documento.importeIva10 > 0)  ? (documento.importeTotal - (documento.importeIva5 + documento.importeIva10)
   )  : 0;
   return {
     gTotSub: {
       dSubExe: "0",
       dSubExo: "0",
       dSub5: "0",
-      dSub10: venta.importeTotal,
-      dTotOpe: venta.importeTotal,
+      dSub10: documento.importeTotal,
+      dTotOpe: documento.importeTotal,
       dTotDesc: "0",
       dTotDescGlotem: "0",
       dTotAntItem: "0",
@@ -170,9 +170,9 @@ const createGTotSub = (venta) => {
       dDescTotal: "0",
       dAnticipo: "0",
       dRedon: "0",
-      dTotGralOpe: venta.importeTotal,
-      dIVA5: roundTo8Decimals(venta.importeIva5),
-      dIVA10: roundTo8Decimals(venta.importeIva10),
+      dTotGralOpe: documento.importeTotal,
+      dIVA5: roundTo8Decimals(documento.importeIva5),
+      dIVA10: roundTo8Decimals(documento.importeIva10),
       dLiqTotIVA5: "0",
       dLiqTotIVA10: "0",
       dTotIVA: roundTo8Decimals(dTotIVA),
@@ -243,8 +243,8 @@ const roundTo8Decimals = (value) => {
   console.log('roundTo8Decimals', numValue);
   return parseFloat(numValue.toFixed(8)); // Redondea a 8 decimales
 };
-const createGCamCond = (formaVenta, importeTotal) => {
-  if (formaVenta.id == 1) {
+const createGCamCond = (condicionPago, importeTotal) => {
+  if (condicionPago.id == 1) {
     // Contado
     return {
       gCamCond: {
@@ -268,7 +268,7 @@ const createGCamCond = (formaVenta, importeTotal) => {
         gPagCred: {
           iCondCred: "1",
           dDCondCred: "Plazo",
-          dPlazoCre: `${formaVenta.dias} dias`
+          dPlazoCre: `${condicionPago.dias} dias`
         }
       }
     };

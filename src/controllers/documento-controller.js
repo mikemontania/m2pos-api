@@ -1,14 +1,14 @@
 const { Op } = require("sequelize");
-const Venta = require("../models/venta.model");
+const Documento = require("../models/documento.model");
 const Cobranza = require("../models/cobranza.model");
-const VentaDetalle = require("../models/ventaDetalle.model");
+const DocumentoDetalle = require("../models/documentoDetalle.model");
 const CobranzaDetalle = require("../models/cobranzaDetalle.model");
 const { sequelize } = require("../../dbconfig");
 const moment = require("moment");
 const Numeracion = require("../models/numeracion.model");
 const Cliente = require("../models/cliente.model");
 const Sucursal = require("../models/sucursal.model");
-const FormaVenta = require("../models/formaVenta.model");
+const CondicionPago = require("../models/condicionPago.model");
 const Usuario = require("../models/usuario.model");
 const ListaPrecio = require("../models/listaPrecio.model");
 const Variante = require("../models/variante.model");
@@ -29,7 +29,7 @@ const {   tipoContribuyente,tiposEmisiones
 const getById = async (req, res) => {
   const { id } = req.params;
   try {
-    const venta = await Venta.findByPk(id, {
+    const documento = await Documento.findByPk(id, {
       include: [
         { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
         { model: Usuario, as: "vendedorAnulacion", attributes: ["usuario"] },
@@ -47,7 +47,7 @@ const getById = async (req, res) => {
             "longitud"
           ]
         },
-        { model: FormaVenta, as: "formaVenta", attributes: ["descripcion"] },
+        { model: CondicionPago, as: "condicionPago", attributes: ["descripcion"] },
         {
           model: Sucursal,
           as: "sucursal",
@@ -55,11 +55,11 @@ const getById = async (req, res) => {
         }
       ]
     });
-    if (!venta) {
-      return res.status(404).json({ error: "Venta not found" });
+    if (!documento) {
+      return res.status(404).json({ error: "Documento not found" });
     }
-    const detallesVenta = await VentaDetalle.findAll({
-      where: { ventaId: id },
+    const detallesDocumento = await DocumentoDetalle.findAll({
+      where: { documentoId: id },
       include: [
         {
           model: Variante,
@@ -89,13 +89,13 @@ const getById = async (req, res) => {
         }
       ]
     });
-    if (detallesVenta.length === 0) {
-      return res.status(404).json({ error: "No details found for this venta" });
+    if (detallesDocumento.length === 0) {
+      return res.status(404).json({ error: "No details found for this documento" });
     }
 
     res.status(200).json({
-      detalles: detallesVenta,
-      venta: venta
+      detalles: detallesDocumento,
+      documento: documento
     });
   } catch (error) {
     console.error("Error in getPdf:", error);
@@ -103,9 +103,9 @@ const getById = async (req, res) => {
   }
 };
 
-// Crear una venta con sus detalles
-const createVenta = async (req, res) => {
-  const fechaVenta = moment(new Date()).format("YYYY-MM-DD");
+// Crear una documento con sus detalles
+const createDocumento = async (req, res) => {
+  const fecha = moment(new Date()).format("YYYY-MM-DD");
   const { id, empresaId } = req.usuario;
   const t = await sequelize.transaction(); // Inicia la transacción
   try {
@@ -114,7 +114,7 @@ const createVenta = async (req, res) => {
       sucursalId,
       numeracionId,
       listaPrecioId,
-      formaVentaId,
+      condicionPagoId,
       porcDescuento,
       importeIva5,
       importeIva10,
@@ -136,11 +136,11 @@ const createVenta = async (req, res) => {
     if (!detalles.length) {
       throw new Error("Debe haber al menos un detalle");
     }
-    const formaVenta = await FormaVenta.findByPk(formaVentaId, {
+    const condicionPago = await CondicionPago.findByPk(condicionPagoId, {
       transaction: t
     });
     const cliente  = await Cliente.findByPk(clienteId, {      transaction: t    });
-     if (cobranza && formaVenta.dias == 0) {
+     if (cobranza && condicionPago.dias == 0) {
       const {
         importeAbonado,
         fechaCobranza,
@@ -192,37 +192,37 @@ const createVenta = async (req, res) => {
     console.log(importeIva10);
     console.log(numeracion)
     const cdc = generarCDC(numeracion.itide,empresa.ruc ,nroComprobante,tipoComprobante.id,fecha,tipoEmision.codigo,codigoSeguridad);
-    if (formaVenta && formaVenta.dias > 0) {
+    if (condicionPago && condicionPago.dias > 0) {
       const nuevoCredito = await Credito.create({
         empresaId,
         sucursalId,
-        formaVentaId,
+        condicionPagoId,
         cobranzaId: null,
         pagado: false,
         usuarioCreacionId: id,
-        fechaVencimiento: moment(fechaVenta)
-          .add(formaVenta.dias, "days")
+        fechaVencimiento: moment(fecha)
+          .add(condicionPago.dias, "days")
           .format("YYYY-MM-DD"), // Calcula fecha de vencimiento
-        fecha: fechaVenta,
+        fecha: fecha,
         observacion: nroComprobante,
         importeTotal,
         clienteId
       });
     }
-    // Guardar venta
-    const venta = await Venta.create(
+    // Guardar documento
+    const documento = await Documento.create(
       {
         codigoSeguridad,
         cdc,
         empresaId,
         sucursalId,
         listaPrecioId,
-        formaVentaId,
+        condicionPagoId,
         clienteId,
         anulado: false,
         enviado: false,
         usuarioCreacionId: id,
-        fechaVenta,
+        fecha,
         fechaInicio: numeracion.inicioTimbrado,
         fechaFin: numeracion.finTimbrado,
         timbrado: numeracion.timbrado,
@@ -245,9 +245,9 @@ const createVenta = async (req, res) => {
     );
  
     // Guardar detalles
-    await VentaDetalle.bulkCreate(
+    await DocumentoDetalle.bulkCreate(
       detalles.map(detalle => ({
-        ventaId: venta.id,
+        documentoId: documento.id,
         ...detalle,
         totalKg: detalle.totalKg
           ? Number((detalle.totalKg / 1000).toFixed(2))
@@ -262,56 +262,56 @@ const createVenta = async (req, res) => {
     // Commit de la transacción si todo fue exitoso
     await t.commit();
 
-    res.status(201).json(venta);
+    res.status(201).json(documento);
   } catch (error) {
     // Si hay algún error, realiza un rollback de la transacción
     console.error(error);
     await t.rollback();
-    res.status(500).json({ error: error?.original?.detail ||   "Error al crear la venta" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al crear la documento" });
   }
 };
 
-// Anular una venta por ID
-const anularVenta = async (req, res) => {
+// Anular una documento por ID
+const anularDocumento = async (req, res) => {
   try {
     const { id } = req.params;
-    const venta = await Venta.findByPk(id);
-    if (venta) {
-      await venta.update({
+    const documento = await Documento.findByPk(id);
+    if (documento) {
+      await documento.update({
         anulado: true,
         estado:'Pendiente',
         fechaAnulacion: new Date(),
         usuarioAnulacionId: req.usuario.id
       });
 
-      //si el tipo de venta es  credito  debo eliminar el item del listado
-      const formaVenta = await FormaVenta.findByPk(venta.formaVentaId);
-      if (formaVenta && formaVenta.dias > 0) {
-        const creditoAgregado = await Credito.findOne({ ventaId: venta.id });
+      //si el tipo de documento es  credito  debo eliminar el item del listado
+      const condicionPago = await CondicionPago.findByPk(documento.condicionPagoId);
+      if (condicionPago && condicionPago.dias > 0) {
+        const creditoAgregado = await Credito.findOne({ documentoId: documento.id });
         await creditoAgregado.destroy();
       }
 
-      if (venta.cobranzaId) {
-        const cobranza = await Cobranza.findByPk(venta.cobranzaId);
+      if (documento.cobranzaId) {
+        const cobranza = await Cobranza.findByPk(documento.cobranzaId);
         await cobranza.update({
           anulado: true,
           fechaAnulacion: new Date(),
           usuarioAnulacionId: req.usuario.id
         });
       }
-      res.status(200).json({ message: "Venta anulada exitosamente" });
+      res.status(200).json({ message: "Documento anulada exitosamente" });
     } else {
-      res.status(404).json({ error: "Venta no encontrada" });
+      res.status(404).json({ error: "Documento no encontrada" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al anular la venta" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al anular la documento" });
   }
 };
 
-// Listar ventas paginadas y filtradas
-const listarVentas = async (req, res) => {
-  console.log("listarVentas");
+// Listar documentos paginadas y filtradas
+const listarDocumentos = async (req, res) => {
+  console.log("listarDocumentos");
   try {
     const {
       page = 1,
@@ -321,7 +321,7 @@ const listarVentas = async (req, res) => {
       clienteId,
       sucursalId,
       listaPrecioId,
-      formaVentaId,
+      condicionPagoId,
       nroComprobante
     } = req.params;
     const { empresaId } = req.usuario;
@@ -333,7 +333,7 @@ const listarVentas = async (req, res) => {
       clienteId,
       sucursalId,
       listaPrecioId,
-      formaVentaId,
+      condicionPagoId,
       nroComprobante
     );
     const condiciones = {
@@ -344,7 +344,7 @@ const listarVentas = async (req, res) => {
     console.log(fechaDesde);
     console.log(desde);
     if (desde && hasta) {
-      condiciones.fechaVenta = {
+      condiciones.fecha = {
         [Op.gte]: desde, // Mayor o igual que la fecha desde
         [Op.lte]: hasta  // Menor o igual que la fecha hasta
       };
@@ -362,8 +362,8 @@ const listarVentas = async (req, res) => {
       condiciones.listaPrecioId = listaPrecioId;
     }
 
-    if (formaVentaId > 0) {
-      condiciones.formaVentaId = formaVentaId;
+    if (condicionPagoId > 0) {
+      condiciones.condicionPagoId = condicionPagoId;
     }
     if (nroComprobante && nroComprobante.length > 2) {
       condiciones.nroComprobante = {
@@ -372,7 +372,7 @@ const listarVentas = async (req, res) => {
     }
 
     const offset = (page - 1) * pageSize;
-    const { rows: ventas, count } = await Venta.findAndCountAll({
+    const { rows: documentos, count } = await Documento.findAndCountAll({
       where: condiciones,
       include: [
         { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
@@ -382,8 +382,8 @@ const listarVentas = async (req, res) => {
           attributes: ["nroDocumento", "razonSocial"]
         },
         {
-          model: FormaVenta,
-          as: "formaVenta",
+          model: CondicionPago,
+          as: "condicionPago",
           attributes: ["id", "descripcion"]
         },
         {
@@ -407,11 +407,11 @@ const listarVentas = async (req, res) => {
       totalPages: Math.ceil(count / pageSize),
       page: Number(page),
       pageSize: Number(pageSize),
-      ventas
+      documentos
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al listar las ventas" });
+    res.status(500).json({ error: error?.original?.detail ||   "Error al listar las documentos" });
   }
 };
 
@@ -419,9 +419,9 @@ const listarVentas = async (req, res) => {
  
 module.exports = {
   getById,
-  createVenta,
-  anularVenta,
-  listarVentas, 
+  createDocumento,
+  anularDocumento,
+  listarDocumentos, 
  };
 
 

@@ -55,10 +55,11 @@ const findNumeracionesPaginados = async (req, res) => {
 const findAll = async (req, res) => {
   try {
     const { empresaId } = req.usuario; 
-    const { sucursalId } = req.params;
+    const { sucursalId,itide } = req.params;
     const condiciones = {
       empresaId,
-      sucursalId
+      sucursalId,
+      itide
     };
 
     const numeraciones = await Numeracion.findAll({ where: condiciones });
