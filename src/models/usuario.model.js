@@ -85,6 +85,11 @@ Usuario.belongsTo(Numeracion, {
   targetKey: "id",
   as:'numeracion'
 });
+Usuario.belongsTo(Numeracion, {
+  foreignKey: "numNcPrefId",
+  targetKey: "id",
+  as:'numeracionNc'
+});
 
 Usuario.belongsTo(Empresa, {
   foreignKey: "empresaId",

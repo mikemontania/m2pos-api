@@ -7,7 +7,8 @@ const { validarJWT } = require('../middlewares/validar-jwt');
  
 router.get('/:id', validarJWT,   documentoController.getById);
 router.get('/:page/:pageSize/:fechaDesde/:fechaHasta/:clienteId/:sucursalId/:condicionPagoId/:listaPrecioId/:nroComprobante?', validarJWT,   documentoController.listarDocumentos);
-router.post('/', validarJWT,   documentoController.createDocumento); 
+router.post('/factura', validarJWT,   documentoController.createDocumento); 
+router.post('/notacredito', validarJWT,   documentoController.crearNotaCredito); 
 
 router.put('/anular/:id', validarJWT,   documentoController.anularDocumento);
 

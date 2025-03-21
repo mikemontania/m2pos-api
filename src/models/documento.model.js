@@ -33,6 +33,10 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.INTEGER,
     allowNull: false,
   }, 
+  docAsociadoId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  }, 
   cobranzaId: {
     type: DataTypes.INTEGER,
     allowNull: true,
@@ -168,6 +172,10 @@ const Documento = sequelize.define('Documento', {
   cdc: {
     type: DataTypes.STRING(44),
     allowNull: false
+  },
+  cdcAsociado: {
+    type: DataTypes.STRING(44),
+    allowNull: true
   },
 }, {
   tableName: 'documentos',

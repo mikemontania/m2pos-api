@@ -26,6 +26,7 @@ const Empresa = require("../models/empresa.model");
 
 const {   tipoContribuyente,tiposEmisiones
 } = require('../constantes/Constante.constant'); 
+const TablaSifen = require("../models/tablaSifen.model");
 const getById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -36,16 +37,11 @@ const getById = async (req, res) => {
         { model: ListaPrecio, as: "listaPrecio", attributes: ["descripcion"] },
         {
           model: Cliente,
-          as: "cliente",
-          attributes: [
-            "nroDocumento",
-            "razonSocial",
-            "direccion",
-            "telefono",
-            "cel",
-            "latitud",
-            "longitud"
-          ]
+          as: "cliente" 
+        },
+        {
+          model: TablaSifen,
+          as: "tipoDocumento", 
         },
         { model: CondicionPago, as: "condicionPago", attributes: ["descripcion"] },
         {
@@ -89,9 +85,9 @@ const getById = async (req, res) => {
         }
       ]
     });
-    if (detallesDocumento.length === 0) {
+   /*  if (detallesDocumento.length === 0) {
       return res.status(404).json({ error: "No details found for this documento" });
-    }
+    } */
 
     res.status(200).json({
       detalles: detallesDocumento,
@@ -270,6 +266,145 @@ const createDocumento = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   "Error al crear la documento" });
   }
 };
+const calcularTotalesCab = (detallesAux) =>{
+  
+   if (!detallesAux || detallesAux.length ==0) {
+    return { importeSubtotal: 0, importeTotal: 0, importeDescuento: 0, importeIva5: 0, importeIva10: 0, importeIvaExenta: 0,  porcDescuento: 0,totalKg:0 }
+   }
+  let totales = detallesAux.reduce(
+    (acum, detalle) => {
+      if (detalle.isSelected) { // Solo sumar si está isSelected
+        acum.importeSubtotal += detalle.importeSubtotal;
+        acum.importeTotal += detalle.importeTotal;
+        acum.importeDescuento += detalle.importeDescuento;
+        acum.importeIva5 += detalle.importeIva5;
+        acum.importeIva10 += detalle.importeIva10;
+        acum.importeIvaExenta += detalle.importeIvaExenta;
+        acum.importeNeto += detalle.importeNeto; 
+        acum.totalKg += detalle.totalKg; 
+      }
+      return acum;
+    },
+    { importeSubtotal: 0, importeTotal: 0, importeDescuento: 0, importeIva5: 0, importeIva10: 0, importeIvaExenta: 0, importeNeto:0,totalKg:0 }
+  );
+  if (totales.importeDescuento && totales.importeDescuento>0) {
+    totales.porcDescuento = ((totales.importeDescuento/totales.importeTotal)*100)
+  }  else{
+    totales.porcDescuento = 0
+  }
+ return totales;
+}
+
+const crearNotaCredito = async (req, res) => { 
+  const { id: usuarioId, empresaId } = req.usuario;
+  const t = await sequelize.transaction(); // Inicia la transacción
+  try {
+    const {
+      docAsociadoId,
+      cdcAsociado,
+      sucursalId,
+      numeracionNotaCredId,
+      listaPrecioId,
+      condicionPagoId, 
+      clienteId,
+      detalles 
+    } = req.body;
+     
+    // Validar datos
+    if (!clienteId) {
+      throw new Error("El campo clienteId es obligatorio");
+    }
+    //calcular totales
+   const {porcDescuento,
+    importeIva5,
+    importeIva10,
+    importeIvaExenta,
+    importeDescuento,
+    importeNeto,
+    importeSubtotal,totalKg,
+    importeTotal } = calcularTotalesCab(detalles);
+    console.log('detalles',detalles)
+
+
+    // Generar número de factura
+    const numeracion = await Numeracion.findByPk(numeracionNotaCredId, {
+      transaction: t
+    });
+    const codigoSeguridad =generarCodigoSeguridad();
+    const empresa = await Empresa.findByPk(empresaId)
+    const tipoComprobante =tipoContribuyente.find(t=>t.id == empresa.tipoContId)
+    const tipoEmision = tiposEmisiones.find(t=>t.codigo == 1)
+    const fecha = moment(new Date()).format("YYYY-MM-DD");
+    numeracion.ultimoNumero += 1;
+    const nroComprobante = `${numeracion.serie}-${numeracion.ultimoNumero
+    .toString()
+    .padStart(7, "0")}`;
+    console.log(importeIva10);
+    console.log(numeracion)
+    const cdcGenerado = generarCDC(numeracion.itide,empresa.ruc ,nroComprobante,tipoComprobante.id,fecha,tipoEmision.codigo,codigoSeguridad);
+    
+    // Guardar documento
+    const documento = await Documento.create(
+      {
+        codigoSeguridad,
+        cdc:cdcGenerado,
+        empresaId,
+        sucursalId,
+        listaPrecioId,
+        condicionPagoId,
+        clienteId,
+        anulado: false,
+        enviado: false,
+        usuarioCreacionId: usuarioId,
+        fecha, 
+        cdcAsociado,
+        docAsociadoId, 
+        fechaInicio: numeracion.inicioTimbrado,
+        fechaFin: numeracion.finTimbrado,
+        timbrado: numeracion.timbrado,
+        modoEntrega: "CONTRAENTREGA",
+        nroComprobante, 
+        itide: numeracion.itide,
+        porcDescuento,
+        importeIva5,
+        importeIva10,
+        importeIvaExenta,
+        importeDescuento,
+        importeNeto,
+        importeSubtotal,
+        importeTotal,
+        estado:'Pendiente', 
+        totalKg: totalKg ? Number((totalKg / 1000).toFixed(2)) : 0
+      },
+      { transaction: t }
+    );
+    // Guardar detalles
+    //Nota de credito no siempre tiene detalles
+    if (detalles?.length){
+   await DocumentoDetalle.bulkCreate(
+     detalles.map(detalle => ({
+       documentoId: documento.id,
+       ...detalle,
+       totalKg: detalle.totalKg
+         ? Number((detalle.totalKg / 1000).toFixed(2))
+         : 0
+     })),
+     { transaction: t }
+   ); 
+ } 
+    // Actualizar numeración
+    await numeracion.save({ transaction: t }); 
+    // Commit de la transacción si todo fue exitoso
+    await t.commit(); 
+    res.status(201).json(documento);
+  } catch (error) {
+    // Si hay algún error, realiza un rollback de la transacción
+    console.error(error);
+    await t.rollback();
+    res.status(500).json({ error: error?.original?.detail ||   "Error al crear la NC" });
+  }
+};
+
 
 // Anular una documento por ID
 const anularDocumento = async (req, res) => {
@@ -387,6 +522,10 @@ const listarDocumentos = async (req, res) => {
           attributes: ["id", "descripcion"]
         },
         {
+          model: TablaSifen,
+          as: "tipoDocumento", 
+        },
+        {
           model: ListaPrecio,
           as: "listaPrecio",
           attributes: ["id", "descripcion"]
@@ -419,6 +558,7 @@ const listarDocumentos = async (req, res) => {
  
 module.exports = {
   getById,
+  crearNotaCredito,
   createDocumento,
   anularDocumento,
   listarDocumentos, 
