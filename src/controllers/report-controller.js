@@ -155,7 +155,7 @@ const getVendedoresPorTotal = async (req, res) => {
       FROM documentos v  
       JOIN usuarios u ON u.id = v.usuario_creacion_id
       WHERE
-        v.anulado = false   AND v.empresa_id = :empresaId
+        v.anulado = false  AND v.calculables = 'SI'    AND v.empresa_id = :empresaId
         AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
       GROUP BY u.id, vendedor ORDER BY total  DESC 
@@ -239,7 +239,7 @@ const getTopClientes = async (req, res) => {
       JOIN
         clientes c ON v.cliente_id = c.id
       WHERE
-        v.anulado = false AND v.empresa_id = :empresaId
+        v.anulado = false  AND v.calculables = 'SI'  AND v.empresa_id = :empresaId
         AND c.predeterminado = false
         AND c.propietario = false
         AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
@@ -290,7 +290,7 @@ const getTopVariantes = async (req, res) => {
       JOIN productos pro ON va.producto_id = pro.id
       JOIN presentaciones pre ON va.presentacion_id = pre.id
       JOIN variedades var ON va.variedad_id = var.id
-      WHERE v.anulado = false AND v.empresa_id = :empresaId
+      WHERE v.anulado = false  AND v.calculables = 'SI'  AND v.empresa_id = :empresaId
         AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
       GROUP BY
@@ -338,7 +338,7 @@ console.log(sucursalId)
       JOIN
         sucursales s ON v.sucursal_id = s.id
       WHERE
-        v.anulado = false
+        v.anulado = false  AND v.calculables = 'SI' 
         AND v.empresa_id = :empresaId
         AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}

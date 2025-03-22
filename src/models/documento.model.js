@@ -33,10 +33,6 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.INTEGER,
     allowNull: false,
   }, 
-  docAsociadoId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  }, 
   cobranzaId: {
     type: DataTypes.INTEGER,
     allowNull: true,
@@ -57,7 +53,7 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.INTEGER,
     allowNull: true,
   }, 
-   usuarioAnulacionId: {
+  usuarioAnulacionId: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
@@ -83,34 +79,34 @@ const Documento = sequelize.define('Documento', {
     get() {
       return moment(this.getDataValue('fechaAnulacion')).format('YYYY-MM-DD');
     }
-   },
+  },
   fecha: {
     type: DataTypes.DATEONLY,
     allowNull: false,
     get() {
       return moment(this.getDataValue('fecha')).format('YYYY-MM-DD');
     }
-   },
-   
+  },
+  
   fechaInicio: {
     type: DataTypes.DATEONLY,
     allowNull: false,
     get() {
       return moment(this.getDataValue('fechaInicio')).format('YYYY-MM-DD');
     }
-   },
-   fechaFin: {
+  },
+  fechaFin: {
     type: DataTypes.DATEONLY,
     allowNull: false,
     get() {
       return moment(this.getDataValue('fechaFin')).format('YYYY-MM-DD');
     }
-   },
-   timbrado: {
+  },
+  timbrado: {
     type: DataTypes.STRING(50),
     allowNull: false
   },
-   nroComprobante: {
+  nroComprobante: {
     type: DataTypes.STRING(20),
     allowNull: false
   },
@@ -152,7 +148,7 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.BIGINT,
     allowNull: false
   },
-   
+  
   modoEntrega: {
     type: DataTypes.STRING(50),
     allowNull: true
@@ -177,6 +173,32 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.STRING(44),
     allowNull: true
   },
+  docAsociadoId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  }, 
+  tipoDoc: { 
+    type: DataTypes.ENUM('FCT', 'NCR', 'NDB','NRM'), 
+    allowNull: false, 
+    defaultValue: 'FCT' 
+  },
+  calculables: { 
+    type: DataTypes.ENUM('SI', 'NO'), 
+    allowNull: false, 
+    defaultValue: 'SI' 
+  },
+  importeAnterior: { 
+    type: DataTypes.DECIMAL(10, 2), 
+    allowNull: false, 
+    defaultValue: 0 
+  },
+  importeDevuelto: { 
+    type: DataTypes.DECIMAL(10, 2), 
+    allowNull: false, 
+    defaultValue: 0 
+  },
+
+  
 }, {
   tableName: 'documentos',
   timestamps: false,

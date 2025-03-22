@@ -234,6 +234,9 @@ const createDocumento = async (req, res) => {
         importeNeto,
         importeSubtotal,
         importeTotal,
+        tipoDoc:'FCT'  ,
+        calculables: 'SI',
+        importeDevuelto:0,
         estado:'Pendiente', 
         totalKg: totalKg ? Number((totalKg / 1000).toFixed(2)) : 0
       },
@@ -266,34 +269,7 @@ const createDocumento = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   "Error al crear la documento" });
   }
 };
-const calcularTotalesCab = (detallesAux) =>{
-  
-   if (!detallesAux || detallesAux.length ==0) {
-    return { importeSubtotal: 0, importeTotal: 0, importeDescuento: 0, importeIva5: 0, importeIva10: 0, importeIvaExenta: 0,  porcDescuento: 0,totalKg:0 }
-   }
-  let totales = detallesAux.reduce(
-    (acum, detalle) => {
-      if (detalle.isSelected) { // Solo sumar si está isSelected
-        acum.importeSubtotal += detalle.importeSubtotal;
-        acum.importeTotal += detalle.importeTotal;
-        acum.importeDescuento += detalle.importeDescuento;
-        acum.importeIva5 += detalle.importeIva5;
-        acum.importeIva10 += detalle.importeIva10;
-        acum.importeIvaExenta += detalle.importeIvaExenta;
-        acum.importeNeto += detalle.importeNeto; 
-        acum.totalKg += detalle.totalKg; 
-      }
-      return acum;
-    },
-    { importeSubtotal: 0, importeTotal: 0, importeDescuento: 0, importeIva5: 0, importeIva10: 0, importeIvaExenta: 0, importeNeto:0,totalKg:0 }
-  );
-  if (totales.importeDescuento && totales.importeDescuento>0) {
-    totales.porcDescuento = ((totales.importeDescuento/totales.importeTotal)*100)
-  }  else{
-    totales.porcDescuento = 0
-  }
- return totales;
-}
+ 
 
 const crearNotaCredito = async (req, res) => { 
   const { id: usuarioId, empresaId } = req.usuario;
@@ -307,7 +283,17 @@ const crearNotaCredito = async (req, res) => {
       listaPrecioId,
       condicionPagoId, 
       clienteId,
-      detalles 
+      detalles ,
+      porcDescuento,
+      importeIva5,
+      importeIva10,
+      importeIvaExenta,
+      importeDescuento,
+      importeNeto,
+      importeSubtotal,totalKg,
+      importeTotal,
+       importeAnterior ,
+        importeDevuelto 
     } = req.body;
      
     // Validar datos
@@ -315,16 +301,24 @@ const crearNotaCredito = async (req, res) => {
       throw new Error("El campo clienteId es obligatorio");
     }
     //calcular totales
-   const {porcDescuento,
-    importeIva5,
-    importeIva10,
-    importeIvaExenta,
-    importeDescuento,
-    importeNeto,
-    importeSubtotal,totalKg,
-    importeTotal } = calcularTotalesCab(detalles);
-    console.log('detalles',detalles)
-
+    
+      console.log('body',{
+        docAsociadoId,
+        cdcAsociado,
+        sucursalId,
+        numeracionNotaCredId,
+        listaPrecioId,
+        condicionPagoId, 
+        clienteId,
+        detalles ,porcDescuento,
+        importeIva5,
+        importeIva10,
+        importeIvaExenta,
+        importeDescuento,
+        importeNeto,
+        importeSubtotal,totalKg,
+        importeTotal
+      })
 
     // Generar número de factura
     const numeracion = await Numeracion.findByPk(numeracionNotaCredId, {
@@ -373,6 +367,10 @@ const crearNotaCredito = async (req, res) => {
         importeNeto,
         importeSubtotal,
         importeTotal,
+        tipoDoc:'NCR'  ,
+        calculables: 'SI',
+        importeAnterior ,
+        importeDevuelto ,
         estado:'Pendiente', 
         totalKg: totalKg ? Number((totalKg / 1000).toFixed(2)) : 0
       },
@@ -380,7 +378,7 @@ const crearNotaCredito = async (req, res) => {
     );
     // Guardar detalles
     //Nota de credito no siempre tiene detalles
-    if (detalles?.length){
+     
    await DocumentoDetalle.bulkCreate(
      detalles.map(detalle => ({
        documentoId: documento.id,
@@ -390,8 +388,14 @@ const crearNotaCredito = async (req, res) => {
          : 0
      })),
      { transaction: t }
-   ); 
- } 
+   );  
+
+   if (docAsociadoId) {
+    const documentoAsociado = await Documento.findByPk(docAsociadoId);
+    await documentoAsociado.update({  
+      calculables:'NO', 
+    });
+  }
     // Actualizar numeración
     await numeracion.save({ transaction: t }); 
     // Commit de la transacción si todo fue exitoso
@@ -414,10 +418,19 @@ const anularDocumento = async (req, res) => {
     if (documento) {
       await documento.update({
         anulado: true,
-        estado:'Pendiente',
+        calculables:'NO',
         fechaAnulacion: new Date(),
         usuarioAnulacionId: req.usuario.id
       });
+
+      if (documento?.docAsociadoId) {
+        const documentoAsociado = await Documento.findByPk(documento?.docAsociadoId);
+        await documentoAsociado.update({  
+          calculables:'SI', 
+        });
+      }
+
+
 
       //si el tipo de documento es  credito  debo eliminar el item del listado
       const condicionPago = await CondicionPago.findByPk(documento.condicionPagoId);
