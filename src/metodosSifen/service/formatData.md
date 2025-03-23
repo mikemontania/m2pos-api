@@ -301,7 +301,7 @@ El campo Email, si bien puede informarse mas de 1 (uno), en el Sifen solamente s
             "ciudad" : 3344,
             "ciudadDescripcion" : "PASO ITA (INDIGENA)",
             "pais" : "PRY",
-            "paisDescripcion" : "Paraguay",
+            "paisDescripcion" : f"Paraguay",
             "telefonoContacto" : "097x"
         },
         "vehiculo" : {

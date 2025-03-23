@@ -177,6 +177,24 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.INTEGER,
     allowNull: true,
   }, 
+  idMotEmi: {
+    type: DataTypes.INTEGER,
+    allowNull: true, // Permite valores nulos
+    validate: {
+      isIn: [[1, 2, 3, 4, 5, 6, 7, 8]] // Solo permite estos valores cuando NO es null
+    }, 
+    comment: `  
+      Referente al campo E401
+      1= “Devolución y Ajuste de precios”
+      2= “Devolución”
+      3= “Descuento”
+      4= “Bonificación”
+      5= “Crédito incobrable”
+      6= “Recupero de costo”
+      7= “Recupero de gasto”
+      8= “Ajuste de precio”
+    `
+  },
   tipoDoc: { 
     type: DataTypes.ENUM('FCT', 'NCR', 'NDB','NRM'), 
     allowNull: false, 

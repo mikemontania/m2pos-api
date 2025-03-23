@@ -1,3 +1,4 @@
+const Documento = require("../../models/documento.model");
 const { formatDateToLocalISO } = require("../generarXml");
 const { paises } = require("./constants.service");
 
@@ -39,11 +40,30 @@ const formatToParams = (documento, empresa) => {
   }
 };
 
-const formatToData = (documento, empresa) => {
+const formatToData = async (documento, empresa) => {
   console.log("documento ", JSON.stringify(documento, null, 2)); 
   
   const esContado = documento.condicionPago.id == 1;
+  let documentoAsociado={}
+  if (documento.docAsociadoId) {
+    const documentoAso = await Documento.findByPk(docAsociadoId);
+    const [establecimientoAS, puntoAs, numeroAs] =
+    documento.nroComprobante.split("-") || [];
+    documentoAsociado={
+      /*1= Electrónico
+      2= Impreso
+      3= Constancia Electrónica*/
+     formato : 1,
+     cdc  : documentoAso.cdc,
+     tipo : 1,
+     "timbrado" : documentoAso.timbrado,
+     "establecimiento" : establecimientoAS,
+     "punto" : puntoAs,
+     "numero" : numeroAs,
+     "fecha" : documentoAso.fecha,
+    }
 
+}
   const condicion = esContado
     ? {
         tipo: 1,
@@ -76,7 +96,6 @@ const formatToData = (documento, empresa) => {
         ]
       }
     };
-  
   
 
 
@@ -163,8 +182,7 @@ const formatToData = (documento, empresa) => {
         celular: documento.cliente.celular,
         email: documento.cliente.email,
         //codigo: documento.cliente.id
-      },
-
+      }, 
       factura: {
         presencia: 1,
         fechaEnvio: documento.fecha,
@@ -176,6 +194,9 @@ const formatToData = (documento, empresa) => {
           fecha: documento.fecha
         }
       }, 
+       notaCreditoDebito : {
+        motivo : 1
+    },
       condicion,    
       items: items,
       sectorEnergiaElectrica: null,
@@ -184,7 +205,7 @@ const formatToData = (documento, empresa) => {
       sectorAdicional: null,
       detalleTransporte: null,
       complementarios: null,
-      documentoAsociado: null
+      documentoAsociado
     };
      
   } catch (error) {
