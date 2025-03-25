@@ -71,7 +71,7 @@ bloque2.forEach((campo, index) => {
   }
 }); 
 // Define un array con la información de cada campo en el bloque 3
-const tipo = (documento.tipoDoc == 'FCT')?"FACTURA":"NOTA DE CREDITO";
+const tipo = (documento.tipoDoc == 'FT')?"FACTURA":"NOTA DE CREDITO";
 const bloque3 = [
   { texto: "TIMBRADO N°: " + timbrado, top: topBloque, width: anchoBloque3, align: 'left', fontSize: 11 },
   { texto: "DESDE " + formatDate(documento.fechaInicio)+" AL "+formatDate(documento.fechaFin), top: topBloque + 15, width: anchoBloque3, align: 'left', fontSize: 10 },

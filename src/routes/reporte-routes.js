@@ -11,5 +11,6 @@ router.get('/topVariantes/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   re
 router.get('/topClientes/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   report.getTopClientes);
 router.get('/topMediosDePago/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   report.getInformeMediosDePago); 
 router.get('/vendedoresPorTotal/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   report.getVendedoresPorTotal);
- 
+router.get('/topMediosDePagoNc/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   report.getInformeNC); 
+
 module.exports = router;

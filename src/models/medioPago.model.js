@@ -44,7 +44,17 @@ const MedioPago = sequelize.define('MedioPago', {
     defaultValue:false,
     allowNull: false
   },
+  normal: {
+    type: DataTypes.BOOLEAN,
+    defaultValue:true,
+    allowNull: false
+  },
   esObsequio: {
+    type: DataTypes.BOOLEAN,
+    defaultValue:false,
+    allowNull: false
+  },
+  esNotaCredito: {
     type: DataTypes.BOOLEAN,
     defaultValue:false,
     allowNull: false

@@ -143,7 +143,10 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: false
   },
-  
+  valorNeto: {
+    type: DataTypes.DECIMAL(19, 2),
+    allowNull: false
+  },
   clienteId: {
     type: DataTypes.BIGINT,
     allowNull: false
@@ -177,6 +180,11 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.INTEGER,
     allowNull: true,
   }, 
+  calculable: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: true
+  },
   idMotEmi: {
     type: DataTypes.INTEGER,
     allowNull: true, // Permite valores nulos
@@ -196,15 +204,10 @@ const Documento = sequelize.define('Documento', {
     `
   },
   tipoDoc: { 
-    type: DataTypes.ENUM('FCT', 'NCR', 'NDB','NRM'), 
+    type: DataTypes.ENUM('FT', 'NC', 'ND','NR'), 
     allowNull: false, 
-    defaultValue: 'FCT' 
-  },
-  calculables: { 
-    type: DataTypes.ENUM('SI', 'NO'), 
-    allowNull: false, 
-    defaultValue: 'SI' 
-  },
+    defaultValue: 'FT' 
+  }, 
   importeAnterior: { 
     type: DataTypes.DECIMAL(10, 2), 
     allowNull: false, 
@@ -215,8 +218,7 @@ const Documento = sequelize.define('Documento', {
     allowNull: false, 
     defaultValue: 0 
   },
-
-  
+ 
 }, {
   tableName: 'documentos',
   timestamps: false,

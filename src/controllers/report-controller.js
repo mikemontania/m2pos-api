@@ -151,11 +151,11 @@ const getVendedoresPorTotal = async (req, res) => {
         u.usuario as vendedor, 
         COUNT(v.id) as cantidad,
         SUM(v.total_kg) AS peso,
-        SUM(v.importe_total) total
+        SUM(v.valor_neto) total
       FROM documentos v  
       JOIN usuarios u ON u.id = v.usuario_creacion_id
       WHERE
-        v.anulado = false  AND v.calculables = 'SI'    AND v.empresa_id = :empresaId
+        v.anulado = false AND v.empresa_id = :empresaId
         AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
       GROUP BY u.id, vendedor ORDER BY total  DESC 
@@ -177,7 +177,49 @@ const getVendedoresPorTotal = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   "Error al obtener getVendedoresPorTotal" });
   }
 };
- 
+const getInformeNC = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const { fechaDesde, fechaHasta , sucursalId} = req.params;
+    const sucursalCondition = sucursalId !== '0' ? "AND c.sucursal_id = :sucursalId" : "";
+  
+    const query = `
+      SELECT
+        mp.id AS id,
+        mp.descripcion AS medioPago ,
+        SUM(cd.importe_cobrado *-1) AS totalImporteCobrado,
+        COUNT( mp.id) AS cantidad
+      FROM
+        medio_pago mp
+      LEFT JOIN
+        cobranzas_detalle cd ON mp.id = cd.medio_pago_id
+      LEFT JOIN
+        cobranzas c ON cd.cobranza_id = c.id
+      WHERE
+        c.fecha_cobranza BETWEEN :fechaDesde AND :fechaHasta
+        AND c.tipo in ('NOTACREDITO')
+        AND c.anulado = false
+        AND c.empresa_id = :empresaId
+        ${sucursalCondition}
+      GROUP BY mp.id, mp.descripcion `;
+
+    const resultados = await sequelize.query(query, {
+      replacements: { fechaDesde, fechaHasta, sucursalId, empresaId },
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    // Estructurar y enviar la respuesta
+    res.status(200).json({
+      resultados
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: error?.original?.detail ||  "Error al obtener el informe de medios de pago NC" });
+  }
+};
+
 
 const getInformeMediosDePago = async (req, res) => {
   try {
@@ -199,7 +241,7 @@ const getInformeMediosDePago = async (req, res) => {
         cobranzas c ON cd.cobranza_id = c.id
       WHERE
         c.fecha_cobranza BETWEEN :fechaDesde AND :fechaHasta
-        AND c.tipo = 'VENTA'
+        AND c.tipo in ('VENTA','NOTACREDITO')
         AND c.anulado = false
         AND c.empresa_id = :empresaId
         ${sucursalCondition}
@@ -232,14 +274,14 @@ const getTopClientes = async (req, res) => {
       SELECT
         c.nro_documento as doc,
         c.razon_social as razonSocial,
-        SUM(v.importe_total) AS totalImporte,
+        SUM(v.valor_neto) AS totalImporte,
         COUNT(v.id) AS totalFacturas
       FROM
         documentos v
       JOIN
         clientes c ON v.cliente_id = c.id
       WHERE
-        v.anulado = false  AND v.calculables = 'SI'  AND v.empresa_id = :empresaId
+        v.anulado = false  AND v.empresa_id = :empresaId
         AND c.predeterminado = false
         AND c.propietario = false
         AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
@@ -290,8 +332,9 @@ const getTopVariantes = async (req, res) => {
       JOIN productos pro ON va.producto_id = pro.id
       JOIN presentaciones pre ON va.presentacion_id = pre.id
       JOIN variedades var ON va.variedad_id = var.id
-      WHERE v.anulado = false  AND v.calculables = 'SI'  AND v.empresa_id = :empresaId
-        AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
+      WHERE v.anulado = false  AND v.empresa_id = :empresaId
+      AND v.calculable = true
+      AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
       GROUP BY
       va.id,
@@ -303,7 +346,6 @@ const getTopVariantes = async (req, res) => {
         vendidos DESC
       LIMIT 10;
     `;
-
     const resultados = await sequelize.query(query, {
       replacements: { fechaDesde, fechaHasta, sucursalId,empresaId  },
       type: sequelize.QueryTypes.SELECT
@@ -332,13 +374,13 @@ console.log(sucursalId)
         s.id AS sucursalId,
         s.descripcion AS sucursalNombre,
         COUNT(v.id) AS totalDocumentos,
-        SUM(v.importe_total) AS totalImporte
+        SUM(v.valor_neto) AS totalImporte
       FROM
         documentos v
       JOIN
         sucursales s ON v.sucursal_id = s.id
       WHERE
-        v.anulado = false  AND v.calculables = 'SI' 
+        v.anulado = false 
         AND v.empresa_id = :empresaId
         AND v.fecha BETWEEN :fechaDesde AND :fechaHasta
         ${sucursalCondition}
@@ -508,6 +550,6 @@ module.exports = {
   getReporteCobranza,
   getReporteDocumentosPorSucursal ,
   getTopVariantes,
-  getTopClientes,
+  getTopClientes,getInformeNC,getInformeNC,
   getInformeMediosDePago,  getVendedoresPorTotal
 };

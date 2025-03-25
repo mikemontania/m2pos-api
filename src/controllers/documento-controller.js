@@ -27,6 +27,7 @@ const Empresa = require("../models/empresa.model");
 const {   tipoContribuyente,tiposEmisiones
 } = require('../constantes/Constante.constant'); 
 const TablaSifen = require("../models/tablaSifen.model");
+const MedioPago = require("../models/medioPago.model");
 const getById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -74,7 +75,7 @@ const getById = async (req, res) => {
             {
               model: Producto,
               as: "producto", // Asegúrate de usar el alias correcto aquí
-              attributes: ["nombre"]
+              
             },
             {
               model: Unidad,
@@ -234,8 +235,9 @@ const createDocumento = async (req, res) => {
         importeNeto,
         importeSubtotal,
         importeTotal,
-        tipoDoc:'FCT'  ,
-        calculables: 'SI',
+        valorNeto: importeTotal,
+        tipoDoc:'FT'  , 
+        calculable:true,
         importeDevuelto:0,
         estado:'Pendiente', 
         totalKg: totalKg ? Number((totalKg / 1000).toFixed(2)) : 0
@@ -337,7 +339,48 @@ const crearNotaCredito = async (req, res) => {
     console.log(importeIva10);
     console.log(numeracion)
     const cdcGenerado = generarCDC(numeracion.itide,empresa.ruc ,nroComprobante,tipoComprobante.id,fecha,tipoEmision.codigo,codigoSeguridad);
-    
+    const MedioPagoNC = await MedioPago.findOne({
+      where: {
+        empresaId: empresaId,
+        esNotaCredito: true,
+        normal: false
+      }
+    });
+        if (!MedioPagoNC) {
+      throw new Error("No se encontró un medio de pago válido para Nota de Crédito");
+    }
+    console.log('MedioPagoNC=>',MedioPagoNC)
+   // Crear la cabecera de cobranza
+   const cobranza = await Cobranza.create(
+    {
+      empresaId,
+      sucursalId,
+      usuarioCreacionId: usuarioId,
+      fechaCobranza:fecha,
+      importeAbonado:importeDevuelto,
+      importeCobrado:importeDevuelto,
+      saldo:0,
+      anulado: false,
+      tipo: 'NOTACREDITO',
+    },
+    { transaction: t }
+  );
+  const cobranzadet = await CobranzaDetalle.create(
+  {
+    // Se asigna el id de cobranza de la cabecera a cada detalle
+    cobranzaId: cobranza.id,
+    fechaEmision: fecha,
+    fechaVencimiento: null,
+    importeAbonado: importeDevuelto,
+    importeCobrado:importeDevuelto,
+    nroCuenta: 0,
+    nroRef:   null,
+    saldo: 0,
+    bancoId:   null,
+    medioPagoId: MedioPagoNC.id,
+  },
+  { transaction: t })
+
     // Guardar documento
     const documento = await Documento.create(
       {
@@ -369,9 +412,11 @@ const crearNotaCredito = async (req, res) => {
         importeNeto,
         importeSubtotal,
         importeTotal,
-        tipoDoc:'NCR'  ,
-        calculables: 'SI',
+        valorNeto: importeDevuelto,
+        tipoDoc:'NCR'  , 
+        calculable:true,
         importeAnterior ,
+        cobranzaId:cobranza.id,
         importeDevuelto ,
         estado:'Pendiente', 
         totalKg: totalKg ? Number((totalKg / 1000).toFixed(2)) : 0
@@ -380,7 +425,12 @@ const crearNotaCredito = async (req, res) => {
     );
     // Guardar detalles
     //Nota de credito no siempre tiene detalles
-     
+    if (docAsociadoId) {
+      const documentoAso = await Documento.findByPk(docAsociadoId);
+      await documentoAso.update({ 
+        calculable:false, 
+      });
+    }
    await DocumentoDetalle.bulkCreate(
      detalles.map(detalle => ({
        documentoId: documento.id,
@@ -391,13 +441,6 @@ const crearNotaCredito = async (req, res) => {
      })),
      { transaction: t }
    );  
-
-   if (docAsociadoId) {
-    const documentoAsociado = await Documento.findByPk(docAsociadoId);
-    await documentoAsociado.update({  
-      calculables:'NO', 
-    });
-  }
     // Actualizar numeración
     await numeracion.save({ transaction: t }); 
     // Commit de la transacción si todo fue exitoso
@@ -419,20 +462,20 @@ const anularDocumento = async (req, res) => {
     const documento = await Documento.findByPk(id);
     if (documento) {
       await documento.update({
-        anulado: true,
-        calculables:'NO',
+        anulado: true, 
+        calculable:false,
+        valorNeto: 0,
         fechaAnulacion: new Date(),
         usuarioAnulacionId: req.usuario.id
       });
 
-      if (documento?.docAsociadoId) {
-        const documentoAsociado = await Documento.findByPk(documento?.docAsociadoId);
-        await documentoAsociado.update({  
-          calculables:'SI', 
+      if (documento.docAsociadoId) {
+        const documentoAso = await Documento.findByPk(documento.docAsociadoId);
+        await documentoAso.update({ 
+          calculable:true, 
         });
       }
-
-
+ 
 
       //si el tipo de documento es  credito  debo eliminar el item del listado
       const condicionPago = await CondicionPago.findByPk(documento.condicionPagoId);

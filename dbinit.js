@@ -612,7 +612,7 @@ const populateDB = async () => {
     });
 
     const medioPago1 = await MedioPago.create({
-      descripcion: "EFECTIVO",
+      descripcion: "EFECTIVO",normal:true,
       activo: true,
       predeterminado: true,
       empresaId: empresa.id,
@@ -623,7 +623,7 @@ const populateDB = async () => {
       esObsequio: false
     });
     const medioPago2 = await MedioPago.create({
-      descripcion: "TARJETA",
+      descripcion: "TARJETA",normal:true,
       activo: true,
       empresaId: empresa.id,
       esCheque: false,
@@ -633,7 +633,7 @@ const populateDB = async () => {
       esObsequio: false
     });
     const medioPago3 = await MedioPago.create({
-      descripcion: "VALE EMPLEADOS",
+      descripcion: "VALE EMPLEADOS",normal:true,
       activo: true,
       empresaId: empresa.id,
       esCheque: false,
@@ -643,7 +643,7 @@ const populateDB = async () => {
       esObsequio: false
     });
     const medioPago4 = await MedioPago.create({
-      descripcion: "RETENCION",
+      descripcion: "RETENCION",normal:true,
       activo: true,
       empresaId: empresa.id,
       esCheque: false,
@@ -653,7 +653,7 @@ const populateDB = async () => {
       esObsequio: false
     });
     const medioPago5 = await MedioPago.create({
-      descripcion: "CHEQUE DIA",
+      descripcion: "CHEQUE DIA",normal:true,
       activo: true,
       empresaId: empresa.id,
       esCheque: true,
@@ -663,7 +663,7 @@ const populateDB = async () => {
       esObsequio: false
     });
     const medioPago6 = await MedioPago.create({
-      descripcion: "CHEQUE DIFERIDO",
+      descripcion: "CHEQUE DIFERIDO",normal:true,
       activo: true,
       empresaId: empresa.id,
       esCheque: true,
@@ -673,7 +673,7 @@ const populateDB = async () => {
       esObsequio: false
     });
     const medioPago7 = await MedioPago.create({
-      descripcion: "TRANSFERENCIA",
+      descripcion: "TRANSFERENCIA",normal:true,
       activo: true,
       empresaId: empresa.id,
       esCheque: false,
@@ -683,17 +683,7 @@ const populateDB = async () => {
       esObsequio: false
     });
     const medioPago8 = await MedioPago.create({
-      descripcion: "OBSEQUIO",
-      activo: true,
-      empresaId: empresa.id,
-      esCheque: false,
-      tieneBanco: false,
-      tieneRef: false,
-      tieneTipo: false,
-      esObsequio: true
-    });
-    const medioPago9 = await MedioPago.create({
-      descripcion: "BANCARD QR",
+      descripcion: "BANCARD QR", normal:true,
       activo: true,
       empresaId: empresa.id,
       esCheque: false,
@@ -701,6 +691,31 @@ const populateDB = async () => {
       tieneRef: true,
       tieneTipo: false,
       esObsequio: false
+    });
+    const medioPago9 = await MedioPago.create({
+      descripcion: "OBSEQUIO",
+      activo: true,
+      empresaId: empresa.id,
+      esCheque: false,
+      tieneBanco: false,
+      tieneRef: false,
+      tieneTipo: false,
+      normal:false,
+      esObsequio: true
+    });
+
+
+    const medioPago10 = await MedioPago.create({
+      descripcion: "NOTA CREDITO",
+      activo: true, 
+      empresaId: empresa.id,
+      esCheque: false,
+      tieneBanco: false,
+      tieneRef: false,
+      tieneTipo: false,
+      esObsequio: false,
+      normal:false,
+      esNotaCredito: true
     });
 
     const numeracion1 = await Numeracion.create({
