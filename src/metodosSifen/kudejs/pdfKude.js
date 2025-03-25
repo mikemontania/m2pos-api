@@ -11,7 +11,7 @@ const createKude = async (xmldata, xmlFirmado, img) => {
     try {
       const { informacionGeneral, datosDocumento } = await separarXmlData(xmldata);
       const detalles = datosDocumento.detalles || [];
-      const itemsPorPagina = 18;
+      const itemsPorPagina = 17;
       const totalPaginas = Math.ceil(detalles.length / itemsPorPagina);
 
       let doc = new PDFDocument({ size: "A4", margin: 20 });
@@ -26,8 +26,8 @@ const createKude = async (xmldata, xmlFirmado, img) => {
         const hojaVerticalAncho = 595.28;
         const margen = 5;
         const altoHedader = 100;
-        const altoGenereal = 80;
-        const altoDetalle = 425;
+        const altoGenereal = 93;
+        const altoDetalle = 412;
         const altoSubTotal = 80;
         const altoqr = 90;
         const sectionLineLeft = 20;

@@ -97,7 +97,7 @@ const populateDB = async () => {
 
     const iTipTra1 = await TablaSifen.create({
       codigo: "1",
-      descripcion: "Documento de mercadería",
+      descripcion: "Venta de mercadería",
       tabla: "iTipTra"
     });
     const iTipTra2 = await TablaSifen.create({
@@ -107,7 +107,7 @@ const populateDB = async () => {
     });
     const iTipTra3 = await TablaSifen.create({
       codigo: "3",
-      descripcion: "Mixto (Documento de mercadería y servicios)",
+      descripcion: "Mixto (Venta de mercadería y servicios)",
       tabla: "iTipTra"
     });
     const iTipTra4 = await TablaSifen.create({

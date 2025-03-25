@@ -44,9 +44,9 @@ const formatToData = async (documento, empresa) => {
   console.log("documento ", JSON.stringify(documento, null, 2)); 
   
   const esContado = documento.condicionPago.id == 1;
-  let documentoAsociado={}
+  let documentoAsociado=null
   if (documento.docAsociadoId) {
-    const documentoAso = await Documento.findByPk(docAsociadoId);
+    const documentoAso = await Documento.findByPk(documento.docAsociadoId);
     const [establecimientoAS, puntoAs, numeroAs] =
     documento.nroComprobante.split("-") || [];
     documentoAsociado={
@@ -142,7 +142,7 @@ const formatToData = async (documento, empresa) => {
     return {
       cdc: documento.cdc,
       codigoSeguridad: documento.codigoSeguridad,
-      tipoDocumento: documento.itide,
+      tipoDocumento: documento.tipoDocumento.codigo,
       establecimiento: establecimiento,
       codigoSeguridadAleatorio: documento.codigoSeguridad,
       punto: punto,
@@ -154,7 +154,7 @@ const formatToData = async (documento, empresa) => {
       tipoTransaccion: empresa.tipoTransaId,
       tipoImpuesto: empresa.tipoImpId,
       moneda: empresa.codMoneda,
-      condicionAnticipo: 1,
+      //condicionAnticipo: 1,
       condicionTipoCambio: 1,
       descuentoGlobal:0,
       anticipoGlobal: 0,
@@ -195,7 +195,7 @@ const formatToData = async (documento, empresa) => {
         }
       }, 
        notaCreditoDebito : {
-        motivo : 1
+        motivo : documento.idMotEmi
     },
       condicion,    
       items: items,

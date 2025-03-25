@@ -68,6 +68,8 @@ const generateXMLDeService = (params, data) => {
     if (data.fechaFirmaDigital) {
       fechaFirmaDigital = new Date(data.fechaFirmaDigital);
     }
+    // Restar 1 hora por culpa del servidor desactualizado de sifen test
+    fechaFirmaDigital.setHours(fechaFirmaDigital.getHours() - 1);
     let digitoVerificadorString = data.cdc + "";
     json["rDE"]["DE"] = {
       $: {
@@ -335,7 +337,7 @@ const generateDatosGenerales = (params, data, json) => {
      * 
      * <gOpeCom>
             <iTipTra>1</iTipTra>
-            <dDesTipTra>Documento de mercadería</dDesTipTra>
+            <dDesTipTra>Venta de mercadería</dDesTipTra>
             <iTImp>1</iTImp>
             <dDesTImp>IVA</dDesTImp>
             <cMoneOpe>PYG</cMoneOpe>

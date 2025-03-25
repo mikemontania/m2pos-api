@@ -27,17 +27,28 @@ try{
  
     const agregarDatosReceptorOperacion = (doc, datosDocumento, sectionLineLeft, barraVertical1, generalLineTop) => {
     
-      const { receptor,  operacion,condicionesPago,operacionCom, fechaEmision} =datosDocumento;
+      const { receptor,  asociado,condicionesPago,operacionCom, fechaEmision} =datosDocumento;
       
       const fecha = (fechaEmision) ?fechaEmision.toString().substring(0, 10):''; 
-
+      const pagoCredito =  condicionesPago?.gPagCred?.[0];
+      let tituloCredito = "";
+      if (pagoCredito) {
+        if (pagoCredito.iCondCred?.[0] == 2) {
+          tituloCredito = pagoCredito.dCuotas?.[0] ?` ${pagoCredito.dCuotas?.[0]}` : ""  ;
+        } else {
+          const plazo = pagoCredito.dPlazoCre?.[0];
+          tituloCredito = plazo ? ` ${plazo}` : ""  ;// Evita "undefined días"
+        }
+      }
+       
       const datos = [
         { titulo: "Fecha y hora de emisión:", valor: formatDate(fecha) ?? "" },//D002
-        { titulo: "Condición Documento:", valor: condicionesPago?.dDCondOpe?.[0] ?? "" }, //E602
+        { titulo: "Condición Documento:", valor: condicionesPago?.dDCondOpe?.[0]+tituloCredito  ?? "" }, //E602 //resultado =>: Crédito 30 días o Contado
         { titulo: "Moneda:", valor: operacionCom?.cMoneOpe?.[0] ?? "" },//E644
-        { titulo: "Descripción de moneda de la operación:", valor: operacionCom?.dDesMoneOpe?.[0] ?? "" },//E644
-        {titulo:   condicionesPago.gPagCred?.[0]?.iCondCred?.[0] == 2 ? condicionesPago.gPagCred?.[0]?.dCuotas?.[0] :  condicionesPago.gPagCred?.[0]?.dPlazoCre?.[0]     ?? ""},
-         { titulo: "Tipo de transacción:", valor: operacionCom?.dDesTipTra ?? "" },
+        { titulo: "Descripción de moneda de la operación:", valor: operacionCom?.dDesMoneOpe?.[0] ?? "" },//E644 
+        { titulo: "Tipo de transacción:", valor: operacionCom?.dDesTipTra ?? "" },
+        {titulo:   asociado?.dDesTipDocAso? "Tipo de documento asociado: "  :   "", valor:asociado?.dDesTipDocAso?  asociado.dDesTipDocAso :   ""},
+        {titulo:   asociado?.dCdCDERef? "CDC o preimpreso: "  :   "", valor: asociado?.dCdCDERef?  asociado.dCdCDERef :   "" }, 
       ];
        const datos2 = [
         { titulo: receptor?.iNatRec == 1 ? "RUC:" : "Documento de identidad:", valor: receptor?.iNatRec == 1 ? `${receptor?.dRucRec ?? ""}-${receptor?.dDVRec ?? ""}` : receptor?.dNumIDRec ?? "" },

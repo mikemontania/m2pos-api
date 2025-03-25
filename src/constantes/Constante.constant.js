@@ -11,7 +11,7 @@ const tiposEmisiones = [
 const tiposTransacciones = [
   {
     codigo: 1,
-    descripcion: "Documento de mercadería",
+    descripcion: "Venta de mercadería",
     situacion: 0
   },
   {
@@ -21,7 +21,7 @@ const tiposTransacciones = [
   },
   {
     codigo: 3,
-    descripcion: "Mixto (Documento de mercadería y servicios)",
+    descripcion: "Mixto (Venta de mercadería y servicios)",
     situacion: 1
   },
   {
