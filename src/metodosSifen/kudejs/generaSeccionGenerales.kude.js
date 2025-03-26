@@ -26,58 +26,52 @@ try{
     };
  
     const agregarDatosReceptorOperacion = (doc, datosDocumento, sectionLineLeft, barraVertical1, generalLineTop) => {
+      const { receptor, asociado, condicionesPago, operacionCom, fechaEmision } = datosDocumento;
+       const fecha = fechaEmision ? fechaEmision.toString().substring(0, 10) : "";
+      const pagoCredito = condicionesPago?.gPagCred?.[0];
     
-      const { receptor,  asociado,condicionesPago,operacionCom, fechaEmision} =datosDocumento;
-      
-      const fecha = (fechaEmision) ?fechaEmision.toString().substring(0, 10):''; 
-      const pagoCredito =  condicionesPago?.gPagCred?.[0];
       let tituloCredito = "";
       if (pagoCredito) {
         if (pagoCredito.iCondCred?.[0] == 2) {
-          tituloCredito = pagoCredito.dCuotas?.[0] ?` ${pagoCredito.dCuotas?.[0]}` : ""  ;
+          tituloCredito = pagoCredito.dCuotas?.[0] || "";
         } else {
-          const plazo = pagoCredito.dPlazoCre?.[0];
-          tituloCredito = plazo ? ` ${plazo}` : ""  ;// Evita "undefined días"
+          tituloCredito = pagoCredito.dPlazoCre?.[0] || "";
         }
       }
-       
+    
       const datos = [
-        { titulo: "Fecha y hora de emisión:", valor: formatDate(fecha) ?? "" },//D002
-        { titulo: "Condición Documento:", valor: condicionesPago?.dDCondOpe?.[0]+tituloCredito  ?? "" }, //E602 //resultado =>: Crédito 30 días o Contado
-        { titulo: "Moneda:", valor: operacionCom?.cMoneOpe?.[0] ?? "" },//E644
-        { titulo: "Descripción de moneda de la operación:", valor: operacionCom?.dDesMoneOpe?.[0] ?? "" },//E644 
-        { titulo: "Tipo de transacción:", valor: operacionCom?.dDesTipTra ?? "" },
-        {titulo:   asociado?.dDesTipDocAso? "Tipo de documento asociado: "  :   "", valor:asociado?.dDesTipDocAso?  asociado.dDesTipDocAso :   ""},
-        {titulo:   asociado?.dCdCDERef? "CDC o preimpreso: "  :   "", valor: asociado?.dCdCDERef?  asociado.dCdCDERef :   "" }, 
-      ];
-       const datos2 = [
-        { titulo: receptor?.iNatRec == 1 ? "RUC:" : "Documento de identidad:", valor: receptor?.iNatRec == 1 ? `${receptor?.dRucRec ?? ""}-${receptor?.dDVRec ?? ""}` : receptor?.dNumIDRec ?? "" },
-        { titulo: receptor?.iNatRec == 1 ? "Razón Social:" : "Nombre:", valor: receptor?.dNomRec ?? "" },
-        { titulo: "Dirección:", valor: receptor?.dDirRec ?? "" },
-        { titulo: "Teléfono:", valor: receptor?.dTelRec ?? "" },
-        { titulo: "Email:", valor: receptor?.dEmailRec ?? "" },
-        
-      ];
+        { titulo: "Fecha y hora de emisión:", valor: formatDate(fecha) },
+        { titulo: "Condición Documento:", valor: condicionesPago?.dDCondOpe?.[0] ? `${condicionesPago.dDCondOpe[0]} ${tituloCredito}` : "" },
+        { titulo: "Moneda:", valor: operacionCom?.cMoneOpe?.[0] },
+        { titulo: "Descripción de moneda de la operación:", valor: operacionCom?.dDesMoneOpe?.[0] },
+        { titulo: "Tipo de transacción:", valor: operacionCom?.dDesTipTra },
+        { titulo: asociado?.dDesTipDocAso ? "Tipo de documento asociado:" : "", valor: asociado?.dDesTipDocAso },
+        { titulo: asociado?.dCdCDERef ? "CDC o preimpreso:" : "", valor: asociado?.dCdCDERef },
+      ].filter(d => d.titulo && d.valor);
+    
+      const datos2 = [
+        { titulo: receptor?.iNatRec == 1 ? "RUC:" : "Documento de identidad:", valor: receptor?.iNatRec == 1 ? `${receptor?.dRucRec || ""}-${receptor?.dDVRec || ""}` : receptor?.dNumIDRec },
+        { titulo: receptor?.iNatRec == 1 ? "Razón Social:" : "Nombre:", valor: receptor?.dNomRec },
+        { titulo: "Dirección:", valor: receptor?.dDirRec },
+        { titulo: "Teléfono:", valor: receptor?.dTelRec },
+        { titulo: "Email:", valor: receptor?.dEmailRec },
+      ].filter(d => d.valor);
+    
       let yPosDat1 = generalLineTop + 5;
       datos.forEach(({ titulo, valor }) => {
-        if (titulo) {
-          doc.font("Helvetica-Bold").text(titulo, sectionLineLeft + 5, yPosDat1, { continued: true });
-          doc.font("Helvetica").text(" " + valor);
-          yPosDat1 += 12;
-        }
+        doc.font("Helvetica-Bold").text(titulo, sectionLineLeft + 5, yPosDat1, { continued: true });
+        doc.font("Helvetica").text(" " + valor);
+        yPosDat1 += 12;
       });
+    
       let yPosDat2 = generalLineTop + 5;
-
       datos2.forEach(({ titulo, valor }) => {
-        if (titulo) {
-          doc.font("Helvetica-Bold").text(titulo, barraVertical1 + 5, yPosDat2, { continued: true });
-          doc.font("Helvetica").text(" " + valor);
-          yPosDat2 += 12;
-        }
+        doc.font("Helvetica-Bold").text(titulo, barraVertical1 + 5, yPosDat2, { continued: true });
+        doc.font("Helvetica").text(" " + valor);
+        yPosDat2 += 12;
       });
-
-
     };
+    
  
     const generarCuadriculaDatosGenerales = (doc, sectionLineLeft, sectionLineRight, generalLineTop, generalLineBottom, barraVertical1) => {
       // Línea o margen vertical de la izquierda (borde izquierdo de la sección)

@@ -2,7 +2,9 @@ const separarXmlData = xmldata => {
     const rDE = xmldata.rDE;
     const gTimb = xmldata.rDE.DE[0].gTimb[0];
     const asociado = rDE.DE[0]?.gCamDEAsoc?.[0] || null;
-    console.log("gCamDEAsoc =====>", JSON.stringify(asociado, null, 2)); 
+const  gDtipDE =rDE.DE[0]?.gDtipDE?.[0]
+
+    console.log("gDtipDE =====>", JSON.stringify(gDtipDE, null, 2)); 
     return {
       informacionGeneral: {
         id: rDE.DE[0]["$"].Id, // Aquí accedemos al valor de "Id"
@@ -22,7 +24,7 @@ const separarXmlData = xmldata => {
         timbrado: rDE.DE[0].gTimb[0],
         operacion: rDE.DE[0].gOpeDE[0],
         detalles: rDE.DE[0].gDtipDE[0].gCamItem,
-        condicionesPago: rDE.DE[0]?.gDtipDE[0]?.gCamCond?.[0] || null,
+        condicionesPago: rDE.DE[0]?.gDtipDE[0]?.gCamCond?.[0] ,
         totales: rDE.DE[0].gTotSub[0],
         asociado:asociado ,
         motivo: rDE.DE[0]?.gDtipDE[0]?.gCamNCDE,

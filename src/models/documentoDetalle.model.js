@@ -85,7 +85,7 @@ const DocumentoDetalle = sequelize.define('DocumentoDetalle', {
   ivaBase: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue:1
+    defaultValue:100
   },
 }, {
   tableName: 'documentos_detalle',

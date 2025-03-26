@@ -174,9 +174,7 @@ const createDocumento = async (req, res) => {
       cobranzaId = cobranzaNew.id;
     }
     // Generar número de factura
-    const numeracion = await Numeracion.findByPk(numeracionId, {
-      transaction: t
-    });
+    const numeracion = await Numeracion.findByPk(numeracionId,{ include: [ {  model: TablaSifen,   as: "tipoDocumento",   }]}, { transaction: t   });
     const codigoSeguridad =generarCodigoSeguridad();
     const empresa = await Empresa.findByPk(empresaId)
     const tipoComprobante =tipoContribuyente.find(t=>t.id == empresa.tipoContId)
@@ -188,7 +186,7 @@ const createDocumento = async (req, res) => {
     .padStart(7, "0")}`;
     console.log(importeIva10);
     console.log(numeracion)
-    const cdc = generarCDC(numeracion.itide,empresa.ruc ,nroComprobante,tipoComprobante.id,fecha,tipoEmision.codigo,codigoSeguridad);
+    const cdc = generarCDC(numeracion.tipoDocumento.codigo,empresa.ruc ,nroComprobante,tipoComprobante.id,fecha,tipoEmision.codigo,codigoSeguridad);
     if (condicionPago && condicionPago.dias > 0) {
       const nuevoCredito = await Credito.create({
         empresaId,
@@ -324,9 +322,9 @@ const crearNotaCredito = async (req, res) => {
       })
 
     // Generar número de factura
-    const numeracion = await Numeracion.findByPk(numeracionNotaCredId, {
-      transaction: t
-    });
+   
+    const numeracion = await Numeracion.findByPk(numeracionNotaCredId,{ include: [ {  model: TablaSifen,   as: "tipoDocumento",   }]}, { transaction: t   });
+
     const codigoSeguridad =generarCodigoSeguridad();
     const empresa = await Empresa.findByPk(empresaId)
     const tipoComprobante =tipoContribuyente.find(t=>t.id == empresa.tipoContId)
@@ -338,7 +336,7 @@ const crearNotaCredito = async (req, res) => {
     .padStart(7, "0")}`;
     console.log(importeIva10);
     console.log(numeracion)
-    const cdcGenerado = generarCDC(numeracion.itide,empresa.ruc ,nroComprobante,tipoComprobante.id,fecha,tipoEmision.codigo,codigoSeguridad);
+    const cdcGenerado = generarCDC(numeracion.tipoDocumento.codigo,empresa.ruc ,nroComprobante,tipoComprobante.id,fecha,tipoEmision.codigo,codigoSeguridad);
     const MedioPagoNC = await MedioPago.findOne({
       where: {
         empresaId: empresaId,

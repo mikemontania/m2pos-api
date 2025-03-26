@@ -13,7 +13,7 @@ const Documento = require("../models/documento.model");
 const DocumentoXml = require("../models/documentoXml.model");
 const { envioEventoXml, extraeRespEvento } = require("../metodosSifen/envioEvento.service");
 const { consulta } = require("../metodosSifen/service/consulta.service");
-const { extraerDatosRespuesta, extraerDatosConsultaCdc } = require("../metodosSifen/xmlToJson");
+const {   extraerDatosConsultaCdc } = require("../metodosSifen/xmlToJson");
 const Sucursal = require("../models/sucursal.model");
 const CondicionPago = require("../models/condicionPago.model");
 const Cliente = require("../models/cliente.model");
@@ -309,13 +309,27 @@ const anular = async (req, res) => {
     let json = await extraeRespEvento(respuesta);
     console.log("Respuesta del evento:", json);
      await crearDocumentoXml(empresa.id,documento.id,respuesta,3,evento+json.estado);
-     await Documento.update({estado:evento+json.estado , anulado:true},{where: { id: documento.id }});
-  // Actualizar el estado de la documento en la base de datos
-// Buscar la documento actualizada
-let documentoActualizada = await Documento.findByPk(id);
+     //Aprobado, Rechazado, ect
+     if (json.estado =='Aprobado') {
+       await Documento.update({estado:evento+json.estado , anulado:true,calculable:false,  valorNeto: 0,
+        fechaAnulacion: new Date(), usuarioAnulacionId: req.usuario.id},{where: { id: documento.id }});
+        if (documento.docAsociadoId  ) {  
+           const documentoAso = await Documento.findByPk(documento.docAsociadoId);
+           await documentoAso.update({ 
+             calculable:true, 
+           }); 
+       } 
+     }else{
+      await Documento.update({estado:evento+json.estado },{where: { id: documento.id }});
+     }
+ 
+     
+     // Actualizar el estado de la documento en la base de datos
+    // Buscar la documento actualizada
+    let documentoActualizada = await Documento.findByPk(id);
 
-// Responder con la documento actualizada
-return res.status(200).json({ documento: documentoActualizada, json });
+    // Responder con la documento actualizada
+    return res.status(200).json({ documento: documentoActualizada, json });
 
   } catch (error) {
     console.error('❌ Error al anular documento:', error);
