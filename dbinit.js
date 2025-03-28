@@ -312,6 +312,7 @@ const populateDB = async () => {
       codBarrio: 3568,
       telefono: "021578603",
       email: "info@cavallaro.com.py",
+      emailEnvio:"mikemontania@gmail.com",
       web: "www.cavallaro.com.py",
       img: "grupocavallaro3.png",
       modoSifen: "NO"
@@ -728,12 +729,12 @@ const populateDB = async () => {
       numeroFin: 999999999,
       serie: "001-001",
       timbrado: "12559587",
-      ultimoNumero: 2006243,
+      ultimoNumero: 2006248,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
     });
-
+     
     const numeracion2 = await Numeracion.create({
       empresaId: empresa.id,
       sucursalId: sucursal1.id,
@@ -852,7 +853,7 @@ const populateDB = async () => {
       numeroFin: 999999999,
       serie: "001-001",
       timbrado: "12559587",
-      ultimoNumero: 611968,
+      ultimoNumero: 611977,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true

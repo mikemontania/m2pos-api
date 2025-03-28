@@ -45,7 +45,7 @@ const generaQr = (url) => {
   return new Promise((resolve, reject) => {
     QRCode.toBuffer(url, { type: 'png' })
       .then((png) => {
-        console.log("QR png generado correctamente.");
+        //console.log("QR png generado correctamente.");
         resolve(png);
       })
       .catch((error) => {

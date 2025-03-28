@@ -21,7 +21,7 @@ const createKude = async (xmldata, xmlFirmado, img) => {
         const inicio = i * itemsPorPagina;
         const fin = inicio + itemsPorPagina;
         const detallesPagina = detalles.slice(inicio, fin);
-        console.log({ vuelta:i,inicio,fin,detallesPagina })
+        //console.log({ vuelta:i,inicio,fin,detallesPagina })
 
         const hojaVerticalAncho = 595.28;
         const margen = 5;

@@ -6,6 +6,8 @@ const { populateDB } = require("./dbinit");
 
 const morgan = require("morgan"); // const { json } = require('express/lib/response');
 const { ejecucionJobs } = require("./src/jobs/jobs");
+const { ejecucionJobsemail } = require("./src/jobs/jobsEmail");
+
 //const { loggerPos } = require("./logger");
 // Este es un comentario
 // Crear el servidor de express
@@ -23,6 +25,7 @@ const dbSetup = async () => {
 };
 dbSetup();
 ejecucionJobs()//jobs
+ejecucionJobsemail()
 app.use("/M2POS/auditorias", require("./src/routes/auditoria-routes"));
 app.use("/M2POS/auth", require("./src/routes/auth-routes"));
 app.use("/M2POS/bancos", require("./src/routes/banco-routes"));

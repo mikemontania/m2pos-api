@@ -24,7 +24,7 @@ const getById = async (req, res) => {
 const update= async (req, res) => {
   try {
     const { id } = req.params;
-    const { razonSocial,  ruc, telefono, email, nombreFantasia,
+    const { razonSocial,  ruc, telefono, email,emailEnvio, nombreFantasia,
       moneda,
       codMoneda,
       simboloMoneda,
@@ -34,6 +34,7 @@ const update= async (req, res) => {
       codCiudad,
       codBarrio, 
       web,
+      envioKude,
       modoSifen } = req.body;
 
     // Buscar la empresa por su ID
@@ -42,7 +43,7 @@ const update= async (req, res) => {
     // Verificar si la empresa existe
     if (empresa) {
       // Actualizar los campos de la empresa
-      await empresa.update({ razonSocial, ruc, telefono, email,nombreFantasia,
+      await empresa.update({ razonSocial, ruc, telefono, email,emailEnvio,nombreFantasia,
         moneda,
         codMoneda,
         simboloMoneda,
@@ -51,7 +52,7 @@ const update= async (req, res) => {
         codDepartamento,
         codCiudad,
         codBarrio,  
-        web,
+        web,envioKude,
         modoSifen  });
 
       // Responder con la empresa actualizada

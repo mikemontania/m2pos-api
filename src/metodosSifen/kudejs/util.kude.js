@@ -4,7 +4,7 @@ const separarXmlData = xmldata => {
     const asociado = rDE.DE[0]?.gCamDEAsoc?.[0] || null;
 const  gDtipDE =rDE.DE[0]?.gDtipDE?.[0]
 
-    console.log("gDtipDE =====>", JSON.stringify(gDtipDE, null, 2)); 
+   // console.log("gDtipDE =====>", JSON.stringify(gDtipDE, null, 2)); 
     return {
       informacionGeneral: {
         id: rDE.DE[0]["$"].Id, // Aquí accedemos al valor de "Id"

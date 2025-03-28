@@ -185,6 +185,7 @@ const Documento = sequelize.define('Documento', {
     defaultValue: false,
     allowNull: true
   },
+   
   idMotEmi: {
     type: DataTypes.INTEGER,
     allowNull: true, // Permite valores nulos
@@ -207,6 +208,16 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.ENUM('FT', 'NC', 'ND','NR'), 
     allowNull: false, 
     defaultValue: 'FT' 
+  }, 
+  estadoEnvioKude: { 
+    type: DataTypes.ENUM('NOENVIADO', 'ENVIADO', 'ERROR'), 
+    allowNull: false, 
+    defaultValue: 'NOENVIADO' 
+  }, 
+  obsEnvioKude: { 
+    type: DataTypes.STRING(100),
+    allowNull: false, 
+    defaultValue: '' 
   }, 
   importeAnterior: { 
     type: DataTypes.DECIMAL(10, 2), 

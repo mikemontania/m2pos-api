@@ -77,6 +77,10 @@ const Empresa = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true
     },
+    emailEnvio: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     img: {
       type: DataTypes.STRING,
       allowNull: true
@@ -90,7 +94,11 @@ const Empresa = sequelize.define(
       allowNull: false,
       defaultValue: "SI"
     },
-   
+    envioKude: {
+      type: DataTypes.ENUM("SI", "NO"),
+      allowNull: false,
+      defaultValue: "NO"
+    }, 
   },
   {
     tableName: "empresas",
