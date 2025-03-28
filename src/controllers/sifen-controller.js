@@ -37,6 +37,7 @@ const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service");
 const { normalizeXML } = require("../metodosSifen/service/util");
 const { signXML } = require("../metodosSifen/service/signxml.service");
 const { generateQR } = require("../metodosSifen/service/generateQR.service");
+const { enviarFactura } = require("../helpers/emailService");
 
  
 
@@ -336,7 +337,26 @@ const anular = async (req, res) => {
     return res.status(500).json({ error: "Error al anular" });
   }
 };
- 
+const enviarFacturaController = async (req, res) => {
+  try {
+    const { documentoId } = req.params;
+
+    const documento = await Documento.findByPk(documentoId, {
+      include: [{ model: Cliente, as: 'cliente' }, { model: Empresa, as: 'empresa' }, { model: TablaSifen, as: 'tipoDocumento' }]
+    });
+
+    if (!documento) {
+      return res.status(404).json({ error: "Documento no encontrado" });
+    }
+
+    await enviarFactura(documento);
+    res.status(200).json({ mensaje: "Factura enviada con éxito" });
+
+  } catch (error) {
+    console.error("❌ Error en el controlador de envío:", error);
+    res.status(500).json({ error: "Error enviando la factura" });
+  }
+};
  
 const getEmpresaById = async (id) => {
   const tablas = ['iTiDE', 'iTipTra', 'iTImp', 'iTipCont'];
@@ -405,5 +425,5 @@ const getEmpresaById = async (id) => {
 module.exports = { 
   anular,
   consultarcdc,
-  reintentar ,getKude
+  reintentar ,getKude,enviarFacturaController
 };

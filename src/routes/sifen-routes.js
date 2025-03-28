@@ -4,6 +4,8 @@ const { validarJWT } = require("../middlewares/validar-jwt");
 
 const router = Router();
 router.get("/kude/:id", validarJWT, sifenController.getKude);
+router.get("/sendKude/:documentoId", validarJWT, sifenController.enviarFacturaController);
+
 // Ruta para buscar todos los sucursales
 router.get("/cdc/:id/:cdc", validarJWT, sifenController.consultarcdc);
 // Ruta para actualizar una lista de precio por ID
