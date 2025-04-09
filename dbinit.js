@@ -315,7 +315,8 @@ const populateDB = async () => {
       emailEnvio:"mikemontania@gmail.com",
       web: "www.cavallaro.com.py",
       img: "grupocavallaro3.png",
-      modoSifen: "NO"
+      modoSifen: "NO",
+      envioKude: "NO"
     });
 
     // Crear actividades si no existen y asociarlas a la empresa
@@ -729,7 +730,7 @@ const populateDB = async () => {
       numeroFin: 999999999,
       serie: "001-001",
       timbrado: "12559587",
-      ultimoNumero: 2006248,
+      ultimoNumero: 2006251,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
@@ -853,7 +854,7 @@ const populateDB = async () => {
       numeroFin: 999999999,
       serie: "001-001",
       timbrado: "12559587",
-      ultimoNumero: 611977,
+      ultimoNumero: 611979,
       tipoComprobante: "TICKET",
       tipoImpresion: "TICKET",
       activo: true
@@ -5483,6 +5484,44 @@ const populateDB = async () => {
       color: "#45A137",
       predeterminado: false
     });
+
+    const condicionPago6 = await CondicionPago.create({
+      descripcion: "credito 45",
+      dias: 45,
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+
+    const condicionPago7 = await CondicionPago.create({
+      descripcion: "credito 60",
+      dias: 60,
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+
+
+    const condicionPago8 = await CondicionPago.create({
+      descripcion: "credito 75",
+      dias: 75,
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+
+    const condicionPago9 = await CondicionPago.create({
+      descripcion: "credito 90",
+      dias: 90,
+      activo: true,
+      empresaId: empresa.id,
+      color: "#45A137",
+      predeterminado: false
+    });
+
 
     const listaPrecio = await ListaPrecio.create({
       descripcion: "showroom",

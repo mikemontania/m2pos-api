@@ -51,10 +51,8 @@ const getReporteCobranza = async (req, res) => {
     }
 
     let condiciones2 = {};
-    if (medioPagoId > 0) {
-      condiciones2.medioPagoId = medioPagoId;
-    }
-
+    if (medioPagoId > 0) condiciones2.medioPagoId = medioPagoId;
+     
     const documentos = await Documento.findAll({
       where: condiciones,
       attributes: [
@@ -80,8 +78,7 @@ const getReporteCobranza = async (req, res) => {
       condiciones2.cobranzaId = documento.cobranzaId;
 
       const cobranzaDetallesArray = await CobranzaDetalle.findAll({
-        where: condiciones2,
-        attributes: ["importeCobrado", "nroRef"],
+        where: condiciones2, 
         include: [
           { model: MedioPago, as: "medioPago", attributes: ["descripcion"] }
         ]
@@ -90,16 +87,18 @@ const getReporteCobranza = async (req, res) => {
       const cobranzaDetalles = cobranzaDetallesArray.map(detalle =>
         detalle.toJSON()
       );
-
+      console.log(cobranzaDetalles)
       for (const primerCobranzaDetalle of cobranzaDetalles) {
         detalles.push({
           ...documento.toJSON(), // Aplicar toJSON() a la documento
-          importeCobrado: primerCobranzaDetalle.importeCobrado,
+          importeCobrado: +primerCobranzaDetalle.importeCobrado,
           nroRef: primerCobranzaDetalle.nroRef,
           medioPago: primerCobranzaDetalle.medioPago.descripcion
         });
       }
     }
+
+
 
     // Objeto para almacenar la información agrupada por medio de pago
     const agrupadoPorMedioPago = detalles.reduce((acumulador, detalle) => {

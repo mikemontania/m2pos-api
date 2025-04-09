@@ -28,6 +28,7 @@ const {   tipoContribuyente,tiposEmisiones
 } = require('../constantes/Constante.constant'); 
 const TablaSifen = require("../models/tablaSifen.model");
 const MedioPago = require("../models/medioPago.model");
+const { crearCreditoDesdeDocumento, ajustarCreditoPorNC, anularCredito } = require("./credito-controller");
 const getById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -187,23 +188,7 @@ const createDocumento = async (req, res) => {
     console.log(importeIva10);
     console.log(numeracion)
     const cdc = generarCDC(numeracion.tipoDocumento.codigo,empresa.ruc ,nroComprobante,tipoComprobante.id,fecha,tipoEmision.codigo,codigoSeguridad);
-    if (condicionPago && condicionPago.dias > 0) {
-      const nuevoCredito = await Credito.create({
-        empresaId,
-        sucursalId,
-        condicionPagoId,
-        cobranzaId: null,
-        pagado: false,
-        usuarioCreacionId: id,
-        fechaVencimiento: moment(fecha)
-          .add(condicionPago.dias, "days")
-          .format("YYYY-MM-DD"), // Calcula fecha de vencimiento
-        fecha: fecha,
-        observacion: nroComprobante,
-        importeTotal,
-        clienteId
-      });
-    }
+   
     // Guardar documento
     const documento = await Documento.create(
       {
@@ -241,8 +226,7 @@ const createDocumento = async (req, res) => {
         totalKg: totalKg ? Number((totalKg / 1000).toFixed(2)) : 0
       },
       { transaction: t }
-    );
- 
+    ); 
     // Guardar detalles
     await DocumentoDetalle.bulkCreate(
       detalles.map(detalle => ({
@@ -254,13 +238,17 @@ const createDocumento = async (req, res) => {
       })),
       { transaction: t }
     );
-
+    
     // Actualizar numeración
     await numeracion.save({ transaction: t });
 
     // Commit de la transacción si todo fue exitoso
     await t.commit();
-
+    //si si concreto la factura
+    if (condicionPago && condicionPago.dias > 0) {
+      console.log('crearCreditoDesdeDocumento',documento.id)
+      await crearCreditoDesdeDocumento(documento);
+    }
     res.status(201).json(documento);
   } catch (error) {
     // Si hay algún error, realiza un rollback de la transacción
@@ -429,6 +417,8 @@ const crearNotaCredito = async (req, res) => {
         calculable:false, 
       });
     }
+    //
+      
    await DocumentoDetalle.bulkCreate(
      detalles.map(detalle => ({
        documentoId: documento.id,
@@ -443,6 +433,10 @@ const crearNotaCredito = async (req, res) => {
     await numeracion.save({ transaction: t }); 
     // Commit de la transacción si todo fue exitoso
     await t.commit(); 
+// ajustar credito si hay
+    const resultadoCred = await ajustarCreditoPorNC(docAsociadoId,numeracion.timbrado,nroComprobante,  importeTotal, documento.id);
+
+
     res.status(201).json(documento);
   } catch (error) {
     // Si hay algún error, realiza un rollback de la transacción
@@ -472,9 +466,11 @@ const anularDocumento = async (req, res) => {
         await documentoAso.update({ 
           calculable:true, 
         });
-      }
- 
-
+        documento
+        const resultadoCred = await ajustarCreditoPorNC(documento.id,documentoAso.timbrado,documentoAso.nroComprobante,  documentoAso.importeTotal, documentoAso.id);
+      }else{
+        const credito = await anularCredito(documento.id,req.usuario.id);
+      } 
       //si el tipo de documento es  credito  debo eliminar el item del listado
       const condicionPago = await CondicionPago.findByPk(documento.condicionPagoId);
       if (condicionPago && condicionPago.dias > 0) {

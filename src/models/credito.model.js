@@ -1,12 +1,11 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../dbconfig");
 const Empresa = require("./empresa.model");
-const Sucursal = require("./sucursal.model");
 const Usuario = require("./usuario.model");
 const Cliente = require("./cliente.model");
 const moment = require("moment");
 const CondicionPago = require("./condicionPago.model");
-const Cobranza = require("./cobranza.model");
+const dayjs = require("dayjs");
 const Documento = require("./documento.model");
 
 const Credito = sequelize.define(
@@ -21,83 +20,101 @@ const Credito = sequelize.define(
      empresaId: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
-    sucursalId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
+    }, 
     condicionPagoId: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
-    cobranzaId: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
+    }, 
     documentoId: {
       type: DataTypes.INTEGER,
       allowNull: true,
-    }, 
-    pagado: {
+    },
+    anulado: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      defaultValue: false,
     },
-
-    usuarioCreacionId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-
+ 
     fechaCreacion: {
-      type: DataTypes.DATE,
+       type: DataTypes.DATE,
+       allowNull: false,
+       defaultValue: DataTypes.NOW,
+       get() {
+         return moment(this.getDataValue('fechaCreacion')).format('YYYY-MM-DD HH:mm:ss');
+       }
+     },
+     fechaModificacion: {
+       type: DataTypes.DATE,
+       allowNull: false,
+       defaultValue: DataTypes.NOW,
+       get() {
+         return moment(this.getDataValue('fechaModificacion')).format('YYYY-MM-DD HH:mm:ss');
+       }
+     },
+    
+     fecha: {
+       type: DataTypes.DATEONLY,
+       allowNull: false,
+       get() {
+         return moment(this.getDataValue('fecha')).format('YYYY-MM-DD');
+       }
+     }, 
+     usuarioCreacionId: {
+      type: DataTypes.BIGINT,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
-      get() {
-        return moment(this.getDataValue("fechaCreacion")).format(
-          "YYYY-MM-DD HH:mm:ss"
-        );
-      }
-    },
-    fechaModificacion: {
-      type: DataTypes.DATE,
+    }, 
+    timbrado: {
+      type: DataTypes.STRING(50),
       allowNull: false,
-      defaultValue: DataTypes.NOW,
-      get() {
-        return moment(this.getDataValue("fechaModificacion")).format(
-          "YYYY-MM-DD HH:mm:ss"
-        );
-      }
-    },
+    }, 
+    nroComprobante: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    }, 
+    cantDias: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    }, 
     fechaVencimiento: {
       type: DataTypes.DATEONLY,
       allowNull: false,
       get() {
-        return moment(this.getDataValue("fechaVencimiento")).format(
-          "YYYY-MM-DD"
-        );
-      }
-    },
-    fecha: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-      get() {
-        return moment(this.getDataValue("fecha")).format("YYYY-MM-DD");
-      }
-    },
-
-    observacion: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-
+        return moment(this.getDataValue("fechaVencimiento")).format("YYYY-MM-DD");
+      },
+    }, 
     importeTotal: {
       type: DataTypes.DECIMAL(19, 2),
-      allowNull: false
+      allowNull: false,
+    }, 
+    saldoPendiente: {
+      type: DataTypes.DECIMAL(19, 2),
+      allowNull: false,
+    }, 
+    estado: {
+      type: DataTypes.ENUM("PENDIENTE", "PAGADO"), // Puedes ajustar los valores según tu enum
+      allowNull: true,
+    }, 
+    fechaPago: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+      get() {
+        const val = this.getDataValue("fechaPago");
+        return val ? moment(val).format("YYYY-MM-DD") : null;
+      },
+    }, 
+    diasRestantes: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        if (this.anulado || this.estado === 'PAGADO') return 0;
+        return Math.max(0, dayjs(this.fechaVencimiento).diff(dayjs(), 'day'));
+      }
     },
-
-    clienteId: {
-      type: DataTypes.BIGINT,
-      allowNull: false
+    diasMora: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        if (this.anulado || this.estado === 'PAGADO') return 0;
+        return Math.max(0, dayjs().diff(dayjs(this.fechaVencimiento), 'day'));
+      }
     }
   },
   {
@@ -110,12 +127,7 @@ Credito.belongsTo(Empresa, {
   foreignKey: "empresaId",
   targetKey: "id",
   as: "empresa"
-});
-Credito.belongsTo(Sucursal, {
-  foreignKey: "sucursalId",
-  targetKey: "id",
-  as: "sucursal"
-});
+}); 
 Credito.belongsTo(Documento, {
   foreignKey: "documentoId",
   targetKey: "id", 
@@ -123,13 +135,8 @@ Credito.belongsTo(Documento, {
 Credito.belongsTo(Usuario, {
   foreignKey: "usuarioCreacionId",
   targetKey: "id",
-  as: "vendedorCreacion" // Alias para la asociación de usuario de creación
-});
-Credito.belongsTo(Cobranza, {
-  foreignKey: "cobranzaId",
-  targetKey: "id",
-  as: "cobranza" // Alias para la asociación de usuario de creación
-});
+  as: "usuarioCreacion" // Alias para la asociación de usuario de creación
+}); 
 Credito.belongsTo(Usuario, {
   foreignKey: "usuarioAnulacionId",
   targetKey: "id",
