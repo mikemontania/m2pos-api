@@ -33,8 +33,7 @@ const cel = documento.sucursal?.cel && documento.sucursal.cel.length > 1
   const nroComprobante = documento.nroComprobante;
 
   const datos1 = `${sucursal} ${direccion} `;
-  const datos2 = `${telefono} ${cel} ${web}`;
- 
+  const datos2 = `${telefono} ${cel} ${web}`.trim(); 
   // Dibujar cuadrícula alrededor del header
   doc
     .moveTo(headerLeft, top)
@@ -49,7 +48,7 @@ const cel = documento.sucursal?.cel && documento.sucursal.cel.length > 1
     .stroke("#aaaaaa");
   //logo
      const img =    documento.empresa.img && documento.empresa.img.length > 1      ? `./src/uploads/empresas/${documento.empresa.img}`      : "./src/uploads/empresas/grupocavallaro.png"; 
-   doc.image(img, headerLeft -2  , top , { width: anchoImagen });
+   doc.image(img, headerLeft -7  , top , { width: anchoImagen });
  
   //Bloque 2
   doc
