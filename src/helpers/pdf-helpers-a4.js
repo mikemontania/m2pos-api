@@ -16,11 +16,19 @@ const generarCabecera = (doc, documento , top) => {
   const ruc = documento.empresa.ruc;
    
 
-  const web =    documento.empresa.web && documento.empresa.web.length > 1      ? `${documento.empresa.web}`  : null;
   const sucursal = documento.sucursal.descripcion;
   const direccion = documento.sucursal.direccion;
-  const telefono =    documento.sucursal.telefono && documento.sucursal.telefono.length > 1      ? `Tel: ${documento.sucursal.telefono}`      : null;
-  const cel =    documento.sucursal.cel && documento.sucursal.cel.length > 1      ? `Cel: ${documento.sucursal.cel}`      : null;
+  const telefono = documento.sucursal?.telefono && documento.sucursal.telefono.length > 1 
+  ? `Tel: ${documento.sucursal.telefono}` 
+  : '';
+
+const web = documento.empresa.web && documento.empresa.web.length > 1 
+  ? `${documento.empresa.web}` 
+  : '';
+
+const cel = documento.sucursal?.cel && documento.sucursal.cel.length > 1 
+  ? `Cel: ${documento.sucursal.cel}` 
+  : '';
   const timbrado = documento.timbrado;
   const nroComprobante = documento.nroComprobante;
 
@@ -41,7 +49,7 @@ const generarCabecera = (doc, documento , top) => {
     .stroke("#aaaaaa");
   //logo
      const img =    documento.empresa.img && documento.empresa.img.length > 1      ? `./src/uploads/empresas/${documento.empresa.img}`      : "./src/uploads/empresas/grupocavallaro.png"; 
-   doc.image(img, headerLeft  , top , { width: anchoImagen });
+   doc.image(img, headerLeft -2  , top , { width: anchoImagen });
  
   //Bloque 2
   doc
@@ -117,8 +125,8 @@ const generarDatosCliente = (doc, documento, top) => {
     capitalize(documento.cliente.razonSocial) || "",
     documento.cliente.nroDocumento || "",
     documento.cliente.direccion || "",
-    (documento.cliente.cel || "") +
-      (documento.cliente.telefono ? ` ${documento.cliente.telefono}` : "") || ""
+    (documento.cliente?.cel || "") +
+      (documento.cliente?.telefono || "") 
   ];
 
   const titulo2 = ["FECHA DE EMISIÓN:", "CONDICIÓN DE VENTA:", "VENDEDOR: "];

@@ -343,7 +343,7 @@ const populateDB = async () => {
     }); */
 
     const sucursal9 = await Sucursal.create({
-      descripcion: "HEALTHY FOODS E.A.S.",
+      descripcion: "Capiata",
       direccion: "RUTA 1",
       cel: "+595976753428", 
       empresaId: empresa.id,
