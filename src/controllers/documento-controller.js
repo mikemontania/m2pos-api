@@ -176,6 +176,13 @@ const createDocumento = async (req, res) => {
     }
     // Generar número de factura
     const numeracion = await Numeracion.findByPk(numeracionId,{ include: [ {  model: TablaSifen,   as: "tipoDocumento",   }]}, { transaction: t   });
+    const hoy = moment().format("YYYY-MM-DD");
+    console.log(hoy)
+    const finTimbrado = numeracion.finTimbrado;
+    console.log(finTimbrado)
+    if (moment(finTimbrado).isBefore(hoy)) {
+      throw new Error("Atención: El timbrado está vencido");
+     }
     const codigoSeguridad =generarCodigoSeguridad();
     const empresa = await Empresa.findByPk(empresaId)
     const tipoComprobante =tipoContribuyente.find(t=>t.id == empresa.tipoContId)
@@ -312,7 +319,13 @@ const crearNotaCredito = async (req, res) => {
     // Generar número de factura
    
     const numeracion = await Numeracion.findByPk(numeracionNotaCredId,{ include: [ {  model: TablaSifen,   as: "tipoDocumento",   }]}, { transaction: t   });
-
+    const hoy = moment().format("YYYY-MM-DD");
+    console.log(hoy)
+    const finTimbrado = numeracion.finTimbrado;
+    console.log(finTimbrado)
+    if (moment(finTimbrado).isBefore(hoy)) {
+      throw new Error("Atención: El timbrado está vencido");
+     }
     const codigoSeguridad =generarCodigoSeguridad();
     const empresa = await Empresa.findByPk(empresaId)
     const tipoComprobante =tipoContribuyente.find(t=>t.id == empresa.tipoContId)
