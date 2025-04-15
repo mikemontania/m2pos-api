@@ -150,8 +150,7 @@ const Documento = sequelize.define('Documento', {
   clienteId: {
     type: DataTypes.BIGINT,
     allowNull: false
-  },
-  
+  }, 
   modoEntrega: {
     type: DataTypes.STRING(50),
     allowNull: true
@@ -162,7 +161,8 @@ const Documento = sequelize.define('Documento', {
   },
   estado: {
     type: DataTypes.STRING(25),
-    allowNull: false
+    allowNull: false,
+    defaultValue:'Pendiente'
   },
   codigoSeguridad: {
     type: DataTypes.STRING(9),
@@ -170,11 +170,11 @@ const Documento = sequelize.define('Documento', {
   },
   cdc: {
     type: DataTypes.STRING(44),
-    allowNull: false
+    allowNull: false, defaultValue:''
   },
   cdcAsociado: {
     type: DataTypes.STRING(44),
-    allowNull: true
+    allowNull: true, defaultValue:''
   },
   docAsociadoId: {
     type: DataTypes.INTEGER,
@@ -182,7 +182,7 @@ const Documento = sequelize.define('Documento', {
   }, 
   calculable: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false,
+    defaultValue: true,
     allowNull: true
   },
    

@@ -14,7 +14,7 @@ const Variedad = sequelize.define('Variedad', {
     allowNull: true,
   }, 
   descripcion: {
-    type: DataTypes.STRING(40),
+    type: DataTypes.STRING(250),
     allowNull: false
   }, 
   color: {

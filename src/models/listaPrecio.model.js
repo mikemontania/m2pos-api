@@ -14,7 +14,7 @@ const ListaPrecio = sequelize.define('ListaPrecio', {
     allowNull: true,
   }, 
   descripcion: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.STRING(40),
     allowNull: false
   },
   color: {

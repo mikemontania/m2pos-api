@@ -176,6 +176,14 @@ const createDocumento = async (req, res) => {
     }
     // Generar número de factura
     const numeracion = await Numeracion.findByPk(numeracionId,{ include: [ {  model: TablaSifen,   as: "tipoDocumento",   }]}, { transaction: t   });
+    const hoy = moment().format("YYYY-MM-DD");
+    console.log(hoy)
+    const finTimbrado = numeracion.finTimbrado;
+    console.log(finTimbrado)
+    if (moment(finTimbrado).isBefore(hoy)) {
+      throw new Error("Atención: El timbrado está vencido");
+     }
+
     const codigoSeguridad =generarCodigoSeguridad();
     const empresa = await Empresa.findByPk(empresaId)
     const tipoComprobante =tipoContribuyente.find(t=>t.id == empresa.tipoContId)
@@ -254,7 +262,8 @@ const createDocumento = async (req, res) => {
     // Si hay algún error, realiza un rollback de la transacción
     console.error(error);
     await t.rollback();
-    res.status(500).json({ error: error?.original?.detail ||   "Error al crear la documento" });
+    error.msg =   error?.original?.detail || error.message || "Error al crear la documento";
+    res.status(500).json( error);
   }
 };
  
@@ -312,7 +321,13 @@ const crearNotaCredito = async (req, res) => {
     // Generar número de factura
    
     const numeracion = await Numeracion.findByPk(numeracionNotaCredId,{ include: [ {  model: TablaSifen,   as: "tipoDocumento",   }]}, { transaction: t   });
-
+    const hoy = moment().format("YYYY-MM-DD");
+    console.log(hoy)
+    const finTimbrado = numeracion.finTimbrado;
+    console.log(finTimbrado)
+    if (moment(finTimbrado).isBefore(hoy)) {
+      throw new Error("Atención: El timbrado está vencido");
+     }
     const codigoSeguridad =generarCodigoSeguridad();
     const empresa = await Empresa.findByPk(empresaId)
     const tipoComprobante =tipoContribuyente.find(t=>t.id == empresa.tipoContId)
@@ -442,7 +457,8 @@ const crearNotaCredito = async (req, res) => {
     // Si hay algún error, realiza un rollback de la transacción
     console.error(error);
     await t.rollback();
-    res.status(500).json({ error: error?.original?.detail ||   "Error al crear la NC" });
+    error.msg =   error?.original?.detail || error.message || "Error al crear la nc";
+    res.status(500).json( error);
   }
 };
 
