@@ -156,7 +156,7 @@ const createDocumento = async (req, res) => {
           importeAbonado,
           importeCobrado,
           saldo,
-          tipo
+          tipo:'FT'
         },
         { transaction: t }
       );
