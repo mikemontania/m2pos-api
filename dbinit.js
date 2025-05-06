@@ -50,6 +50,7 @@ const Cliente = require("./src/models/cliente.model");
 const DocumentoDetalle = require("./src/models/documentoDetalle.model");
 const Variante = require("./src/models/variante.model");
 const Documento = require("./src/models/documento.model");
+const { crearCreditoDesdeDocumento } = require("./src/controllers/credito-controller");
 
 const populateDB = async () => {
   console.log("populateDB");
@@ -369,14 +370,7 @@ const populateDB = async () => {
       empresaId: empresa.id,
       email: "vj.healthyfoods@gmail.com"
     });
-
-    const sucursal10 = await Sucursal.create({
-      descripcion: "BELGICA",
-      direccion: "RUTA 1",
-      cel: "+595981423144",
-      empresaId: empresa.id,
-      email: "javiercavallaro@gmail.com"
-    });
+ 
 
     const banco1 = await Banco.create({
       descripcion: "Banco Rio S.A.E.C.A",
@@ -52769,6 +52763,11 @@ const populateDB = async () => {
         })
       );
       console.log("Registros creados exitosamente!");
+
+      if (documento.condicionPagoId !=   condicionPago20.id) {
+        await crearCreditoDesdeDocumento(documento);
+      }
+      
     }
   }
 };

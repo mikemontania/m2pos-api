@@ -267,6 +267,18 @@ const createDocumento = async (req, res) => {
   }
 };
  
+const crearCreditoDesdeDocumentoPorId = async (documentoId) => {
+  const documento = await Documento.findByPk(documentoId, {
+    include: [DocumentoDetalle, Cliente] // o lo que necesites
+  });
+
+  if (!documento) {
+    console.log("Documento no encontrado para generar crédito");
+    return;
+  }
+
+  return await crearCreditoDesdeDocumento(documento);
+};
 
 const crearNotaCredito = async (req, res) => { 
   const { id: usuarioId, empresaId } = req.usuario;
@@ -630,6 +642,7 @@ module.exports = {
   createDocumento,
   anularDocumento,
   listarDocumentos, 
+  crearCreditoDesdeDocumentoPorId
  };
 
 
