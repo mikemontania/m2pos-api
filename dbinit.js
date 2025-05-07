@@ -51,10 +51,11 @@ const DocumentoDetalle = require("./src/models/documentoDetalle.model");
 const Variante = require("./src/models/variante.model");
 const Documento = require("./src/models/documento.model");
 const { crearCreditoDesdeDocumento } = require("./src/controllers/credito-controller");
+const { migrateDB } = require("./migrate");
 
 const populateDB = async () => {
   console.log("populateDB");
-  if (process.env.DB_INIT == "true") {
+  if (process.env.DB_INIT == "true" ||process.env.DB_INIT == true ) {
     console.log("Inicializando registros en DB!");
 
     if (departamentos && departamentos.length > 0) {
@@ -733,6 +734,21 @@ const populateDB = async () => {
       tipoImpresion: "FACTURA",
       activo: true
     });
+    const numeracion3 = await Numeracion.create({
+      empresaId: empresa.id,
+      sucursalId: sucursal9.id,
+      inicioTimbrado: "2025-03-31",
+      finTimbrado: "2026-03-31",
+      itide: iTiDE6.id,
+      numeroInicio: 1,
+      numeroFin: 15000,
+      serie: "001-003",
+      timbrado: "17934068",
+      ultimoNumero: 0,
+      tipoComprobante: "NOTACREDITO",
+      tipoImpresion: "FACTURA",
+      activo: true
+    });
 
     // Crear usuario asociado a la empresa y sucursal
     const salt = Bcryptjs.genSaltSync();
@@ -740,7 +756,7 @@ const populateDB = async () => {
       empresaId: empresa.id,
       sucursalId: sucursal9.id,
       numPrefId: numeracion1.id,
-      numNcPrefId: null,
+      numNcPrefId: numeracion3.id,
       username: "javiercavallaro@hf.com",
       usuario: "javier cavallaro",
       password: Bcryptjs.hashSync("123456", salt),
@@ -52522,7 +52538,7 @@ const populateDB = async () => {
       predeterminado: false,
       propietario: false
     });
-
+    await migrateDB(iTiDE1.id, iTiDE6.id)
     for (const c of Clientes_update){
 
       let lpId = 0;
@@ -52563,7 +52579,7 @@ const populateDB = async () => {
 
         clientes[c.codCliente] = await Cliente.create({
         listaPrecioId: lpId,
-        codigoPais: c.listaPrecioId,
+        codigoPais: c.codigoPais,
         condicionPagoId: cpId,
         puntos: 0,
         naturalezaReceptor: 1,
@@ -52770,6 +52786,7 @@ const populateDB = async () => {
       
     }
   }
+  
 };
 
 module.exports = { populateDB };

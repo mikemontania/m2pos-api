@@ -88,17 +88,12 @@ const Cliente = sequelize.define(
     nroDocumento: {
       type: DataTypes.STRING(30),
       allowNull: false,
-      unique: {
-        name: 'unique_nroDocumento_empresaId',
-        msg: 'Ya existe un cliente con este número de documento',
-        fields: ['nroDocumento', 'empresaId'],
-      },
       validate: {
         notNull: {
           msg: 'El número de documento no puede ser nulo.',
         },
       },
-    }, 
+    },
     direccion: {
       type: DataTypes.STRING(400),
       allowNull: true
@@ -182,14 +177,12 @@ tipoDocIdentidad: {
     isIn: [[1, 2, 3, 4, 5, 6, 9]]
   },
   comment: "1= Cédula paraguaya, 2= Pasaporte, 3= Cédula extranjera, 4= Carnet de residencia, 5= Innominado, 6= Tarjeta Diplomática, 9= Otro"
-},
- 
-
+}, 
   },
   {
     tableName: "clientes",
     timestamps: false,
-    underscored: true // Convierte automáticamente a snake_case
+    underscored: true, // Convierte automáticamente a snake_case 
   }
 );
 Cliente.belongsTo(Empresa, {
