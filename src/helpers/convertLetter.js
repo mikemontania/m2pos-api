@@ -29,7 +29,7 @@ const NumeroALetra = {
     "sesenta ",
     "setenta ",
     "ochenta ",
-    "nodocumento "
+    "noventa "
   ],
   CENTENAS: [
     "",
