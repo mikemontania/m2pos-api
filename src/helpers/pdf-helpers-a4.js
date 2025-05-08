@@ -128,9 +128,8 @@ const generarDatosCliente = (doc, documento, top) => {
       (documento.cliente?.telefono || "") 
   ];
 
-  const titulo2 = ["FECHA DE EMISIÓN:", "CONDICIÓN DE VENTA:", "VENDEDOR: "];
-  const data2 = [    formatDate(documento.fecha),    documento.condicionPago.descripcion,    documento.vendedorCreacion.usuario
-  ]; 
+  const titulo2 = ["FECHA DE EMISIÓN:", "CONDICIÓN DE VENTA:"];
+  const data2 = [    formatDate(documento.fecha),    documento.condicionPago.descripcion   ]; 
   doc
     .font("Helvetica-Bold")
     .fontSize(8)
