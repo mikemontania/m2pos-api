@@ -29,6 +29,7 @@ const {   tipoContribuyente,tiposEmisiones
 const TablaSifen = require("../models/tablaSifen.model");
 const MedioPago = require("../models/medioPago.model");
 const { crearCreditoDesdeDocumento, ajustarCreditoPorNC, anularCredito } = require("./credito-controller");
+const ClienteSucursal = require("../models/ClienteSucursal.model");
 const getById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -40,6 +41,10 @@ const getById = async (req, res) => {
         {
           model: Cliente,
           as: "cliente" 
+        },
+        {
+          model: ClienteSucursal,
+          as: "clienteSucursal" 
         },
         {
           model: TablaSifen,
@@ -122,6 +127,7 @@ const createDocumento = async (req, res) => {
       importeSubtotal,
       importeTotal,
       clienteId,
+      clienteSucursalId,
       detalles,
       cobranza,
       totalKg
@@ -137,7 +143,7 @@ const createDocumento = async (req, res) => {
     const condicionPago = await CondicionPago.findByPk(condicionPagoId, {
       transaction: t
     });
-    const cliente  = await Cliente.findByPk(clienteId, {      transaction: t    });
+   // const cliente  = await Cliente.findByPk(clienteId, {      transaction: t    });
      if (cobranza && condicionPago.dias == 0) {
       const {
         importeAbonado,
@@ -207,6 +213,7 @@ const createDocumento = async (req, res) => {
         listaPrecioId,
         condicionPagoId,
         clienteId,
+        clienteSucursalId,
         anulado: false,
         enviado: false,
         usuarioCreacionId: id,
@@ -269,7 +276,7 @@ const createDocumento = async (req, res) => {
  
 const crearCreditoDesdeDocumentoPorId = async (documentoId) => {
   const documento = await Documento.findByPk(documentoId, {
-    include: [DocumentoDetalle, Cliente] // o lo que necesites
+    include: [DocumentoDetalle, Cliente, ClienteSucursal] // o lo que necesites
   });
 
   if (!documento) {
@@ -293,6 +300,7 @@ const crearNotaCredito = async (req, res) => {
       condicionPagoId, 
       idMotEmi,
       clienteId,
+      clienteSucursalId,
       detalles ,
       porcDescuento,
       importeIva5,
@@ -320,6 +328,7 @@ const crearNotaCredito = async (req, res) => {
         listaPrecioId,
         condicionPagoId, 
         clienteId,
+        clienteSucursalId,
         detalles ,porcDescuento,
         importeIva5,
         importeIva10,
@@ -404,6 +413,7 @@ const crearNotaCredito = async (req, res) => {
         listaPrecioId,
         condicionPagoId,
         clienteId,
+        clienteSucursalId,
         anulado: false,
         enviado: false,
         usuarioCreacionId: usuarioId,
@@ -426,7 +436,7 @@ const crearNotaCredito = async (req, res) => {
         importeSubtotal,
         importeTotal,
         valorNeto: importeDevuelto,
-        tipoDoc:'NCR'  , 
+        tipoDoc:'NR'  , 
         calculable:true,
         importeAnterior ,
         cobranzaId:cobranza.id,
@@ -595,6 +605,11 @@ const listarDocumentos = async (req, res) => {
           model: Cliente,
           as: "cliente",
           attributes: ["nroDocumento", "razonSocial"]
+        },
+        {
+          model: ClienteSucursal,
+          as: "clienteSucursal",
+          attributes: ["nombre" ]
         },
         {
           model: CondicionPago,

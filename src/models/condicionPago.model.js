@@ -15,7 +15,10 @@ const CondicionPago = sequelize.define('CondicionPago', {
   }, 
   descripcion: {
     type: DataTypes.STRING(20),
-    allowNull: false
+    allowNull: false,
+    set(value) {
+      this.setDataValue('descripcion', value.toUpperCase());
+    }
   },
   dias: {
     type: DataTypes.INTEGER,

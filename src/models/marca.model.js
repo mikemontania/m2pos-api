@@ -15,7 +15,10 @@ const Marca = sequelize.define('Marca', {
   }, 
   descripcion: {
     type: DataTypes.STRING(40),
-    allowNull: false
+    allowNull: false,
+    set(value) {
+      this.setDataValue('descripcion', value.toUpperCase());
+    }
   }, 
   activo: {
     type: DataTypes.BOOLEAN,

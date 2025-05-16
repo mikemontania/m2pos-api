@@ -10,7 +10,10 @@ const Barrio  = sequelize.define('Barrio', {
   }, 
   descripcion: {
     type: DataTypes.STRING(50),
-    allowNull: false
+    allowNull: false,
+    set(value) {
+      this.setDataValue('descripcion', value.toUpperCase());
+    }
   },  
   codCiudad: {
     type: DataTypes.INTEGER,

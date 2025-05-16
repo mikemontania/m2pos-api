@@ -17,7 +17,10 @@ const MedioPago = sequelize.define('MedioPago', {
   }, 
   descripcion: {
     type: DataTypes.STRING(100),
-    allowNull: true
+    allowNull: false,
+    set(value) {
+      this.setDataValue('descripcion', value.toUpperCase());
+    }
   },
   esCheque: {
     type: DataTypes.BOOLEAN,

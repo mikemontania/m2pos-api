@@ -3,56 +3,169 @@ const Cliente = require("../models/cliente.model"); // Asegúrate de que la impo
 const { sequelize } = require("../../dbconfig");
 const CondicionPago = require("../models/condicionPago.model");
 const ListaPrecio = require("../models/listaPrecio.model");
+const ClienteSucursal = require("../models/ClienteSucursal.model");
 
 // Método para buscar por ID
 const getById = async (req, res) => {
   try {
     const { id } = req.params;
-    const cliente = await Cliente.findByPk(id);
-    if (cliente) {
+    const clienteInstance = await Cliente.findByPk(id);
+
+    if (clienteInstance) {
+      const cliente = clienteInstance.toJSON(); // Convertir a objeto plano
+
+      const clienteSucursales = await ClienteSucursal.findAll({
+        where: { clienteId: id },
+        include: [ 
+          {
+            model: CondicionPago,
+            as: "condicionPago",
+            attributes: ["descripcion"]
+          },
+          {
+            model: ListaPrecio,
+            as: "listaPrecio",
+            attributes: ["descripcion"]
+          }
+        ],
+      });
+
+      cliente.clienteSucursales = clienteSucursales;
+
       res.status(200).json(cliente);
     } else {
       res.status(404).json({ error: "Cliente no encontrado" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar el cliente por ID" });
+    res.status(500).json({ error: error?.original?.detail || "Error al buscar el cliente por ID" });
   }
 };
+
 
 const findPredeterminado = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
-    const condiciones =   { empresaId, predeterminado: true }
-     const clientePredeterminado = await Cliente.findOne({ where: condiciones });
 
-    if (clientePredeterminado) {
-      res.status(200).json(clientePredeterminado);
-    } else {
-      res.status(404).json({ error: "Cliente predeterminado no encontrado" });
+    // Buscar cliente predeterminado
+    const clientePredeterminado = await Cliente.findOne({
+      where: {
+        empresaId,
+        predeterminado: true,
+      },
+      raw: true
+    });
+
+    if (!clientePredeterminado) {
+      return res.status(404).json({ error: "Cliente predeterminado no encontrado" });
     }
+
+    // Buscar sucursal principal del cliente predeterminado
+    const sucursalPrincipal = await ClienteSucursal.findOne({
+      where: {
+        clienteId: clientePredeterminado.id,
+        empresaId,
+        principal: true,
+      },
+      raw: true
+    });
+
+    // Moldear respuesta como lo hacías antes
+    const respuestaMoldeada = {
+     
+        clienteId: clientePredeterminado.id,
+        nombre: clientePredeterminado.nombreFantasia || clientePredeterminado.razonSocial,
+        razonSocial: clientePredeterminado.razonSocial,
+        nombreFantasia: clientePredeterminado.nombreFantasia,
+        nroDocumento: clientePredeterminado.nroDocumento,
+        tipoOperacionId: clientePredeterminado.tipoOperacionId,
+        excentoIva: clientePredeterminado.excentoIva,
+        naturalezaReceptor: clientePredeterminado.naturalezaReceptor,
+        codigoPais: clientePredeterminado.codigoPais,
+        tipoContribuyente: clientePredeterminado.tipoContribuyente,
+        tipoDocIdentidad: clientePredeterminado.tipoDocIdentidad,
+        email: clientePredeterminado.email, 
+        clienteSucursalId: sucursalPrincipal.id,
+        nombre: sucursalPrincipal.nombre,
+        direccion: sucursalPrincipal.direccion,
+        telefono: sucursalPrincipal.telefono,
+        cel: sucursalPrincipal.cel,
+        latitud: sucursalPrincipal.latitud,
+        longitud: sucursalPrincipal.longitud,
+        listaPrecioId: sucursalPrincipal.listaPrecioId,
+        condicionPagoId: sucursalPrincipal.condicionPagoId,
+ 
+    };
+
+    res.status(200).json(respuestaMoldeada);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar cliente predeterminado" });
+    res.status(500).json({
+      error: error?.original?.detail || "Error al buscar cliente predeterminado",
+    });
   }
 };
 
 const findPropietario = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
-    const condiciones = empresaId
-      ? { empresaId, propietario: true }
-      : { propietario: true };
-    const clientePropietario = await Cliente.findOne({ where: condiciones });
 
-    if (clientePropietario) {
-      res.status(200).json(clientePropietario);
-    } else {
-      res.status(404).json({ error: "Cliente propietario no encontrado" });
+    // Buscar cliente predeterminado
+    const clientePropietario = await Cliente.findOne({
+      where: {
+        empresaId,
+        propietario: true,
+      },
+      raw: true
+    });
+
+    if (!clientePropietario) {
+      return res.status(404).json({ error: "Cliente predeterminado no encontrado" });
     }
+
+    // Buscar sucursal principal del cliente predeterminado
+    const sucursalPrincipal = await ClienteSucursal.findOne({
+      where: {
+        clienteId: clientePropietario.id,
+        empresaId,
+        principal: true,
+      },
+      raw: true
+    });
+
+    // Moldear respuesta como lo hacías antes
+    const respuestaMoldeada = {
+     
+        clienteId: clientePropietario.id,
+        nombre: clientePropietario.nombreFantasia || clientePropietario.razonSocial,
+        razonSocial: clientePropietario.razonSocial,
+        nombreFantasia: clientePropietario.nombreFantasia,
+        nroDocumento: clientePropietario.nroDocumento,
+        tipoOperacionId: clientePropietario.tipoOperacionId,
+        excentoIva: clientePropietario.excentoIva,
+        naturalezaReceptor: clientePropietario.naturalezaReceptor,
+        codigoPais: clientePropietario.codigoPais,
+        tipoContribuyente: clientePropietario.tipoContribuyente,
+        tipoDocIdentidad: clientePropietario.tipoDocIdentidad,
+        email: clientePropietario.email, 
+        clienteSucursalId: sucursalPrincipal.id,
+        nombre: sucursalPrincipal.nombre,
+        direccion: sucursalPrincipal.direccion,
+        telefono: sucursalPrincipal.telefono,
+        cel: sucursalPrincipal.cel,
+        latitud: sucursalPrincipal.latitud,
+        longitud: sucursalPrincipal.longitud,
+        listaPrecioId: sucursalPrincipal.listaPrecioId,
+        condicionPagoId: sucursalPrincipal.condicionPagoId,
+ 
+    };
+
+    res.status(200).json(respuestaMoldeada);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar cliente propietario" });
+    res.status(500).json({
+      error: error?.original?.detail || "Error al buscar cliente predeterminado",
+    });
   }
 };
 
@@ -60,34 +173,92 @@ const findClientesPaginados = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
     const { page = 1, pageSize = 10, searchTerm } = req.params;
-    const condiciones = { empresaId };
-    // Añadir condiciones para búsqueda por nroDocumento o razonSocial
-    if (searchTerm && searchTerm !== "") {
+
+    const offset = (page - 1) * pageSize;
+    const limit = parseInt(pageSize);
+
+    let condiciones = {
+      empresaId,
+      activo: true
+    };
+
+    if (searchTerm) {
       condiciones[Op.or] = [
+        { nombre: { [Op.iLike]: `%${searchTerm.toLowerCase()}%` } },
+        
         {
-          nroDocumento: {
-            [Op.iLike]: `%${searchTerm.toLowerCase()}%` // Convertir a minúsculas
-          }
+          "$cliente.razon_social$": { [Op.iLike]: `%${searchTerm.toLowerCase()}%` }
         },
         {
-          razonSocial: {
-            [Op.iLike]: `%${searchTerm.toLowerCase()}%` // Convertir a minúsculas
-          }
-        }
+          "$cliente.nro_documento$": { [Op.iLike]: `%${searchTerm.toLowerCase()}%` }
+        },
       ];
-    }
-    const offset = (page - 1) * pageSize;
-    // Realizar la consulta paginada
-    const { count, rows:clientes } = await Cliente.findAndCountAll({
+    } 
+    
+  
+
+    const { count, rows } = await ClienteSucursal.findAndCountAll({
       where: condiciones,
       include: [
-        { model: CondicionPago, as: "condicionPago", attributes: ["descripcion"] },
-        { model: ListaPrecio, as: "listaPrecio", attributes: ["descripcion"] },
+        {
+          model: Cliente,
+          as: "cliente",
+          attributes: [
+            "id", "razonSocial", "nombreFantasia", "nroDocumento",
+            "email", "excentoIva", "puntos", "naturalezaReceptor",
+            "codigoPais", "tipoContribuyente", "tipoDocIdentidad"
+          ], 
+        },
+        {
+          model: CondicionPago,
+          as: "condicionPago",
+          attributes: ["descripcion"]
+        },
+        {
+          model: ListaPrecio,
+          as: "listaPrecio",
+          attributes: ["descripcion"]
+        }
       ],
-      limit: pageSize,
       offset,
-    }); 
-     
+      limit
+    });
+
+    const clientes = rows.map(row => ({
+      clienteSucursalId: row.id,
+      clienteId: row.cliente.id,
+      empresaId: row.empresaId,
+      nombre:row.nombre,
+      tipoOperacionId: row.cliente.tipoOperacionId,
+      listaPrecioId: row.listaPrecioId,
+      condicionPagoId: row.condicionPagoId,
+      usuarioCreacionId: row.usuarioCreacionId,
+      usuarioModificacionId: row.usuarioModificacionId,
+      fechaCreacion: row.fechaCreacion,
+      fechaModificacion: row.fechaModificacion,
+      razonSocial: row.cliente.razonSocial,
+      nombreFantasia: row.cliente.nombreFantasia,
+      nroDocumento: row.cliente.nroDocumento,
+      direccion: row.direccion,
+      telefono: row.telefono,
+      cel: row.cel,
+      email: row.cliente.email,
+      excentoIva: row.cliente.excentoIva,
+      latitud: row.latitud?.toString(),
+      longitud: row.longitud?.toString(),
+      predeterminado: row.principal,
+      empleado: false,
+      propietario: false,
+      activo: row.activo,
+      puntos: row.cliente.puntos?.toString(),
+      naturalezaReceptor: row.cliente.naturalezaReceptor,
+      codigoPais: row.cliente.codigoPais,
+      tipoContribuyente: row.cliente.tipoContribuyente,
+      tipoDocIdentidad: row.cliente.tipoDocIdentidad,
+      condicionPago: row.condicionPago ? { descripcion: row.condicionPago.descripcion } : null,
+      listaPrecio: row.listaPrecio ? { descripcion: row.listaPrecio.descripcion } : null,
+    }));
+
     res.status(200).json({
       total: count,
       totalPages: Math.ceil(count / pageSize),
@@ -97,7 +268,7 @@ const findClientesPaginados = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar clientes paginados" });
+    res.status(500).json({ error: error?.original?.detail || "Error al buscar clientes paginados" });
   }
 };
 // Método para buscar todos los clientes
@@ -115,162 +286,335 @@ const findAll = async (req, res) => {
 
 // Método para crear un nuevo cliente
 const create = async (req, res) => {
+  const t = await Cliente.sequelize.transaction();
   try {
-    const { empresaId,id } = req.usuario;
+    const { empresaId, id: usuarioId } = req.usuario;
     const {
-      
-      listaPrecioId,
-      condicionPagoId, 
-      razonSocial,nombreFantasia,
+      razonSocial,
+      nombreFantasia,
       nroDocumento,
-      direccion,
-      telefono,
-      cel,
       tipoOperacionId,
       email,
-      excentoIva,
-      latitud,
-      longitud,
-      predeterminado,
-      empleado,
-      propietario,
-      activo,naturalezaReceptor,codigoPais,tipoContribuyente,tipoDocIdentidad
+      excentoIva = false,
+      predeterminado = false,
+      propietario = false,
+      activo = true,
+      naturalezaReceptor,
+      codigoPais,
+      tipoContribuyente,
+      tipoDocIdentidad, 
+      
     } = req.body;
 
-    // Verificar si ya existe un cliente con predeterminado o propietario true
+    // Validar unicidad de propietario
     if (propietario) {
-      const existingClient = await Cliente.findOne({
-        where: {
-          empresaId,
-          propietario: true,
-       
-        },
+      const existingPropietario = await Cliente.findOne({
+        where: { empresaId, propietario: true },
       });
-
-      if (existingClient) {
-        return res.status(400).json({ error: "Ya existe un cliente  propietario ." });
+      if (existingPropietario) {
+        return res.status(400).json({ error: "Ya existe un cliente propietario." });
       }
     }
 
-    if (predeterminado ) {
-      const existingClient = await Cliente.findOne({
-        where: {
-          empresaId,
-          predeterminado: true,
-        },
+    // Validar unicidad de predeterminado
+    if (predeterminado) {
+      const existingPredeterminado = await Cliente.findOne({
+        where: { empresaId, predeterminado: true },
       });
-
-      if (existingClient) {
+      if (existingPredeterminado) {
         return res.status(400).json({ error: "Ya existe un cliente predeterminado." });
       }
     }
-
-
-
-
+// Convertir a mayúsculas solo si tienen valor (por si vienen undefined o null)
+const razonSocialUpper = razonSocial ? razonSocial.toUpperCase() : null;
+const nombreFantasiaUpper = nombreFantasia ? nombreFantasia.toUpperCase() : null;
+const direccionUpper = null;
+    // Crear cliente
     const cliente = await Cliente.create({
-      usuarioCreacionId:id,
-      usuarioModificacionId:id,
       empresaId,
-      listaPrecioId, 
-      razonSocial,nombreFantasia,
+      razonSocial: razonSocialUpper,
+      nombreFantasia: nombreFantasiaUpper,
       nroDocumento,
-      direccion,
-      telefono,
-      cel,
       tipoOperacionId,
       email,
       excentoIva,
-      latitud,
-      longitud,
       predeterminado,
-      empleado,
       propietario,
       activo,
-      condicionPagoId, naturalezaReceptor,codigoPais,tipoContribuyente,tipoDocIdentidad
-    });
+      naturalezaReceptor,
+      codigoPais,
+      tipoContribuyente,
+      tipoDocIdentidad,
+      usuarioCreacionId: usuarioId,
+      usuarioModificacionId: usuarioId,
+    }, { transaction: t });
 
+    // Obtener listaPrecioId y condicionPagoId si no se enviaron
+    const listaPrecio =  await ListaPrecio.findOne({ where: { empresaId } });
+
+    const condicionPago =  await CondicionPago.findOne({ where: { empresaId } });
+
+    if (!listaPrecio || !condicionPago) {
+      await t.rollback();
+      return res.status(400).json({ error: "Faltan datos de lista de precio o condición de pago." });
+    }
+
+    // Crear sucursal principal
+    await ClienteSucursal.create({
+      clienteId: cliente.id,
+      empresaId,
+      nombre: razonSocialUpper, // usa la misma variable en mayúscula
+  direccion: direccionUpper,
+      telefono:null,
+      cel:null,
+      latitud:null,
+      longitud:null,
+      principal: true,
+      activo: true,
+      listaPrecioId: listaPrecio.id,
+      condicionPagoId: condicionPago.id,
+      codigoPais,
+      usuarioCreacionId: usuarioId,
+      usuarioModificacionId: usuarioId,
+    }, { transaction: t });
+
+    await t.commit();
     res.status(201).json(cliente);
+
   } catch (error) {
+    await t.rollback();
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al crear el cliente" });
+    res.status(500).json({
+      error: error?.original?.detail || "Error al crear el cliente",
+    });
   }
 };
-
 const update = async (req, res) => {
+  const t = await Cliente.sequelize.transaction();
   try {
     const { empresaId, id: usuarioId } = req.usuario;
     const {
       id,
-      listaPrecioId,
-      condicionPagoId,
       razonSocial,
+      nombreFantasia,
       nroDocumento,
-      direccion,
-      telefono,
-      cel,
       tipoOperacionId,
       email,
-      excentoIva,
-      latitud,
-      longitud,
-      predeterminado,
-      empleado,
-      propietario,
-      activo,naturalezaReceptor,codigoPais,tipoContribuyente,tipoDocIdentidad,nombreFantasia
+      excentoIva = false,
+      predeterminado = false,
+      propietario = false,
+      activo = true,
+      naturalezaReceptor,
+      codigoPais,
+      tipoContribuyente,
+      tipoDocIdentidad
     } = req.body;
-  // Verificar si el cliente existe
-  if (propietario || predeterminado) {
-    const existingClient = await Cliente.findA({
-      where: {
-        empresaId,
-        [propietario ? 'propietario' : 'predeterminado']: true,
-       },
-    });
 
-    if (existingClient && existingClient.id != id) {
-      return res.status(400).json({ error: `Ya existe un cliente ${propietario ? 'propietario' : 'predeterminado'}.` });
-    }
-  }
- 
     // Verificar si el cliente existe
-    let existingClient = await Cliente.findByPk(id);
-    if (!existingClient) {
+    let cliente = await Cliente.findByPk(id);
+    if (!cliente) {
+      await t.rollback();
       return res.status(404).json({ error: "El cliente no existe." });
     }
 
-    // Actualizar los datos del cliente
-    existingClient.usuarioModificacionId=usuarioId;
-    existingClient.listaPrecioId = listaPrecioId;
-    existingClient.condicionPagoId = condicionPagoId;
-    existingClient.razonSocial = razonSocial;
-    existingClient.nroDocumento = nroDocumento;
-    existingClient.direccion = direccion;
-    existingClient.telefono = telefono;
-    existingClient.cel = cel;
-    existingClient.tipoOperacionId = tipoOperacionId; 
-    existingClient.email = email;
-    existingClient.excentoIva = excentoIva;
-    existingClient.latitud = latitud;
-    existingClient.longitud = longitud;
-    existingClient.predeterminado = predeterminado;
-    existingClient.empleado = empleado;
-    existingClient.propietario = propietario;
-    existingClient.activo = activo;
+    // Validar unicidad de propietario
+    if (propietario) {
+      const existingPropietario = await Cliente.findOne({
+        where: {
+          empresaId,
+          propietario: true,
+          id: { [Op.ne]: id }
+        }
+      });
+      if (existingPropietario) {
+        await t.rollback();
+        return res.status(400).json({ error: "Ya existe un cliente propietario." });
+      }
+    }
 
-    existingClient.nombreFantasia = nombreFantasia;
-    existingClient.naturalezaReceptor = naturalezaReceptor;
-    existingClient.codigoPais = codigoPais;
-    existingClient.tipoContribuyente = tipoContribuyente;
-    existingClient.tipoDocIdentidad = tipoDocIdentidad; 
-    // Guardar los cambios en la base de datos
-    await existingClient.save();
+    // Validar unicidad de predeterminado
+    if (predeterminado) {
+      const existingPredeterminado = await Cliente.findOne({
+        where: {
+          empresaId,
+          predeterminado: true,
+          id: { [Op.ne]: id }
+        }
+      });
+      if (existingPredeterminado) {
+        await t.rollback();
+        return res.status(400).json({ error: "Ya existe un cliente predeterminado." });
+      }
+    }
 
-    // Responder con el cliente actualizado
-    res.status(200).json(existingClient);
+    // Convertir a mayúsculas si tienen valor
+    const razonSocialUpper = razonSocial ? razonSocial.toUpperCase() : null;
+    const nombreFantasiaUpper = nombreFantasia ? nombreFantasia.toUpperCase() : null;
+
+    // Verificar existencia de listaPrecio y condiciónPago
+    const listaPrecio = await ListaPrecio.findOne({ where: { empresaId } });
+    const condicionPago = await CondicionPago.findOne({ where: { empresaId } });
+
+    if (!listaPrecio || !condicionPago) {
+      await t.rollback();
+      return res.status(400).json({ error: "Faltan datos de lista de precio o condición de pago." });
+    }
+
+    // Actualizar cliente
+    await cliente.update({
+      razonSocial: razonSocialUpper,
+      nombreFantasia: nombreFantasiaUpper,
+      nroDocumento,
+      tipoOperacionId,
+      email,
+      excentoIva,
+      predeterminado,
+      propietario,
+      activo,
+      naturalezaReceptor,
+      codigoPais,
+      tipoContribuyente,
+      tipoDocIdentidad,
+      usuarioModificacionId: usuarioId
+    }, { transaction: t });
+ 
+    await t.commit();
+    res.status(200).json(cliente);
   } catch (error) {
+    await t.rollback();
     console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al actualizar el cliente." });
+    res.status(500).json({
+      error: error?.original?.detail || "Error al actualizar el cliente.",
+    });
+  }
+};
+const createSucursal = async (req, res) => {
+  const t = await ClienteSucursal.sequelize.transaction();
+  try {
+    const { empresaId, id: usuarioId } = req.usuario;
+    const {
+      clienteId,
+      nombre,
+      direccion,
+      telefono,
+      cel,
+      latitud = 0,
+      longitud = 0,
+      principal = false,
+      activo = true,
+      listaPrecioId,
+      condicionPagoId,
+      codigoPais,
+    } = req.body;
+
+    // Validar que no exista otra sucursal principal
+    if (principal) {
+      const existingPrincipal = await ClienteSucursal.findOne({
+        where: { clienteId, principal: true },
+      });
+      if (existingPrincipal) {
+        return res.status(400).json({ error: "Ya existe una sucursal principal para este cliente." });
+      }
+    }
+
+    // Crear sucursal
+    const sucursal = await ClienteSucursal.create({
+      clienteId,
+      empresaId,
+      nombre: nombre?.toUpperCase() || null,
+      direccion: direccion?.toUpperCase() || null,
+      telefono,
+      cel,
+      latitud,
+      longitud,
+      principal,
+      activo,
+      listaPrecioId,
+      condicionPagoId,
+      codigoPais,
+      usuarioCreacionId: usuarioId,
+      usuarioModificacionId: usuarioId,
+    }, { transaction: t });
+    await t.commit();
+    const sucursalCreada = await ClienteSucursal.findByPk(sucursal.id, {
+      include: [
+        { model: ListaPrecio, as: 'listaPrecio' },
+        { model: CondicionPago, as: 'condicionPago' }
+      ]
+    }); 
+    res.status(201).json(sucursalCreada);
+  } catch (error) {
+    await t.rollback();
+    console.error(error);
+    res.status(500).json({ error: error?.original?.detail || "Error al crear la sucursal." });
+  }
+};
+
+const updateSucursal = async (req, res) => {
+  const t = await ClienteSucursal.sequelize.transaction();
+  try {
+    const { empresaId, id: usuarioId } = req.usuario;
+    const {
+      id,
+      clienteId,
+      nombre,
+      direccion,
+      telefono,
+      cel,
+      latitud = 0,
+      longitud = 0,
+      principal = false,
+      activo = true,
+      listaPrecioId,
+      condicionPagoId, 
+    } = req.body;
+
+    const sucursal = await ClienteSucursal.findByPk(id);
+    if (!sucursal) {
+      return res.status(404).json({ error: "Sucursal no encontrada." });
+    }
+
+    // Validar que no haya otra sucursal principal
+    if (principal) {
+      const existingPrincipal = await ClienteSucursal.findOne({
+        where: {
+          clienteId,
+          principal: true,
+        },
+      });
+
+      if (existingPrincipal && existingPrincipal.id !== id) {
+        return res.status(400).json({ error: "Ya existe otra sucursal principal para este cliente." });
+      }
+    }
+
+    // Actualizar sucursal
+    await sucursal.update({
+      nombre: nombre?.toUpperCase() || null,
+      direccion: direccion?.toUpperCase() || null,
+      telefono,
+      cel,
+      latitud,
+      longitud,
+      principal,
+      activo,
+      listaPrecioId,
+      condicionPagoId, 
+      usuarioModificacionId: usuarioId,
+    }, { transaction: t });
+
+    await t.commit();
+    const sucursalActualizada = await ClienteSucursal.findByPk(sucursal.id, {
+      include: [
+        { model: ListaPrecio, as: 'listaPrecio' },
+        { model: CondicionPago, as: 'condicionPago' }
+      ]
+    });
+    res.status(200).json(sucursalActualizada);
+  } catch (error) {
+    await t.rollback();
+    console.error(error);
+    res.status(500).json({ error: error?.original?.detail || "Error al actualizar la sucursal." });
   }
 };
 
@@ -296,6 +640,8 @@ module.exports = {
   findAll,
   create,
   update,
+  createSucursal,
+  updateSucursal,
   disable,
   findPredeterminado,
   findClientesPaginados,

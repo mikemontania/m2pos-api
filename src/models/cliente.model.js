@@ -1,210 +1,157 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../dbconfig");
 const Empresa = require("./empresa.model");
-const ListaPrecio = require("./listaPrecio.model"); 
-const Usuario = require("./usuario.model");
+ const Usuario = require("./usuario.model");
 const moment = require("moment");
-const CondicionPago = require("./condicionPago.model");
-
-const Cliente = sequelize.define(
-  "Cliente",
-  {
-    id: {
-      type: DataTypes.BIGINT,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false
-    },
-     empresaId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    tipoOperacionId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        isIn: [[1, 2, 3, 4]] // Solo permite estos valores
-      },
-      comment: `  
-        1 = B2B (Business to Business)  
-        2 = B2C (Business to Consumer)  
-        3 = B2G (Business to Government)  
-        4 = B2F (Business to Freelancer o servicios a empresas o profesionales)  
-      `
-    },
-    listaPrecioId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    condicionPagoId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    usuarioCreacionId: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    usuarioModificacionId: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    fechaModif: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW
-    },
-    usuarioModif: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    fechaCreacion: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      get() {
-        return moment(this.getDataValue("fechaCreacion")).format(
-          "YYYY-MM-DD HH:mm:ss"
-        );
-      }
-    },
-    fechaModificacion: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      get() {
-        return moment(this.getDataValue("fechaModificacion")).format(
-          "YYYY-MM-DD HH:mm:ss"
-        );
-      }
-    },
+ const Cliente = sequelize.define("Cliente", {
+  id: {
+    type: DataTypes.BIGINT,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false
+  },
+  empresaId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
     razonSocial: {
       type: DataTypes.STRING(100),
-      allowNull: true
+      allowNull: true,
+    set(value) {
+      if (value) { 
+        this.setDataValue('razonSocial', value.toUpperCase());
+      }
+    }
     },
-    nombreFantasia: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    nroDocumento: {
-      type: DataTypes.STRING(30),
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'El número de documento no puede ser nulo.',
-        },
-      },
-    },
-    direccion: {
-      type: DataTypes.STRING(400),
-      allowNull: true
-    },
-    telefono: {
-      type: DataTypes.STRING(50),
-      allowNull: true
-    },
-    cel: {
-      type: DataTypes.STRING(50),
-      allowNull: true
-    },
-    email: {
-      type: DataTypes.STRING(50),
-      allowNull: false
-    },
-    excentoIva: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      allowNull: false
-    },
-    latitud: {
-      type: DataTypes.DECIMAL(18, 15),
-      allowNull: true,    defaultValue:0
-    },
-    longitud: {
-      type: DataTypes.DECIMAL(18, 15),
-      allowNull: true,    defaultValue:0
-    },
-    predeterminado: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      allowNull: false
-    },
-    empleado: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      allowNull: false
-    },
-    propietario: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      allowNull: false
-    },
-    activo: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      allowNull: true
-    },
-    puntos: {
-      type: DataTypes.DECIMAL(19, 2),
-      allowNull: false,
-      defaultValue: 0
-    },
-// Campos requeridos por SIFEN
-naturalezaReceptor: {
-  type: DataTypes.INTEGER,
-  allowNull: false,
-  validate: {
-    isIn: [[1, 2]]
+  nombreFantasia: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+    set(value) {
+      if (value) { 
+        this.setDataValue('nombreFantasia', value.toUpperCase());
+      }
+    }
   },
-  comment: "1= Contribuyente, 2= No contribuyente"
-},
-codigoPais: {
-  type: DataTypes.STRING(3),
-  allowNull: false,
-  comment: "Código de país del receptor según XSD"
-},
-tipoContribuyente: {
-  type: DataTypes.INTEGER,
-  allowNull: true,
-  validate: {
-    isIn: [[1, 2]]
+  nroDocumento: {
+    type: DataTypes.STRING(30),
+    allowNull: false, 
   },
-  comment: "1= Persona Física, 2= Persona Jurídica. Obligatorio si naturalezaReceptor=1"
-},
-tipoDocIdentidad: {
-  type: DataTypes.INTEGER,
-  allowNull: true,
-  validate: {
-    isIn: [[1, 2, 3, 4, 5, 6, 9]]
+  tipoOperacionId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      isIn: [[1, 2, 3, 4]]
+    },
+    comment: `1=B2B, 2=B2C, 3=B2G, 4=B2F`
+  }, 
+  email: {
+    type: DataTypes.STRING(50),
+    allowNull: false
   },
-  comment: "1= Cédula paraguaya, 2= Pasaporte, 3= Cédula extranjera, 4= Carnet de residencia, 5= Innominado, 6= Tarjeta Diplomática, 9= Otro"
-}, 
+  excentoIva: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   },
-  {
-    tableName: "clientes",
-    timestamps: false,
-    underscored: true, // Convierte automáticamente a snake_case 
-  }
-);
-Cliente.belongsTo(Empresa, {
-  foreignKey: "empresaId",
-  targetKey: "id"
+  puntos: {
+    type: DataTypes.DECIMAL(19, 2),
+    allowNull: false,
+    defaultValue: 0
+  },
+  naturalezaReceptor: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: { isIn: [[1, 2]] },
+    comment: "1=Contribuyente, 2=No contribuyente"
+  },
+  codigoPais: {
+    type: DataTypes.STRING(3),
+    allowNull: false
+  },
+  tipoContribuyente: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    validate: { isIn: [[1, 2]] }
+  },
+  tipoDocIdentidad: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    validate: { isIn: [[1, 2, 3, 4, 5, 6, 9]] }
+  },
+  activo: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  },
+  predeterminado: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+  }, 
+  propietario: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+  },
+  usuarioCreacionId: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  usuarioModificacionId: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  fechaCreacion: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    get() {
+      return moment(this.getDataValue("fechaCreacion")).format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
+    }
+  },
+  fechaModificacion: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    get() {
+      return moment(this.getDataValue("fechaModificacion")).format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
+    }
+  },
+}, {
+  tableName: "clientes",
+  timestamps: false,
+  underscored: true,
+  indexes: [
+    {
+      unique: true,
+      name: "unique_nroDocumento_empresa",
+      fields: ["nro_documento", "empresa_id"]
+    },
+    {
+      unique: true,
+      name: "unique_predeterminado_empresa",
+      fields: ["empresa_id"],
+      where: {
+        predeterminado: true
+      }
+    },
+    {
+      unique: true,
+      name: "unique_propietario_empresa",
+      fields: ["empresa_id"],
+      where: {
+        propietario: true
+      }
+    }
+  ]
 });
-Cliente.belongsTo(ListaPrecio, {
-  foreignKey: "listaPrecioId",
-  targetKey: "id",
-  as: "listaPrecio"
-});
-Cliente.belongsTo(CondicionPago, {
-  foreignKey: "condicionPagoId",
-  targetKey: "id",
-  as: "condicionPago"
-});
-Cliente.belongsTo(Usuario, {
-  foreignKey: "usuarioCreacionId",
-  targetKey: "id"
-});
-Cliente.belongsTo(Usuario, {
-  foreignKey: "usuarioModificacionId",
-  targetKey: "id"
-});
+
+// Relaciones
+Cliente.belongsTo(Empresa, { foreignKey: "empresaId" });
+Cliente.belongsTo(Usuario, { foreignKey: "usuarioCreacionId" });
+Cliente.belongsTo(Usuario, { foreignKey: "usuarioModificacionId" });
+
 module.exports = Cliente;

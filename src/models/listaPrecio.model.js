@@ -15,7 +15,10 @@ const ListaPrecio = sequelize.define('ListaPrecio', {
   }, 
   descripcion: {
     type: DataTypes.STRING(40),
-    allowNull: false
+    allowNull: false,
+    set(value) {
+      this.setDataValue('descripcion', value.toUpperCase());
+    }
   },
   color: {
     type: DataTypes.STRING(12),

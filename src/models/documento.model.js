@@ -9,6 +9,7 @@ const moment = require('moment');
 const CondicionPago = require('./condicionPago.model');
 const Cobranza = require('./cobranza.model');
 const TablaSifen = require('./tablaSifen.model');
+const ClienteSucursal = require('./ClienteSucursal.model');
 
 const Documento = sequelize.define('Documento', {
   id: {
@@ -25,6 +26,14 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  clienteId: {
+    type: DataTypes.BIGINT,
+    allowNull: false
+  }, 
+  clienteSucursalId: {
+    type: DataTypes.BIGINT,
+    allowNull: false
+  },
   listaPrecioId: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -33,6 +42,7 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.INTEGER,
     allowNull: false,
   }, 
+
   cobranzaId: {
     type: DataTypes.INTEGER,
     allowNull: true,
@@ -147,10 +157,7 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: false
   },
-  clienteId: {
-    type: DataTypes.BIGINT,
-    allowNull: false
-  }, 
+  
   modoEntrega: {
     type: DataTypes.STRING(50),
     allowNull: true
@@ -269,6 +276,11 @@ Documento.belongsTo(Cliente, {
   foreignKey: 'clienteId',
   targetKey: 'id',
   as:'cliente'
+});
+Documento.belongsTo(ClienteSucursal, {
+  foreignKey: 'clienteSucursalId',
+  targetKey: 'id',
+  as:'clienteSucursal'
 });
 Documento.belongsTo(CondicionPago, {
   foreignKey: 'condicionPagoId',

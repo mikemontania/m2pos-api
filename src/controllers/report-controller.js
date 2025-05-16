@@ -22,6 +22,7 @@ const moment = require("moment");
 const { sequelize } = require("../../dbconfig");
 const EmpresaActividad = require("../models/empresaActividad.model");
 const Actividad = require("../models/actividad.model");
+const ClienteSucursal = require("../models/ClienteSucursal.model");
 
 const getReporteCobranza = async (req, res) => {
   console.log("getReporteCobranza");
@@ -416,7 +417,11 @@ const getPdf = async (req, res) => {
         {
           model: Cliente,
           as: "cliente",
-          attributes: ["nroDocumento", "razonSocial", "direccion", "telefono"]
+          attributes: ["nroDocumento", "razonSocial" ]
+        },
+        {
+          model: ClienteSucursal,
+          as: "clienteSucursal" 
         },
         {
           model: CondicionPago,
@@ -493,7 +498,7 @@ const getPdf = async (req, res) => {
       sucursal: { ...documento.dataValues.sucursal.dataValues },
       empresa: { ...documento.dataValues.empresa.dataValues,actividades },
       vendedorCreacion: { ...documento.dataValues.vendedorCreacion.dataValues },
-      cliente: { ...documento.dataValues.cliente.dataValues },
+      cliente: { ...documento.dataValues.cliente.dataValues, ...documento.dataValues.clienteSucursal.dataValues},
       condicionPago: { ...documento.dataValues.condicionPago.dataValues }
     };
     let detalles = [];
