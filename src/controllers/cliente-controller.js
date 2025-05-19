@@ -488,6 +488,85 @@ const update = async (req, res) => {
     });
   }
 };
+const crearClienteConSucursal = async (req, res) => {
+  const { empresaId, id: usuarioId } = req.usuario;
+
+  const t = await sequelize.transaction();
+  try {
+    const {
+      razonSocial ,              // Debe asignar valor válido al enviar
+      nombreFantasia ,
+      nroDocumento,
+      email ,
+      excentoIva ,
+      predeterminado ,
+      propietario ,
+      tipoOperacionId ,
+      naturalezaReceptor ,
+      codigoPais ,
+      tipoContribuyente ,
+      tipoDocIdentidad ,
+      nombre ,
+      direccion ,
+      telefono ,
+      cel ,
+      latitud ,
+      longitud ,
+      listaPrecioId ,
+      condicionPagoId 
+    } = req.body;
+
+    // Crear cliente
+    const nuevoCliente = await Cliente.create({
+      empresaId,
+      razonSocial ,
+      nombreFantasia ,
+      nroDocumento,
+      tipoOperacionId,
+      email,
+      excentoIva,
+      predeterminado,
+      propietario, 
+      naturalezaReceptor,
+      codigoPais,
+      tipoContribuyente,
+      tipoDocIdentidad,
+      usuarioCreacionId: usuarioId,
+      usuarioModificacionId: usuarioId,
+    }, { transaction: t });
+    // Crear sucursal principal asociada
+    const nuevaSucursal = await ClienteSucursal.create({
+      clienteId: nuevoCliente.id,
+      empresaId,  
+      nombre, 
+  direccion ,
+  telefono ,
+  cel ,
+  latitud ,
+  longitud ,
+  listaPrecioId ,
+  condicionPagoId , 
+      usuarioCreacionId: usuarioId,
+      usuarioModificacionId: usuarioId,
+    }, { transaction: t });
+
+    await t.commit();
+    const clientePlano = nuevoCliente.get({ plain: true });
+    const sucursalPlano = nuevaSucursal.get({ plain: true });
+    
+    res.status(201).json({
+      ...clientePlano,
+      clienteId: clientePlano.id,
+      ...sucursalPlano,
+      clienteSucursalId: sucursalPlano.id
+    });
+  } catch (error) {
+    await t.rollback();
+    console.error(error);
+    res.status(500).json({ message: "Error al crear cliente con sucursal", error });
+  }
+};
+
 const createSucursal = async (req, res) => {
   const t = await ClienteSucursal.sequelize.transaction();
   try {
@@ -645,5 +724,5 @@ module.exports = {
   disable,
   findPredeterminado,
   findClientesPaginados,
-  findPropietario
+  findPropietario,crearClienteConSucursal
 };

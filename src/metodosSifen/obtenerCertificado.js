@@ -28,7 +28,7 @@ const loadCertificateAndKey = async (empresaId) => {
         }
 
         // Validar el path del certificado
-        if (!certificado.path || certificado.path.length < 15) {
+        if (!certificado.path || certificado.path.length < 5) {
             console.error("❌ No se encontró un path de certificado válido");
             return null;
         }

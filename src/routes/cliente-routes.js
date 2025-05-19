@@ -21,10 +21,11 @@ router.get('/clientes', validarJWT,   clienteController.findAll);
 router.post('/cliente', validarJWT,   clienteController.create);
 
 // Ruta para actualizar un cliente por ID
- 
+
 router.put('/cliente/:id', validarJWT,   clienteController.update);  
 
 router.post("/clienteSucursal/", validarJWT, clienteController.createSucursal);
+router.post("/clienteSucursalForm/", validarJWT, clienteController.crearClienteConSucursal);
 router.put("/clienteSucursal/:id", validarJWT, clienteController.updateSucursal);
 // Ruta para desactivar un cliente por ID
 router.put('/clientedesactivar/:id', validarJWT,   clienteController.disable);

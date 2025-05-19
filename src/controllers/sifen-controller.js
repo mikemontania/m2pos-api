@@ -38,6 +38,7 @@ const { normalizeXML } = require("../metodosSifen/service/util");
 const { signXML } = require("../metodosSifen/service/signxml.service");
 const { generateQR } = require("../metodosSifen/service/generateQR.service");
 const { enviarFactura } = require("../helpers/emailService");
+const ClienteSucursal = require("../models/ClienteSucursal.model");
 
  
 
@@ -95,6 +96,7 @@ const obtenerDocumento = async (id) => {
         { model: Sucursal, as: 'sucursal' },
         { model: CondicionPago, as: 'condicionPago' },
         { model: Cliente, as: 'cliente' },
+        { model: ClienteSucursal, as: 'clienteSucursal' },
         { model: TablaSifen, as: 'tipoDocumento' }
       ],
       raw: true,

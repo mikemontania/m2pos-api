@@ -19,10 +19,14 @@ const { unidadesJson  } = require("./src/json/04unidades.json");
 const { ventasJson  } = require("./src/json/DocumentosMigracion.json");
 const { detallesJson  } = require("./src/json/DocumentosDetalleMigracion.json");
 const { sucursaleBiggieJSON  } = require("./src/json/SucursalesBiggie.json");
+const Certificado = require("./src/models/certificado.model");
 
 const { cobranzasJson  } = require("./src/json/cobranzasMigracion.json");
 const { cobranzasDetalleJson  } = require("./src/json/cobranzasDetalleMigracion.json");
-
+const {
+  encryptPassphrase,
+  decryptPassphrase
+} = require("./src/helpers/encript-helper");
 
 
 
@@ -68,19 +72,19 @@ const migrateDB = async ( facturaId ,notaCreditoId) => {
           actividadId: actividad.id
         });
       }
+      
     }
+    /*   const encriptado = encryptPassphrase("De0FOa3?");
+       const certificado = await Certificado.create({
+         empresaId: empresas[emp.codEmpresa].id,
+         path: "F1T_44102.p12",
+         passphrase: encriptado,
+         validoDesde: "2025-04-29",
+         validoHasta: "2026-04-29",
+         activo: true
+       }); */
 
-        /* 
-        const encriptado = encryptPassphrase("q3rjp3%0");
-        const certificado = await Certificado.create({
-          empresaId: empresas[6].id,
-          path: "firma_cavallaro.p12",
-          passphrase: encriptado,
-          validoDesde: "2024-05-08",
-          validoHasta: "2025-05-08",
-          activo: true
-        }); 
-        */
+        
    /***********************************************************************/
  //*********BANCOS***************/
  for (const descripcion of bancosJson) {
@@ -3038,7 +3042,7 @@ let variantesX = {};
         }
  
 
-        for (const venta of ventasJson) {
+         for (const venta of ventasJson) {
           const {
             cod_venta,
             fecha_venta,
@@ -3231,7 +3235,7 @@ let variantesX = {};
             await crearCreditoDesdeDocumento(documento);
           }
           
-        }
+        } 
       
 
    
