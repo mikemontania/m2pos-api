@@ -5,7 +5,7 @@ const generarCabecera = (doc, documento , top) => {
   const headerLeft = 30;
   const headerRight = 580;
   const headerBottom = top+90;
-  const anchoImagen = 75;
+  const anchoImagen = 60;
   const topBloque = top + 10;
   const inicioBloque2 = 100; 
   const anchoBloque2 = 385;
@@ -48,35 +48,57 @@ const cel = documento.sucursal?.cel && documento.sucursal.cel.length > 1
     .stroke("#aaaaaa");
   //logo
      const img =    documento.empresa.img && documento.empresa.img.length > 1      ? `./src/uploads/empresas/${documento.empresa.img}`      : "./src/uploads/empresas/grupocavallaro.png"; 
-   doc.image(img, headerLeft -7  , top , { width: anchoImagen });
+   doc.image(img, headerLeft+2 , top+5 , { width: anchoImagen });
+   const actividad1 =capitalize(documento.empresa.actividades[0]?.descripcion);
+   const actividad2 =capitalize(documento.empresa.actividades[1]?.descripcion);
+   const actividad3 =capitalize(documento.empresa.actividades[2]?.descripcion);
+   const actividad4 =capitalize(documento.empresa.actividades[3]?.descripcion);
+   const actividad5 =capitalize(documento.empresa.actividades[4]?.descripcion);
  
-  //Bloque 2
-  doc
-  .fillColor("#444444")
-  .font("Helvetica-Bold")
-  .fontSize(8);
+ 
+// Bloque 2
+doc.fillColor("#444444");
 
+// Mostrar la razón social aparte, con font más grande
+doc
+  .font("Helvetica-Bold")
+  .fontSize(8) // tamaño mayor para destacarla
+  .fillColor("#000000")
+  .text(empresa, inicioBloque2, topBloque, {
+    width: anchoBloque2,
+    align: 'left'
+  });
+
+let currentTop = topBloque + 15; // Dejamos un poco de espacio después de la razón social
+
+// Armamos bloque2 sin encabezado ni empresa (ya fue impresa)
 const bloque2 = [
-  encabezado,
-  empresa,
-  documento.empresa.actividades[0]?.descripcion,
-  documento.empresa.actividades[1]?.descripcion,
-  documento.empresa.actividades[2]?.descripcion,
+  actividad1,
+  actividad2,
+  actividad3,
+  actividad4,
+  actividad5,
   datos1,
   datos2
 ];
 
-bloque2.forEach((campo, index) => {
-  if (campo && campo.length > 1) { 
+// Recorremos los campos normalmente
+bloque2.forEach((campo) => {
+  if (campo && campo.length > 1) {
+    doc
+      .font("Helvetica")       // menos cargado para el resto
+      .fontSize(6)             // tamaño más chico
+      .fillColor("#000000")
+      .text(campo, inicioBloque2, currentTop, {
+        width: anchoBloque2,
+        align: 'left',
+        lineGap: 1
+      });
 
-    doc.text(
-      campo,
-      inicioBloque2,
-      topBloque + index * 10,
-      { width: anchoBloque2, align: 'left' } // Ajusta 'left' según tus necesidades de alineación
-    );
+    const lineCount = Math.ceil(doc.widthOfString(campo) / anchoBloque2);
+    currentTop += lineCount * 10;
   }
-}); 
+});
 // Define un array con la información de cada campo en el bloque 3
 const tipo = (documento.tipoDoc == 'FT')?"FACTURA":"NOTA DE CREDITO";
 const bloque3 = [
@@ -293,6 +315,7 @@ const generarDetalles = (doc, detalles, top) => {
   });
 };
 const capitalize = str => {
+  if (!str) return
   return str.replace(/\b\w/g, char => char.toUpperCase());
 };
 const generarAhorro = (doc, montoDescuento, top) => { 

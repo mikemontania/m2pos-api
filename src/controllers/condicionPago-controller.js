@@ -48,8 +48,9 @@ const findAll = async (req, res) => {
 // Método para crear una nueva CondicionPago
 const create = async (req, res) => {
   try {
-    const { empresaId, descripcion, activo } = req.body;
-    const condicionPago = await CondicionPago.create({ empresaId, descripcion, activo });
+    const { empresaId  } = req.usuario;
+     const {   color , dias , predeterminado, descripcion, activo } = req.body;
+    const condicionPago = await CondicionPago.create({ empresaId, dias ,  descripcion,  color , predeterminado,activo });
     res.status(201).json(condicionPago);
   } catch (error) {
     console.error(error);
@@ -61,10 +62,12 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { empresaId, descripcion, activo } = req.body;
+    const { empresaId  } = req.usuario;
+
+    const {   descripcion, dias ,  activo,color , predeterminado } = req.body;
     const condicionPago = await CondicionPago.findByPk(id);
     if (condicionPago) {
-      await condicionPago.update({ empresaId, descripcion, activo });
+      await condicionPago.update({ empresaId,  dias , descripcion, activo,color , predeterminado });
       res.status(200).json(condicionPago);
     } else {
       res.status(404).json({ error: 'CondicionPago no encontrada' });

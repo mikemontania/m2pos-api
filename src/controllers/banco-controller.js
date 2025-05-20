@@ -32,7 +32,9 @@ const findAll = async (req, res) => {
 
 const create= async (req, res) => {
   try {
-    const { empresaId, descripcion, activo } = req.body;
+    const { empresaId  } = req.usuario;
+
+    const {   descripcion, activo } = req.body;
     const banco = await Banco.create({ empresaId, descripcion, activo });
     res.status(201).json(banco);
   } catch (error) {
@@ -44,7 +46,8 @@ const create= async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { empresaId, descripcion, activo } = req.body;
+    const { empresaId  } = req.usuario;
+    const {   descripcion, activo } = req.body;
     const banco = await Banco.findByPk(id);
     if (banco) {
       await banco.update({ empresaId, descripcion, activo });

@@ -503,23 +503,28 @@ const getPdf = async (req, res) => {
     };
     let detalles = [];
 
-    detallesDocumento.forEach(detalle => {
-      // Acceder a los datos de Variante
-      const variante = detalle.variante;
+    detallesDocumento.forEach(detail => {
+      console.log(detail)
+
+      const detalle = detail.get({ plain: true });
+      console.log(detalle)
+      const variante = detail.variante.get({ plain: true });
+      console.log(variante)
+      // Acceder a los datos de Variante 
       detalles.push({
         porcIva:detalle.porcIva,
-        cantidad: detalle.dataValues.cantidad,
-        importePrecio: detalle.dataValues.importePrecio,
-        importeIva5: detalle.dataValues.importeIva5,
-        importeIva10: detalle.dataValues.importeIva10,
-        importeIvaExenta: detalle.dataValues.importeIvaExenta,
-        importeDescuento: detalle.dataValues.importeDescuento,
-        importeNeto: detalle.dataValues.importeNeto,
-        importeSubtotal: detalle.dataValues.importeSubtotal,
-        importeTotal: detalle.dataValues.importeTotal,
-        totalKg: detalle.dataValues.totalKg,
-        tipoDescuento: detalle.dataValues.tipoDescuento,
-        variante: variante.dataValues,
+        cantidad: detalle.cantidad,
+        importePrecio: detalle.importePrecio,
+        importeIva5: detalle.importeIva5,
+        importeIva10: detalle.importeIva10,
+        importeIvaExenta: detalle.importeIvaExenta,
+        importeDescuento: detalle.importeDescuento,
+        importeNeto: detalle.importeNeto,
+        importeSubtotal: detalle.importeSubtotal,
+        importeTotal: detalle.importeTotal,
+        totalKg: detalle.totalKg,
+        tipoDescuento: detalle.tipoDescuento,
+        variante: variante,
         presentacion: variante.presentacion,
         variedad: variante.variedad,
         producto: variante.producto,

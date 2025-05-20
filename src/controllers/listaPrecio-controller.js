@@ -51,11 +51,12 @@ const findAll = async (req, res) => {
 // Método para crear una nueva lista de precio
 const create = async (req, res) => {
   try {
-    const { empresaId } = req.usuario;
-    const { descripcion, activo } = req.body;
+    const { empresaId  } = req.usuario;
+ 
+    const { descripcion, activo,color , predeterminado,} = req.body;
     const listaPrecio = await ListaPrecio.create({
       empresaId,
-      descripcion,
+      predeterminado, descripcion,color,
       activo
     });
     res.status(201).json(listaPrecio);
@@ -70,10 +71,10 @@ const update = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
     const { id } = req.params;
-    const { descripcion, activo } = req.body;
+    const {predeterminado, descripcion,color, activo } = req.body;
     const listaPrecio = await ListaPrecio.findByPk(id);
     if (listaPrecio) {
-      await listaPrecio.update({ empresaId, descripcion, activo });
+      await listaPrecio.update({ empresaId, color,predeterminado,descripcion, activo });
       res.status(200).json(listaPrecio);
     } else {
       res.status(404).json({ error: "Lista de precio no encontrada" });
