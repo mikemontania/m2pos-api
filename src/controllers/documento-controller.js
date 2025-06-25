@@ -383,7 +383,7 @@ const crearNotaCredito = async (req, res) => {
       importeCobrado:importeDevuelto,
       saldo:0,
       anulado: false,
-      tipo: 'NOTACREDITO',
+      tipo: 'NC',
     },
     { transaction: t }
   );

@@ -197,7 +197,7 @@ const getInformeNC = async (req, res) => {
         cobranzas c ON cd.cobranza_id = c.id
       WHERE
         c.fecha_cobranza BETWEEN :fechaDesde AND :fechaHasta
-        AND c.tipo in ('NOTACREDITO')
+        AND c.tipo in ('NC')
         AND c.anulado = false
         AND c.empresa_id = :empresaId
         ${sucursalCondition}
@@ -241,7 +241,7 @@ const getInformeMediosDePago = async (req, res) => {
         cobranzas c ON cd.cobranza_id = c.id
       WHERE
         c.fecha_cobranza BETWEEN :fechaDesde AND :fechaHasta
-        AND c.tipo in ('VENTA','NOTACREDITO')
+        AND c.tipo in ('FT','NC')
         AND c.anulado = false
         AND c.empresa_id = :empresaId
         ${sucursalCondition}
