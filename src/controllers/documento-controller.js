@@ -575,10 +575,9 @@ const listarDocumentos = async (req, res) => {
       };
     }
 
-    if (clienteSucursalId > 0) {
-      condiciones.clienteSucursalId = clienteSucursalId;
-    }
-
+   if (Number(clienteSucursalId) > 0) {
+  condiciones.clienteSucursalId = Number(clienteSucursalId);
+}
     if (sucursalId > 0) {
       condiciones.sucursalId = sucursalId;
     }
