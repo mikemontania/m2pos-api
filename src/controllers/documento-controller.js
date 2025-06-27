@@ -555,7 +555,7 @@ const listarDocumentos = async (req, res) => {
       pageSize,
       fechaDesde,
       fechaHasta,
-      clienteId,
+      clienteSucursalId,
       sucursalId,
       listaPrecioId,
       condicionPagoId,
@@ -575,8 +575,8 @@ const listarDocumentos = async (req, res) => {
       };
     }
 
-    if (clienteId > 0) {
-      condiciones.clienteSucursalId = clienteId;
+    if (clienteSucursalId > 0) {
+      condiciones.clienteSucursalId = clienteSucursalId;
     }
 
     if (sucursalId > 0) {
