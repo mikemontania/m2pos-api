@@ -9808,13 +9808,6 @@
 		"saldo" : 0.00
 	},
 	{
-		"cod_cobranza" : 8250,
-		"fecha_cobranza" : "2025-04-28",
-		"importe_abonado" : 94000.00,
-		"importe_cobrado" : 94000.00,
-		"saldo" : 0.00
-	},
-	{
 		"cod_cobranza" : 8251,
 		"fecha_cobranza" : "2025-04-28",
 		"importe_abonado" : 142000.00,
@@ -10228,13 +10221,6 @@
 		"saldo" : 0.00
 	},
 	{
-		"cod_cobranza" : 8312,
-		"fecha_cobranza" : "2025-05-05",
-		"importe_abonado" : 157000.00,
-		"importe_cobrado" : 157000.00,
-		"saldo" : 0.00
-	},
-	{
 		"cod_cobranza" : 8313,
 		"fecha_cobranza" : "2025-05-05",
 		"importe_abonado" : 82000.00,
@@ -10281,6 +10267,4017 @@
 		"fecha_cobranza" : "2025-05-05",
 		"importe_abonado" : 64000.00,
 		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8320,
+		"fecha_cobranza" : "2025-05-05",
+		"importe_abonado" : 461000.00,
+		"importe_cobrado" : 461000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8312,
+		"fecha_cobranza" : "2025-05-05",
+		"importe_abonado" : 157000.00,
+		"importe_cobrado" : 157000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8321,
+		"fecha_cobranza" : "2025-05-05",
+		"importe_abonado" : 149000.00,
+		"importe_cobrado" : 149000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8322,
+		"fecha_cobranza" : "2025-05-05",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8323,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 197000.00,
+		"importe_cobrado" : 197000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8324,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 167000.00,
+		"importe_cobrado" : 167000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8325,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 142000.00,
+		"importe_cobrado" : 142000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8326,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 192000.00,
+		"importe_cobrado" : 192000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8327,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 73000.00,
+		"importe_cobrado" : 73000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8328,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8329,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 200500.00,
+		"importe_cobrado" : 200500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8330,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 117000.00,
+		"importe_cobrado" : 117000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8331,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 123000.00,
+		"importe_cobrado" : 123000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8332,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 134000.00,
+		"importe_cobrado" : 134000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8333,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8334,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 249000.00,
+		"importe_cobrado" : 249000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8335,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 244000.00,
+		"importe_cobrado" : 244000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8336,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 142000.00,
+		"importe_cobrado" : 142000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8337,
+		"fecha_cobranza" : "2025-05-06",
+		"importe_abonado" : 124000.00,
+		"importe_cobrado" : 124000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8338,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 242000.00,
+		"importe_cobrado" : 242000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8339,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 292000.00,
+		"importe_cobrado" : 292000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8340,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 90000.00,
+		"importe_cobrado" : 90000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8341,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 206000.00,
+		"importe_cobrado" : 206000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8342,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 142000.00,
+		"importe_cobrado" : 142000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8343,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8344,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 158000.00,
+		"importe_cobrado" : 158000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8345,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8346,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 116700.00,
+		"importe_cobrado" : 116700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8347,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 73000.00,
+		"importe_cobrado" : 73000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8348,
+		"fecha_cobranza" : "2025-05-07",
+		"importe_abonado" : 273000.00,
+		"importe_cobrado" : 273000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8349,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8351,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 108500.00,
+		"importe_cobrado" : 108500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8352,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 137000.00,
+		"importe_cobrado" : 137000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8353,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 73000.00,
+		"importe_cobrado" : 73000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8354,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8355,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8356,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 130000.00,
+		"importe_cobrado" : 130000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8350,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 342000.00,
+		"importe_cobrado" : 342000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8357,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 172000.00,
+		"importe_cobrado" : 172000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8358,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 387000.00,
+		"importe_cobrado" : 387000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8359,
+		"fecha_cobranza" : "2025-05-08",
+		"importe_abonado" : 609700.00,
+		"importe_cobrado" : 609700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8360,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 130000.00,
+		"importe_cobrado" : 130000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8361,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 141500.00,
+		"importe_cobrado" : 141500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8362,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 122000.00,
+		"importe_cobrado" : 122000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8363,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8364,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 98000.00,
+		"importe_cobrado" : 98000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8365,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8366,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8367,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 198000.00,
+		"importe_cobrado" : 198000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8368,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8369,
+		"fecha_cobranza" : "2025-05-09",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8370,
+		"fecha_cobranza" : "2025-05-10",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8371,
+		"fecha_cobranza" : "2025-05-10",
+		"importe_abonado" : 74000.00,
+		"importe_cobrado" : 74000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8372,
+		"fecha_cobranza" : "2025-05-10",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8373,
+		"fecha_cobranza" : "2025-05-10",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8374,
+		"fecha_cobranza" : "2025-05-10",
+		"importe_abonado" : 56700.00,
+		"importe_cobrado" : 56700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8375,
+		"fecha_cobranza" : "2025-05-10",
+		"importe_abonado" : 9500.00,
+		"importe_cobrado" : 9500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8376,
+		"fecha_cobranza" : "2025-05-12",
+		"importe_abonado" : 305400.00,
+		"importe_cobrado" : 305400.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8377,
+		"fecha_cobranza" : "2025-05-12",
+		"importe_abonado" : 192000.00,
+		"importe_cobrado" : 192000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8378,
+		"fecha_cobranza" : "2025-05-12",
+		"importe_abonado" : 173000.00,
+		"importe_cobrado" : 173000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8379,
+		"fecha_cobranza" : "2025-05-12",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8380,
+		"fecha_cobranza" : "2025-05-12",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8381,
+		"fecha_cobranza" : "2025-05-12",
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8382,
+		"fecha_cobranza" : "2025-05-12",
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8383,
+		"fecha_cobranza" : "2025-05-12",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8384,
+		"fecha_cobranza" : "2025-05-12",
+		"importe_abonado" : 330000.00,
+		"importe_cobrado" : 330000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8386,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 169500.00,
+		"importe_cobrado" : 169500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8387,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 258000.00,
+		"importe_cobrado" : 258000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8388,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 154500.00,
+		"importe_cobrado" : 154500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8390,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 142000.00,
+		"importe_cobrado" : 142000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8391,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 95000.00,
+		"importe_cobrado" : 95000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8392,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 80000.00,
+		"importe_cobrado" : 80000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8393,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8394,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 155000.00,
+		"importe_cobrado" : 155000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8395,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8396,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8397,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 147000.00,
+		"importe_cobrado" : 147000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8398,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 182700.00,
+		"importe_cobrado" : 182700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8399,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8400,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8401,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 164000.00,
+		"importe_cobrado" : 164000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8402,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 80000.00,
+		"importe_cobrado" : 80000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8403,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8404,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8405,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 151000.00,
+		"importe_cobrado" : 151000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8389,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8406,
+		"fecha_cobranza" : "2025-05-13",
+		"importe_abonado" : 300000.00,
+		"importe_cobrado" : 300000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8408,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 89000.00,
+		"importe_cobrado" : 89000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8409,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 190000.00,
+		"importe_cobrado" : 190000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8410,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 460000.00,
+		"importe_cobrado" : 460000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8411,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 302000.00,
+		"importe_cobrado" : 302000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8412,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8413,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8414,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8415,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 124000.00,
+		"importe_cobrado" : 124000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8416,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 447500.00,
+		"importe_cobrado" : 447500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8407,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 664750.00,
+		"importe_cobrado" : 664750.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8417,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 667250.00,
+		"importe_cobrado" : 667250.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8418,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8420,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8421,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 128000.00,
+		"importe_cobrado" : 128000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8422,
+		"fecha_cobranza" : "2025-05-16",
+		"importe_abonado" : 124000.00,
+		"importe_cobrado" : 124000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8423,
+		"fecha_cobranza" : "2025-05-17",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8424,
+		"fecha_cobranza" : "2025-05-17",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8426,
+		"fecha_cobranza" : "2025-05-17",
+		"importe_abonado" : 106000.00,
+		"importe_cobrado" : 106000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8457,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8458,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8459,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8460,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8461,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 232000.00,
+		"importe_cobrado" : 232000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8462,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 207500.00,
+		"importe_cobrado" : 207500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8463,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 96000.00,
+		"importe_cobrado" : 96000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8464,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 156000.00,
+		"importe_cobrado" : 156000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8465,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 50000.00,
+		"importe_cobrado" : 50000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8466,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8467,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 126500.00,
+		"importe_cobrado" : 126500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8468,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 135000.00,
+		"importe_cobrado" : 135000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8469,
+		"fecha_cobranza" : "2025-05-19",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8470,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8471,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8472,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 150500.00,
+		"importe_cobrado" : 150500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8473,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8474,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 206000.00,
+		"importe_cobrado" : 206000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8475,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8476,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8477,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8478,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 85500.00,
+		"importe_cobrado" : 85500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8479,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8480,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 158850.00,
+		"importe_cobrado" : 158850.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8481,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8482,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 90000.00,
+		"importe_cobrado" : 90000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8483,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8484,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 220000.00,
+		"importe_cobrado" : 220000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8485,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8486,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 201000.00,
+		"importe_cobrado" : 201000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8487,
+		"fecha_cobranza" : "2025-05-20",
+		"importe_abonado" : 57000.00,
+		"importe_cobrado" : 57000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8488,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8489,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8490,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8250,
+		"fecha_cobranza" : "2025-04-28",
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8491,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8492,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8493,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 90000.00,
+		"importe_cobrado" : 90000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8494,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8495,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8496,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8497,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8498,
+		"fecha_cobranza" : "2025-05-21",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8499,
+		"fecha_cobranza" : "2025-05-22",
+		"importe_abonado" : 173400.00,
+		"importe_cobrado" : 173400.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8500,
+		"fecha_cobranza" : "2025-05-22",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8502,
+		"fecha_cobranza" : "2025-05-22",
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8503,
+		"fecha_cobranza" : "2025-05-22",
+		"importe_abonado" : 278500.00,
+		"importe_cobrado" : 278500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8504,
+		"fecha_cobranza" : "2025-05-22",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8505,
+		"fecha_cobranza" : "2025-05-22",
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8506,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8507,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 110000.00,
+		"importe_cobrado" : 110000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8509,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8510,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8511,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8512,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 250000.00,
+		"importe_cobrado" : 250000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8513,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 119700.00,
+		"importe_cobrado" : 119700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8514,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8515,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 313000.00,
+		"importe_cobrado" : 313000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8516,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8501,
+		"fecha_cobranza" : "2025-05-22",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8517,
+		"fecha_cobranza" : "2025-05-24",
+		"importe_abonado" : 266000.00,
+		"importe_cobrado" : 266000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8518,
+		"fecha_cobranza" : "2025-05-24",
+		"importe_abonado" : 112000.00,
+		"importe_cobrado" : 112000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8519,
+		"fecha_cobranza" : "2025-05-24",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8520,
+		"fecha_cobranza" : "2025-05-24",
+		"importe_abonado" : 209500.00,
+		"importe_cobrado" : 209500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8521,
+		"fecha_cobranza" : "2025-05-24",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8522,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 190000.00,
+		"importe_cobrado" : 190000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8523,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 59000.00,
+		"importe_cobrado" : 59000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8524,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8525,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8526,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 271000.00,
+		"importe_cobrado" : 271000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8527,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8528,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8529,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 109000.00,
+		"importe_cobrado" : 109000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8531,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8532,
+		"fecha_cobranza" : "2025-05-26",
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8533,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8534,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8535,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8536,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 106000.00,
+		"importe_cobrado" : 106000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8537,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8538,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 123000.00,
+		"importe_cobrado" : 123000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8539,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8540,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8541,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8542,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 200000.00,
+		"importe_cobrado" : 200000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8543,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 106000.00,
+		"importe_cobrado" : 106000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8544,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 450000.00,
+		"importe_cobrado" : 450000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8545,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 101000.00,
+		"importe_cobrado" : 101000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8546,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8547,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8548,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 101000.00,
+		"importe_cobrado" : 101000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8549,
+		"fecha_cobranza" : "2025-05-27",
+		"importe_abonado" : 50000.00,
+		"importe_cobrado" : 50000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8553,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8554,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8555,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 276600.00,
+		"importe_cobrado" : 276600.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8556,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 72500.00,
+		"importe_cobrado" : 72500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8557,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 72500.00,
+		"importe_cobrado" : 72500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8558,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8559,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8560,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 135500.00,
+		"importe_cobrado" : 135500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8561,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8562,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 340000.00,
+		"importe_cobrado" : 340000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8563,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 112000.00,
+		"importe_cobrado" : 112000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8564,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8565,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 87000.00,
+		"importe_cobrado" : 87000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8566,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 87000.00,
+		"importe_cobrado" : 87000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8567,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 211000.00,
+		"importe_cobrado" : 211000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8568,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 116000.00,
+		"importe_cobrado" : 116000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8569,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 218500.00,
+		"importe_cobrado" : 218500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8570,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 125000.00,
+		"importe_cobrado" : 125000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8571,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8572,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 156000.00,
+		"importe_cobrado" : 156000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8573,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 95000.00,
+		"importe_cobrado" : 95000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8574,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8575,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 107000.00,
+		"importe_cobrado" : 107000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8576,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8577,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8578,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8579,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 195000.00,
+		"importe_cobrado" : 195000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8580,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8581,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 109500.00,
+		"importe_cobrado" : 109500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8582,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 231500.00,
+		"importe_cobrado" : 231500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8583,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8584,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8586,
+		"fecha_cobranza" : "2025-05-29",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8508,
+		"fecha_cobranza" : "2025-05-23",
+		"importe_abonado" : 185000.00,
+		"importe_cobrado" : 185000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8585,
+		"fecha_cobranza" : "2025-05-28",
+		"importe_abonado" : 266000.00,
+		"importe_cobrado" : 266000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8590,
+		"fecha_cobranza" : "2025-05-29",
+		"importe_abonado" : 256000.00,
+		"importe_cobrado" : 256000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8591,
+		"fecha_cobranza" : "2025-05-29",
+		"importe_abonado" : 118500.00,
+		"importe_cobrado" : 118500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8592,
+		"fecha_cobranza" : "2025-05-29",
+		"importe_abonado" : 185500.00,
+		"importe_cobrado" : 185500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8594,
+		"fecha_cobranza" : "2025-05-29",
+		"importe_abonado" : 200000.00,
+		"importe_cobrado" : 200000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8595,
+		"fecha_cobranza" : "2025-05-29",
+		"importe_abonado" : 127000.00,
+		"importe_cobrado" : 127000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8609,
+		"fecha_cobranza" : "2025-05-30",
+		"importe_abonado" : 153000.00,
+		"importe_cobrado" : 153000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8610,
+		"fecha_cobranza" : "2025-05-30",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8593,
+		"fecha_cobranza" : "2025-05-29",
+		"importe_abonado" : 156000.00,
+		"importe_cobrado" : 156000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8611,
+		"fecha_cobranza" : "2025-05-30",
+		"importe_abonado" : 146000.00,
+		"importe_cobrado" : 146000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8612,
+		"fecha_cobranza" : "2025-05-30",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8613,
+		"fecha_cobranza" : "2025-05-30",
+		"importe_abonado" : 110000.00,
+		"importe_cobrado" : 110000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8614,
+		"fecha_cobranza" : "2025-05-30",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8615,
+		"fecha_cobranza" : "2025-05-30",
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8618,
+		"fecha_cobranza" : "2025-05-31",
+		"importe_abonado" : 219000.00,
+		"importe_cobrado" : 219000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8619,
+		"fecha_cobranza" : "2025-05-31",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8620,
+		"fecha_cobranza" : "2025-05-31",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8621,
+		"fecha_cobranza" : "2025-05-31",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8622,
+		"fecha_cobranza" : "2025-05-31",
+		"importe_abonado" : 163000.00,
+		"importe_cobrado" : 163000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8623,
+		"fecha_cobranza" : "2025-05-31",
+		"importe_abonado" : 53000.00,
+		"importe_cobrado" : 53000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8624,
+		"fecha_cobranza" : "2025-05-31",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8625,
+		"fecha_cobranza" : "2025-05-31",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8626,
+		"fecha_cobranza" : "2025-05-31",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8628,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8629,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8630,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8631,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8632,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 78000.00,
+		"importe_cobrado" : 78000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8633,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8634,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 245000.00,
+		"importe_cobrado" : 245000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8635,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8636,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 246000.00,
+		"importe_cobrado" : 246000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8637,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 240000.00,
+		"importe_cobrado" : 240000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8638,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 240000.00,
+		"importe_cobrado" : 240000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8639,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 220000.00,
+		"importe_cobrado" : 220000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8640,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8641,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8642,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8643,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8644,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8645,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 66000.00,
+		"importe_cobrado" : 66000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8646,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8647,
+		"fecha_cobranza" : "2025-06-03",
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8648,
+		"fecha_cobranza" : "2025-06-03",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8649,
+		"fecha_cobranza" : "2025-06-03",
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8650,
+		"fecha_cobranza" : "2025-06-03",
+		"importe_abonado" : 186000.00,
+		"importe_cobrado" : 186000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8651,
+		"fecha_cobranza" : "2025-06-03",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8652,
+		"fecha_cobranza" : "2025-06-03",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8653,
+		"fecha_cobranza" : "2025-06-03",
+		"importe_abonado" : 144000.00,
+		"importe_cobrado" : 144000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8654,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8655,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 108000.00,
+		"importe_cobrado" : 108000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8656,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8657,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 127000.00,
+		"importe_cobrado" : 127000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8658,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8659,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8660,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 150000.00,
+		"importe_cobrado" : 150000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8661,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 75000.00,
+		"importe_cobrado" : 75000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8662,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8663,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 351500.00,
+		"importe_cobrado" : 351500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8664,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 113700.00,
+		"importe_cobrado" : 113700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8665,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 123000.00,
+		"importe_cobrado" : 123000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8666,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 50000.00,
+		"importe_cobrado" : 50000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8667,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 303500.00,
+		"importe_cobrado" : 303500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8668,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8669,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8670,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 82000.00,
+		"importe_cobrado" : 82000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8671,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8672,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8706,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8707,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8708,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 120000.00,
+		"importe_cobrado" : 120000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8709,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 74000.00,
+		"importe_cobrado" : 74000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8710,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8711,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 380000.00,
+		"importe_cobrado" : 380000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8712,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 139500.00,
+		"importe_cobrado" : 139500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8713,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 102000.00,
+		"importe_cobrado" : 102000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8714,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8715,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8716,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 113500.00,
+		"importe_cobrado" : 113500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8717,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8718,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8719,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 85000.00,
+		"importe_cobrado" : 85000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8720,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 67000.00,
+		"importe_cobrado" : 67000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8721,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8722,
+		"fecha_cobranza" : "2025-06-04",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8725,
+		"fecha_cobranza" : "2025-06-05",
+		"importe_abonado" : 85000.00,
+		"importe_cobrado" : 85000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8727,
+		"fecha_cobranza" : "2025-06-05",
+		"importe_abonado" : 299000.00,
+		"importe_cobrado" : 299000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8728,
+		"fecha_cobranza" : "2025-06-05",
+		"importe_abonado" : 537500.00,
+		"importe_cobrado" : 537500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8730,
+		"fecha_cobranza" : "2025-06-05",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8731,
+		"fecha_cobranza" : "2025-06-05",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8732,
+		"fecha_cobranza" : "2025-06-05",
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8734,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 330000.00,
+		"importe_cobrado" : 330000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8735,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 302000.00,
+		"importe_cobrado" : 302000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8736,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 75500.00,
+		"importe_cobrado" : 75500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8737,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 169000.00,
+		"importe_cobrado" : 169000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8738,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8740,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8741,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8743,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 52500.00,
+		"importe_cobrado" : 52500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8739,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8746,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8742,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8751,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8733,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 86500.00,
+		"importe_cobrado" : 86500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8752,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 100500.00,
+		"importe_cobrado" : 100500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8753,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 71000.00,
+		"importe_cobrado" : 71000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8754,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8755,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8756,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 57500.00,
+		"importe_cobrado" : 57500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8757,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 276700.00,
+		"importe_cobrado" : 276700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8758,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 57500.00,
+		"importe_cobrado" : 57500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8759,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 78500.00,
+		"importe_cobrado" : 78500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8760,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8761,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8762,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 55000.00,
+		"importe_cobrado" : 55000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8763,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 209500.00,
+		"importe_cobrado" : 209500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8764,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8765,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 239000.00,
+		"importe_cobrado" : 239000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8766,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8767,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 128350.00,
+		"importe_cobrado" : 128350.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8768,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 112000.00,
+		"importe_cobrado" : 112000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8769,
+		"fecha_cobranza" : "2025-06-06",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8770,
+		"fecha_cobranza" : "2025-06-07",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8784,
+		"fecha_cobranza" : "2025-06-09",
+		"importe_abonado" : 155700.00,
+		"importe_cobrado" : 155700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8785,
+		"fecha_cobranza" : "2025-06-09",
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8786,
+		"fecha_cobranza" : "2025-06-09",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8787,
+		"fecha_cobranza" : "2025-06-09",
+		"importe_abonado" : 80000.00,
+		"importe_cobrado" : 80000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8788,
+		"fecha_cobranza" : "2025-06-09",
+		"importe_abonado" : 49000.00,
+		"importe_cobrado" : 49000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8789,
+		"fecha_cobranza" : "2025-06-09",
+		"importe_abonado" : 950000.00,
+		"importe_cobrado" : 950000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8807,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8808,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8809,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 85000.00,
+		"importe_cobrado" : 85000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8811,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8812,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8813,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 87000.00,
+		"importe_cobrado" : 87000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8815,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 92500.00,
+		"importe_cobrado" : 92500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8816,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8817,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 115500.00,
+		"importe_cobrado" : 115500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8818,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 116000.00,
+		"importe_cobrado" : 116000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8819,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 319500.00,
+		"importe_cobrado" : 319500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8820,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 232700.00,
+		"importe_cobrado" : 232700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8821,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 1596000.00,
+		"importe_cobrado" : 1596000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8810,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8822,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 136000.00,
+		"importe_cobrado" : 136000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8823,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 240000.00,
+		"importe_cobrado" : 240000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8824,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 250000.00,
+		"importe_cobrado" : 250000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8814,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8825,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8826,
+		"fecha_cobranza" : "2025-06-10",
+		"importe_abonado" : 34000.00,
+		"importe_cobrado" : 34000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8827,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8828,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 232000.00,
+		"importe_cobrado" : 232000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8829,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 140500.00,
+		"importe_cobrado" : 140500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8830,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8831,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 183700.00,
+		"importe_cobrado" : 183700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8832,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8833,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 108000.00,
+		"importe_cobrado" : 108000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8834,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 128500.00,
+		"importe_cobrado" : 128500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8835,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8836,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8837,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 34000.00,
+		"importe_cobrado" : 34000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8838,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 138500.00,
+		"importe_cobrado" : 138500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8839,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8840,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8841,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8842,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 71000.00,
+		"importe_cobrado" : 71000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8843,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 79000.00,
+		"importe_cobrado" : 79000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8844,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 105000.00,
+		"importe_cobrado" : 105000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8845,
+		"fecha_cobranza" : "2025-06-11",
+		"importe_abonado" : 298000.00,
+		"importe_cobrado" : 298000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8848,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 169000.00,
+		"importe_cobrado" : 169000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8849,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8850,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 183000.00,
+		"importe_cobrado" : 183000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8851,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 140000.00,
+		"importe_cobrado" : 140000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8852,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 85000.00,
+		"importe_cobrado" : 85000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8853,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 52000.00,
+		"importe_cobrado" : 52000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8855,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8856,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 98000.00,
+		"importe_cobrado" : 98000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8857,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8858,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8859,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8860,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8854,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 158000.00,
+		"importe_cobrado" : 158000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8861,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 158000.00,
+		"importe_cobrado" : 158000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8862,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8863,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8627,
+		"fecha_cobranza" : "2025-06-02",
+		"importe_abonado" : 609700.00,
+		"importe_cobrado" : 609700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8864,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 609700.00,
+		"importe_cobrado" : 609700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8865,
+		"fecha_cobranza" : "2025-06-12",
+		"importe_abonado" : 169000.00,
+		"importe_cobrado" : 169000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8866,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8867,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8868,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 95000.00,
+		"importe_cobrado" : 95000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8869,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8870,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 136000.00,
+		"importe_cobrado" : 136000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8871,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 165000.00,
+		"importe_cobrado" : 165000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8872,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 108500.00,
+		"importe_cobrado" : 108500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8873,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 108500.00,
+		"importe_cobrado" : 108500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8874,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8875,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8876,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8877,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8878,
+		"fecha_cobranza" : "2025-06-13",
+		"importe_abonado" : 84000.00,
+		"importe_cobrado" : 84000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8879,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 118000.00,
+		"importe_cobrado" : 118000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8880,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8881,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8884,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8885,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8886,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 208000.00,
+		"importe_cobrado" : 208000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8887,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 122500.00,
+		"importe_cobrado" : 122500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8888,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8889,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8890,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8891,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8892,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8893,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8882,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8894,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 1254000.00,
+		"importe_cobrado" : 1254000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8883,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8895,
+		"fecha_cobranza" : "2025-06-14",
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8896,
+		"fecha_cobranza" : "2025-06-17",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8897,
+		"fecha_cobranza" : "2025-06-17",
+		"importe_abonado" : 95000.00,
+		"importe_cobrado" : 95000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8898,
+		"fecha_cobranza" : "2025-06-17",
+		"importe_abonado" : 118500.00,
+		"importe_cobrado" : 118500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8899,
+		"fecha_cobranza" : "2025-06-17",
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8900,
+		"fecha_cobranza" : "2025-06-17",
+		"importe_abonado" : 298000.00,
+		"importe_cobrado" : 298000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8901,
+		"fecha_cobranza" : "2025-06-17",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8902,
+		"fecha_cobranza" : "2025-06-17",
+		"importe_abonado" : 80000.00,
+		"importe_cobrado" : 80000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8903,
+		"fecha_cobranza" : "2025-06-17",
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8904,
+		"fecha_cobranza" : "2025-06-17",
+		"importe_abonado" : 116700.00,
+		"importe_cobrado" : 116700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8921,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 240000.00,
+		"importe_cobrado" : 240000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8922,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 98000.00,
+		"importe_cobrado" : 98000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8923,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8924,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8926,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 130000.00,
+		"importe_cobrado" : 130000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8927,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8928,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8929,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 206000.00,
+		"importe_cobrado" : 206000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8930,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8931,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 263000.00,
+		"importe_cobrado" : 263000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8932,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8933,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 116000.00,
+		"importe_cobrado" : 116000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8934,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 267000.00,
+		"importe_cobrado" : 267000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8935,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8936,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 400400.00,
+		"importe_cobrado" : 400400.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8937,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 96000.00,
+		"importe_cobrado" : 96000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8938,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 57000.00,
+		"importe_cobrado" : 57000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8939,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8941,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8942,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8943,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 132000.00,
+		"importe_cobrado" : 132000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8944,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 151000.00,
+		"importe_cobrado" : 151000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8946,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8925,
+		"fecha_cobranza" : "2025-06-18",
+		"importe_abonado" : 227000.00,
+		"importe_cobrado" : 227000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8947,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8948,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8949,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8950,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 121000.00,
+		"importe_cobrado" : 121000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8951,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8952,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 120000.00,
+		"importe_cobrado" : 120000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8953,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8954,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 110500.00,
+		"importe_cobrado" : 110500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8955,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 104000.00,
+		"importe_cobrado" : 104000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8956,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8957,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8958,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8959,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8960,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 210000.00,
+		"importe_cobrado" : 210000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8961,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8962,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8945,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 308700.00,
+		"importe_cobrado" : 308700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8963,
+		"fecha_cobranza" : "2025-06-20",
+		"importe_abonado" : 296700.00,
+		"importe_cobrado" : 296700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8965,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8966,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 111000.00,
+		"importe_cobrado" : 111000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8967,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8968,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 149000.00,
+		"importe_cobrado" : 149000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8969,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8970,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8971,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 121000.00,
+		"importe_cobrado" : 121000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8972,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8973,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 90000.00,
+		"importe_cobrado" : 90000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8974,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 5500.00,
+		"importe_cobrado" : 5500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8975,
+		"fecha_cobranza" : "2025-06-21",
+		"importe_abonado" : 191000.00,
+		"importe_cobrado" : 191000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8993,
+		"fecha_cobranza" : "2025-06-23",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8940,
+		"fecha_cobranza" : "2025-06-19",
+		"importe_abonado" : 140500.00,
+		"importe_cobrado" : 140500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8994,
+		"fecha_cobranza" : "2025-06-23",
+		"importe_abonado" : 66700.00,
+		"importe_cobrado" : 66700.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8995,
+		"fecha_cobranza" : "2025-06-23",
+		"importe_abonado" : 128000.00,
+		"importe_cobrado" : 128000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8996,
+		"fecha_cobranza" : "2025-06-23",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8997,
+		"fecha_cobranza" : "2025-06-23",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8998,
+		"fecha_cobranza" : "2025-06-23",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 8999,
+		"fecha_cobranza" : "2025-06-23",
+		"importe_abonado" : 70000.00,
+		"importe_cobrado" : 70000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9000,
+		"fecha_cobranza" : "2025-06-23",
+		"importe_abonado" : 200500.00,
+		"importe_cobrado" : 200500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9003,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9004,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9005,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 107500.00,
+		"importe_cobrado" : 107500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9006,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9007,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9008,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9010,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9011,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9012,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 129000.00,
+		"importe_cobrado" : 129000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9013,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 118000.00,
+		"importe_cobrado" : 118000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9014,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 98000.00,
+		"importe_cobrado" : 98000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9015,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9016,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 135000.00,
+		"importe_cobrado" : 135000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9017,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9009,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9019,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 57000.00,
+		"importe_cobrado" : 57000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9020,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9022,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 91000.00,
+		"importe_cobrado" : 91000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9023,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9024,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 96000.00,
+		"importe_cobrado" : 96000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9025,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 179000.00,
+		"importe_cobrado" : 179000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9026,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 206000.00,
+		"importe_cobrado" : 206000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9027,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9028,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9029,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9030,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 232500.00,
+		"importe_cobrado" : 232500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9031,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 110000.00,
+		"importe_cobrado" : 110000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9032,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 187000.00,
+		"importe_cobrado" : 187000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9033,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 96000.00,
+		"importe_cobrado" : 96000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9034,
+		"fecha_cobranza" : "2025-06-25",
+		"importe_abonado" : 238500.00,
+		"importe_cobrado" : 238500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9035,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9036,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 60500.00,
+		"importe_cobrado" : 60500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9037,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 89000.00,
+		"importe_cobrado" : 89000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9038,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 208000.00,
+		"importe_cobrado" : 208000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9039,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 152500.00,
+		"importe_cobrado" : 152500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9040,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 79000.00,
+		"importe_cobrado" : 79000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9041,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 190000.00,
+		"importe_cobrado" : 190000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9042,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9043,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 50000.00,
+		"importe_cobrado" : 50000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9044,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 61500.00,
+		"importe_cobrado" : 61500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9045,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 147000.00,
+		"importe_cobrado" : 147000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9046,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 53000.00,
+		"importe_cobrado" : 53000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9047,
+		"fecha_cobranza" : "2025-06-26",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9021,
+		"fecha_cobranza" : "2025-06-24",
+		"importe_abonado" : 179000.00,
+		"importe_cobrado" : 179000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9048,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 153000.00,
+		"importe_cobrado" : 153000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9049,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 240500.00,
+		"importe_cobrado" : 240500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9050,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9051,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 91000.00,
+		"importe_cobrado" : 91000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9052,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 156500.00,
+		"importe_cobrado" : 156500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9053,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 229500.00,
+		"importe_cobrado" : 229500.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9054,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 139000.00,
+		"importe_cobrado" : 139000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9055,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 194000.00,
+		"importe_cobrado" : 194000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9056,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 84000.00,
+		"importe_cobrado" : 84000.00,
+		"saldo" : 0.00
+	},
+	{
+		"cod_cobranza" : 9057,
+		"fecha_cobranza" : "2025-06-27",
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
 		"saldo" : 0.00
 	}
 ]}

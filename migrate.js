@@ -54,6 +54,7 @@ const Banco = require("./src/models/banco.model");
 const MedioPago = require("./src/models/medioPago.model");
 const Unidad = require("./src/models/unidad.model"); 
 const ClienteSucursal = require("./src/models/ClienteSucursal.model");
+const { migrateCavallaroDB } = require("./migrateCavallaro");
 
 const migrateDB = async ( facturaId ,notaCreditoId) => { 
   
@@ -74,15 +75,17 @@ const migrateDB = async ( facturaId ,notaCreditoId) => {
       }
       
     }
-    /*   const encriptado = encryptPassphrase("De0FOa3?");
+
+
+      const encriptado = encryptPassphrase("De0FOa3?");
        const certificado = await Certificado.create({
-         empresaId: empresas[emp.codEmpresa].id,
+         empresaId: empresas[9].id,
          path: "F1T_44102.p12",
          passphrase: encriptado,
          validoDesde: "2025-04-29",
          validoHasta: "2026-04-29",
          activo: true
-       }); */
+       }); 
 
         
    /***********************************************************************/
@@ -99,11 +102,17 @@ const migrateDB = async ( facturaId ,notaCreditoId) => {
     activo: true,
     empresaId: empresas[8].id,
   });
+
+   await Banco.create({
+    descripcion,
+    activo: true,
+    empresaId: empresas[9].id,
+  });
 }
 
 /***************SUCURSAL******************************* */
     const sucursal9 = await Sucursal.create({
-      descripcion: "Capiata",
+      descripcion: "Luque",
       direccion: "RUTA 1",
       cel: "+595976753428",
       empresaId: empresas[6].id,
@@ -117,8 +126,8 @@ const migrateDB = async ( facturaId ,notaCreditoId) => {
       empresaId: empresas[8].id,
       email: "compraya.pystore@gmail.com"
     });
+  
  
-
      
     for (const medio of mediosPagoJson) {
       await MedioPago.create({
@@ -128,6 +137,10 @@ const migrateDB = async ( facturaId ,notaCreditoId) => {
       await MedioPago.create({
         ...medio,
         empresaId:empresas[8].id
+      });
+      await MedioPago.create({
+        ...medio,
+        empresaId:empresas[9].id
       });
 
     }
@@ -212,6 +225,7 @@ const migrateDB = async ( facturaId ,notaCreditoId) => {
       activo: true
     });
 
+  
     // Crear usuario asociado a la empresa y sucursal
     const salt = Bcryptjs.genSaltSync();
     const userEmpresa2 = await Usuario.create({
@@ -272,7 +286,7 @@ const migrateDB = async ( facturaId ,notaCreditoId) => {
       activo: true,
       bloqueado: false
     });
-
+ 
  //****************Unidades**************** */
 
 let unidad6 ={}
@@ -290,9 +304,11 @@ let unidad8 ={}
         empresaId: empresas[8].id,
         activo: true
       });
+       
       if (unidad.code == 'code') {
         unidad6 = u6;
         unidad8 = u8;
+         
       }
     }
 
@@ -329,7 +345,8 @@ const categoria1 = await Categoria.create({
       activo: true,
       empresaId:  empresas[6].id,
     });
-
+ 
+    
     const marca0 = await Marca.create({
       descripcion: "HF",
       activo: true,
@@ -1606,6 +1623,14 @@ let variantesX = {};
       predeterminado: false
     });
 
+       const listaPrecio21 = await ListaPrecio.create({
+      descripcion: "FORTIS MAYORISTA",
+      activo: true,
+      empresaId: empresas[6].id,
+      color: "#45A137",
+      predeterminado: true
+    });
+
     const listaPrecio20 = await ListaPrecio.create({
       descripcion: "LISTA DE PRECIO 1",
       activo: true,
@@ -1613,6 +1638,7 @@ let variantesX = {};
       color: "#45A137",
       predeterminado: true
     });
+     
     
 
 
@@ -2939,6 +2965,7 @@ let variantesX = {};
            let sucursalClientes ={}
         for (const c of clienteJson){  
           let lpId = 0;
+          console.log(c)
           switch (c.cod_lista_precio) {
             case 14:
               lpId = listaPrecio14.id;
@@ -2957,7 +2984,10 @@ let variantesX = {};
               break; 
               case 20:
                 lpId = listaPrecio20.id;
-                break;               
+                break;     
+                  case 21:
+                lpId = listaPrecio21.id;
+                break;      
               default:
               break;
           }
@@ -2985,7 +3015,7 @@ let variantesX = {};
             default:
               break;
           }
-           
+       
           const clienteNuevo = await Cliente.create({
             empresaId: c.empresaid,
             tipoOperacionId: 1,
@@ -3019,6 +3049,8 @@ let variantesX = {};
             codigoPais: "PRY",
             // puedes incluir usuarioCreacionId, etc. si lo tenés
           });
+                   
+
           if(c.cod_cliente ==  23061         ){
             for (const x of sucursaleBiggieJSON){  
               await ClienteSucursal.create({
@@ -3237,7 +3269,7 @@ let variantesX = {};
           
         } 
       
-
+ await migrateCavallaroDB(1,6,empresas[9].id)
    
 };
 

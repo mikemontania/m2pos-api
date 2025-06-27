@@ -11751,5 +11751,4573 @@
 		"saldo" : 0.00,
 		"cod_cobranza" : 8319,
 		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8375,
+		"importe_abonado" : 461000.00,
+		"importe_cobrado" : 461000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8320,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8376,
+		"importe_abonado" : 149000.00,
+		"importe_cobrado" : 149000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8321,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8377,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8322,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8378,
+		"importe_abonado" : 197000.00,
+		"importe_cobrado" : 197000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8323,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8379,
+		"importe_abonado" : 167000.00,
+		"importe_cobrado" : 167000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8324,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8380,
+		"importe_abonado" : 142000.00,
+		"importe_cobrado" : 142000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8325,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8381,
+		"importe_abonado" : 192000.00,
+		"importe_cobrado" : 192000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8326,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8382,
+		"importe_abonado" : 73000.00,
+		"importe_cobrado" : 73000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8327,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8383,
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8328,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8384,
+		"importe_abonado" : 200500.00,
+		"importe_cobrado" : 200500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8329,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8385,
+		"importe_abonado" : 117000.00,
+		"importe_cobrado" : 117000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8330,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8386,
+		"importe_abonado" : 123000.00,
+		"importe_cobrado" : 123000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8331,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8387,
+		"importe_abonado" : 134000.00,
+		"importe_cobrado" : 134000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8332,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8388,
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8333,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8389,
+		"importe_abonado" : 249000.00,
+		"importe_cobrado" : 249000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8334,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8390,
+		"importe_abonado" : 244000.00,
+		"importe_cobrado" : 244000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8335,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8391,
+		"importe_abonado" : 142000.00,
+		"importe_cobrado" : 142000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8336,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8392,
+		"importe_abonado" : 124000.00,
+		"importe_cobrado" : 124000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8337,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8393,
+		"importe_abonado" : 242000.00,
+		"importe_cobrado" : 242000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8338,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8394,
+		"importe_abonado" : 292000.00,
+		"importe_cobrado" : 292000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8339,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8395,
+		"importe_abonado" : 90000.00,
+		"importe_cobrado" : 90000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8340,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8396,
+		"importe_abonado" : 206000.00,
+		"importe_cobrado" : 206000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8341,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8397,
+		"importe_abonado" : 142000.00,
+		"importe_cobrado" : 142000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8342,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8398,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8343,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8399,
+		"importe_abonado" : 158000.00,
+		"importe_cobrado" : 158000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8344,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8400,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8345,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8401,
+		"importe_abonado" : 116700.00,
+		"importe_cobrado" : 116700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8346,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8402,
+		"importe_abonado" : 73000.00,
+		"importe_cobrado" : 73000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8347,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8403,
+		"importe_abonado" : 273000.00,
+		"importe_cobrado" : 273000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8348,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8404,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8349,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8405,
+		"importe_abonado" : 342000.00,
+		"importe_cobrado" : 342000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8350,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8406,
+		"importe_abonado" : 108500.00,
+		"importe_cobrado" : 108500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8351,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8407,
+		"importe_abonado" : 137000.00,
+		"importe_cobrado" : 137000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8352,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8408,
+		"importe_abonado" : 73000.00,
+		"importe_cobrado" : 73000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8353,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8409,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8354,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8410,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8355,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8411,
+		"importe_abonado" : 130000.00,
+		"importe_cobrado" : 130000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8356,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8412,
+		"importe_abonado" : 172000.00,
+		"importe_cobrado" : 172000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8357,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8413,
+		"importe_abonado" : 387000.00,
+		"importe_cobrado" : 387000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8358,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8414,
+		"importe_abonado" : 609700.00,
+		"importe_cobrado" : 609700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8359,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8415,
+		"importe_abonado" : 130000.00,
+		"importe_cobrado" : 130000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8360,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8416,
+		"importe_abonado" : 141500.00,
+		"importe_cobrado" : 141500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8361,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8417,
+		"importe_abonado" : 122000.00,
+		"importe_cobrado" : 122000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8362,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8418,
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8363,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8419,
+		"importe_abonado" : 98000.00,
+		"importe_cobrado" : 98000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8364,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8420,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8365,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8421,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8366,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8422,
+		"importe_abonado" : 198000.00,
+		"importe_cobrado" : 198000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8367,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8423,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8368,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8424,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8369,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8425,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8370,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8426,
+		"importe_abonado" : 74000.00,
+		"importe_cobrado" : 74000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8371,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8427,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8372,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8428,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8373,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8429,
+		"importe_abonado" : 56700.00,
+		"importe_cobrado" : 56700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8374,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8430,
+		"importe_abonado" : 9500.00,
+		"importe_cobrado" : 9500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8375,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8431,
+		"importe_abonado" : 305400.00,
+		"importe_cobrado" : 305400.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8376,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8432,
+		"importe_abonado" : 192000.00,
+		"importe_cobrado" : 192000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8377,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8433,
+		"importe_abonado" : 173000.00,
+		"importe_cobrado" : 173000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8378,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8434,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8379,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8435,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8380,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8436,
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8381,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8437,
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8382,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8438,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8383,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8439,
+		"importe_abonado" : 330000.00,
+		"importe_cobrado" : 330000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8384,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8441,
+		"importe_abonado" : 169500.00,
+		"importe_cobrado" : 169500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8386,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8442,
+		"importe_abonado" : 258000.00,
+		"importe_cobrado" : 258000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8387,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8443,
+		"importe_abonado" : 154500.00,
+		"importe_cobrado" : 154500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8388,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8444,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8389,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8445,
+		"importe_abonado" : 142000.00,
+		"importe_cobrado" : 142000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8390,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8446,
+		"importe_abonado" : 95000.00,
+		"importe_cobrado" : 95000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8391,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8447,
+		"importe_abonado" : 80000.00,
+		"importe_cobrado" : 80000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8392,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8448,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8393,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8449,
+		"importe_abonado" : 155000.00,
+		"importe_cobrado" : 155000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8394,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8450,
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8395,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8451,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8396,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8452,
+		"importe_abonado" : 147000.00,
+		"importe_cobrado" : 147000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8397,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8453,
+		"importe_abonado" : 182700.00,
+		"importe_cobrado" : 182700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8398,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8454,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8399,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8455,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8400,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8456,
+		"importe_abonado" : 164000.00,
+		"importe_cobrado" : 164000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8401,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8457,
+		"importe_abonado" : 80000.00,
+		"importe_cobrado" : 80000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8402,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8458,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8403,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8459,
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8404,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8460,
+		"importe_abonado" : 151000.00,
+		"importe_cobrado" : 151000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8405,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8461,
+		"importe_abonado" : 300000.00,
+		"importe_cobrado" : 300000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8406,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8462,
+		"importe_abonado" : 664750.00,
+		"importe_cobrado" : 664750.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8407,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8463,
+		"importe_abonado" : 89000.00,
+		"importe_cobrado" : 89000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8408,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8464,
+		"importe_abonado" : 190000.00,
+		"importe_cobrado" : 190000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8409,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8465,
+		"importe_abonado" : 460000.00,
+		"importe_cobrado" : 460000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8410,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8466,
+		"importe_abonado" : 302000.00,
+		"importe_cobrado" : 302000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8411,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8467,
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8412,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8468,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8413,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8469,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8414,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8470,
+		"importe_abonado" : 124000.00,
+		"importe_cobrado" : 124000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8415,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8471,
+		"importe_abonado" : 447500.00,
+		"importe_cobrado" : 447500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8416,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8472,
+		"importe_abonado" : 667250.00,
+		"importe_cobrado" : 667250.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8417,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8473,
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8418,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8475,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8420,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8476,
+		"importe_abonado" : 128000.00,
+		"importe_cobrado" : 128000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8421,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8477,
+		"importe_abonado" : 124000.00,
+		"importe_cobrado" : 124000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8422,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8478,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8423,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8479,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8424,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8481,
+		"importe_abonado" : 106000.00,
+		"importe_cobrado" : 106000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8426,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8512,
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8457,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8513,
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8458,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8514,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8459,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8515,
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8460,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8516,
+		"importe_abonado" : 232000.00,
+		"importe_cobrado" : 232000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8461,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8517,
+		"importe_abonado" : 207500.00,
+		"importe_cobrado" : 207500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8462,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8518,
+		"importe_abonado" : 96000.00,
+		"importe_cobrado" : 96000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8463,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8519,
+		"importe_abonado" : 156000.00,
+		"importe_cobrado" : 156000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8464,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8520,
+		"importe_abonado" : 50000.00,
+		"importe_cobrado" : 50000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8465,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8521,
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8466,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8522,
+		"importe_abonado" : 126500.00,
+		"importe_cobrado" : 126500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8467,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8523,
+		"importe_abonado" : 135000.00,
+		"importe_cobrado" : 135000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8468,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8524,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8469,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8525,
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8470,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8526,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8471,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8527,
+		"importe_abonado" : 150500.00,
+		"importe_cobrado" : 150500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8472,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8528,
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8473,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8529,
+		"importe_abonado" : 206000.00,
+		"importe_cobrado" : 206000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8474,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8530,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8475,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8531,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8476,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8532,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8477,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8533,
+		"importe_abonado" : 85500.00,
+		"importe_cobrado" : 85500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8478,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8534,
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8479,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8535,
+		"importe_abonado" : 158850.00,
+		"importe_cobrado" : 158850.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8480,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8536,
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8481,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8537,
+		"importe_abonado" : 90000.00,
+		"importe_cobrado" : 90000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8482,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8538,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8483,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8539,
+		"importe_abonado" : 220000.00,
+		"importe_cobrado" : 220000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8484,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8540,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8485,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8541,
+		"importe_abonado" : 201000.00,
+		"importe_cobrado" : 201000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8486,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8542,
+		"importe_abonado" : 57000.00,
+		"importe_cobrado" : 57000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8487,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8543,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8488,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8544,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8489,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8545,
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8490,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8546,
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8491,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8547,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8492,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8548,
+		"importe_abonado" : 90000.00,
+		"importe_cobrado" : 90000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8493,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8549,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8494,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8550,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8495,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8551,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8496,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8552,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8497,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8553,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8498,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8554,
+		"importe_abonado" : 173400.00,
+		"importe_cobrado" : 173400.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8499,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8555,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8500,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8556,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8501,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8557,
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8502,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8558,
+		"importe_abonado" : 278500.00,
+		"importe_cobrado" : 278500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8503,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8559,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8504,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8560,
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8505,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8561,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8506,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8562,
+		"importe_abonado" : 110000.00,
+		"importe_cobrado" : 110000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8507,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8563,
+		"importe_abonado" : 185000.00,
+		"importe_cobrado" : 185000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8508,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8564,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8509,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8565,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8510,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8566,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8511,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8567,
+		"importe_abonado" : 250000.00,
+		"importe_cobrado" : 250000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8512,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8568,
+		"importe_abonado" : 119700.00,
+		"importe_cobrado" : 119700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8513,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8569,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8514,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8570,
+		"importe_abonado" : 313000.00,
+		"importe_cobrado" : 313000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8515,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8571,
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8516,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8572,
+		"importe_abonado" : 266000.00,
+		"importe_cobrado" : 266000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8517,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8573,
+		"importe_abonado" : 112000.00,
+		"importe_cobrado" : 112000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8518,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8574,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8519,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8575,
+		"importe_abonado" : 209500.00,
+		"importe_cobrado" : 209500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8520,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8576,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8521,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8577,
+		"importe_abonado" : 190000.00,
+		"importe_cobrado" : 190000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8522,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8578,
+		"importe_abonado" : 59000.00,
+		"importe_cobrado" : 59000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8523,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8579,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8524,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8580,
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8525,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8581,
+		"importe_abonado" : 271000.00,
+		"importe_cobrado" : 271000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8526,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8582,
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8527,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8583,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8528,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8584,
+		"importe_abonado" : 109000.00,
+		"importe_cobrado" : 109000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8529,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8586,
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8531,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8587,
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8532,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8588,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8533,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8589,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8534,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8590,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8535,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8591,
+		"importe_abonado" : 106000.00,
+		"importe_cobrado" : 106000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8536,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8592,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8537,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8593,
+		"importe_abonado" : 123000.00,
+		"importe_cobrado" : 123000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8538,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8594,
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8539,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8595,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8540,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8596,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8541,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8597,
+		"importe_abonado" : 200000.00,
+		"importe_cobrado" : 200000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8542,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8598,
+		"importe_abonado" : 106000.00,
+		"importe_cobrado" : 106000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8543,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8599,
+		"importe_abonado" : 450000.00,
+		"importe_cobrado" : 450000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8544,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8600,
+		"importe_abonado" : 101000.00,
+		"importe_cobrado" : 101000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8545,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8601,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8546,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8602,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8547,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8603,
+		"importe_abonado" : 101000.00,
+		"importe_cobrado" : 101000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8548,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8604,
+		"importe_abonado" : 50000.00,
+		"importe_cobrado" : 50000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8549,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8608,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8553,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8609,
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8554,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8610,
+		"importe_abonado" : 276600.00,
+		"importe_cobrado" : 276600.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8555,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8611,
+		"importe_abonado" : 72500.00,
+		"importe_cobrado" : 72500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8556,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8612,
+		"importe_abonado" : 72500.00,
+		"importe_cobrado" : 72500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8557,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8613,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8558,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8614,
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8559,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8615,
+		"importe_abonado" : 135500.00,
+		"importe_cobrado" : 135500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8560,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8616,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8561,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8617,
+		"importe_abonado" : 340000.00,
+		"importe_cobrado" : 340000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8562,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8618,
+		"importe_abonado" : 112000.00,
+		"importe_cobrado" : 112000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8563,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8619,
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8564,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8620,
+		"importe_abonado" : 87000.00,
+		"importe_cobrado" : 87000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8565,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8621,
+		"importe_abonado" : 87000.00,
+		"importe_cobrado" : 87000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8566,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8622,
+		"importe_abonado" : 211000.00,
+		"importe_cobrado" : 211000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8567,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8623,
+		"importe_abonado" : 116000.00,
+		"importe_cobrado" : 116000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8568,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8624,
+		"importe_abonado" : 218500.00,
+		"importe_cobrado" : 218500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8569,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8625,
+		"importe_abonado" : 125000.00,
+		"importe_cobrado" : 125000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8570,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8626,
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8571,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8627,
+		"importe_abonado" : 156000.00,
+		"importe_cobrado" : 156000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8572,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8628,
+		"importe_abonado" : 95000.00,
+		"importe_cobrado" : 95000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8573,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8629,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8574,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8630,
+		"importe_abonado" : 107000.00,
+		"importe_cobrado" : 107000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8575,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8631,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8576,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8632,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8577,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8633,
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8578,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8634,
+		"importe_abonado" : 195000.00,
+		"importe_cobrado" : 195000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8579,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8635,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8580,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8636,
+		"importe_abonado" : 109500.00,
+		"importe_cobrado" : 109500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8581,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8637,
+		"importe_abonado" : 231500.00,
+		"importe_cobrado" : 231500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8582,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8638,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8583,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8639,
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8584,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8640,
+		"importe_abonado" : 266000.00,
+		"importe_cobrado" : 266000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8585,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8641,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8586,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8645,
+		"importe_abonado" : 256000.00,
+		"importe_cobrado" : 256000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8590,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8646,
+		"importe_abonado" : 118500.00,
+		"importe_cobrado" : 118500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8591,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8647,
+		"importe_abonado" : 185500.00,
+		"importe_cobrado" : 185500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8592,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8648,
+		"importe_abonado" : 156000.00,
+		"importe_cobrado" : 156000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8593,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8649,
+		"importe_abonado" : 200000.00,
+		"importe_cobrado" : 200000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8594,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8650,
+		"importe_abonado" : 127000.00,
+		"importe_cobrado" : 127000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8595,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8664,
+		"importe_abonado" : 153000.00,
+		"importe_cobrado" : 153000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8609,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8665,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8610,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8666,
+		"importe_abonado" : 146000.00,
+		"importe_cobrado" : 146000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8611,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8667,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8612,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8668,
+		"importe_abonado" : 110000.00,
+		"importe_cobrado" : 110000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8613,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8669,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8614,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8670,
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8615,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8673,
+		"importe_abonado" : 219000.00,
+		"importe_cobrado" : 219000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8618,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8674,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8619,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8675,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8620,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8676,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8621,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8677,
+		"importe_abonado" : 163000.00,
+		"importe_cobrado" : 163000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8622,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8678,
+		"importe_abonado" : 53000.00,
+		"importe_cobrado" : 53000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8623,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8679,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8624,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8680,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8625,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8681,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8626,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8682,
+		"importe_abonado" : 609700.00,
+		"importe_cobrado" : 609700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8627,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8683,
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8628,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8684,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8629,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8685,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8630,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8686,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8631,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8687,
+		"importe_abonado" : 78000.00,
+		"importe_cobrado" : 78000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8632,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8688,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8633,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8689,
+		"importe_abonado" : 245000.00,
+		"importe_cobrado" : 245000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8634,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8690,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8635,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8691,
+		"importe_abonado" : 246000.00,
+		"importe_cobrado" : 246000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8636,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8692,
+		"importe_abonado" : 240000.00,
+		"importe_cobrado" : 240000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8637,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8693,
+		"importe_abonado" : 240000.00,
+		"importe_cobrado" : 240000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8638,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8694,
+		"importe_abonado" : 220000.00,
+		"importe_cobrado" : 220000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8639,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8695,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8640,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8696,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8641,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8697,
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8642,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8698,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8643,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8699,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8644,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8700,
+		"importe_abonado" : 66000.00,
+		"importe_cobrado" : 66000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8645,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8701,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8646,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8702,
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8647,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8703,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8648,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8704,
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8649,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8705,
+		"importe_abonado" : 186000.00,
+		"importe_cobrado" : 186000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8650,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8706,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8651,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8707,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8652,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8708,
+		"importe_abonado" : 144000.00,
+		"importe_cobrado" : 144000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8653,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8709,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8654,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8710,
+		"importe_abonado" : 108000.00,
+		"importe_cobrado" : 108000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8655,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8711,
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8656,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8712,
+		"importe_abonado" : 127000.00,
+		"importe_cobrado" : 127000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8657,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8713,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8658,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8714,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8659,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8715,
+		"importe_abonado" : 150000.00,
+		"importe_cobrado" : 150000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8660,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8716,
+		"importe_abonado" : 75000.00,
+		"importe_cobrado" : 75000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8661,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8717,
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8662,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8718,
+		"importe_abonado" : 351500.00,
+		"importe_cobrado" : 351500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8663,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8719,
+		"importe_abonado" : 113700.00,
+		"importe_cobrado" : 113700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8664,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8720,
+		"importe_abonado" : 123000.00,
+		"importe_cobrado" : 123000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8665,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8721,
+		"importe_abonado" : 50000.00,
+		"importe_cobrado" : 50000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8666,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8722,
+		"importe_abonado" : 303500.00,
+		"importe_cobrado" : 303500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8667,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8723,
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8668,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8724,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8669,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8725,
+		"importe_abonado" : 82000.00,
+		"importe_cobrado" : 82000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8670,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8726,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8671,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8727,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8672,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8761,
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8706,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8762,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8707,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8763,
+		"importe_abonado" : 120000.00,
+		"importe_cobrado" : 120000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8708,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8764,
+		"importe_abonado" : 74000.00,
+		"importe_cobrado" : 74000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8709,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8765,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8710,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8766,
+		"importe_abonado" : 380000.00,
+		"importe_cobrado" : 380000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8711,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8767,
+		"importe_abonado" : 139500.00,
+		"importe_cobrado" : 139500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8712,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8768,
+		"importe_abonado" : 102000.00,
+		"importe_cobrado" : 102000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8713,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8769,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8714,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8770,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8715,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8771,
+		"importe_abonado" : 113500.00,
+		"importe_cobrado" : 113500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8716,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8772,
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8717,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8773,
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8718,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8774,
+		"importe_abonado" : 85000.00,
+		"importe_cobrado" : 85000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8719,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8775,
+		"importe_abonado" : 67000.00,
+		"importe_cobrado" : 67000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8720,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8776,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8721,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8777,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8722,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8780,
+		"importe_abonado" : 85000.00,
+		"importe_cobrado" : 85000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8725,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8782,
+		"importe_abonado" : 299000.00,
+		"importe_cobrado" : 299000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8727,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8783,
+		"importe_abonado" : 537500.00,
+		"importe_cobrado" : 537500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8728,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8785,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8730,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8786,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8731,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8787,
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8732,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8788,
+		"importe_abonado" : 86500.00,
+		"importe_cobrado" : 86500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8733,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8789,
+		"importe_abonado" : 330000.00,
+		"importe_cobrado" : 330000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8734,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8790,
+		"importe_abonado" : 302000.00,
+		"importe_cobrado" : 302000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8735,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8791,
+		"importe_abonado" : 75500.00,
+		"importe_cobrado" : 75500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8736,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8792,
+		"importe_abonado" : 169000.00,
+		"importe_cobrado" : 169000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8737,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8793,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8738,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8794,
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8739,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8795,
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8740,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8796,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8741,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8797,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8742,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8798,
+		"importe_abonado" : 52500.00,
+		"importe_cobrado" : 52500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8743,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8801,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8746,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8806,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8751,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8807,
+		"importe_abonado" : 100500.00,
+		"importe_cobrado" : 100500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8752,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8808,
+		"importe_abonado" : 71000.00,
+		"importe_cobrado" : 71000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8753,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8809,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8754,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8810,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8755,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8811,
+		"importe_abonado" : 57500.00,
+		"importe_cobrado" : 57500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8756,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8812,
+		"importe_abonado" : 276700.00,
+		"importe_cobrado" : 276700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8757,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8813,
+		"importe_abonado" : 57500.00,
+		"importe_cobrado" : 57500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8758,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8814,
+		"importe_abonado" : 78500.00,
+		"importe_cobrado" : 78500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8759,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8815,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8760,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8816,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8761,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8817,
+		"importe_abonado" : 55000.00,
+		"importe_cobrado" : 55000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8762,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8818,
+		"importe_abonado" : 209500.00,
+		"importe_cobrado" : 209500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8763,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8819,
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8764,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8820,
+		"importe_abonado" : 239000.00,
+		"importe_cobrado" : 239000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8765,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8821,
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8766,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8822,
+		"importe_abonado" : 128350.00,
+		"importe_cobrado" : 128350.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8767,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8823,
+		"importe_abonado" : 112000.00,
+		"importe_cobrado" : 112000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8768,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8824,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8769,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8825,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8770,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8839,
+		"importe_abonado" : 155700.00,
+		"importe_cobrado" : 155700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8784,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8840,
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8785,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8841,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8786,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8842,
+		"importe_abonado" : 80000.00,
+		"importe_cobrado" : 80000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8787,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8843,
+		"importe_abonado" : 49000.00,
+		"importe_cobrado" : 49000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8788,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8844,
+		"importe_abonado" : 950000.00,
+		"importe_cobrado" : 950000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8789,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8862,
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8807,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8863,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8808,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8864,
+		"importe_abonado" : 85000.00,
+		"importe_cobrado" : 85000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8809,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8865,
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8810,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8866,
+		"importe_abonado" : 103000.00,
+		"importe_cobrado" : 103000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8811,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8867,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8812,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8868,
+		"importe_abonado" : 87000.00,
+		"importe_cobrado" : 87000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8813,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8869,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8814,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8870,
+		"importe_abonado" : 92500.00,
+		"importe_cobrado" : 92500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8815,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8871,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8816,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8872,
+		"importe_abonado" : 115500.00,
+		"importe_cobrado" : 115500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8817,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8873,
+		"importe_abonado" : 116000.00,
+		"importe_cobrado" : 116000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8818,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8874,
+		"importe_abonado" : 319500.00,
+		"importe_cobrado" : 319500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8819,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8875,
+		"importe_abonado" : 232700.00,
+		"importe_cobrado" : 232700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8820,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8876,
+		"importe_abonado" : 1596000.00,
+		"importe_cobrado" : 1596000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8821,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8877,
+		"importe_abonado" : 136000.00,
+		"importe_cobrado" : 136000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8822,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8878,
+		"importe_abonado" : 240000.00,
+		"importe_cobrado" : 240000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8823,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8879,
+		"importe_abonado" : 250000.00,
+		"importe_cobrado" : 250000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8824,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8880,
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8825,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8881,
+		"importe_abonado" : 34000.00,
+		"importe_cobrado" : 34000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8826,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8882,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8827,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8883,
+		"importe_abonado" : 232000.00,
+		"importe_cobrado" : 232000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8828,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8884,
+		"importe_abonado" : 140500.00,
+		"importe_cobrado" : 140500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8829,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8885,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8830,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8886,
+		"importe_abonado" : 183700.00,
+		"importe_cobrado" : 183700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8831,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8887,
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8832,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8888,
+		"importe_abonado" : 108000.00,
+		"importe_cobrado" : 108000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8833,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8889,
+		"importe_abonado" : 128500.00,
+		"importe_cobrado" : 128500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8834,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8890,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8835,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8891,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8836,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8892,
+		"importe_abonado" : 34000.00,
+		"importe_cobrado" : 34000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8837,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8893,
+		"importe_abonado" : 138500.00,
+		"importe_cobrado" : 138500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8838,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8894,
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8839,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8895,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8840,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8896,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8841,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8897,
+		"importe_abonado" : 71000.00,
+		"importe_cobrado" : 71000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8842,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8898,
+		"importe_abonado" : 79000.00,
+		"importe_cobrado" : 79000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8843,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8899,
+		"importe_abonado" : 105000.00,
+		"importe_cobrado" : 105000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8844,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8900,
+		"importe_abonado" : 298000.00,
+		"importe_cobrado" : 298000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8845,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8903,
+		"importe_abonado" : 169000.00,
+		"importe_cobrado" : 169000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8848,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8904,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8849,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8905,
+		"importe_abonado" : 183000.00,
+		"importe_cobrado" : 183000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8850,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8906,
+		"importe_abonado" : 140000.00,
+		"importe_cobrado" : 140000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8851,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8907,
+		"importe_abonado" : 85000.00,
+		"importe_cobrado" : 85000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8852,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8908,
+		"importe_abonado" : 52000.00,
+		"importe_cobrado" : 52000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8853,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8909,
+		"importe_abonado" : 158000.00,
+		"importe_cobrado" : 158000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8854,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8910,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8855,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8911,
+		"importe_abonado" : 98000.00,
+		"importe_cobrado" : 98000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8856,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8912,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8857,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8913,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8858,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8914,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8859,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8915,
+		"importe_abonado" : 226000.00,
+		"importe_cobrado" : 226000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8860,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8916,
+		"importe_abonado" : 158000.00,
+		"importe_cobrado" : 158000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8861,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8917,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8862,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8918,
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8863,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8919,
+		"importe_abonado" : 609700.00,
+		"importe_cobrado" : 609700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8864,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8920,
+		"importe_abonado" : 169000.00,
+		"importe_cobrado" : 169000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8865,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8921,
+		"importe_abonado" : 94000.00,
+		"importe_cobrado" : 94000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8866,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8922,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8867,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8923,
+		"importe_abonado" : 95000.00,
+		"importe_cobrado" : 95000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8868,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8924,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8869,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8925,
+		"importe_abonado" : 136000.00,
+		"importe_cobrado" : 136000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8870,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8926,
+		"importe_abonado" : 165000.00,
+		"importe_cobrado" : 165000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8871,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8927,
+		"importe_abonado" : 108500.00,
+		"importe_cobrado" : 108500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8872,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8928,
+		"importe_abonado" : 108500.00,
+		"importe_cobrado" : 108500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8873,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8929,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8874,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8930,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8875,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8931,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8876,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8932,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8877,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8933,
+		"importe_abonado" : 84000.00,
+		"importe_cobrado" : 84000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8878,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8934,
+		"importe_abonado" : 118000.00,
+		"importe_cobrado" : 118000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8879,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8935,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8880,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8936,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8881,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8937,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8882,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8938,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8883,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8939,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8884,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8940,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8885,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8941,
+		"importe_abonado" : 208000.00,
+		"importe_cobrado" : 208000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8886,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8942,
+		"importe_abonado" : 122500.00,
+		"importe_cobrado" : 122500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8887,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8943,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8888,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8944,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8889,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8945,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8890,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8946,
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8891,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8947,
+		"importe_abonado" : 65000.00,
+		"importe_cobrado" : 65000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8892,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8948,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8893,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8949,
+		"importe_abonado" : 1254000.00,
+		"importe_cobrado" : 1254000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8894,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8950,
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8895,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8951,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8896,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8952,
+		"importe_abonado" : 95000.00,
+		"importe_cobrado" : 95000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8897,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8953,
+		"importe_abonado" : 118500.00,
+		"importe_cobrado" : 118500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8898,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8954,
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8899,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8955,
+		"importe_abonado" : 298000.00,
+		"importe_cobrado" : 298000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8900,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8956,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8901,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8957,
+		"importe_abonado" : 80000.00,
+		"importe_cobrado" : 80000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8902,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8958,
+		"importe_abonado" : 60000.00,
+		"importe_cobrado" : 60000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8903,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8959,
+		"importe_abonado" : 116700.00,
+		"importe_cobrado" : 116700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8904,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8976,
+		"importe_abonado" : 240000.00,
+		"importe_cobrado" : 240000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8921,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8977,
+		"importe_abonado" : 98000.00,
+		"importe_cobrado" : 98000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8922,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8978,
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8923,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8979,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8924,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8980,
+		"importe_abonado" : 227000.00,
+		"importe_cobrado" : 227000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8925,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8981,
+		"importe_abonado" : 130000.00,
+		"importe_cobrado" : 130000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8926,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8982,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8927,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8983,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8928,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8984,
+		"importe_abonado" : 206000.00,
+		"importe_cobrado" : 206000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8929,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8985,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8930,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8986,
+		"importe_abonado" : 263000.00,
+		"importe_cobrado" : 263000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8931,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8987,
+		"importe_abonado" : 176000.00,
+		"importe_cobrado" : 176000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8932,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8988,
+		"importe_abonado" : 116000.00,
+		"importe_cobrado" : 116000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8933,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8989,
+		"importe_abonado" : 267000.00,
+		"importe_cobrado" : 267000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8934,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8990,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8935,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8991,
+		"importe_abonado" : 400400.00,
+		"importe_cobrado" : 400400.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8936,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8992,
+		"importe_abonado" : 96000.00,
+		"importe_cobrado" : 96000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8937,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8993,
+		"importe_abonado" : 57000.00,
+		"importe_cobrado" : 57000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8938,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8994,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8939,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8995,
+		"importe_abonado" : 140500.00,
+		"importe_cobrado" : 140500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8940,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8996,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8941,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8997,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8942,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8998,
+		"importe_abonado" : 132000.00,
+		"importe_cobrado" : 132000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8943,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 8999,
+		"importe_abonado" : 151000.00,
+		"importe_cobrado" : 151000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8944,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9000,
+		"importe_abonado" : 308700.00,
+		"importe_cobrado" : 308700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8945,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9001,
+		"importe_abonado" : 252000.00,
+		"importe_cobrado" : 252000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8946,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9002,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8947,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9003,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8948,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9004,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8949,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9005,
+		"importe_abonado" : 121000.00,
+		"importe_cobrado" : 121000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8950,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9006,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8951,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9007,
+		"importe_abonado" : 120000.00,
+		"importe_cobrado" : 120000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8952,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9008,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8953,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9009,
+		"importe_abonado" : 110500.00,
+		"importe_cobrado" : 110500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8954,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9010,
+		"importe_abonado" : 104000.00,
+		"importe_cobrado" : 104000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8955,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9011,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8956,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9012,
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8957,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9013,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8958,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9014,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8959,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9015,
+		"importe_abonado" : 210000.00,
+		"importe_cobrado" : 210000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8960,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9016,
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8961,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9017,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8962,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9018,
+		"importe_abonado" : 296700.00,
+		"importe_cobrado" : 296700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8963,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9020,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8965,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9021,
+		"importe_abonado" : 111000.00,
+		"importe_cobrado" : 111000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8966,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9022,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8967,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9023,
+		"importe_abonado" : 149000.00,
+		"importe_cobrado" : 149000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8968,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9024,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8969,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9025,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8970,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9026,
+		"importe_abonado" : 121000.00,
+		"importe_cobrado" : 121000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8971,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9027,
+		"importe_abonado" : 114000.00,
+		"importe_cobrado" : 114000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8972,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9028,
+		"importe_abonado" : 90000.00,
+		"importe_cobrado" : 90000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8973,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9029,
+		"importe_abonado" : 5500.00,
+		"importe_cobrado" : 5500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8974,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9030,
+		"importe_abonado" : 367400.00,
+		"importe_cobrado" : 191000.00,
+		"saldo" : -176400.00,
+		"cod_cobranza" : 8975,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9048,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8993,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9049,
+		"importe_abonado" : 66700.00,
+		"importe_cobrado" : 66700.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8994,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9050,
+		"importe_abonado" : 128000.00,
+		"importe_cobrado" : 128000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8995,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9051,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8996,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9052,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8997,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9053,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8998,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9054,
+		"importe_abonado" : 70000.00,
+		"importe_cobrado" : 70000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 8999,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9055,
+		"importe_abonado" : 200500.00,
+		"importe_cobrado" : 200500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9000,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9058,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9003,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9059,
+		"importe_abonado" : 86000.00,
+		"importe_cobrado" : 86000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9004,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9060,
+		"importe_abonado" : 107500.00,
+		"importe_cobrado" : 107500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9005,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9061,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9006,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9062,
+		"importe_abonado" : 160000.00,
+		"importe_cobrado" : 160000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9007,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9063,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9008,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9064,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9009,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9065,
+		"importe_abonado" : 228000.00,
+		"importe_cobrado" : 228000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9010,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9066,
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9011,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9067,
+		"importe_abonado" : 129000.00,
+		"importe_cobrado" : 129000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9012,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9068,
+		"importe_abonado" : 118000.00,
+		"importe_cobrado" : 118000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9013,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9069,
+		"importe_abonado" : 98000.00,
+		"importe_cobrado" : 98000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9014,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9070,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9015,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9071,
+		"importe_abonado" : 135000.00,
+		"importe_cobrado" : 135000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9016,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9072,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9017,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9074,
+		"importe_abonado" : 57000.00,
+		"importe_cobrado" : 57000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9019,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9075,
+		"importe_abonado" : 88000.00,
+		"importe_cobrado" : 88000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9020,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9076,
+		"importe_abonado" : 179000.00,
+		"importe_cobrado" : 179000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9021,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9077,
+		"importe_abonado" : 91000.00,
+		"importe_cobrado" : 91000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9022,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9078,
+		"importe_abonado" : 100000.00,
+		"importe_cobrado" : 100000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9023,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9079,
+		"importe_abonado" : 96000.00,
+		"importe_cobrado" : 96000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9024,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9080,
+		"importe_abonado" : 179000.00,
+		"importe_cobrado" : 179000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9025,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9081,
+		"importe_abonado" : 206000.00,
+		"importe_cobrado" : 206000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9026,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9082,
+		"importe_abonado" : 126000.00,
+		"importe_cobrado" : 126000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9027,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9083,
+		"importe_abonado" : 64000.00,
+		"importe_cobrado" : 64000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9028,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9084,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9029,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9085,
+		"importe_abonado" : 232500.00,
+		"importe_cobrado" : 232500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9030,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9086,
+		"importe_abonado" : 110000.00,
+		"importe_cobrado" : 110000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9031,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9087,
+		"importe_abonado" : 187000.00,
+		"importe_cobrado" : 187000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9032,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9088,
+		"importe_abonado" : 96000.00,
+		"importe_cobrado" : 96000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9033,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9089,
+		"importe_abonado" : 238500.00,
+		"importe_cobrado" : 238500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9034,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9090,
+		"importe_abonado" : 113000.00,
+		"importe_cobrado" : 113000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9035,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9091,
+		"importe_abonado" : 60500.00,
+		"importe_cobrado" : 60500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9036,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9092,
+		"importe_abonado" : 89000.00,
+		"importe_cobrado" : 89000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9037,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9093,
+		"importe_abonado" : 208000.00,
+		"importe_cobrado" : 208000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9038,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9094,
+		"importe_abonado" : 152500.00,
+		"importe_cobrado" : 152500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9039,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9095,
+		"importe_abonado" : 79000.00,
+		"importe_cobrado" : 79000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9040,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9096,
+		"importe_abonado" : 190000.00,
+		"importe_cobrado" : 190000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9041,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9097,
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9042,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9098,
+		"importe_abonado" : 50000.00,
+		"importe_cobrado" : 50000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9043,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9099,
+		"importe_abonado" : 61500.00,
+		"importe_cobrado" : 61500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9044,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9100,
+		"importe_abonado" : 147000.00,
+		"importe_cobrado" : 147000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9045,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9101,
+		"importe_abonado" : 53000.00,
+		"importe_cobrado" : 53000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9046,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9102,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9047,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9103,
+		"importe_abonado" : 153000.00,
+		"importe_cobrado" : 153000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9048,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9104,
+		"importe_abonado" : 240500.00,
+		"importe_cobrado" : 240500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9049,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9105,
+		"importe_abonado" : 63000.00,
+		"importe_cobrado" : 63000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9050,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9106,
+		"importe_abonado" : 91000.00,
+		"importe_cobrado" : 91000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9051,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9107,
+		"importe_abonado" : 156500.00,
+		"importe_cobrado" : 156500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9052,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9108,
+		"importe_abonado" : 229500.00,
+		"importe_cobrado" : 229500.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9053,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9109,
+		"importe_abonado" : 139000.00,
+		"importe_cobrado" : 139000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9054,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9110,
+		"importe_abonado" : 194000.00,
+		"importe_cobrado" : 194000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9055,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9111,
+		"importe_abonado" : 84000.00,
+		"importe_cobrado" : 84000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9056,
+		"cod_medio_pago" : 1
+	},
+	{
+		"cod_cobranza_detalle" : 9112,
+		"importe_abonado" : 35000.00,
+		"importe_cobrado" : 35000.00,
+		"saldo" : 0.00,
+		"cod_cobranza" : 9057,
+		"cod_medio_pago" : 1
 	}
 ]}
