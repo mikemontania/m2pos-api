@@ -543,7 +543,7 @@ const listarDocumentos = async (req, res) => {
       pageSize = 10,
       fechaDesde,
       fechaHasta,
-      clienteId,
+      clienteSucursalId,
       sucursalId,
       listaPrecioId,
       condicionPagoId,
