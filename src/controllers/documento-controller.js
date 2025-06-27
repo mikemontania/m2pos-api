@@ -576,7 +576,7 @@ const listarDocumentos = async (req, res) => {
     }
 
     if (clienteId > 0) {
-      condiciones.clienteId = clienteId;
+      condiciones.clienteSucursalId = clienteId;
     }
 
     if (sucursalId > 0) {
