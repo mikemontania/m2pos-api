@@ -1,5 +1,5 @@
 {
-"cobranzas_det": [
+"cobranzasDetalleJson": [
 	{
 		"cod_cobranza_detalle" : 6822,
 		"importe_abonado" : 130000.00,

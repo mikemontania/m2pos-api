@@ -16,13 +16,11 @@ const {empresaJson  } = require("./src/json/01empresa.json");
 const {bancosJson  } = require("./src/json/02bancos.json");
 const { mediosPagoJson  } = require("./src/json/03mediosPago.json");
 const { unidadesJson  } = require("./src/json/04unidades.json");
-const { ventasJson  } = require("./src/json/DocumentosMigracion.json");
-const { detallesJson  } = require("./src/json/DocumentosDetalleMigracion.json");
+const fs = require("fs");
+ 
 const { sucursaleBiggieJSON  } = require("./src/json/SucursalesBiggie.json");
 const Certificado = require("./src/models/certificado.model");
 
-const { cobranzasJson  } = require("./src/json/cobranzasMigracion.json");
-const { cobranzasDetalleJson  } = require("./src/json/cobranzasDetalleMigracion.json");
 const {
   encryptPassphrase,
   decryptPassphrase
@@ -3072,204 +3070,251 @@ let variantesX = {};
 
           }
         }
- 
 
-         for (const venta of ventasJson) {
-          const {
-            cod_venta,
-            fecha_venta,
-            fecha_vencimiento,
-            porc_descuento,
-            importe_descuento,
-            importe_neto,
-            importe_total,
-            importe_iva5,
-            importe_iva10,
-            importe_iva_exenta,
-            importe_sub_total,
-            inicio_timbrado,
-            fin_timbrado,
-            timbrado,
-            nro_comprobante,
-            cod_cliente,
-            cod_cobranza,
-            total_kg,
-            cod_lista_precio,
-            cod_forma_venta
-          } = venta;
-    
+
+// Cargar manualmente cada archivo JSON
+const ventasRaw = fs.readFileSync("./src/json/docs_cab.json", "utf8");
+const detallesRaw = fs.readFileSync("./src/json/docs_det.json", "utf8");
+const cobranzasRaw = fs.readFileSync("./src/json/cobranzas_cab.json", "utf8");
+const cobranzasDetalleRaw = fs.readFileSync("./src/json/cobranzas_det.json", "utf8");
+
+// Parsear los contenidos
+const { ventasJson } = JSON.parse(ventasRaw);
+const { detallesJson } = JSON.parse(detallesRaw);
+const { cobranzasJson } = JSON.parse(cobranzasRaw);
+const { cobranzasDetalleJson } = JSON.parse(cobranzasDetalleRaw);
+const erroresDetalle = []; // ⬅️ Aquí se guardarán todos los errores
+
+ // Confirmar que se cargaron completamente
+console.log("🧾 Total ventas cargadas:", ventasJson.length);               // Esperado: 2030
+console.log("🧾 Total detalles cargados:", detallesJson.length);
+console.log("🧾 Total cobranzas cargadas:", cobranzasJson.length);
+console.log("🧾 Total cobranzas detalle cargados:", cobranzasDetalleJson.length);
+
+// Ordenar los datos por seguridad
+ventasJson.sort((a, b) => a.cod_venta - b.cod_venta);
+detallesJson.sort((a, b) => a.cod_venta - b.cod_venta);
+cobranzasJson.sort((a, b) => a.cod_cobranza - b.cod_cobranza);
+cobranzasDetalleJson.sort((a, b) => a.cod_cobranza - b.cod_cobranza);
+ const total_registros =ventasJson.length;
+const chunkSize = 200;
+let procesadas = 0;
+let errores = 0;
+let saltadas = 0;
+
+while (ventasJson.length > 0) {
+  const chunk = ventasJson.splice(0, chunkSize); // saca el primer chunk directamente
+
+  for (const venta of chunk) {
+    try {
+      const {
+        cod_venta,
+        fecha_venta,
+        cod_cobranza,
+        cod_cliente,
+        cod_lista_precio,
+        cod_forma_venta,
+        nro_comprobante,
+        inicio_timbrado,
+        fin_timbrado,
+        timbrado,
+        porc_descuento,
+        importe_descuento,
+        importe_neto,
+        importe_total,
+        importe_iva5,
+        importe_iva10,
+        importe_iva_exenta,
+        importe_sub_total,
+        total_kg
+      } = venta;
+
+     /*  if (fecha_venta < '2025-03-01') {
+        console.warn(`⏩ Venta saltada por fecha: ${cod_venta}`);
+        saltadas++;
+        continue;
+      } */
+
+      const detalles = detallesJson.filter(d => d.cod_venta === cod_venta);
+      if (!detalles || detalles.length === 0) {
+        console.warn(`⚠️ No se encontraron detalles para la venta ${cod_venta}`);
+        saltadas++;
+        continue;
+      }
+
+      // COBRANZA
+      let cobranzaId = null;
+      if (cod_cobranza) {
+        const cobranza = cobranzasJson.find(c => c.cod_cobranza === cod_cobranza);
+        const cDetalle = cobranzasDetalleJson.filter(d => d.cod_cobranza === cod_cobranza);
+
+        const cobranzaNew = await Cobranza.create({
+          id: null,
+          empresaId: empresas[6].id,
+          sucursalId: sucursal9.id,
+          usuarioCreacionId: userAdmin.id,
+          fechaCobranza: cobranza.fecha_cobranza,
+          importeAbonado: cobranza.importe_abonado,
+          importeCobrado: cobranza.importe_cobrado,
+          saldo: cobranza.saldo,
+          tipo: "FT"
+        });
+
+        await CobranzaDetalle.bulkCreate(
+          cDetalle.map(d => ({
+            cobranzaId: cobranzaNew.id,
+            id: null,
+            importeAbonado: d.importe_abonado,
+            importeCobrado: d.importe_cobrado,
+            saldo: d.saldo,
+            medioPagoId: 1
+          }))
+        );
+
+        cobranzaId = cobranzaNew.id;
+      }
+
+      const codigoSeguridad = generarCodigoSeguridad();
+      const tipoEmision = tiposEmisiones.find(t => t.codigo == 1);
+      const tipoComprobante = tipoContribuyente.find(t => t.id == 2);
+
+      const cdc = generarCDC(
+        numeracion1.itide,
+        empresas[6].ruc,
+        nro_comprobante,
+        tipoComprobante.id,
+        fecha_venta,
+        tipoEmision.codigo,
+        codigoSeguridad
+      );
+
+      let listaPrecioId = 0;
+      switch (cod_lista_precio) {
+        case 14: listaPrecioId = listaPrecio14.id; break;
+        case 15: listaPrecioId = listaPrecio15.id; break;
+        case 16: listaPrecioId = listaPrecio16.id; break;
+        case 17: listaPrecioId = listaPrecio17.id; break;
+        case 18: listaPrecioId = listaPrecio18.id; break;
+        case 20: listaPrecioId = listaPrecio20.id; break;
+        case 21: listaPrecioId = listaPrecio21.id; break;
+        default: break;
+      }
+
+      let condicionPagoId = 0;
+      switch (cod_forma_venta) {
+        case 20: condicionPagoId = condicionPago20.id; break;
+        case 21: condicionPagoId = condicionPago21.id; break;
+        case 24: condicionPagoId = condicionPago24.id; break;
+        case 25: condicionPagoId = condicionPago25.id; break;
+        case 101: condicionPagoId = condicionPago101.id; break;
+        case 102: condicionPagoId = condicionPago102.id; break;
+        default: break;
+      }
+
+      if (!sucursalClientes[cod_cliente]) {
+        throw new Error(`Sucursal cliente no encontrada para cod_cliente ${cod_cliente}`);
+      }
+
+      const documento = await Documento.create({
+        codigoSeguridad,
+        cdc,
+        empresaId: empresas[6].id,
+        sucursalId: sucursal9.id,
+        listaPrecioId,
+        condicionPagoId,
+        clienteId: sucursalClientes[cod_cliente].clienteId,
+        clienteSucursalId: sucursalClientes[cod_cliente].id,
+        anulado: false,
+        enviado: false,
+        usuarioCreacionId: userAdmin.id,
+        fecha: fecha_venta,
+        fechaInicio: inicio_timbrado,
+        fechaFin: fin_timbrado,
+        timbrado,
+        modoEntrega: "CONTRAENTREGA",
+        nroComprobante: nro_comprobante,
+        cobranzaId,
+        itide: numeracion1.itide,
+        porcDescuento: porc_descuento,
+        importeIva5: importe_iva5,
+        importeIva10: importe_iva10,
+        importeIvaExenta: importe_iva_exenta,
+        importeDescuento: importe_descuento,
+        importeNeto: importe_neto,
+        importeSubtotal: importe_sub_total,
+        importeTotal: importe_total,
+        valorNeto: importe_total,
+        tipoDoc: "FT",
+        calculable: true,
+        importeDevuelto: 0,
+        estado: "Pendiente",
+        totalKg: total_kg
+      });
+
+      await DocumentoDetalle.bulkCreate(
+        detalles.map(x => ({
+          documentoId: documento.id,
+          cantidad: x.cantidad,
+          importeDescuento: x.importe_descuento,
+          importeNeto: x.importe_neto,
+          importeSubtotal: x.sub_total,
+          importeTotal: x.importe_total,
+          importePrecio: x.importe_precio,
+          importeIva5: x.importe_iva5,
+          importeIva10: x.importe_iva10,
+          importeIvaExenta: x.importe_iva_exenta,
+          porcIva: x.porc_iva,
+          porcDescuento: 0,
+          totalKg: x.total_kg,
+          anticipo: 0,
+          ivaTipo: 1,
+          ivaBase: 100,
+          tipoDescuento: "porcentaje",
+          varianteId: variantes[x.cod_producto]?.id
+        }))
+      );
+
+      procesadas++;
+      console.log(`✅ Venta procesada: ${cod_venta} (${procesadas} procesadas)`);
+
+      if (documento.condicionPagoId !== condicionPago20.id) {
+        await crearCreditoDesdeDocumento(documento);
+      }
+
+    } catch (error) {
+  errores++;
+  console.error(`❌ Error en venta ${venta.cod_venta} (${procesadas + errores + saltadas} procesadas hasta ahora)`);
+  console.error(error);
+
+  erroresDetalle.push({
+    cod_venta: venta.cod_venta,
+    mensaje: error.message,
+    stack: error.stack
+  });
+}
+  }
+
+  await new Promise(r => setTimeout(r, 100)); // pausa entre chunks
+}
+console.log(`📦 Total registros : ${total_registros}`);
+console.log(`🟢 FINALIZADO`);
+console.log(`✅ Ventas procesadas: ${procesadas}`);
+console.log(`⏩ Ventas saltadas: ${saltadas}`);
+console.log(`❌ Ventas con error: ${errores}`);
+console.log(`📦 Total registros intentados: ${procesadas + errores + saltadas}`);
+console.log("✅ ventasJson cargadas:", ventasJson.length); // ¿da 2030?
+if (erroresDetalle.length > 0) {
+  console.log(`📋 Errores detectados (${erroresDetalle.length}):`);
+  erroresDetalle.forEach((e, i) => {
+    console.log(`🔴 ${i + 1}) cod_venta: ${e.cod_venta}`);
+    console.log(`   📝 Mensaje: ${e.mensaje}`);
+    console.log(`   📄 Stack:\n${e.stack}\n`);
+  });
  
-          const detalles = detallesJson.filter(d => d.cod_venta === cod_venta);
-          const detallesConSubTotalNull = detalles.filter(x => x.sub_total === null || x.sub_total === undefined);
-          let cobranzaId = null;
-          if (cod_cobranza) {
-            const cobranza = cobranzasJson.find(c => c.cod_cobranza === cod_cobranza);
-            const cDetalle = cobranzasDetalleJson.filter(
-              d => d.cod_cobranza === cod_cobranza
-            );
-            const cobranzaNew = await Cobranza.create(
-              {
-                id: null,
-                empresaId: empresas[6].id,
-                sucursalId: sucursal9.id,
-                usuarioCreacionId: userAdmin.id,
-                fechaCobranza: cobranza.fecha_cobranza,
-                importeAbonado: cobranza.importe_abonado,
-                importeCobrado: cobranza.importe_cobrado,
-                saldo: cobranza.saldo,
-                tipo: "FT"
-              } 
-            );
-    
-            await CobranzaDetalle.bulkCreate(
-              cDetalle.map(d => ({
-                cobranzaId: cobranzaNew.id,
-                id: null,
-                importeAbonado: d.importe_abonado,
-                importeCobrado: d.importe_cobrado,
-                saldo: d.saldo,
-                medioPagoId: 1
-              })) 
-            );
-            cobranzaId = cobranzaNew.id;
-          }
-    
-          const codigoSeguridad = generarCodigoSeguridad();
-          console.log(empresas[6]); 
-          const tipoEmision = tiposEmisiones.find(t => t.codigo == 1);
-         const tipoComprobante =tipoContribuyente.find(t=>t.id == 2)
-          const cdc = generarCDC(
-            numeracion1.itide,
-            empresas[6].ruc,
-            nro_comprobante,
-            tipoComprobante.id,
-            fecha_venta,
-            tipoEmision.codigo,
-            codigoSeguridad
-          );
-    
-          let listaPrecioId = 0;
-          switch (cod_lista_precio) {
-            case 14:
-              listaPrecioId = listaPrecio14.id;
-              break;
-            case 15:
-              listaPrecioId = listaPrecio15.id;
-              break;
-            case 16:
-              listaPrecioId = listaPrecio16.id;
-              break;
-            case 17:
-              listaPrecioId = listaPrecio17.id;
-              break;
-            case 18:
-              listaPrecioId = listaPrecio18.id;
-              break; 
-              case 20:
-                listaPrecioId = listaPrecio20.id;
-                break;
-              default:
-              break;
-          }
-    
-          let condicionPagoId = 0;
-          switch (cod_forma_venta) {
-            case 20:
-              condicionPagoId = condicionPago20.id;
-              break;
-            case 21:
-              condicionPagoId = condicionPago21.id;
-              break;
-            case 24:
-              condicionPagoId = condicionPago24.id;
-              break;
-              case 25:
-                condicionPagoId = condicionPago25.id;
-                break;
-              case 101:
-                condicionPagoId = condicionPago101.id;
-                break;
-              case 102:
-                condicionPagoId = condicionPago102.id;
-                break;
-            default:
-              break;
-          }
-          console.log(sucursalClientes[cod_cliente])
-     console.log(sucursalClientes[cod_cliente].id)
-          const documento = await Documento.create(
-            {
-              codigoSeguridad,
-              cdc,
-              empresaId: empresas[6].id,
-              sucursalId: sucursal9.id,
-              listaPrecioId,
-              condicionPagoId,
-              clienteId:sucursalClientes[cod_cliente].clienteId,
-              clienteSucursalId:sucursalClientes[cod_cliente].id,
-              anulado: false,
-              enviado: false,
-              usuarioCreacionId: userAdmin.id,
-              fecha: fecha_venta,
-              fechaInicio: inicio_timbrado,
-              fechaFin: fin_timbrado,
-              timbrado: timbrado,
-              modoEntrega: "CONTRAENTREGA",
-              nroComprobante: nro_comprobante,
-              cobranzaId: cobranzaId,
-              itide: numeracion1.itide,
-              porcDescuento: porc_descuento,
-              importeIva5: importe_iva5,
-              importeIva10: importe_iva10,
-              importeIvaExenta: importe_iva_exenta,
-              importeDescuento: importe_descuento,
-              importeNeto: importe_neto,
-              importeSubtotal: importe_sub_total,
-              importeTotal: importe_total,
-              valorNeto: importe_total,
-              importeTotal:importe_total,
-              tipoDoc: "FT",
-              calculable: true,
-              importeDevuelto: 0,
-              estado: "Pendiente",
-              totalKg: total_kg
-            } 
-          );
-    
-          await DocumentoDetalle.bulkCreate(
-            detalles.map(x => {
-              console.log(x);
-              return {
-                documentoId: documento.id, 
-                cantidad: x.cantidad,
-                importeDescuento: x.importe_descuento,
-                importeNeto: x.importe_neto,
-                importeSubtotal: x.sub_total,
-                importeTotal: x.importe_total,
-                importePrecio: x.importe_precio,
-                importeIva5: x.importe_iva5,
-                importeIva10: x.importe_iva10,
-                importeIvaExenta: x.importe_iva_exenta,
-                porcIva: x.porc_iva,
-                porcDescuento: 0,
-                totalKg: x.total_kg,
-                anticipo: 0,
-                ivaTipo: 1,
-                ivaBase: 100,
-                tipoDescuento: "porcentaje",
-                varianteId: variantes[x.cod_producto]?.id
-              };
-            })
-          );
-          console.log("Registros creados exitosamente!");
-    
-          if (documento.condicionPagoId !=   condicionPago20.id) {
-            await crearCreditoDesdeDocumento(documento);
-          }
-          
-        } 
+}
+
       
- await migrateCavallaroDB(1,6,empresas[9].id)
+ 
    
 };
 
