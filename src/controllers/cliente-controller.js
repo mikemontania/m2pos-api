@@ -4,6 +4,9 @@ const { sequelize } = require("../../dbconfig");
 const CondicionPago = require("../models/condicionPago.model");
 const ListaPrecio = require("../models/listaPrecio.model");
 const ClienteSucursal = require("../models/ClienteSucursal.model");
+const Departamento = require("../models/departamento.model");
+const Ciudad = require("../models/ciudad.model");
+const Barrio = require("../models/barrio.model");
 
 // Método para buscar por ID
 const getById = async (req, res) => {
@@ -26,7 +29,22 @@ const getById = async (req, res) => {
             model: ListaPrecio,
             as: "listaPrecio",
             attributes: ["descripcion"]
-          }
+          },
+          {
+              model: Departamento,
+              as: "departamento",
+              attributes: ["codigo", "descripcion"]
+            },
+            {
+              model: Ciudad,
+              as: "ciudad",
+              attributes: ["codigo", "descripcion"]
+            },
+            {
+              model: Barrio,
+              as: "barrio",
+              attributes: ["codigo", "descripcion"]
+            }
         ],
       });
 
@@ -303,7 +321,7 @@ const create = async (req, res) => {
       codigoPais,
       tipoContribuyente,
       tipoDocIdentidad, 
-      
+      obs
     } = req.body;
 
     // Validar unicidad de propietario
@@ -376,6 +394,7 @@ const direccionUpper = null;
       codigoPais,
       usuarioCreacionId: usuarioId,
       usuarioModificacionId: usuarioId,
+      obs
     }, { transaction: t });
 
     await t.commit();
@@ -513,7 +532,10 @@ const crearClienteConSucursal = async (req, res) => {
       latitud ,
       longitud ,
       listaPrecioId ,
-      condicionPagoId 
+      condicionPagoId ,
+        codDepartamento ,
+          codCiudad ,
+          codBarrio ,
     } = req.body;
 
     // Crear cliente
@@ -533,6 +555,7 @@ const crearClienteConSucursal = async (req, res) => {
       tipoDocIdentidad,
       usuarioCreacionId: usuarioId,
       usuarioModificacionId: usuarioId,
+      
     }, { transaction: t });
     // Crear sucursal principal asociada
     const nuevaSucursal = await ClienteSucursal.create({
@@ -548,6 +571,10 @@ const crearClienteConSucursal = async (req, res) => {
   condicionPagoId , 
       usuarioCreacionId: usuarioId,
       usuarioModificacionId: usuarioId,
+        codDepartamento ,
+          codCiudad ,
+          codBarrio,
+          obs
     }, { transaction: t });
 
     await t.commit();
@@ -584,6 +611,10 @@ const createSucursal = async (req, res) => {
       listaPrecioId,
       condicionPagoId,
       codigoPais,
+        codDepartamento ,
+          codCiudad ,
+          codBarrio,
+          obs
     } = req.body;
 
     // Validar que no exista otra sucursal principal
@@ -613,12 +644,31 @@ const createSucursal = async (req, res) => {
       codigoPais,
       usuarioCreacionId: usuarioId,
       usuarioModificacionId: usuarioId,
+        codDepartamento ,
+          codCiudad ,
+          codBarrio,
+          obs
     }, { transaction: t });
     await t.commit();
     const sucursalCreada = await ClienteSucursal.findByPk(sucursal.id, {
       include: [
         { model: ListaPrecio, as: 'listaPrecio' },
-        { model: CondicionPago, as: 'condicionPago' }
+        { model: CondicionPago, as: 'condicionPago' },
+          {
+              model: Departamento,
+              as: "departamento",
+              attributes: ["codigo", "descripcion"]
+            },
+            {
+              model: Ciudad,
+              as: "ciudad",
+              attributes: ["codigo", "descripcion"]
+            },
+            {
+              model: Barrio,
+              as: "barrio",
+              attributes: ["codigo", "descripcion"]
+            }
       ]
     }); 
     res.status(201).json(sucursalCreada);
@@ -646,6 +696,10 @@ const updateSucursal = async (req, res) => {
       activo = true,
       listaPrecioId,
       condicionPagoId, 
+        codDepartamento ,
+          codCiudad ,
+          codBarrio,
+          obs
     } = req.body;
 
     const sucursal = await ClienteSucursal.findByPk(id);
@@ -680,6 +734,10 @@ const updateSucursal = async (req, res) => {
       listaPrecioId,
       condicionPagoId, 
       usuarioModificacionId: usuarioId,
+        codDepartamento ,
+          codCiudad ,
+          codBarrio,
+          obs
     }, { transaction: t });
 
     await t.commit();

@@ -6,6 +6,9 @@ const Usuario = require("./usuario.model");
 const moment = require("moment");
 const CondicionPago = require("./condicionPago.model");
 const Cliente = require("./cliente.model");
+const Departamento = require("./departamento.model");
+const Ciudad = require("./ciudad.model");
+const Barrio = require("./barrio.model");
 
 const ClienteSucursal = sequelize.define("ClienteSucursal", {
   id: {
@@ -98,7 +101,28 @@ const ClienteSucursal = sequelize.define("ClienteSucursal", {
         "YYYY-MM-DD HH:mm:ss"
       );
     }
+  }, 
+obs: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+    set(value) {
+      if (value) { 
+        this.setDataValue('obs', value.toUpperCase());
+      }
+    }
   },
+  codDepartamento: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    codCiudad: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    codBarrio: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
 }, {
   tableName: "cliente_sucursales",
   timestamps: false,
@@ -120,6 +144,23 @@ ClienteSucursal.belongsTo(Cliente, {
   foreignKey: 'clienteId',
   targetKey: 'id',
   as:'cliente'
+});
+
+
+ClienteSucursal.belongsTo(Departamento, {
+  foreignKey: "codDepartamento",
+  targetKey: "codigo",
+  as:'departamento'
+});
+ClienteSucursal.belongsTo(Ciudad, {
+  foreignKey: "codCiudad",
+  targetKey: "codigo",
+  as:'ciudad'
+});
+ClienteSucursal.belongsTo(Barrio, {
+  foreignKey: "codBarrio",
+  targetKey: "codigo",
+  as:'barrio'
 });
 ClienteSucursal.belongsTo(Empresa, {targetKey: 'id', foreignKey: "empresaId" });
 ClienteSucursal.belongsTo(ListaPrecio, {targetKey: 'id', foreignKey: "listaPrecioId", as: "listaPrecio" });

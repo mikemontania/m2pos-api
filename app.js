@@ -59,6 +59,7 @@ app.use("/M2POS/tablas-sifen", require("./src/routes/tablaSifen-routes"));
 app.use("/M2POS/unidades", require("./src/routes/unidad-routes"));
 app.use("/M2POS/uploads", require("./src/routes/uploads-routes"));
 app.use("/M2POS/reportes", require("./src/routes/reporte-routes"));
+app.use("/M2POS/pedidos", require("./src/routes/pedido-routes"));
 app.listen(process.env.PORT, () =>
   console.log("Servidor corriendo en puerto " + process.env.PORT)
 );
