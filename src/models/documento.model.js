@@ -10,7 +10,7 @@ const CondicionPago = require('./condicionPago.model');
 const Cobranza = require('./cobranza.model');
 const TablaSifen = require('./tablaSifen.model');
 const ClienteSucursal = require('./ClienteSucursal.model');
-
+const Pedido = require('./pedido.model');
 const Documento = sequelize.define('Documento', {
   id: {
     type: DataTypes.BIGINT,
@@ -47,6 +47,10 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.INTEGER,
     allowNull: true,
   }, 
+   pedidoId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
   anulado: {
     type: DataTypes.BOOLEAN,
     allowNull: false
@@ -261,6 +265,11 @@ Documento.belongsTo(Cobranza, {
   foreignKey: 'cobranzaId',
   targetKey: 'id',
   as: 'cobranza' // Alias para la asociación de usuario de creación
+}); 
+Documento.belongsTo(Pedido, {
+  foreignKey: 'pedidoId',
+  targetKey: 'id',
+  as: 'pedido' // Alias para la asociación de usuario de creación
 }); 
 Documento.belongsTo(Usuario, {
   foreignKey: 'usuarioAnulacionId',

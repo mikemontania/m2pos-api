@@ -30,6 +30,7 @@ const TablaSifen = require("../models/tablaSifen.model");
 const MedioPago = require("../models/medioPago.model");
 const { crearCreditoDesdeDocumento, ajustarCreditoPorNC, anularCredito } = require("./credito-controller");
 const ClienteSucursal = require("../models/ClienteSucursal.model");
+const Pedido = require("../models/pedido.model");
 const getById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -130,6 +131,7 @@ const createDocumento = async (req, res) => {
       clienteSucursalId,
       detalles,
       cobranza,
+      pedidoId,
       totalKg
     } = req.body;
     let cobranzaId = null;
@@ -224,6 +226,7 @@ const createDocumento = async (req, res) => {
         modoEntrega: "CONTRAENTREGA",
         nroComprobante,
         cobranzaId: cobranzaId,
+        pedidoId,
         itide: numeracion.itide,
         porcDescuento,
         importeIva5,
@@ -256,6 +259,16 @@ const createDocumento = async (req, res) => {
     
     // Actualizar numeración
     await numeracion.save({ transaction: t });
+
+    if (pedidoId) {
+        const id =pedidoId 
+        let pedido = await Pedido.findByPk(id, { transaction: t });
+        if (!pedido) {
+  throw new Error("No se encontró el pedido con el ID proporcionado");
+}
+pedido.estado = 'Facturado';
+await pedido.save({ transaction: t });
+    }
 
     // Commit de la transacción si todo fue exitoso
     await t.commit();

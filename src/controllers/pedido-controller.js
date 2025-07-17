@@ -40,7 +40,33 @@ const getById = async (req, res) => {
         },
         {
           model: ClienteSucursal,
-          as: "clienteSucursal" 
+          as: "clienteSucursal" ,
+          include: [
+            {
+              model: CondicionPago,
+              as: "condicionPago", 
+            },
+              {
+          model: ListaPrecio,
+          as: "listaPrecio",
+          attributes: ["id", "descripcion"]
+        },
+            {
+              model: Departamento,
+              as: "departamento",
+              attributes: ["codigo", "descripcion"]
+            },
+            {
+              model: Ciudad,
+              as: "ciudad",
+              attributes: ["codigo", "descripcion"]
+            },
+            {
+              model: Barrio,
+              as: "barrio",
+              attributes: ["codigo", "descripcion"]
+            }
+          ]
         }, 
         { model: CondicionPago, as: "condicionPago", attributes: ["descripcion"] },
         {
@@ -51,7 +77,7 @@ const getById = async (req, res) => {
       ]
     });
     if (!pedido) {
-      return res.status(404).json({ error: "Documento not found" });
+      return res.status(404).json({ error: "Pedido not found" });
     }
     const detallesPedido = await PedidoDetalle.findAll({
       where: { pedidoId: id },
@@ -84,17 +110,42 @@ const getById = async (req, res) => {
         }
       ]
     });
-   
+   const decimalFields = [
+  'porcDescuento', 'importeIva5', 'importeIva10', 'importeIvaExenta',
+  'importeDescuento', 'importeNeto', 'importeSubtotal', 'importeTotal',
+  'valorNeto', 'totalKg', 'cantidad', 'importePrecio', 'importeNeto',
+  'importeSubtotal', 'importeTotal', 'anticipo', 'porcIva'
+];
     res.status(200).json({
-      detalles: detallesPedido,
-      documento: pedido
+     documento: normalizeDecimalFields(pedido.toJSON(), decimalFields),
+  detalles: normalizeDecimalFields(detallesPedido.map(d => d.toJSON()), decimalFields)
     });
   } catch (error) {
     console.error("Error in getPdf:", error);
     res.status(500).json({ error: error?.original?.detail ||   "Internal Server Error!!!" });
   }
 };
+function normalizeDecimalFields(obj, decimalFields = []) {
+  if (Array.isArray(obj)) {
+    return obj.map(item => normalizeDecimalFields(item, decimalFields));
+  }
 
+  const newObj = { ...obj };
+
+  for (const field of decimalFields) {
+    if (typeof newObj[field] === 'string' && !isNaN(newObj[field])) {
+      newObj[field] = parseFloat(newObj[field]);
+    }
+  }
+
+  for (const key in newObj) {
+    if (typeof newObj[key] === 'object' && newObj[key] !== null) {
+      newObj[key] = normalizeDecimalFields(newObj[key], decimalFields);
+    }
+  }
+
+  return newObj;
+}
 // Crear una documento con sus detalles
 const create = async (req, res) => {
    const { id, empresaId } = req.usuario;
