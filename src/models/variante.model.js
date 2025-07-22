@@ -49,6 +49,11 @@ const Variante = sequelize.define('Variante', {
     type: DataTypes.INTEGER,
     allowNull: true,
   }, 
+  precioCosto: {
+  type: DataTypes.DECIMAL(19, 2),
+  allowNull: false,
+  defaultValue: 0
+},
   activo: {
     type: DataTypes.BOOLEAN,
   defaultValue:true,
