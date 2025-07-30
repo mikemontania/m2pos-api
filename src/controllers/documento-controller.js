@@ -557,6 +557,7 @@ const listarDocumentos = async (req, res) => {
       fechaDesde,
       fechaHasta,
       clienteSucursalId,
+      clienteId,
       sucursalId,
       listaPrecioId,
       condicionPagoId,
@@ -591,6 +592,10 @@ const listarDocumentos = async (req, res) => {
    if (Number(clienteSucursalId) > 0) {
   condiciones.clienteSucursalId = Number(clienteSucursalId);
 }
+
+   if (Number(clienteId) > 0) {
+  condiciones.clienteId = Number(clienteId);
+}
     if (sucursalId > 0) {
       condiciones.sucursalId = sucursalId;
     }
@@ -616,7 +621,7 @@ const listarDocumentos = async (req, res) => {
         {
           model: Cliente,
           as: "cliente",
-          attributes: ["nroDocumento", "razonSocial"]
+          attributes: ["id","nroDocumento", "razonSocial"]
         },
         {
           model: ClienteSucursal,
@@ -643,7 +648,7 @@ const listarDocumentos = async (req, res) => {
           attributes: ["descripcion", "direccion", "telefono", "cel"]
         }
       ],
-      order: [["id", "ASC"]], // Ordena por ID en orden descendente
+      order: [["id", "DESC"]], // Ordena por ID en orden descendente
       offset,
       limit: pageSize
     });

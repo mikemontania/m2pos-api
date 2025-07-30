@@ -354,6 +354,7 @@ const listar  = async (req, res) => {
       fechaHasta,
       clienteSucursalId,
       sucursalId,
+      clienteId,
       listaPrecioId,
       condicionPagoId ,
       canal
@@ -371,8 +372,13 @@ const listar  = async (req, res) => {
       };
     }
 
+
    if (Number(clienteSucursalId) > 0) {
   condiciones.clienteSucursalId = Number(clienteSucursalId);
+}
+
+   if (Number(clienteId) > 0) {
+  condiciones.clienteId = Number(clienteId);
 }
     if (sucursalId > 0) {
       condiciones.sucursalId = sucursalId;
@@ -421,7 +427,7 @@ const listar  = async (req, res) => {
           attributes: ["descripcion", "direccion", "telefono", "cel"]
         }
       ],
-      order: [["id", "ASC"]], // Ordena por ID en orden descendente
+      order: [["id", "DESC"]], // Ordena por ID en orden descendente
       offset,
       limit: pageSize
     });
@@ -445,6 +451,7 @@ const listar  = async (req, res) => {
       fechaDesde,
       fechaHasta,
       clienteSucursalId,
+      clienteId,
       sucursalId,
       listaPrecioId,
       condicionPagoId,
@@ -464,9 +471,14 @@ const listar  = async (req, res) => {
       };
     }
 
-    if (Number(clienteSucursalId) > 0) {
-      condiciones.clienteSucursalId = Number(clienteSucursalId);
-    }
+    
+   if (Number(clienteSucursalId) > 0) {
+  condiciones.clienteSucursalId = Number(clienteSucursalId);
+}
+
+   if (Number(clienteId) > 0) {
+  condiciones.clienteId = Number(clienteId);
+}
     if (sucursalId > 0) {
       condiciones.sucursalId = sucursalId;
     }

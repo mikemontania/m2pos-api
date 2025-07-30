@@ -11,6 +11,7 @@ router.get('/propietario',validarJWT, clienteController.findPropietario);
 
 // Ruta para buscar clientes paginados
 router.get('/paginados/:page/:pageSize/:searchTerm?', validarJWT,  clienteController.findClientesPaginados);
+router.get('/paginadosCentral/:page/:pageSize/:searchTerm?', validarJWT,  clienteController.findClienteCentralPaginado); 
 // Ruta para buscar un cliente por ID
 router.get('/:id', validarJWT,    clienteController.getById);
 

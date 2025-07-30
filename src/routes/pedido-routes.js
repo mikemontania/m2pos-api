@@ -6,8 +6,8 @@ const { validarJWT } = require('../middlewares/validar-jwt');
  
  
 router.get('/:id', validarJWT,   pedidoController.getById);
-router.get('/:page/:pageSize/:fechaDesde/:fechaHasta/:clienteSucursalId/:sucursalId/:condicionPagoId/:listaPrecioId/:canal', validarJWT,   pedidoController.listar);
-router.get('/:fechaDesde/:fechaHasta/:clienteSucursalId/:sucursalId/:condicionPagoId/:listaPrecioId/:canal', validarJWT,   pedidoController.listarSinPaginacion);
+router.get('/:page/:pageSize/:fechaDesde/:fechaHasta/:clienteId/:clienteSucursalId/:sucursalId/:condicionPagoId/:listaPrecioId/:canal', validarJWT,   pedidoController.listar);
+router.get('/:fechaDesde/:fechaHasta/:clienteId/:clienteSucursalId/:sucursalId/:condicionPagoId/:listaPrecioId/:canal', validarJWT,   pedidoController.listarSinPaginacion);
 
 router.post('/nuevo', validarJWT,   pedidoController.create );   
 router.put('/anular/:id', validarJWT,   pedidoController.anular );

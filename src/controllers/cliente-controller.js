@@ -192,7 +192,49 @@ const findPropietario = async (req, res) => {
     })
   }
 }
+const findClienteCentralPaginado = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const { page = 1, pageSize = 10, searchTerm } = req.params;
 
+    const offset = (page - 1) * pageSize;
+    const limit = parseInt(pageSize);
+
+    const condiciones = {
+      empresaId,
+      activo: true
+    };
+
+    if (searchTerm) {
+      condiciones[Op.or] = [
+        { razonSocial: { [Op.iLike]: `%${searchTerm.toLowerCase()}%` } },
+        { nombreFantasia: { [Op.iLike]: `%${searchTerm.toLowerCase()}%` } },
+        { nroDocumento: { [Op.iLike]: `%${searchTerm.toLowerCase()}%` } }
+      ];
+    }
+
+    const { count, rows } = await Cliente.findAndCountAll({
+      where: condiciones,
+      offset,
+      limit
+    });
+ 
+
+    res.status(200).json({
+      total: count,
+      totalPages: Math.ceil(count / pageSize),
+      page: Number(page),
+      pageSize: Number(pageSize),
+      clientes:rows
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error?.original?.detail || 'Error al buscar clientes'
+    });
+  }
+};
 const findClientesPaginados = async (req, res) => {
   try {
     const { empresaId } = req.usuario
@@ -864,6 +906,8 @@ module.exports = {
   disable,
   findPredeterminado,
   findClientesPaginados,
+  findClienteCentralPaginado,
   findPropietario,
   crearClienteConSucursal
 }
+
