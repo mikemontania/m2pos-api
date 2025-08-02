@@ -23,6 +23,7 @@ const { sequelize } = require("../../dbconfig");
 const EmpresaActividad = require("../models/empresaActividad.model");
 const Actividad = require("../models/actividad.model");
 const ClienteSucursal = require("../models/ClienteSucursal.model");
+const { createTicket } = require("../helpers/pdfGenerator-ticket");
 
 const getReporteCobranza = async (req, res) => {
   console.log("getReporteCobranza");
@@ -553,9 +554,151 @@ const getPdf = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   "Internal Server Error" });
   }
 };
+const getTicket = async (req, res) => {
+  const { empresaId } = req.usuario;
+  const { id } = req.params;
+  try {
+    const documento = await Documento.findByPk(id, {
+      include: [
+        { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
+        {
+          model: Cliente,
+          as: "cliente",
+          attributes: ["nroDocumento", "razonSocial" ]
+        },
+        {
+          model: ClienteSucursal,
+          as: "clienteSucursal" 
+        },
+        {
+          model: CondicionPago,
+          as: "condicionPago",
+          attributes: ["id", "descripcion"]
+        },
+        {
+          model: Sucursal,
+          as: "sucursal",
+          attributes: ["descripcion", "direccion", "telefono", "cel"]
+        },
+        {
+          model: Empresa,
+          as: "empresa",
+          attributes: [
+            "razonSocial",
+            "ruc",
+            "img",
+            "web"
+          ]
+        }
+      ]
+    });
+    if (!documento) {
+      return res.status(404).json({ error: "Documento not found" });
+    }
+    const  data = await EmpresaActividad.findAll({
+      where: {   empresaId },
+      include: [{ model: Actividad, as: 'actividades' }]
+    });
+    const actividades = data.map(d => ({
+      ...d.actividades['dataValues']
+     }))
 
+    const detallesDocumento = await DocumentoDetalle.findAll({
+      where: { documentoId: id },
+      include: [
+        {
+          model: Variante,
+          as: "variante", // Asegúrate de usar el alias correcto aquí
+          include: [
+            {
+              model: Presentacion,
+              as: "presentacion", // Asegúrate de usar el alias correcto aquí
+              attributes: ["id", "descripcion", "size"]
+            },
+            {
+              model: Variedad,
+              as: "variedad", // Asegúrate de usar el alias correcto aquí
+              attributes: ["id", "descripcion", "color"]
+            },
+            {
+              model: Producto,
+              as: "producto", // Asegúrate de usar el alias correcto aquí
+              attributes: ["nombre"]
+            },
+            {
+              model: Unidad,
+              as: "unidad", // Asegúrate de usar el alias correcto aquí
+              attributes: ["code"]
+            }
+          ]
+        }
+      ]
+    });
+    if (detallesDocumento.length === 0) {
+      return res.status(404).json({ error: "No details found for this documento" });
+    }
+    /* console.log(documento)
+ */
+
+    const cabecera = {
+      ...documento.dataValues,
+      sucursal: { ...documento.dataValues.sucursal.dataValues },
+      empresa: { ...documento.dataValues.empresa.dataValues,actividades },
+      vendedorCreacion: { ...documento.dataValues.vendedorCreacion.dataValues },
+      cliente: { ...documento.dataValues.cliente.dataValues, ...documento.dataValues.clienteSucursal.dataValues},
+      condicionPago: { ...documento.dataValues.condicionPago.dataValues }
+    };
+    let detalles = [];
+
+    detallesDocumento.forEach(detail => {
+      console.log(detail)
+
+      const detalle = detail.get({ plain: true });
+      console.log(detalle)
+      const variante = detail.variante.get({ plain: true });
+      console.log(variante)
+      // Acceder a los datos de Variante 
+      detalles.push({
+        porcIva:detalle.porcIva,
+        cantidad: detalle.cantidad,
+        importePrecio: detalle.importePrecio,
+        importeIva5: detalle.importeIva5,
+        importeIva10: detalle.importeIva10,
+        importeIvaExenta: detalle.importeIvaExenta,
+        importeDescuento: detalle.importeDescuento,
+        importeNeto: detalle.importeNeto,
+        importeSubtotal: detalle.importeSubtotal,
+        importeTotal: detalle.importeTotal,
+        totalKg: detalle.totalKg,
+        tipoDescuento: detalle.tipoDescuento,
+        variante: variante,
+        presentacion: variante.presentacion,
+        variedad: variante.variedad,
+        producto: variante.producto,
+        unidad: variante.unidad
+      });
+     
+    });
+
+    const pdfContent = createTicket(cabecera, detalles);
+
+    // Configurar la respuesta HTTP
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `inline; filename=FE-${cabecera.nroComprobante}.pdf`
+    );
+
+    // Enviar el contenido del PDF como respuesta
+    pdfContent.pipe(res);
+  } catch (error) {
+    console.error("Error in getPdf:", error);
+    res.status(500).json({ error: error?.original?.detail ||   "Internal Server Error" });
+  }
+};
 module.exports = {
   getPdf,
+  getTicket,
   getReporteCobranza,
   getReporteDocumentosPorSucursal ,
   getTopVariantes,

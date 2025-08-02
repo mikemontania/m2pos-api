@@ -429,16 +429,7 @@ console.log(documento)
       left + 200,
       top + 5
     );
-
- /*  doc
-    .font("Helvetica-Bold")
-    .fontSize(7)
-    .text(
-      "Exenta: " +
-        new Intl.NumberFormat("es-PY").format(documento.importeIvaExenta),
-      left + 350,
-      top + 5
-    ); */
+ 
 
   const total = +documento.importeIva5 + +documento.importeIva10 + +documento.importeIvaExenta;
   doc
@@ -460,11 +451,7 @@ const generarCopia = (doc, copia, top) => {
       top + 5
     );
 };
-
-const formatCurrency = importe => {
-  return new Intl.NumberFormat("es-PY").format(importe) + "Gs";
-};
-
+ 
 const formatDate = date => {
   if (date) {
     const data = date.toString().split("-");
