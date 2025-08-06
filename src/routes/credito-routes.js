@@ -7,7 +7,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const router = Router();
 router.get("/historial/:creditoId", validarJWT,  historialCreditoController.getHistorial);
 // Ruta para obtener el widget con los totales
-router.get("/widget/:fechaInicio/:fechaFin", validarJWT,  creditoController.obtenerWidget);
+router.get("/widget/:fechaInicio/:fechaFin/:clienteId", validarJWT,  creditoController.obtenerWidget);
 // Ruta para obtener los créditos de forma paginada
 router.get("/buscar/paginado/:page/:size/:fechaInicio/:fechaFin/:clienteId/:nroComprobante/:estado", validarJWT,  creditoController.buscarPaginado);
 // Ruta para obtener la lista completa de créditos

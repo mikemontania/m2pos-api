@@ -13,7 +13,7 @@ const {
   generarPie
 } = require("./pdf-helpers-ticket.js");
 
-const createTicket = (cabecera, detalles) => {
+const createTicket = (tipo,cabecera, detalles) => {
   const doc = new PDFDocument({
     margin: 10,
     size: [226.77, 800], // 80mm
@@ -24,10 +24,8 @@ const createTicket = (cabecera, detalles) => {
   generarDetalles(doc, detalles);
   generarAhorro(doc, cabecera.importeDescuento);
   generarSubTotal(doc, cabecera);
-  generarTotal(doc, cabecera);
-  generarPagos(doc, cabecera);
-  generarPuntos(doc, cabecera);
-  generarPie(doc,"Original: Cliente");
+  generarTotal(doc, cabecera); 
+  generarPie(doc,tipo);
 
   doc.end();
   return doc;

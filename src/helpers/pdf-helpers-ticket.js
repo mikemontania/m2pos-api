@@ -1,10 +1,27 @@
-const generarCabecera = (doc, cabecera) => {
+
+const lineaPunteada = (doc, y) => {
   doc
+    .moveTo(doc.page.margins.left, y)
+    .lineTo(doc.page.width - doc.page.margins.right, y)
+    .dash(1, { space: 2 })
+    .stroke()
+    .undash();
+};
+const formatearFecha = (fechaISO) => {
+  if (!fechaISO) return '';
+  const fecha = new Date(fechaISO);
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+  const anho = fecha.getFullYear();
+  return `${dia}/${mes}/${anho}`;
+};
+const generarCabecera = (doc, cabecera) => {
+   doc
+    .font("Helvetica-Bold")
+    .fontSize(12)
+    .text(cabecera.empresa.razonSocial, { align: "center" })
     .font("Helvetica-Bold")
     .fontSize(10)
-    .text(cabecera.empresa.razonSocial, { align: "center" })
-    .font("Helvetica")
-    .fontSize(8)
     .text("RUC: " + cabecera.empresa.ruc, { align: "center" })
     .text(cabecera.sucursal.descripcion, { align: "center" })
     .text(cabecera.sucursal.direccion, { align: "center" });
@@ -18,19 +35,21 @@ const generarCabecera = (doc, cabecera) => {
   if (cabecera.empresa.web)
     doc.text(cabecera.empresa.web, { align: "center" });
 
-  doc
-    .moveDown(0.5)
-    .text("TIMBRADO: " + cabecera.timbrado, { align: "center" })
-    .text("FACTURA N°: " + cabecera.nroComprobante, { align: "center" })
-    .text("Fecha: " + cabecera.fecha, { align: "center" })
-    .moveDown();
+  doc.moveDown(0.5);
+  doc.text("TIMBRADO: " + cabecera.timbrado, { align: "left" });
+  doc.text("FACTURA N°: " + cabecera.nroComprobante, { align: "left" }); 
+doc.text("VALIDO DESDE: " + formatearFecha(cabecera.fechaInicio), { align: "left" });
+doc.text("VALIDO HASTA: " + formatearFecha(cabecera.fechaFin), { align: "left" });
+doc.text("FECHA EMISIÓN: " + formatearFecha(cabecera.fecha), { align: "left" });
+doc.text("CONDICION DE PAGO: " +  cabecera.condicionPago?.descripcion  || '', { align: "left" });
+  doc.moveDown(); 
+  doc.moveDown(0.5);
 };
-
 const generarDatosCliente = (doc, cabecera) => {
   doc
-    .font("Helvetica-Bold")
-    .fontSize(8)
-    .text("Cliente: " + cabecera.cliente.nombre)
+    .font("Helvetica")
+    .fontSize(10)
+    .text("Cliente: " + cabecera.clienteSucursal.nombre)
     .text("RUC/CI: " + cabecera.cliente.nroDocumento);
 
   if (cabecera.cliente.telefono)
@@ -40,121 +59,128 @@ const generarDatosCliente = (doc, cabecera) => {
     doc.text("Dirección: " + cabecera.cliente.direccion);
 
   doc.moveDown();
+  lineaPunteada(doc, doc.y);
+  doc.moveDown(0.5);
 };
 
 const generarDetalles = (doc, detalles) => {
-  doc
-    .font("Helvetica-Bold")
-    .fontSize(7)
-    .text("CODIGO   CANT.  PRECIO     TOTAL", { align: "left" })
-    .text("DESCRIPCIÓN DEL ARTÍCULO")
-    .text("--------------------------------------------------");
-
   const nf = new Intl.NumberFormat("es-PY");
 
-  detalles.forEach((item) => {
-    const cod = item.variante.id.toString().padStart(7, '0');
-    const desc = `${item.producto.nombre} ${item.presentacion.descripcion || ""} ${item.variedad.descripcion || ""}`.trim();
-    const cantidad = +item.cantidad;
-    const precioUnit = +item.importePrecio;
-    const total = +item.importeTotal;
+  const margenIzquierdo = doc.page.margins.left;
+  const anchoTotal = doc.page.width - doc.page.margins.left - doc.page.margins.right;
 
-    const lineaNumerica = `${cod}   ${cantidad.toFixed(3)}   G ${nf.format(precioUnit)}   G ${nf.format(total)}`;
-    doc
-      .font("Helvetica")
-      .fontSize(7)
-      .text(lineaNumerica)
-      .text(desc)
-      .moveDown(0.5);
+  // 🔷 Cabecera de tabla
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(9)
+    .text("DESCRIPCIÓN", margenIzquierdo);
+
+  doc
+    .text("CANT x PRECIO", margenIzquierdo, doc.y, { continued: true })
+    .text("TOTAL", margenIzquierdo, doc.y, {
+      align: "right",
+      width: anchoTotal,
+    });
+
+  doc.moveDown(0.5);
+  lineaPunteada(doc, doc.y);
+  doc.moveDown(0.5);
+
+  // 🔷 Detalles
+  detalles.forEach((item) => {
+    const cantidad = +item.cantidad;
+    const precio = nf.format(item.importePrecio);
+    const total = nf.format(item.importeTotal);
+    
+    const desc = `${item.producto.nombre} ${item.presentacion?.descripcion || ""} ${item.variedad?.descripcion || ""}`.trim();
+
+   // Línea 1: descripción con tamaño más chico
+doc
+  .font("Helvetica")
+  .fontSize(8) // 👈 un punto más chico
+  .text(desc, margenIzquierdo, doc.y);
+
+   // Línea 2: cantidad x precio y total alineado (más grande)
+doc
+  .font("Helvetica")
+  .fontSize(9) // 👈 tamaño normal o más grande
+  .text(`${cantidad} x Gs ${precio}`, margenIzquierdo, doc.y, { continued: true })
+  .text(`Gs ${total}`, margenIzquierdo, doc.y, {
+    align: "right",
+    width: anchoTotal,
+  });
+
+    doc.moveDown(0.5);
+    lineaPunteada(doc, doc.y);
+    doc.moveDown(0.5);
   });
 };
 
+
 const generarAhorro = (doc, montoDescuento) => {
   if (!montoDescuento || montoDescuento <= 0) return;
+  doc.moveDown();
   doc
     .font("Helvetica-Bold")
-    .fontSize(8)
-    .text("USTED AHORRÓ G " + new Intl.NumberFormat("es-PY").format(montoDescuento), {
-      align: "center",
-      underline: true,
-    })
-    .moveDown();
+    .fontSize(10)
+    .text("USTED AHORRÓ Gs " + new Intl.NumberFormat("es-PY").format(montoDescuento), {
+      align: "center", 
+    });
+    doc.moveDown();
+  lineaPunteada(doc, doc.y);
+  doc.moveDown();
 };
 
 const generarSubTotal = (doc, cabecera) => {
-  const exentas = parseFloat(cabecera.importeIvaExenta || 0);
-  const iva5 = parseFloat(cabecera.importeIva5 || 0);
-  const iva10 = parseFloat(cabecera.importeIva10 || 0);
-
-  const gravado5 = parseFloat(cabecera.totalGravado5 || 0);
-  const gravado10 = parseFloat(cabecera.totalGravado10 || 0);
- const subTotal = parseFloat(cabecera.importeSubTotal || 0);
-  const importeDescuento = parseFloat(cabecera.importeDescuento || 0); 
+  const exentas = parseFloat(+cabecera.importeIvaExenta || 0);
+  const iva5 = parseFloat(+cabecera.importeIva5 || 0);
+  const iva10 = parseFloat(+cabecera.importeIva10 || 0);
+  const subTotal = parseFloat(+cabecera.importeSubtotal || 0);
+  const importeDescuento = parseFloat(+cabecera.importeDescuento || 0);
   const nf = new Intl.NumberFormat("es-PY");
-
+ 
+  
+  doc.moveDown(0.5);
   doc
     .font("Helvetica-Bold")
-    .fontSize(8)
-    .text("SUB TOTALES LIQUIDACION IVA")
-    .font("Helvetica")
-    .fontSize(7)
-    .text(`Exentas        : G ${nf.format(exentas)}`)
-    .text(`Gravado 5%     : G ${nf.format(gravado5)}   IVA: G ${nf.format(iva5)}`)
-    .text(`Gravado 10%    : G ${nf.format(gravado10)}   IVA: G ${nf.format(iva10)}`)
-    .text(`TOTAL IVA      : G ${nf.format(iva5 + iva10)}`)
-     .text(`SUBTOTAL      : G ${nf.format(subTotal)}`)
-      .text(`T.Descuento      : G ${nf.format(importeDescuento)}`) 
-    .moveDown();
+    .fontSize(9)  
+    .text(` TOTAL EXENTA        : Gs ${nf.format(exentas)}`)
+    .text(` TOTAL IVA 5%          : Gs ${nf.format(iva5)}`)
+    .text(` TOTAL IVA 10%        : Gs ${nf.format(iva10)}`)
+    .text(` TOTAL IVA                : Gs ${nf.format(iva5 + iva10)}`)
+    .text(` T.DESCUENTO         : Gs ${nf.format(importeDescuento)}`) 
+    .text(` SUBTOTAL               : Gs ${nf.format(subTotal)}`)
+    doc.moveDown();
+  lineaPunteada(doc, doc.y);
+  doc.moveDown();
 };
 
 const generarTotal = (doc, cabecera) => {
   const nf = new Intl.NumberFormat("es-PY");
-
   doc
     .font("Helvetica-Bold")
-    .fontSize(9)
-    .text("TOTAL A PAGAR: G " + nf.format(cabecera.importeTotal), { align: "right" })
-    /*.moveDown(0.5)
+    .fontSize(11)
+    .text("TOTAL A PAGAR: Gs " + nf.format(cabecera.importeTotal), { align: "right" });
+  lineaPunteada(doc, doc.y); 
+  doc.moveDown(0.5);
+   doc
     .font("Helvetica-Bold")
-    .fontSize(8)
-     .text("DETALLE DE PAGOS")
-    .font("Helvetica")
-    .text("QR BANCARD     G " + nf.format(cabecera.importeTotal))
-    .text("TOTAL PAGOS    G " + nf.format(cabecera.importeTotal)) */
-    .moveDown();
+    .fontSize(11)
+    .text("Los datos impresos requieren de cuidados especiales.Evitar contacto  directo con plasticos, materiales químicos, calor y humedad en exceso, luz solar" , { align: "center" });
+  lineaPunteada(doc, doc.y);
+  doc.moveDown();
 };
-
-const generarPagos = (doc, cabecera) => {
-  const nf = new Intl.NumberFormat("es-PY");
-
-/*   doc
-    .font("Helvetica-Bold")
-    .fontSize(8)
-    .text("DETALLE DE COBRO")
-    .font("Helvetica")
-    .text("ABONADO        : G " + nf.format(cabecera.montoAbonado || 0))
-    .text("VUELTO         : G " + nf.format(cabecera.montoVuelto || 0))
-    .text("EFECTIVO       : G " + nf.format(cabecera.montoEfectivo || 0))
-    .moveDown(); */
-};
-
-const generarPuntos = (doc, cabecera) => {
- /*  doc
-    .font("Helvetica")
-    .fontSize(7)
-    .text("PUNTOS OBTENIDOS: " + (cabecera.puntosObtenidos || 0))
-    .text("PUNTOS ACUMULADOS: " + (cabecera.puntosAcumulados || 0))
-    .moveDown(); */
-};
+ 
 
 const generarPie = (doc, copia) => {
   doc
     .font("Helvetica")
-    .fontSize(7)
+    .fontSize(9)
     .text("Gracias por su compra", { align: "center" })
-    .text(copia, { align: "center" })
-    .moveDown();
+    .text(copia, { align: "center" });
+  doc.moveDown();
 };
+
 
 module.exports = {
   generarCabecera,
@@ -163,7 +189,6 @@ module.exports = {
   generarAhorro,
   generarSubTotal,
   generarTotal,
-  generarPagos,
-  generarPuntos,
+  
   generarPie
 };

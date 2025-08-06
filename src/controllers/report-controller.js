@@ -556,7 +556,14 @@ const getPdf = async (req, res) => {
 };
 const getTicket = async (req, res) => {
   const { empresaId } = req.usuario;
-  const { id } = req.params;
+  const { id, doc } = req.params;
+
+  let tipo=null;
+if (doc==1) {
+  tipo ="Original:Cliente"
+}else{
+   tipo ="Duplicado:Comprobante tributario"
+}
   try {
     const documento = await Documento.findByPk(id, {
       include: [
@@ -680,7 +687,7 @@ const getTicket = async (req, res) => {
      
     });
 
-    const pdfContent = createTicket(cabecera, detalles);
+    const pdfContent = createTicket(tipo,cabecera, detalles);
 
     // Configurar la respuesta HTTP
     res.setHeader("Content-Type", "application/pdf");

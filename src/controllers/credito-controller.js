@@ -12,69 +12,75 @@ const obtenerWidget = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
 
-    const { fechaInicio, fechaFin } = req.params;
+    const { fechaInicio, fechaFin, clienteId } = req.params;
+    const whereCond = {
+  empresaId,
+  fecha: {
+    [Op.between]: [fechaInicio, fechaFin]
+  },
+  anulado: false
+};
 
-    const resultados = await Credito.findAll({
-      attributes: [
-        [fn("SUM", col("importe_total")), "totalMonto"],
-        [
-          fn(
-            "SUM",
-            literal(
-              `CASE WHEN estado = 'PENDIENTE' AND CAST(fecha_vencimiento AS date) < CURRENT_DATE THEN importe_total ELSE 0 END`
-            )
-          ),
-          "totalVencidos"
-        ],
-        [
-          fn(
-            "SUM",
-            literal(`CASE WHEN estado = 'PAGADO' THEN importe_total ELSE 0 END`)
-          ),
-          "totalPagados"
-        ],
-        [
-          fn(
-            "SUM",
-            literal(
-              `CASE WHEN estado = 'PENDIENTE' AND CAST(fecha_vencimiento AS date) >= CURRENT_DATE THEN importe_total ELSE 0 END`
-            )
-          ),
-          "totalPendientesACobrar"
-        ],
-        [fn("COUNT", col("id")), "totalCreditos"],
-        [
-          fn("COUNT", literal(`CASE WHEN estado = 'PAGADO' THEN 1 END`)),
-          "cantidadPagados"
-        ],
-        [
-          fn(
-            "COUNT",
-            literal(
-              `CASE WHEN estado = 'PENDIENTE' AND CAST(fecha_vencimiento AS date) >= CURRENT_DATE THEN 1 END`
-            )
-          ),
-          "cantidadPendientes"
-        ],
-        [
-          fn(
-            "COUNT",
-            literal(
-              `CASE WHEN estado = 'PENDIENTE' AND CAST(fecha_vencimiento AS date) < CURRENT_DATE THEN 1 END`
-            )
-          ),
-          "cantidadVencidos"
-        ]
-      ],
-      where: {
-        empresaId,
-        fecha: {
-          [Op.between]: [fechaInicio, fechaFin]
-        },
-        anulado: false
-      },
-      raw: true
-    });
+// Agregar clienteId si es distinto de 0
+if (Number(clienteId) !== 0) {
+  whereCond.clienteId = clienteId;
+}
+
+ const resultados = await Credito.findAll({
+  attributes: [
+    [fn("SUM", col("importe_total")), "totalMonto"],
+    [
+      fn(
+        "SUM",
+        literal(
+          `CASE WHEN estado = 'PENDIENTE' AND CAST(fecha_vencimiento AS date) < CURRENT_DATE THEN importe_total ELSE 0 END`
+        )
+      ),
+      "totalVencidos"
+    ],
+    [
+      fn(
+        "SUM",
+        literal(`CASE WHEN estado = 'PAGADO' THEN importe_total ELSE 0 END`)
+      ),
+      "totalPagados"
+    ],
+    [
+      fn(
+        "SUM",
+        literal(
+          `CASE WHEN estado = 'PENDIENTE' AND CAST(fecha_vencimiento AS date) >= CURRENT_DATE THEN importe_total ELSE 0 END`
+        )
+      ),
+      "totalPendientesACobrar"
+    ],
+    [fn("COUNT", col("id")), "totalCreditos"],
+    [
+      fn("COUNT", literal(`CASE WHEN estado = 'PAGADO' THEN 1 END`)),
+      "cantidadPagados"
+    ],
+    [
+      fn(
+        "COUNT",
+        literal(
+          `CASE WHEN estado = 'PENDIENTE' AND CAST(fecha_vencimiento AS date) >= CURRENT_DATE THEN 1 END`
+        )
+      ),
+      "cantidadPendientes"
+    ],
+    [
+      fn(
+        "COUNT",
+        literal(
+          `CASE WHEN estado = 'PENDIENTE' AND CAST(fecha_vencimiento AS date) < CURRENT_DATE THEN 1 END`
+        )
+      ),
+      "cantidadVencidos"
+    ]
+  ],
+  where: whereCond,
+  raw: true
+});
 
     res.json(resultados[0]);
   } catch (error) {

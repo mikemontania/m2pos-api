@@ -5,7 +5,7 @@ const router = Router();
  
 // Ruta para buscar todas las categorías
 router.get('/:id', validarJWT,   report.getPdf);
-router.get('/ticket/:id', validarJWT,   report.getTicket);
+router.get('/ticket/:id/:doc', validarJWT,   report.getTicket);
 router.get('/reportecobranza/:fechaDesde/:fechaHasta/:sucursalId/:medioPagoId', validarJWT,   report.getReporteCobranza);
 router.get('/documentosPorSucursal/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   report.getReporteDocumentosPorSucursal);
 router.get('/topVariantes/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   report.getTopVariantes);
