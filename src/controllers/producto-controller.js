@@ -306,17 +306,17 @@ const findProductosPaginados = async (req, res) => {
         where: condicionesDescuento
       });
       console.log("condiciones", condicionesPrecio);
-      console.log(precio);
+      console.log(producto);
       return {
         id: producto.get("id"),
         codBarra: producto.get("codBarra"),
         codErp: producto.get("codErp"),
         img: producto.get("img"),
-        producto: producto.producto.get("nombre"),
-        presentacion: producto.presentacion.get("descripcion"),
-        peso: producto.presentacion.get("size"),
-        variedad: producto.variedad.get("descripcion"),
-        color: producto.variedad.get("color"),
+        producto: producto.producto ? producto.producto.get("nombre") : null,
+        presentacion: producto.presentacion ? producto.presentacion.get("descripcion") : null,
+        peso: producto.presentacion ? producto.presentacion.get("size") : null,
+        variedad: producto.variedad ? producto.variedad.get("descripcion") : null,
+        color: producto.variedad ? producto.variedad.get("color") : null,
         porcIva: producto.get("porcIva"),
         precio: precio ? precio.valor : undefined,
         descuento: descuento ? descuento.valor : undefined
