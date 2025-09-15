@@ -27,13 +27,18 @@ const findDescripcion = async (req, res) => {
     const { empresaId } = req.usuario;
     const query = ` 
     select 
-    x.id as id , 
-    concat(x.cod_erp,' ',INITCAP(p.nombre) , ' ',v.descripcion ,' ',p2.descripcion  ) as concat  
-    from  variantes x join productos p 
-    on x.producto_id = p.id join variedades v 
-    on x.variedad_id = v.id join presentaciones p2 
-    on x.presentacion_id = p2.id 
-    where x.empresa_id =:empresaId  
+  x.id as id,
+  concat(
+    x.cod_erp,' ',
+    INITCAP(p.nombre),' ',
+    case when p.es_simple = false then v.descripcion else '' end,' ',
+    case when p.es_simple = false then p2.descripcion else '' end
+  ) as concat
+from variantes x 
+join productos p on x.producto_id = p.id
+left join variedades v on x.variedad_id = v.id
+left join presentaciones p2 on x.presentacion_id = p2.id
+where x.empresa_id = :empresaId  
     `;
     const resultados = await sequelize.query(query, {
       replacements: { empresaId },
@@ -178,7 +183,7 @@ const create = async (req, res) => {
       porcIva,
       codBarra,
       codErp,
-      presentacionId,
+      presentacionId, 
       variedadId,
       productoId,
       unidadId,
@@ -188,7 +193,7 @@ const create = async (req, res) => {
       porcIva,
       empresaId,
       codBarra,
-      codErp,
+      codErp, 
       presentacionId,
       variedadId,
       productoId,
@@ -212,18 +217,19 @@ const update = async (req, res) => {
       codBarra,
       codErp,
       presentacionId,
-      variedadId,
+      variedadId, 
       productoId,
       unidadId,
       activo
     } = req.body;
+   
     const varianteActualizada = await Variante.findByPk(id);
     if (varianteActualizada) {
       await varianteActualizada.update({
         porcIva,
         codBarra,
         codErp,
-        empresaId,
+        empresaId, 
         presentacionId,
         variedadId,
         productoId,

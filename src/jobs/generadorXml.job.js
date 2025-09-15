@@ -71,8 +71,12 @@ const obtenerDocumentosPendientes = async () => {
           const importeIva5 = detalle.importeIva5 > 0 ? detalle.importeIva5 : 0;
           const importeIva10 = detalle.importeIva10 > 0 ? detalle.importeIva10 : 0;
           const importeIvaExenta = detalle.importeIvaExenta > 0 ? detalle.importeIvaExenta : 0;
-          const descripcion =`${detalle.variante.producto.nombre} ${detalle.variante.presentacion.descripcion} ${detalle.variante.variedad.descripcion} ${detalle.variante.unidad.code}`
-
+           const partes = [
+        detalle.producto?.nombre,
+        detalle.presentacion?.descripcion,
+        detalle.variedad?.descripcion
+      ].filter(Boolean); 
+      const descripcion = partes.join(' ');
           // Sumando a los totales
           totalImporteIva5 += importeIva5;
           totalImporteIva10 += importeIva10;

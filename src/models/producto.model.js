@@ -42,7 +42,11 @@ const Producto = sequelize.define('Producto', {
     defaultValue:true,
     allowNull: false
   },
- 
+ esSimple: {
+    type: DataTypes.BOOLEAN,
+    defaultValue:false,
+    allowNull: false
+  },
 }, {
   tableName: 'productos',
   timestamps: false,

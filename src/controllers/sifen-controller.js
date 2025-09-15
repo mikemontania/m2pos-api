@@ -122,10 +122,14 @@ const obtenerDocumento = async (id) => {
         });
        
         // Procesando cada detalle
-        documento.detalles = detalles.map((detalle) => {
-           
-          const descripcion =`${detalle.variante.producto.nombre} ${detalle.variante.presentacion.descripcion} ${detalle.variante.variedad.descripcion} ${detalle.variante.unidad.code}`
- 
+        documento.detalles = detalles.map((detalle) => { 
+        const partes = [
+              detalle.producto?.nombre,
+              detalle.presentacion?.descripcion,
+              detalle.variedad?.descripcion,
+              detalle.variante.unidad.code
+            ].filter(Boolean); 
+        const descripcion = partes.join(' ');
           return {
             ...detalle,
             codigo: detalle.variante.codErp,

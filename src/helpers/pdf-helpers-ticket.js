@@ -91,9 +91,13 @@ const generarDetalles = (doc, detalles) => {
     const cantidad = +item.cantidad;
     const precio = nf.format(item.importePrecio);
     const total = nf.format(item.importeTotal);
-    
-    const desc = `${item.producto.nombre} ${item.presentacion?.descripcion || ""} ${item.variedad?.descripcion || ""}`.trim();
-
+     
+ const partes = [
+  item.producto?.nombre,
+  item.presentacion?.descripcion,
+  item.variedad?.descripcion
+].filter(Boolean); 
+const desc = partes.join(' ');
    // Línea 1: descripción con tamaño más chico
 doc
   .font("Helvetica")

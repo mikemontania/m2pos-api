@@ -275,8 +275,13 @@ const generarDetalles = (doc, detalles, top) => {
       }
     };
 
-    const descripcion = `${detalle.producto.nombre} ${detalle.presentacion
-      .descripcion}  ${detalle.variedad.descripcion}`;
+    const partes = [
+  detalle.producto?.nombre,
+  detalle.presentacion?.descripcion,
+  detalle.variedad?.descripcion
+].filter(Boolean); 
+const descripcion = partes.join(' ');
+
     doc
       .font("Helvetica")
       .fontSize(5) 

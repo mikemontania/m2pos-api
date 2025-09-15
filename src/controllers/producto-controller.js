@@ -1,172 +1,194 @@
-const { Op } = require("sequelize");
-const Producto = require("../models/producto.model"); // Asegúrate de que la importación del modelo sea correcta
-const { sequelize } = require("../../dbconfig");
-const Variante = require("../models/variante.model");
-const Presentacion = require("../models/presentacion.model");
-const Variedad = require("../models/variedad.model");
-const moment = require("moment");
-const Valoracion = require("../models/valoracion.model");
-const { REGISTRO } = require("../models/tipos.enum");
-const Marca = require("../models/marca.model");
-const Categoria = require("../models/categoria.model");
-const SubCategoria = require("../models/subCategoria.model");
+const { Op } = require('sequelize')
+const Producto = require('../models/producto.model') // Asegúrate de que la importación del modelo sea correcta
+const { sequelize } = require('../../dbconfig')
+const Variante = require('../models/variante.model')
+const Presentacion = require('../models/presentacion.model')
+const Variedad = require('../models/variedad.model')
+const moment = require('moment')
+const Valoracion = require('../models/valoracion.model')
+const { REGISTRO } = require('../models/tipos.enum')
+const Marca = require('../models/marca.model')
+const Categoria = require('../models/categoria.model')
+const SubCategoria = require('../models/subCategoria.model')
 
 // Método para buscar por ID
 const getById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const producto = await Producto.findByPk(id);
+    const { id } = req.params
+    const producto = await Producto.findByPk(id)
     if (producto) {
-      res.status(200).json(producto);
+      res.status(200).json(producto)
     } else {
-      res.status(404).json({ error: "Producto no encontrado" });
+      res.status(404).json({ error: 'Producto no encontrado' })
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar el producto por ID" });
+    console.error(error)
+    res
+      .status(500)
+      .json({
+        error: error?.original?.detail || 'Error al buscar el producto por ID'
+      })
   }
-};
+}
 
 // Método para buscar todos los productos
 const findAll = async (req, res) => {
   try {
-    const { empresaId, marcaId, categoriaId, subCategoriaId } = req.params;
-    const condiciones = {};
-    if (empresaId) condiciones.empresaId = empresaId;
-    if (marcaId) condiciones.marcaId = marcaId;
-    if (categoriaId) condiciones.categoriaId = categoriaId;
-    if (subCategoriaId) condiciones.subCategoriaId = subCategoriaId;
+    const { empresaId, marcaId, categoriaId, subCategoriaId } = req.params
+    const condiciones = {}
+    if (empresaId) condiciones.empresaId = empresaId
+    if (marcaId) condiciones.marcaId = marcaId
+    if (categoriaId) condiciones.categoriaId = categoriaId
+    if (subCategoriaId) condiciones.subCategoriaId = subCategoriaId
 
-    const productos = await Producto.findAll({ where: condiciones });
-    res.status(200).json(productos);
+    const productos = await Producto.findAll({ where: condiciones })
+    res.status(200).json(productos)
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al buscar productos" });
+    console.error(error)
+    res
+      .status(500)
+      .json({ error: error?.original?.detail || 'Error al buscar productos' })
   }
-};
+}
 
 // Método para crear un nuevo producto
 const create = async (req, res) => {
   try {
-    const { empresaId } = req.usuario;
+    const { empresaId } = req.usuario
 
     const {
       marcaId,
       categoriaId,
       subCategoriaId,
       nombre,
+      esSimple,
       descripcion,
       activo
-    } = req.body;
+    } = req.body
     const producto = await Producto.create({
       empresaId,
       marcaId,
       categoriaId,
+      esSimple,
       subCategoriaId,
       nombre,
       descripcion,
       activo
-    });
-    res.status(201).json(producto);
+    })
+    res.status(201).json(producto)
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al crear el producto" });
+    console.error(error)
+    res
+      .status(500)
+      .json({ error: error?.original?.detail || 'Error al crear el producto' })
   }
-};
+}
 
 // Método para actualizar un producto por ID
 const update = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { empresaId } = req.usuario;
+    const { id } = req.params
+    const { empresaId } = req.usuario
 
     const {
       marcaId,
       categoriaId,
       subCategoriaId,
       nombre,
+      esSimple,
       descripcion,
       activo
-    } = req.body;
-    const producto = await Producto.findByPk(id);
+    } = req.body
+    const producto = await Producto.findByPk(id)
     if (producto) {
       await producto.update({
         empresaId,
         marcaId,
         categoriaId,
+        esSimple,
         subCategoriaId,
         nombre,
         descripcion,
         activo
-      });
-      res.status(200).json(producto);
+      })
+      res.status(200).json(producto)
     } else {
-      res.status(404).json({ error: "Producto no encontrado" });
+      res.status(404).json({ error: 'Producto no encontrado' })
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al actualizar el producto" });
+    console.error(error)
+    res
+      .status(500)
+      .json({
+        error: error?.original?.detail || 'Error al actualizar el producto'
+      })
   }
-};
+}
 
 // Método para desactivar un producto (marcar como inactivo)
 const disable = async (req, res) => {
   try {
-    const { id } = req.params;
-    const producto = await Producto.findByPk(id);
+    const { id } = req.params
+    const producto = await Producto.findByPk(id)
     if (producto) {
-      await producto.update({ activo: false });
-      res.status(200).json({ message: "Producto desactivado exitosamente" });
+      await producto.update({ activo: false })
+      res.status(200).json({ message: 'Producto desactivado exitosamente' })
     } else {
-      res.status(404).json({ error: "Producto no encontrado" });
+      res.status(404).json({ error: 'Producto no encontrado' })
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al desactivar el producto" });
+    console.error(error)
+    res
+      .status(500)
+      .json({
+        error: error?.original?.detail || 'Error al desactivar el producto'
+      })
   }
-};
+}
 
 const findSearchPaginadosSimple = async (req, res) => {
   try {
-    const { empresaId } = req.usuario;
-    const { page = 1, pageSize = 10, descripcion } = req.params;
-
+    const { empresaId } = req.usuario
+    const { page = 1, pageSize = 10, descripcion } = req.params
+    const pageNum = Number(page) || 1
+    const sizeNum = Number(pageSize) || 10
     let condiciones = {
       empresaId
-    };
+    }
     if (descripcion) {
       condiciones[Op.or] = [
         { nombre: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
         { descripcion: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
 
         {
-          "$categoria.descripcion$": {
+          '$categoria.descripcion$': {
             [Op.iLike]: `%${descripcion.toLowerCase()}%`
           }
         },
         {
-          "$subCategoria.descripcion$": {
+          '$subCategoria.descripcion$': {
             [Op.iLike]: `%${descripcion.toLowerCase()}%`
           }
         },
         {
-          "$marca.descripcion$": {
+          '$marca.descripcion$': {
             [Op.iLike]: `%${descripcion.toLowerCase()}%`
           }
         }
-      ];
+      ]
     }
 
     const { rows: productos, count } = await Producto.findAndCountAll({
       where: condiciones,
       include: [
-        { model: Marca, as: "marca" },
-        { model: Categoria, as: "categoria" },
-        { model: SubCategoria, as: "subCategoria" }
+        { model: Marca, as: 'marca', required: false },
+        { model: Categoria, as: 'categoria', required: false },
+        { model: SubCategoria, as: 'subCategoria', required: false }
       ],
-      offset: (page - 1) * pageSize,
-      limit: pageSize
-    });
+      offset: (pageNum - 1) * sizeNum,
+      limit: sizeNum,
+        order: [['id', 'ASC']]  
+    })
 
     res.status(200).json({
       total: count,
@@ -174,17 +196,21 @@ const findSearchPaginadosSimple = async (req, res) => {
       page: Number(page),
       pageSize: Number(pageSize),
       productos
-    });
+    })
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al listar los productos" });
+    console.error(error)
+    res
+      .status(500)
+      .json({
+        error: error?.original?.detail || 'Error al listar los productos'
+      })
   }
-};
+}
 const findProductosPaginados = async (req, res) => {
-  const fechaActual = moment(new Date()).format("YYYY-MM-DD");
-  console.log(fechaActual);
+  const fechaActual = moment(new Date()).format('YYYY-MM-DD')
+  console.log(fechaActual)
   try {
-    const { empresaId } = req.usuario;
+    const { empresaId } = req.usuario
     const {
       sucursalId,
       listaPrecioId,
@@ -194,42 +220,42 @@ const findProductosPaginados = async (req, res) => {
       marcaId,
       categoriaId,
       subCategoriaId
-    } = req.params;
+    } = req.params
 
     let condiciones = {
       empresaId,
       activo: true
-    };
+    }
     if (descripcion) {
       condiciones[Op.or] = [
         { codErp: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
         { codBarra: { [Op.iLike]: `%${descripcion.toLowerCase()}%` } },
         {
-          "$producto.nombre$": { [Op.iLike]: `%${descripcion.toLowerCase()}%` }
+          '$producto.nombre$': { [Op.iLike]: `%${descripcion.toLowerCase()}%` }
         },
         {
-          "$variedad.descripcion$": {
+          '$variedad.descripcion$': {
             [Op.iLike]: `%${descripcion.toLowerCase()}%`
           }
         },
         {
-          "$presentacion.descripcion$": {
+          '$presentacion.descripcion$': {
             [Op.iLike]: `%${descripcion.toLowerCase()}%`
           }
         }
-      ];
+      ]
     }
 
     if (marcaId && marcaId != 0) {
-      condiciones["$producto.marcaId$"] = marcaId;
+      condiciones['$producto.marcaId$'] = marcaId
     }
 
     if (categoriaId && categoriaId != 0) {
-      condiciones["$producto.categoriaId$"] = categoriaId;
+      condiciones['$producto.categoriaId$'] = categoriaId
     }
 
     if (subCategoriaId && subCategoriaId != 0) {
-      condiciones["$producto.subCategoriaId$"] = subCategoriaId;
+      condiciones['$producto.subCategoriaId$'] = subCategoriaId
     }
 
     const { rows: productos, count } = await Variante.findAndCountAll({
@@ -237,14 +263,14 @@ const findProductosPaginados = async (req, res) => {
       include: [
         {
           model: Producto,
-          as: "producto",
+          as: 'producto',
           attributes: [
-            "id",
-            "nombre",
-            "activo",
-            "marcaId",
-            "categoriaId",
-            "subCategoriaId"
+            'id',
+            'nombre',
+            'activo',
+            'marcaId',
+            'categoriaId',
+            'subCategoriaId'
           ],
           where: { activo: true }
           /*  include: [
@@ -256,86 +282,94 @@ const findProductosPaginados = async (req, res) => {
         },
         {
           model: Presentacion,
-          as: "presentacion",
-          attributes: ["id", "descripcion", "size"]
+          as: 'presentacion',
+          attributes: ['id', 'descripcion', 'size']
         },
         {
           model: Variedad,
-          as: "variedad",
-          attributes: ["id", "descripcion", "color"]
+          as: 'variedad',
+          attributes: ['id', 'descripcion', 'color']
         }
       ],
-      attributes: ["id", "codBarra", "codErp", "porcIva", "img"],
+      attributes: ['id', 'codBarra', 'codErp', 'porcIva', 'img'],
       offset: (page - 1) * pageSize,
       limit: pageSize
-    });
+    })
 
     const productosMapsPromises = productos.map(async producto => {
-      console.log(sucursalId);
+      console.log(sucursalId)
       const condicionesPrecio = {
         activo: true,
-        varianteId: producto.get("id"),
+        varianteId: producto.get('id'),
         fechaDesde: { [Op.lte]: fechaActual },
         fechaHasta: { [Op.gte]: fechaActual },
         listaPrecioId: listaPrecioId,
-        registro: "PRECIO",
-        tipo: "IMPORTE",
+        registro: 'PRECIO',
+        tipo: 'IMPORTE',
         sucursalId: {
           [Op.or]: [{ [Op.eq]: sucursalId }, { [Op.eq]: null }]
         }
-      };
+      }
 
-      const precio = await Valoracion.findOne({ where: condicionesPrecio });
-      console.log("condiciones", condicionesPrecio);
-      console.log(precio);
+      const precio = await Valoracion.findOne({ where: condicionesPrecio })
+      console.log('condiciones', condicionesPrecio)
+      console.log(precio)
 
       const condicionesDescuento = {
         activo: true,
-        varianteId: producto.get("id"),
+        varianteId: producto.get('id'),
         fechaDesde: { [Op.lte]: fechaActual },
         fechaHasta: { [Op.gte]: fechaActual },
         listaPrecioId: listaPrecioId,
-        registro: "DESCUENTO",
-        tipo: "PRODUCTO",
+        registro: 'DESCUENTO',
+        tipo: 'PRODUCTO',
         sucursalId: {
           [Op.or]: [{ [Op.eq]: sucursalId }, { [Op.eq]: null }]
         }
-      };
+      }
 
       const descuento = await Valoracion.findOne({
         where: condicionesDescuento
-      });
-      console.log("condiciones", condicionesPrecio);
-      console.log(producto);
+      })
+      console.log('condiciones', condicionesPrecio)
+      console.log(producto)
       return {
-        id: producto.get("id"),
-        codBarra: producto.get("codBarra"),
-        codErp: producto.get("codErp"),
-        img: producto.get("img"),
-        producto: producto.producto ? producto.producto.get("nombre") : null,
-        presentacion: producto.presentacion ? producto.presentacion.get("descripcion") : null,
-        peso: producto.presentacion ? producto.presentacion.get("size") : null,
-        variedad: producto.variedad ? producto.variedad.get("descripcion") : null,
-        color: producto.variedad ? producto.variedad.get("color") : null,
-        porcIva: producto.get("porcIva"),
+        id: producto.get('id'),
+        codBarra: producto.get('codBarra'),
+        codErp: producto.get('codErp'),
+        img: producto.get('img'),
+        producto: producto.producto ? producto.producto.get('nombre') : null,
+        presentacion: producto.presentacion
+          ? producto.presentacion.get('descripcion')
+          : null,
+        peso: producto.presentacion ? producto.presentacion.get('size') : null,
+        variedad: producto.variedad
+          ? producto.variedad.get('descripcion')
+          : null,
+        color: producto.variedad ? producto.variedad.get('color') : null,
+        porcIva: producto.get('porcIva'),
         precio: precio ? precio.valor : undefined,
         descuento: descuento ? descuento.valor : undefined
-      };
-    });
+      }
+    })
 
-    const productosMaps = await Promise.all(productosMapsPromises);
+    const productosMaps = await Promise.all(productosMapsPromises)
     res.status(200).json({
       total: count,
       totalPages: Math.ceil(count / pageSize),
       page: Number(page),
       pageSize: Number(pageSize),
       productos: productosMaps
-    });
+    })
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error?.original?.detail ||   "Error al listar los productos" });
+    console.error(error)
+    res
+      .status(500)
+      .json({
+        error: error?.original?.detail || 'Error al listar los productos'
+      })
   }
-};
+}
 
 module.exports = {
   getById,
@@ -345,4 +379,4 @@ module.exports = {
   disable,
   findProductosPaginados,
   findSearchPaginadosSimple
-};
+}
