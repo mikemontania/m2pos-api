@@ -20,11 +20,11 @@ const { generateQR } = require("../metodosSifen/service/generateQR.service");
 const { crearDocumentoXml } = require("../controllers/documentoXml-controller");
 const ClienteSucursal = require("../models/ClienteSucursal.model");
 
-const obtenerDocumentosPendientes = async () => {
+const obtenerDocumentosPendientes = async (empresaId) => {
   try {
     // Obteniendo las documentos pendientes
     const documentos = await Documento.findAll({
-      where: { estado: 'Pendiente', anulado:false }, // Filtra por documentos pendientes
+      where: { estado: 'Pendiente', anulado:false, empresaId }, // Filtra por documentos pendientes
       include: [
         { model: Sucursal, as: 'sucursal' },
         { model: CondicionPago, as: 'condicionPago' },
@@ -134,7 +134,7 @@ const generarXml = async ( empresasXml) => {
         await Promise.all(
           documentosPendientes.map(async (documento) => {
             try {
-
+               console.log(documento)
               const params = await formatToParams(documento,empresa); 
               const data = await formatToData(documento,empresa);  
               let xmlBase = await generateXMLDE(params,data);  

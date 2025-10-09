@@ -145,7 +145,7 @@ const generarDatosCliente = (doc, documento, top) => {
   const data1 = [
     capitalize(documento.cliente.nombre) || "",
     documento.cliente.nroDocumento || "",
-    documento.cliente.direccion || "",
+    documento.clienteSucursal.direccion || "",
     (documento.cliente?.cel || "") +
       (documento.cliente?.telefono || "") 
   ];

@@ -310,7 +310,7 @@ const createGDatRec = (documento) => {
         dRucRec: dRucRec,
         dDVRec: dDVRec,
         dNomRec: documento.cliente.razonSocial,
-        dDirRec: documento.cliente.direccion,
+        dDirRec: documento.clienteSucursal.direccion,
         dNumCasRec: "0"
       }
     };
@@ -326,7 +326,7 @@ const createGDatRec = (documento) => {
         dDTipIDRec: "Cédula paraguaya",
         dNumIDRec: documento.cliente.nroDocumento,
         dNomRec: documento.cliente.razonSocial,
-        dDirRec: documento.cliente.direccion,
+        dDirRec: documento.clienteSucursal.direccion,
         dNumCasRec: "0"
       }
     };

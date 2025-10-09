@@ -52,11 +52,11 @@ const generarDatosCliente = (doc, cabecera) => {
     .text("Cliente: " + cabecera.clienteSucursal.nombre)
     .text("RUC/CI: " + cabecera.cliente.nroDocumento);
 
-  if (cabecera.cliente.telefono)
-    doc.text("Tel: " + cabecera.cliente.telefono);
+  if (cabecera.clienteSucursal.telefono)
+    doc.text("Tel: " + cabecera.clienteSucursal.telefono);
 
-  if (cabecera.cliente.direccion)
-    doc.text("Dirección: " + cabecera.cliente.direccion);
+  if (cabecera.clienteSucursal.direccion)
+    doc.text("Dirección: " + cabecera.clienteSucursal.direccion);
 
   doc.moveDown();
   lineaPunteada(doc, doc.y);

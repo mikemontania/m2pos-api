@@ -5,3 +5,7 @@
 # Ignorar carpetas específicas
 node_modules/
 build/
+
+# Ignorar certificados y archivos subidos
+src/certificado/
+src/uploads/
