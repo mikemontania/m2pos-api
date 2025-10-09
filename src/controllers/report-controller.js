@@ -703,8 +703,74 @@ if (doc==1) {
     res.status(500).json({ error: error?.original?.detail ||   "Internal Server Error" });
   }
 };
+
+const getInformeDocumentos = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const { fechaDesde, fechaHasta, sucursalId } = req.params;
+    const sucursalCondition = sucursalId !== '0' ? "AND d.sucursal_id = :sucursalId" : "";
+
+    const query = `
+      SELECT
+        d.tipo_doc AS tipoDoc,
+        COUNT(d.id) AS cantidad,
+        SUM(d.valor_neto) AS total
+      FROM documentos d
+      WHERE
+        d.fecha BETWEEN :fechaDesde AND :fechaHasta
+        AND d.anulado = false
+        AND d.empresa_id = :empresaId
+        ${sucursalCondition}
+      GROUP BY d.tipo_doc
+      ORDER BY d.tipo_doc
+    `;
+
+    const resultados = await sequelize.query(query, {
+      replacements: { fechaDesde, fechaHasta, sucursalId, empresaId },
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    res.status(200).json({ resultados });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener el informe de documentos" });
+  }
+};
+
+const getInformePedidos = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const { fechaDesde, fechaHasta, sucursalId } = req.params;
+    const sucursalCondition = sucursalId !== '0' ? "AND p.sucursal_id = :sucursalId" : "";
+
+    const query = `
+      SELECT
+        p.canal AS canal,
+        COUNT(p.id) AS cantidad,
+        SUM(p.valor_neto) AS total
+      FROM pedidos p
+      WHERE
+        p.fecha BETWEEN :fechaDesde AND :fechaHasta
+        AND p.anulado = false
+        AND p.empresa_id = :empresaId
+        ${sucursalCondition}
+      GROUP BY p.canal
+      ORDER BY p.canal
+    `;
+
+    const resultados = await sequelize.query(query, {
+      replacements: { fechaDesde, fechaHasta, sucursalId, empresaId },
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    res.status(200).json({ resultados });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener el informe de pedidos" });
+  }
+};
 module.exports = {
-  getPdf,
+  getPdf,getInformeDocumentos,getInformePedidos,
   getTicket,
   getReporteCobranza,
   getReporteDocumentosPorSucursal ,

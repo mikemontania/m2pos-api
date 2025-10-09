@@ -13,5 +13,8 @@ router.get('/topClientes/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   rep
 router.get('/topMediosDePago/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   report.getInformeMediosDePago); 
 router.get('/vendedoresPorTotal/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   report.getVendedoresPorTotal);
 router.get('/topMediosDePagoNc/:fechaDesde/:fechaHasta/:sucursalId', validarJWT,   report.getInformeNC); 
+// **Nuevas rutas para informes de documentos y pedidos**
+router.get('/informe/documentos/:fechaDesde/:fechaHasta/:sucursalId', validarJWT, report.getInformeDocumentos);
+router.get('/informe/pedidos/:fechaDesde/:fechaHasta/:sucursalId', validarJWT, report.getInformePedidos);
 
 module.exports = router;
