@@ -434,6 +434,7 @@ const generateDatosGeneralesInherentesOperacion = (params, data, json) => {
    * @param options
    */
 const generateDatosGeneralesEmisorDE = (params, data, json) => {
+              console.log(JSON.stringify({params,data,json},2))
   try {
     //Validar si el establecimiento viene en params
     let establecimiento = leftZero(data["establecimiento"], 3);

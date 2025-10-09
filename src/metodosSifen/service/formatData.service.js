@@ -3,6 +3,8 @@ const { formatDateToLocalISO } = require("../generarXml");
 const { paises } = require("./constants.service");
 
 const formatToParams = (documento, empresa) => {
+      const [establecimiento, puntoAs, numeroAs] =
+    documento.nroComprobante.split("-") || [];
   try {
     return {
       ruc: empresa.ruc,
@@ -18,7 +20,7 @@ const formatToParams = (documento, empresa) => {
       tipoRegimen: empresa.tipoImpId,
       establecimientos: [
         {
-          codigo: documento.sucursalId.toString().padStart(3, "0"),
+          codigo: establecimiento.toString().padStart(3, "0"),
           direccion: documento.sucursal.direccion,
           numeroCasa: empresa.numCasa.toString(),
           complementoDireccion1: "",
