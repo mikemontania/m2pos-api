@@ -39,6 +39,8 @@ const { signXML } = require("../metodosSifen/service/signxml.service");
 const { generateQR } = require("../metodosSifen/service/generateQR.service");
 const { enviarFactura } = require("../helpers/emailService");
 const ClienteSucursal = require("../models/ClienteSucursal.model");
+const EnvioRespuesta = require("../models/envioRespuesta.model");
+const Envio = require("../models/envio.model");
 
  
 
@@ -255,7 +257,97 @@ const reintentar = async (req, res) => {
     return res.status(500).json({ error: "Error al reintentar" });
   }
 };
- 
+/**
+ * Limpia todos los registros relacionados a un documento,
+ * en el orden correcto y de forma transaccional.
+ */
+async function limpiarRegistrosHistoricos(req, res) {
+  let t;
+  try {
+    const { id } = req.params;
+    const documentoId = Number(id);
+
+    if (Number.isNaN(documentoId)) {
+      return res.status(400).json({ ok: false, msg: "ID de documento inválido" });
+    }
+
+    t = await sequelize.transaction();
+
+    const doc = await Documento.findByPk(documentoId, { transaction: t });
+    if (!doc) throw new Error(`Documento ${documentoId} no encontrado.`);
+    if (['Aprobado', 'Recibido'].includes(doc.estado))
+      throw new Error(`No se pueden limpiar registros de un documento '${doc.estado}'.`);
+
+    // Paso 1️⃣ - obtener relaciones de envío
+    const relaciones = await EnvioDocumento.findAll({
+      where: { documentoId },
+      include: [{ model: Envio }],
+      transaction: t,
+    });
+
+    const envioIds = [];
+    const respuestaIds = new Set();
+
+    // Recolectar IDs únicos
+    for (const rel of relaciones) {
+      if (rel.envioId) envioIds.push(rel.envioId);
+      if (rel.Envio?.respuestaId) respuestaIds.add(rel.Envio.respuestaId);
+      if (rel.Envio?.respuestaConsultaId) respuestaIds.add(rel.Envio.respuestaConsultaId);
+    }
+
+    // Paso 2️⃣ - eliminar respuestas
+    if (respuestaIds.size > 0) {
+      await EnvioRespuesta.destroy({
+        where: { id: Array.from(respuestaIds) },
+        transaction: t,
+      });
+      console.log(`🧾 Respuestas eliminadas (${respuestaIds.size})`);
+    }
+
+    // Paso 3️⃣ - eliminar relaciones EnvioDocumento
+    if (relaciones.length > 0) {
+      await EnvioDocumento.destroy({ where: { documentoId }, transaction: t });
+      console.log(`🔗 ${relaciones.length} relaciones EnvioDocumento eliminadas`);
+    }
+
+    // Paso 4️⃣ - eliminar envíos
+    if (envioIds.length > 0) {
+      await Envio.destroy({ where: { id: envioIds }, transaction: t });
+      console.log(`📤 ${envioIds.length} envíos eliminados`);
+    }
+
+    // Paso 5️⃣ - eliminar DocumentoXml
+    const xmlEliminados = await DocumentoXml.destroy({
+      where: { documentoId },
+      transaction: t,
+    });
+    console.log(`📄 ${xmlEliminados} XML eliminados`);
+
+    // Paso 6️⃣ - actualizar documento
+    await Documento.update(
+      { estado: "Pendiente" },
+      { where: { id: documentoId }, transaction: t }
+    );
+
+    await t.commit();
+
+    console.log(`✅ Documento ${documentoId} limpiado correctamente`);
+    return res.json({
+      ok: true,
+      msg: `Registros del documento ${id} limpiados correctamente`,
+    });
+  } catch (error) {
+    if (t) await t.rollback(); // 👈 rollback seguro
+    console.error("❌ Error en limpiarRegistros:", error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error al limpiar registros",
+      error: error.message,
+    });
+  }
+}
+
+
 const actualizarEstadoDocumentosCdc = async (cdc, nuevoEstado) => {
   try {
     await Documento.update({ estado: nuevoEstado }, {
@@ -429,7 +521,7 @@ const getEmpresaById = async (id) => {
   };
 // Exportar las funciones para ser utilizadas en otros archivos del proyecto
 module.exports = { 
-  anular,
+  anular,limpiarRegistrosHistoricos,
   consultarcdc,
   reintentar ,getKude,enviarFacturaController
 };

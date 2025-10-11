@@ -45,7 +45,7 @@ const formatToParams = (documento, empresa) => {
 const formatToData = async (documento, empresa) => {
   console.log("documento ", JSON.stringify(documento, null, 2)); 
   
-  const esContado = documento.condicionPago.id == 1;
+  const esContado = documento.condicionPago.dias == 0;
   let documentoAsociado=null
   if (documento.docAsociadoId) {
     const documentoAso = await Documento.findByPk(documento.docAsociadoId);
