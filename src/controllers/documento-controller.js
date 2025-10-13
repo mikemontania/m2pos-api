@@ -513,6 +513,12 @@ const anularDocumento = async (req, res) => {
         motivoAnulacion: motivo || '', // ✅ Guardamos el motivo (vacío si no viene) 
         usuarioAnulacionId: req.usuario.id
       });
+       if (documento.pedidoId) {
+        const pedido = await Pedido.findByPk(documento.pedidoId);
+        await pedido.update({ 
+          estado:'Pendiente', 
+        });
+      }
 
       if (documento.docAsociadoId) {
         const documentoAso = await Documento.findByPk(documento.docAsociadoId);
