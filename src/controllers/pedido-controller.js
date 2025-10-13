@@ -282,12 +282,14 @@ const create = async (req, res) => {
 const anular  = async (req, res) => {
   try {
     const { id } = req.params;
+    const { motivo } = req.body; // ✅ Recibimos el motivo desde el body
     const pedido = await Pedido.findByPk(id);
     if (pedido) {
       await pedido.update({
         anulado: true,  
         valorNeto: 0,
         obsPedido:'anulado',
+        motivoAnulacion: motivo || '', // ✅ Guardamos el motivo (vacío si no viene) 
         fechaAnulacion: new Date(),
         usuarioAnulacionId: req.usuario.id
       });

@@ -5,6 +5,10 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 // Rutas para Documento
  
  
+router.get(
+  "/list/:fechaDesde/:fechaHasta/:clienteSucursalId/:clienteId/:sucursalId/:listaPrecioId/:condicionPagoId/:nroComprobante?",
+  validarJWT,documentoController.listarDocumentosSinPaginacion
+);
 router.get('/:id', validarJWT,   documentoController.getById);
 router.get('/:page/:pageSize/:fechaDesde/:fechaHasta/:clienteId/:clienteSucursalId/:sucursalId/:condicionPagoId/:listaPrecioId/:nroComprobante?', validarJWT,   documentoController.listarDocumentos);
 router.post('/factura', validarJWT,   documentoController.createDocumento); 

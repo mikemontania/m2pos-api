@@ -71,6 +71,11 @@ const Documento = sequelize.define('Documento', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  motivoAnulacion: {
+  type: DataTypes.STRING(255),
+  allowNull: false,
+  defaultValue: '',
+},
   fechaCreacion: {
     type: DataTypes.DATE,
     allowNull: false,

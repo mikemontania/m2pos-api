@@ -87,6 +87,11 @@ const Pedido = sequelize.define('Pedido', {
       return moment(this.getDataValue('fecha')).format('YYYY-MM-DD');
     }
   },  
+  motivoAnulacion: {
+  type: DataTypes.STRING(255),
+  allowNull: false,
+  defaultValue: '',
+},
   porcDescuento: {
     type: DataTypes.DECIMAL(19, 2),
     allowNull: false

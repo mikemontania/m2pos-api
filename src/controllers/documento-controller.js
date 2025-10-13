@@ -502,6 +502,7 @@ const crearNotaCredito = async (req, res) => {
 const anularDocumento = async (req, res) => {
   try {
     const { id } = req.params;
+    const { motivo } = req.body; // ✅ Recibimos el motivo desde el body
     const documento = await Documento.findByPk(id);
     if (documento) {
       await documento.update({
@@ -509,6 +510,7 @@ const anularDocumento = async (req, res) => {
         calculable:false,
         valorNeto: 0,
         fechaAnulacion: new Date(),
+        motivoAnulacion: motivo || '', // ✅ Guardamos el motivo (vacío si no viene) 
         usuarioAnulacionId: req.usuario.id
       });
 
@@ -665,7 +667,105 @@ const listarDocumentos = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   "Error al listar las documentos" });
   }
 };
+const listarDocumentosSinPaginacion = async (req, res) => {
+  console.log("listarDocumentosSinPaginacion");
+  try {
+    const {
+      fechaDesde,
+      fechaHasta,
+      clienteSucursalId,
+      clienteId,
+      sucursalId,
+      listaPrecioId,
+      condicionPagoId,
+      nroComprobante
+    } = req.params;
 
+    const { empresaId } = req.usuario;
+
+    const condiciones = { empresaId };
+
+    const desde = fechaDesde ? moment(fechaDesde).format("YYYY-MM-DD") : null;
+    const hasta = fechaHasta ? moment(fechaHasta).format("YYYY-MM-DD") : null;
+
+    if (desde && hasta) {
+      condiciones.fecha = {
+        [Op.gte]: desde,
+        [Op.lte]: hasta
+      };
+    }
+
+    if (Number(clienteSucursalId) > 0) {
+      condiciones.clienteSucursalId = Number(clienteSucursalId);
+    }
+
+    if (Number(clienteId) > 0) {
+      condiciones.clienteId = Number(clienteId);
+    }
+
+    if (sucursalId > 0) {
+      condiciones.sucursalId = sucursalId;
+    }
+
+    if (listaPrecioId > 0) {
+      condiciones.listaPrecioId = listaPrecioId;
+    }
+
+    if (condicionPagoId > 0) {
+      condiciones.condicionPagoId = condicionPagoId;
+    }
+
+    if (nroComprobante && nroComprobante.length > 2) {
+      condiciones.nroComprobante = {
+        [Op.iLike]: `%${nroComprobante.toLowerCase()}%`
+      };
+    }
+
+    const documentos = await Documento.findAll({
+      where: condiciones,
+      include: [
+        { model: Usuario, as: "vendedorCreacion", attributes: ["usuario"] },
+        {
+          model: Cliente,
+          as: "cliente",
+          attributes: ["id", "nroDocumento", "razonSocial"]
+        },
+        {
+          model: ClienteSucursal,
+          as: "clienteSucursal",
+          attributes: ["nombre"]
+        },
+        {
+          model: CondicionPago,
+          as: "condicionPago",
+          attributes: ["id", "descripcion"]
+        },
+        {
+          model: TablaSifen,
+          as: "tipoDocumento"
+        },
+        {
+          model: ListaPrecio,
+          as: "listaPrecio",
+          attributes: ["id", "descripcion"]
+        },
+        {
+          model: Sucursal,
+          as: "sucursal",
+          attributes: ["descripcion", "direccion", "telefono", "cel"]
+        }
+      ],
+      order: [["id", "DESC"]] // Orden descendente por ID
+    });
+
+    res.status(200).json({ documentos });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: error?.original?.detail || "Error al listar los documentos" });
+  }
+};
  
  
 module.exports = {
@@ -674,7 +774,8 @@ module.exports = {
   createDocumento,
   anularDocumento,
   listarDocumentos, 
-  crearCreditoDesdeDocumentoPorId
+  crearCreditoDesdeDocumentoPorId,
+  listarDocumentosSinPaginacion
  };
 
 
