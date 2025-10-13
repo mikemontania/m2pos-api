@@ -330,10 +330,13 @@ async function limpiarRegistrosHistoricos(req, res) {
     );
 
     await t.commit();
-
+   const documentoActualizado = await Documento.findByPk(documentoId, {
+      include: [{ model: Cliente, as: 'cliente' }, { model: Empresa, as: 'empresa' }, { model: TablaSifen, as: 'tipoDocumento' }]
+    });
     console.log(`✅ Documento ${documentoId} limpiado correctamente`);
     return res.json({
       ok: true,
+      documento:{...documentoActualizado},
       msg: `Registros del documento ${id} limpiados correctamente`,
     });
   } catch (error) {
