@@ -6,7 +6,7 @@ const router = Router();
 
 // Ruta para buscar una categoría por ID
 router.get('/actividades', validarJWT,    empresaController.obtenerActividadesPorEmpresa); 
-
+router.get('/empresa', validarJWT,    empresaController.getData);  
 
 router.post('/add-actividades', validarJWT,   empresaController.agregarActividadAEmpresa);
 router.delete('/remove-actividad/:actividadId',  validarJWT,  empresaController.eliminarActividadDeEmpresa);

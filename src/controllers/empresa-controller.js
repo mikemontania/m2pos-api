@@ -26,6 +26,25 @@ const getById = async (req, res) => {
     res.status(500).json({ error: error?.original?.detail ||   'Error al buscar el empresa por ID' });
   }
 };
+const getData = async (req, res) => {
+  try {
+    const { empresaId } = req.usuario;
+    const empresa = await Empresa.findByPk(empresaId);
+    if (empresa) {
+      
+    const empresaSafe = empresa.toJSON();
+     if (empresa.emailPass)  
+       empresaSafe.emailPass = await decryptPassphrase(empresa.emailPass);  
+
+    res.status(200).json(empresaSafe);
+    } else {
+      res.status(404).json({ error: 'empresa no encontrado' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error?.original?.detail ||   'Error al buscar el empresa por ID' });
+  }
+};
  
  
 
@@ -163,7 +182,7 @@ const eliminarActividadDeEmpresa = async (req, res) => {
 };
  
 module.exports = {
-  getById,
+  getById,getData,
   update ,
   agregarActividadAEmpresa,
   obtenerActividadesPorEmpresa,
