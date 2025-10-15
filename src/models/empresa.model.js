@@ -1,12 +1,12 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require("../../dbconfig");
-const Departamento = require("./departamento.model");
-const Ciudad = require("./ciudad.model");
-const Barrio = require("./barrio.model"); 
-const Moneda = require("./moneda.model");
+const { DataTypes } = require('sequelize')
+const { sequelize } = require('../../dbconfig')
+const Departamento = require('./departamento.model')
+const Ciudad = require('./ciudad.model')
+const Barrio = require('./barrio.model')
+const Moneda = require('./moneda.model')
 
 const Empresa = sequelize.define(
-  "Empresa",
+  'Empresa',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -28,7 +28,7 @@ const Empresa = sequelize.define(
     csc: {
       type: DataTypes.STRING(50),
       allowNull: true
-    }, 
+    },
     codMoneda: {
       type: DataTypes.STRING,
       allowNull: true
@@ -81,6 +81,14 @@ const Empresa = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true
     },
+    emailUser: {
+      type: DataTypes.STRING(50),
+      allowNull: true
+    },
+    emailPass: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
     img: {
       type: DataTypes.STRING,
       allowNull: true
@@ -90,45 +98,41 @@ const Empresa = sequelize.define(
       allowNull: true
     },
     modoSifen: {
-      type: DataTypes.ENUM("SI", "NO"),
+      type: DataTypes.ENUM('SI', 'NO'),
       allowNull: false,
-      defaultValue: "SI"
+      defaultValue: 'SI'
     },
     envioKude: {
-      type: DataTypes.ENUM("SI", "NO"),
+      type: DataTypes.ENUM('SI', 'NO'),
       allowNull: false,
-      defaultValue: "NO"
-    }, 
+      defaultValue: 'NO'
+    }
   },
   {
-    tableName: "empresas",
+    tableName: 'empresas',
     timestamps: false, // Puedes deshabilitar los campos de timestamp si no los necesitas
     underscored: true // Convierte automáticamente a snake_case
   }
-);
+)
 Empresa.belongsTo(Departamento, {
-  foreignKey: "codDepartamento",
-  targetKey: "codigo",
-  as:'departamento'
-});
+  foreignKey: 'codDepartamento',
+  targetKey: 'codigo',
+  as: 'departamento'
+})
 Empresa.belongsTo(Ciudad, {
-  foreignKey: "codCiudad",
-  targetKey: "codigo",
-  as:'ciudad'
-});
+  foreignKey: 'codCiudad',
+  targetKey: 'codigo',
+  as: 'ciudad'
+})
 Empresa.belongsTo(Barrio, {
-  foreignKey: "codBarrio",
-  targetKey: "codigo",
-  as:'barrio'
-});
+  foreignKey: 'codBarrio',
+  targetKey: 'codigo',
+  as: 'barrio'
+})
 Empresa.belongsTo(Moneda, {
-  foreignKey: "codMoneda",
-  targetKey: "codigo",
-  as:'moneda'
-});
- 
+  foreignKey: 'codMoneda',
+  targetKey: 'codigo',
+  as: 'moneda'
+})
 
-
- 
-
-module.exports = Empresa;
+module.exports = Empresa

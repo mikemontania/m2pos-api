@@ -105,7 +105,7 @@ const obtenerLotesRecibidos = async (empresaId) => {
 // Función para generar registros xml
 const consultaLoteXml = async (empresasXml) => {
   console.log('***************************************************************');
-  console.log('🔍 Iniciado consula de lote...');
+  console.log('🔍 Iniciado consulta de lote...');
   try {
     
     await Promise.all(

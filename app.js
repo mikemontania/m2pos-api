@@ -5,8 +5,7 @@ const { dbConnection } = require("./dbconfig");
 const { populateDB } = require("./dbinit");
 
 const morgan = require("morgan"); // const { json } = require('express/lib/response');
-const { ejecucionJobs } = require("./src/jobs/jobs");
-const { ejecucionJobsemail } = require("./src/jobs/jobsEmail");
+const { ejecucionJobs } = require("./src/jobs/jobs"); 
 
 //const { loggerPos } = require("./logger");
 // Este es un comentario
@@ -24,8 +23,7 @@ const dbSetup = async () => {
   await populateDB(); //inserta registros
 };
 dbSetup();
-ejecucionJobs()//jobs
-ejecucionJobsemail()
+ejecucionJobs()//jobs 
 app.use("/M2POS/auditorias", require("./src/routes/auditoria-routes"));
 app.use("/M2POS/auth", require("./src/routes/auth-routes"));
 app.use("/M2POS/bancos", require("./src/routes/banco-routes"));

@@ -37,10 +37,11 @@ const { generateXMLDE } = require("../metodosSifen/service/jsonDeMain.service");
 const { normalizeXML } = require("../metodosSifen/service/util");
 const { signXML } = require("../metodosSifen/service/signxml.service");
 const { generateQR } = require("../metodosSifen/service/generateQR.service");
-const { enviarFactura } = require("../helpers/emailService");
+const { enviarFactura, crearYVerificarTransporter } = require("../helpers/emailService");
 const ClienteSucursal = require("../models/ClienteSucursal.model");
 const EnvioRespuesta = require("../models/envioRespuesta.model");
 const Envio = require("../models/envio.model");
+const { decryptPassphrase } = require("../helpers/encript-helper");
 
  
 
@@ -449,8 +450,30 @@ const enviarFacturaController = async (req, res) => {
     if (!documento) {
       return res.status(404).json({ error: "Documento no encontrado" });
     }
+    const {empresa}= documento;
 
-    await enviarFactura(documento);
+ if (empresa.envioKude === "NO") {
+      console.log(`⚠️ Empresa ${empresa.razonSocial} con envioKude desactivado.`);
+      return;
+    }
+
+    const tieneEmailEnvio = empresa.emailUser && empresa.emailUser.length > 5 &&
+                            empresa.emailPass && empresa.emailPass.length > 5;
+    if (!tieneEmailEnvio) {
+      console.log(`⚠️ Empresa ${empresa.razonSocial} no tiene email válido.`);
+      return;
+    }
+
+    const pass = decryptPassphrase(empresa.emailPass);
+
+    // 🔹 Crear y verificar transporter
+    const transporter = await crearYVerificarTransporter(empresa.emailUser, pass);
+    if (!transporter) {
+      console.log(`⛔ No se enviarán correos para ${empresa.razonSocial} debido a error SMTP.`);
+      return;
+    }
+ 
+     await enviarFactura(documento,empresa, transporter); 
     res.status(200).json({ mensaje: "Factura enviada con éxito" });
 
   } catch (error) {

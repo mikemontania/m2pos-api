@@ -33,7 +33,9 @@ const obtenerDocumentosPendientes = async (empresaId) => {
         { model: TablaSifen, as: 'tipoDocumento' }
       ],
       raw: true,
-      nest: true
+      nest: true,
+      order: [['id', 'ASC']],
+      limit: 30
     });
 
     // Inicializando los totales

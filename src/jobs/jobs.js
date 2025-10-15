@@ -14,6 +14,7 @@ require("dotenv").config(); // Cargar variables de entorno
 const { Op } = require("sequelize");
 const { loadCertificateAndKey } = require("../metodosSifen/obtenerCertificado"); 
 const Moneda = require("../models/moneda.model"); 
+const { ejecucionJobsemail } = require("./jobsEmail");
 
 
 const getEmpresas = async () => {
@@ -98,6 +99,7 @@ const realizaTareas =async () =>{
         await consultaLoteXml(empresas);  
         await generarXml(empresas);
         await envioLoteXml(empresas);
+        await ejecucionJobsemail(empresas);
     } catch (error) {
         console.error('❌ Error al realizar jobs... :', error);
     }

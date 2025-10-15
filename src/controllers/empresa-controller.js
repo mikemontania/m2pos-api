@@ -3,13 +3,21 @@ const Empresa = require('../models/empresa.model');
 const { sequelize } = require('../../dbconfig');
 const Actividad = require('../models/actividad.model');
 const EmpresaActividad = require('../models/empresaActividad.model');
+const { encryptPassphrase, decryptPassphrase } = require('../helpers/encript-helper');
 
 const getById = async (req, res) => {
   try {
     const { id } = req.params;
     const empresa = await Empresa.findByPk(id);
     if (empresa) {
-      res.status(200).json(empresa);
+     
+    // 🧹 Eliminar la contraseña antes de enviar la respuesta
+    const empresaSafe = empresa.toJSON();
+    // Indicar si existe contraseña sin enviarla
+    empresaSafe.hasEmailPass = !!empresa.emailPass;
+    delete empresaSafe.emailPass;
+
+    res.status(200).json(empresaSafe);
     } else {
       res.status(404).json({ error: 'empresa no encontrado' });
     }
@@ -35,13 +43,29 @@ const update= async (req, res) => {
       codBarrio, 
       web,
       envioKude,
+       emailUser,
+      emailPass,
       modoSifen } = req.body;
 
     // Buscar la empresa por su ID
     const empresa = await Empresa.findByPk(id);
-
+ 
     // Verificar si la empresa existe
     if (empresa) {
+
+
+      if (!empresa) {
+      return res.status(404).json({ error: 'Empresa no encontrada' });
+    }
+
+    // 🔐 Encriptar la contraseña solo si viene en el body
+    let encryptedPass = empresa.emailPass; // mantener la actual si no viene nueva
+    if (emailPass &&  emailPass.length>0 ) {
+      encryptedPass = encryptPassphrase(emailPass);
+    }
+    else{
+      encryptedPass = empresa.emailPass ;
+    }
       // Actualizar los campos de la empresa
       await empresa.update({ razonSocial, ruc, telefono, email,emailEnvio,nombreFantasia,
         moneda,
@@ -53,7 +77,9 @@ const update= async (req, res) => {
         codCiudad,
         codBarrio,  
         web,envioKude,
-        modoSifen  });
+        modoSifen , 
+      emailUser,
+      emailPass: encryptedPass});
 
       // Responder con la empresa actualizada
       res.status(200).json(empresa);

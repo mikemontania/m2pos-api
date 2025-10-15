@@ -1,42 +1,93 @@
 const cron = require('node-cron');
-const Documento = require('../models/documento.model');
+const Documento = require('../models/documento.model'); 
+const { crearYVerificarTransporter, enviarFactura } = require('../helpers/emailService');
+const { decryptPassphrase } = require('../helpers/encript-helper');
 const Cliente = require('../models/cliente.model');
-const Empresa = require('../models/empresa.model');
+const ClienteSucursal = require('../models/ClienteSucursal.model');
+const CondicionPago = require('../models/condicionPago.model');
 const TablaSifen = require('../models/tablaSifen.model');
-const { verificarConexionEmail, enviarFactura } = require('../helpers/emailService');
  
-const ejecucionJobsemail = async () => {
-  console.log(`✅ ejecucionJobsemail`);
-  if (process.env.AGENTEENVIOSJOB !== "true") {
-    console.log("❌ Tarea de revisión para enviar lotes desactivada.");
-    return;
-  }
-
-  console.log(`✅ Tarea programada cada ${process.env.MINUTO_JOBS} minutos.`);
-
-  cron.schedule(`*/${process.env.MINUTO_JOBS} * * * *`, async () => {
-    console.log('Ejecutando job de envío de facturas...');
-    
-    if (!(await verificarConexionEmail())) {
-      console.log("⛔ No se enviarán correos debido a error en la autenticación SMTP.");
+const procesarEmpresa = async (empresa) => {
+  try {
+    if (empresa.envioKude === "NO") {
+      console.log(`⚠️ Empresa ${empresa.razonSocial} con envioKude desactivado.`);
       return;
     }
 
-    try {
-      const documentos = await Documento.findAll({
-        where: { estado: 'Aprobado', estadoEnvioKude: 'NOENVIADO' },
-        include: [{ model: Cliente, as: 'cliente' }, { model: Empresa, as: 'empresa' }, { model: TablaSifen, as: 'tipoDocumento' }]
-      });
-
-      for (const doc of documentos) {
-        await enviarFactura(doc);
-      }
-
-      console.log('✅ Proceso de envío completado.');
-    } catch (error) {
-      console.error('❌ Error en el job de envío:', error);
+    const tieneEmailEnvio = empresa.emailUser && empresa.emailUser.length > 5 &&
+                            empresa.emailPass && empresa.emailPass.length > 5;
+    if (!tieneEmailEnvio) {
+      console.log(`⚠️ Empresa ${empresa.razonSocial} no tiene email válido.`);
+      return;
     }
-  });
+
+    const pass = decryptPassphrase(empresa.emailPass);
+
+    // 🔹 Crear y verificar transporter
+    const transporter = await crearYVerificarTransporter(empresa.emailUser, pass);
+    if (!transporter) {
+      console.log(`⛔ No se enviarán correos para ${empresa.razonSocial} debido a error SMTP.`);
+      return;
+    }
+
+    // Traer documentos pendientes (limit 30)
+    const documentos = await Documento.findAll({
+      where: { estado: 'Aprobado', estadoEnvioKude: 'NOENVIADO', empresaId: empresa.id },
+      include: [ {
+          model: Cliente,
+          as: "cliente",
+          attributes: ["id", "nroDocumento", "razonSocial","email"]
+        },
+ {
+          model: ClienteSucursal,
+          as: "clienteSucursal",
+          attributes: ["nombre"]
+        },
+        {
+          model: CondicionPago,
+          as: "condicionPago",
+          attributes: ["id", "descripcion"]
+        },
+        {
+          model: TablaSifen,
+          as: "tipoDocumento"
+        },
+      
+      ],
+      order: [['id', 'ASC']],
+      limit: 30
+    });
+ 
+    if (!documentos?.length) {
+      console.log(`✅ No hay documentos pendientes a Aprobados`);
+      return;
+    }
+
+    console.log(`📄 Enviando ${documentos.length} documentos para ${empresa.razonSocial}`);
+
+    for (const doc of documentos) {
+      try {
+        await enviarFactura(doc,empresa, transporter);
+      } catch (errorDoc) {
+        console.error(`❌ Error enviando factura ${doc.nroComprobante} de ${empresa.razonSocial}:`, errorDoc);
+      }
+    }
+
+    console.log(`✅ Envío completado para ${empresa.razonSocial}`);
+
+  } catch (error) {
+    console.error(`❌ Error procesando empresa ${empresa.razonSocial}:`, error);
+  }
+};
+
+
+
+const ejecucionJobsemail = async (empresas) => {
+console.log('/*********************************ejecucionJobsemail**************************************/')
+  // 🔹 Procesar empresas una por una
+  for (const empresa of empresas) {
+    await procesarEmpresa(empresa);
+  }
 };
 
 module.exports = { ejecucionJobsemail };
