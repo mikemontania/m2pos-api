@@ -186,7 +186,7 @@ const create = async (req, res) => {
       presentacionId, 
       variedadId,
       productoId,
-      unidadId,
+      unidadId,precioCosto,
       activo
     } = req.body;
     const nuevaVariante = await Variante.create({
@@ -197,7 +197,7 @@ const create = async (req, res) => {
       presentacionId,
       variedadId,
       productoId,
-      unidadId,
+      unidadId,precioCosto,
       activo
     });
     res.status(201).json(nuevaVariante);
@@ -220,6 +220,7 @@ const update = async (req, res) => {
       variedadId, 
       productoId,
       unidadId,
+      precioCosto,
       activo
     } = req.body;
    
@@ -234,6 +235,7 @@ const update = async (req, res) => {
         variedadId,
         productoId,
         unidadId,
+        precioCosto,
         activo
       });
       res.status(200).json(varianteActualizada);
