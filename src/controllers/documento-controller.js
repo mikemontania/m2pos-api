@@ -513,23 +513,26 @@ const anularDocumento = async (req, res) => {
         motivoAnulacion: motivo || '', // ✅ Guardamos el motivo (vacío si no viene) 
         usuarioAnulacionId: req.usuario.id
       });
+      // Si tiene pedido
        if (documento.pedidoId) {
         const pedido = await Pedido.findByPk(documento.pedidoId);
         await pedido.update({ 
           estado:'Pendiente', 
         });
       }
-
+      //si hay documento asociado se debe revivirlo
       if (documento.docAsociadoId) {
         const documentoAso = await Documento.findByPk(documento.docAsociadoId);
         await documentoAso.update({ 
           calculable:true, 
-        });
-        documento
-        const resultadoCred = await ajustarCreditoPorNC(documento.id,documentoAso.timbrado,documentoAso.nroComprobante,  documentoAso.importeTotal, documentoAso.id);
-      }else{
+        });  
+        await ajustarCreditoPorNC(documento.id,documentoAso.timbrado,documentoAso.nroComprobante,  documentoAso.importeTotal, documentoAso.id);
+            }/* ESto no tenia sentidos si no hay asociado no hay que hacer
+            else{
         const credito = await anularCredito(documento.id,req.usuario.id);
-      } 
+      }  */
+
+
       //si el tipo de documento es  credito  debo eliminar el item del listado
       const condicionPago = await CondicionPago.findByPk(documento.condicionPagoId);
       if (condicionPago && condicionPago.dias > 0) {
