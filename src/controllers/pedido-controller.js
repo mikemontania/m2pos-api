@@ -410,8 +410,28 @@ const listar  = async (req, res) => {
         },
         {
           model: ClienteSucursal,
-          as: "clienteSucursal",
-          attributes: ["nombre" ]
+          as: "clienteSucursal",    include: [
+          {
+            model: CondicionPago,
+            as: 'condicionPago', 
+          },
+          {
+            model: ListaPrecio,
+            as: 'listaPrecio', 
+          },
+          {
+            model: Departamento,
+            as: 'departamento', 
+          },
+          {
+            model: Ciudad,
+            as: 'ciudad', 
+          },
+          {
+            model: Barrio,
+            as: 'barrio', 
+          }
+        ]
         },
         {
           model: CondicionPago,
