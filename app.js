@@ -59,6 +59,20 @@ app.use("/M2POS/uploads", require("./src/routes/uploads-routes"));
 app.use("/M2POS/reportes", require("./src/routes/reporte-routes"));
 app.use("/M2POS/reportes-din", require("./src/routes/reporteDin-routes"));
 app.use("/M2POS/pedidos", require("./src/routes/pedido-routes"));
+
+
+
+
+app.use('/M2POS/cultivo', require("./src/routes/cultivo.routes"));
+app.use('/M2POS/esencia', require("./src/routes/esencia.routes"));
+app.use('/M2POS/lote-esencia', require("./src/routes/loteEsencia.routes"));
+app.use('/M2POS/lote-cultivo', require("./src/routes/loteCultivo.routes"));
+app.use('/M2POS/tanques-fermentadores', require("./src/routes/tanque-fermentador.routes"));
+
+  
+app.use('/M2POS/elaboracion', require("./src/routes/elaboracion.routes"));
+
+
 app.listen(process.env.PORT, () =>
   console.log("Servidor corriendo en puerto " + process.env.PORT)
 );

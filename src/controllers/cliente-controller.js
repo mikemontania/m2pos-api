@@ -1,6 +1,6 @@
 const { Op } = require('sequelize')
-const Cliente = require('../models/cliente.model') // Asegúrate de que la importación del modelo sea correcta
 const { sequelize } = require('../../dbconfig')
+const Cliente = require('../models/cliente.model') // Asegúrate de que la importación del modelo sea correcta
 const CondicionPago = require('../models/condicionPago.model')
 const ListaPrecio = require('../models/listaPrecio.model')
 const ClienteSucursal = require('../models/ClienteSucursal.model')
