@@ -3,8 +3,7 @@ const Variante = require('./variante.model');
 const RegistroElaboracion = require('./RegistroElaboracion.model');
  const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
-const Empresa = require('./empresa.model');
-const LoteEsencia = require('./loteEsencia.model');
+const Empresa = require('./empresa.model'); 
 
 // ============================================
 // 6. MODELO: DetalleElaboracionVariante (Producción por variante)
@@ -21,23 +20,27 @@ const DetalleElaboracionVariante = sequelize.define('DetalleElaboracionVariante'
   },
   varianteId: {
     type: DataTypes.BIGINT,
-    allowNull: false,
-    comment: 'Variante del producto (Natural 380g, Coco 240g, etc)'
-  },
-  loteEsenciaId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    comment: 'Solo si la variante usa esencia'
+    allowNull: false
   },
   cantidad: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    comment: 'Cantidad de unidades producidas'
+    allowNull: false
   },
   fechaVencimiento: {
     type: DataTypes.DATEONLY,
     allowNull: false,
     comment: 'Calculado según formato de lote'
+  },
+  // NUEVOS CAMPOS para esencias
+  numeroLoteEsencia: {  // NUEVO
+    type: DataTypes.STRING(50),
+    allowNull: true,
+    comment: 'Número de lote de la esencia (solo si aplica)'
+  },
+  fechaVencimientoEsencia: {  // NUEVO
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+    comment: 'Fecha vto de esencia (solo Coco/Vainilla)'
   },
   empresaId: {
     type: DataTypes.INTEGER,
@@ -46,11 +49,7 @@ const DetalleElaboracionVariante = sequelize.define('DetalleElaboracionVariante'
 }, {
   tableName: 'detalles_elaboracion_variante',
   timestamps: true,
-  underscored: true,
-  indexes: [
-    { fields: ['registro_elaboracion_id'] },
-    { fields: ['variante_id'] }
-  ]
+  underscored: true
 });
 
 
@@ -61,11 +60,7 @@ DetalleElaboracionVariante.belongsTo(RegistroElaboracion, {
 DetalleElaboracionVariante.belongsTo(Variante, { 
   foreignKey: 'varianteId', 
   as: 'variante' 
-});
-DetalleElaboracionVariante.belongsTo(LoteEsencia, { 
-  foreignKey: 'loteEsenciaId', 
-  as: 'loteEsencia' 
-});
+}); 
 DetalleElaboracionVariante.belongsTo(Empresa, { foreignKey: 'empresaId' });
 
 // Relaciones inversas

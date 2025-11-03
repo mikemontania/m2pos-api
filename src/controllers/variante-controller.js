@@ -179,8 +179,10 @@ const findAll = async (req, res) => {
 const create = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
+   
     const {
-      porcIva,
+      porcIva,  elaborable  ,
+        usaEsencia ,
       codBarra,
       codErp,
       presentacionId, 
@@ -191,7 +193,8 @@ const create = async (req, res) => {
     } = req.body;
     const nuevaVariante = await Variante.create({
       porcIva,
-      empresaId,
+      empresaId,elaborable  ,
+        usaEsencia ,
       codBarra,
       codErp, 
       presentacionId,
@@ -214,7 +217,8 @@ const update = async (req, res) => {
     const { id } = req.params;
     const {
       porcIva,
-      codBarra,
+      codBarra,elaborable  ,
+        usaEsencia ,
       codErp,
       presentacionId,
       variedadId, 
@@ -229,7 +233,8 @@ const update = async (req, res) => {
       await varianteActualizada.update({
         porcIva,
         codBarra,
-        codErp,
+        codErp,elaborable  ,
+        usaEsencia ,
         empresaId, 
         presentacionId,
         variedadId,

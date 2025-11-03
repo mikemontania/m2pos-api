@@ -106,7 +106,12 @@ const Empresa = sequelize.define(
       type: DataTypes.ENUM('SI', 'NO'),
       allowNull: false,
       defaultValue: 'NO'
-    }
+    },
+    produccion: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
   },
   {
     tableName: 'empresas',

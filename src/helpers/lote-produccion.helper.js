@@ -1,12 +1,12 @@
 // ============================================
-// HELPER: Generación y validación de lotes
+// HELPER: Generación y validación de lotes (OPTIMIZADO)
 // ============================================
 
 /**
  * Genera número de lote según formato LDDMMAAANNX
  * @param {Date} fechaElaboracion - Fecha de elaboración
- * @param {string} codigoEnvasado - 01, 02, 03 (tarde, siguiente, día siguiente siguiente)
- * @param {string} letraTanque - Letra del tanque desde TanqueFermentador.letraLote
+ * @param {string} codigoEnvasado - 01, 02, 03
+ * @param {string} letraTanque - Letra del tanque
  * @returns {string} Número de lote (ej: L01092501A)
  */
 function generarNumeroLote(fechaElaboracion, codigoEnvasado = '01', letraTanque) {
@@ -23,9 +23,9 @@ function generarNumeroLote(fechaElaboracion, codigoEnvasado = '01', letraTanque)
 
 /**
  * Calcula fecha de envasado según código de envasado
- * @param {Date} fechaElaboracion - Fecha de elaboración
+ * @param {Date} fechaElaboracion
  * @param {string} codigoEnvasado - 01, 02, 03
- * @returns {Date} Fecha de envasado
+ * @returns {Date}
  */
 function calcularFechaEnvasado(fechaElaboracion, codigoEnvasado) {
   const fecha = new Date(fechaElaboracion);
@@ -51,7 +51,7 @@ function calcularFechaEnvasado(fechaElaboracion, codigoEnvasado) {
 /**
  * Parsea un número de lote y extrae información
  * @param {string} numeroLote - Ej: L01092501A
- * @returns {Object} Información del lote
+ * @returns {Object}
  */
 function parsearNumeroLote(numeroLote) {
   if (!numeroLote || !numeroLote.startsWith('L')) {
@@ -75,8 +75,8 @@ function parsearNumeroLote(numeroLote) {
 }
 
 /**
- * Valida rangos de temperatura para cultivo
- * @param {number} temperatura - Temperatura en °C
+ * Valida rangos de temperatura
+ * @param {number} temperatura
  * @returns {boolean}
  */
 function validarTemperaturaCultivo(temperatura) {
@@ -84,8 +84,8 @@ function validarTemperaturaCultivo(temperatura) {
 }
 
 /**
- * Valida rango de pH para maduración
- * @param {number} ph - Valor de pH
+ * Valida rango de pH
+ * @param {number} ph
  * @returns {boolean}
  */
 function validarPHMaduracion(ph) {
@@ -105,23 +105,27 @@ function calcularFechaVencimientoProducto(fechaEnvasado, diasVida = 30) {
 }
 
 // ============================================
-// HELPER: Carga de planilla diaria
+// PROCESAMIENTO DE REGISTROS
 // ============================================
 
 /**
- * Procesa datos de planilla para crear registro de elaboración
- * @param {Object} datosFormulario - Datos del formulario de tablet
- * @param {number} empresaId - ID de la empresa
- * @param {number} usuarioId - ID del usuario que carga
- * @returns {Object} Datos estructurados para insertar
+ * Procesa datos para crear registro de elaboración
+ * @param {Object} datosFormulario
+ * @param {number} empresaId
+ * @param {number} usuarioId
+ * @returns {Object}
  */
 async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
   const TanqueFermentador = require('../models/tanqueFermentador.model');
+  const Cultivo = require('../models/cultivo.model');
+  const Variante = require('../models/variante.model');
   
   const {
     fechaElaboracion,
     tanqueFermentadorId,
-    loteCultivoId,
+    cultivoId,  // ⭐ CAMBIO: Ya no es loteCultivoId
+    numeroLoteCultivo,  // ⭐ NUEVO: Campo texto
+    fechaVencimientoCultivo,  // ⭐ NUEVO: Opcional
     cantidadLitros,
     horaCultivo,
     temperaturaCultivo,
@@ -129,7 +133,7 @@ async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
     horaFiltrado,
     codigoEnvasado = '01',
     realizadoPor,
-    variantes = [], // Array de { varianteId, cantidad, loteEsenciaId?, diasVida? }
+    variantes = [],  // Array de { varianteId, cantidad, numeroLoteEsencia?, fechaVencimientoEsencia?, diasVida? }
     observaciones
   } = datosFormulario;
   
@@ -142,13 +146,24 @@ async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
     throw new Error('pH de maduración debe estar entre 4.7 y 4.8');
   }
   
+  // Validar que el cultivo existe
+  const cultivo = await Cultivo.findByPk(cultivoId);
+  if (!cultivo) {
+    throw new Error('Cultivo no encontrado');
+  }
+  
+  // Validar que el número de lote no esté vacío
+  if (!numeroLoteCultivo || numeroLoteCultivo.trim() === '') {
+    throw new Error('Debe ingresar el número de lote del cultivo');
+  }
+  
   // Obtener tanque para obtener la letra
   const tanque = await TanqueFermentador.findByPk(tanqueFermentadorId);
   if (!tanque) {
     throw new Error('Tanque fermentador no encontrado');
   }
   
-  // Generar número de lote
+  // Generar número de lote de producción
   const numeroLoteProduccion = generarNumeroLote(
     fechaElaboracion,
     codigoEnvasado,
@@ -158,12 +173,33 @@ async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
   // Calcular fecha de envasado
   const fechaEnvasado = calcularFechaEnvasado(fechaElaboracion, codigoEnvasado);
   
+  // Validar variantes y sus campos de esencia
+  for (const v of variantes) {
+    const variante = await Variante.findByPk(v.varianteId);
+    
+    if (!variante) {
+      throw new Error(`Variante ${v.varianteId} no encontrada`);
+    }
+    
+    // ⭐ Si la variante usa esencia, validar campos
+    if (variante.usaEsencia) {
+      /* if (!v.numeroLoteEsencia || v.numeroLoteEsencia.trim() === '') {
+        throw new Error(`La variante ${variante.id} requiere número de lote de esencia`);
+      } */
+      if (!v.fechaVencimientoEsencia) {
+        throw new Error(`La variante ${variante.id} requiere fecha de vencimiento de esencia`);
+      }
+    }
+  }
+  
   // Estructura para insertar
   const registroElaboracion = {
     fechaElaboracion,
     numeroLoteProduccion,
     tanqueFermentadorId,
-    loteCultivoId,
+    cultivoId,  // ⭐ CAMBIO
+    numeroLoteCultivo,  // ⭐ NUEVO
+    fechaVencimientoCultivo: fechaVencimientoCultivo || null,  // ⭐ NUEVO
     cantidadLitros,
     horaCultivo,
     temperaturaCultivo,
@@ -178,9 +214,10 @@ async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
   
   const detallesVariantes = variantes.map(v => ({
     varianteId: v.varianteId,
-    loteEsenciaId: v.loteEsenciaId || null,
     cantidad: v.cantidad,
     fechaVencimiento: calcularFechaVencimientoProducto(fechaEnvasado, v.diasVida || 30),
+    numeroLoteEsencia: v.numeroLoteEsencia || null,  // ⭐ NUEVO
+    fechaVencimientoEsencia: v.fechaVencimientoEsencia || null,  // ⭐ NUEVO
     empresaId
   }));
   
@@ -235,6 +272,120 @@ async function guardarRegistroElaboracion(datosFormulario, empresaId, usuarioId)
     };
     
   } catch (error) {
+    console.log(error)
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}
+
+/**
+ * Actualiza un registro existente (solo si NO está finalizado)
+ * @param {number} registroId
+ * @param {Object} datosFormulario
+ * @param {number} empresaId
+ * @param {number} usuarioId
+ * @returns {Promise<Object>}
+ */
+async function actualizarRegistroElaboracion(registroId, datosFormulario, empresaId, usuarioId) {
+  const RegistroElaboracion = require('../models/RegistroElaboracion.model');
+  const DetalleElaboracionVariante = require('../models/detalleElaboracion.model');
+  const { sequelize } = require('../../dbconfig');
+  
+  try {
+    const resultado = await sequelize.transaction(async (t) => {
+      // Verificar que existe y no está finalizado
+      const registroExistente = await RegistroElaboracion.findOne({
+        where: { id: registroId, empresaId },
+        transaction: t
+      });
+      
+      if (!registroExistente) {
+        throw new Error('Registro no encontrado');
+      }
+      
+      if (registroExistente.finalizado) {
+        throw new Error('No se puede editar un registro finalizado');
+      }
+      
+      // Procesar datos
+      const { registroElaboracion, detallesVariantes } = await procesarCargaPlanilla(
+        datosFormulario,
+        empresaId,
+        usuarioId
+      );
+      
+      // Actualizar registro de elaboración
+      await registroExistente.update(registroElaboracion, { transaction: t });
+      
+      // Eliminar detalles anteriores
+      await DetalleElaboracionVariante.destroy({
+        where: { registroElaboracionId: registroId },
+        transaction: t
+      });
+      
+      // Crear nuevos detalles
+      const detallesConRegistro = detallesVariantes.map(d => ({
+        ...d,
+        registroElaboracionId: registroId
+      }));
+      
+      await DetalleElaboracionVariante.bulkCreate(detallesConRegistro, { 
+        transaction: t 
+      });
+      
+      return registroExistente;
+    });
+    
+    return {
+      success: true,
+      data: resultado
+    };
+    
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}
+
+/**
+ * Finaliza un registro (ya no se podrá editar)
+ * @param {number} registroId
+ * @param {number} empresaId
+ * @param {number} usuarioId
+ * @returns {Promise<Object>}
+ */
+async function finalizarRegistroElaboracion(registroId, empresaId, usuarioId) {
+  const RegistroElaboracion = require('../models/RegistroElaboracion.model');
+  
+  try {
+    const registro = await RegistroElaboracion.findOne({
+      where: { id: registroId, empresaId }
+    });
+    
+    if (!registro) {
+      throw new Error('Registro no encontrado');
+    }
+    
+    if (registro.finalizado) {
+      throw new Error('El registro ya está finalizado');
+    }
+    
+    await registro.update({
+      finalizado: true,
+      fechaFinalizacion: new Date(),
+      usuarioFinalizacionId: usuarioId
+    });
+    
+    return {
+      success: true,
+      data: registro
+    };
+    
+  } catch (error) {
     return {
       success: false,
       error: error.message
@@ -244,18 +395,18 @@ async function guardarRegistroElaboracion(datosFormulario, empresaId, usuarioId)
 
 /**
  * Obtiene registros de elaboración con filtros
- * @param {Object} filtros - { empresaId, fechaDesde?, fechaHasta?, numeroLote? }
+ * @param {Object} filtros
  * @returns {Promise<Array>}
  */
 async function obtenerRegistrosElaboracion(filtros) {
   const RegistroElaboracion = require('../models/RegistroElaboracion.model');
   const DetalleElaboracionVariante = require('../models/detalleElaboracion.model');
-  const LoteCultivo = require('../models/loteCultivo.model');
   const Cultivo = require('../models/cultivo.model');
   const TanqueFermentador = require('../models/tanqueFermentador.model');
   const Variante = require('../models/variante.model');
-  const LoteEsencia = require('../models/loteEsencia.model');
-  const Esencia = require('../models/esencia.models');
+  const Producto = require('../models/producto.model');
+  const Presentacion = require('../models/presentacion.model');
+  const Variedad = require('../models/variedad.model');
   const { Op } = require('sequelize');
   
   const where = { empresaId: filtros.empresaId };
@@ -270,6 +421,11 @@ async function obtenerRegistrosElaboracion(filtros) {
     where.numeroLoteProduccion = filtros.numeroLote;
   }
   
+  // ⭐ NUEVO: Filtrar solo no finalizados
+  if (filtros.soloNoFinalizados) {
+    where.finalizado = false;
+  }
+  
   const registros = await RegistroElaboracion.findAll({
     where,
     include: [
@@ -279,13 +435,9 @@ async function obtenerRegistrosElaboracion(filtros) {
         attributes: ['id', 'codigo', 'letraLote', 'descripcion']
       },
       {
-        model: LoteCultivo,
-        as: 'loteCultivo',
-        include: [{ 
-          model: Cultivo, 
-          as: 'cultivo',
-          attributes: ['id', 'codigo', 'nombre']
-        }]
+        model: Cultivo,  // ⭐ CAMBIO: Relación directa
+        as: 'cultivo',
+        attributes: ['id', 'codigo', 'nombre']
       },
       {
         model: DetalleElaboracionVariante,
@@ -294,15 +446,11 @@ async function obtenerRegistrosElaboracion(filtros) {
           {
             model: Variante,
             as: 'variante',
-            include: ['producto', 'presentacion', 'variedad']
-          },
-          {
-            model: LoteEsencia,
-            as: 'loteEsencia',
-            include: [{
-              model: Esencia,
-              as: 'esencia'
-            }]
+            include: [
+              { model: Producto, as: 'producto' },
+              { model: Presentacion, as: 'presentacion' },
+              { model: Variedad, as: 'variedad' }
+            ]
           }
         ]
       }
@@ -322,5 +470,7 @@ module.exports = {
   calcularFechaVencimientoProducto,
   procesarCargaPlanilla,
   guardarRegistroElaboracion,
+  actualizarRegistroElaboracion,   
+  finalizarRegistroElaboracion,  
   obtenerRegistrosElaboracion
 };

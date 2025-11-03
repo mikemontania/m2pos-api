@@ -5,9 +5,9 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');
-const Usuario = require('./usuario.model');
-const LoteCultivo = require('./loteCultivo.model');
+const Usuario = require('./usuario.model'); 
 const TanqueFermentador = require('./tanqueFermentador.model');
+const Cultivo = require('./cultivo.model');
 
 const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
   id: {
@@ -27,23 +27,30 @@ const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
   },
   tanqueFermentadorId: {
     type: DataTypes.BIGINT,
-    allowNull: false,
-    comment: 'Tanque del cual proviene esta producción (necesario para generar lote)'
+    allowNull: false
   },
-  loteCultivoId: {
+  cultivoId: {  // ⭐ CAMBIO: Relación directa con Cultivo
     type: DataTypes.INTEGER,
     allowNull: false,
-    comment: 'Lote de cultivo utilizado'
+    comment: 'Tipo de cultivo utilizado'
+  },
+  numeroLoteCultivo: {  // ⭐ NUEVO: Campo texto
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    comment: 'Número de lote del cultivo (ej: 4434821414)'
+  },
+  fechaVencimientoCultivo: {  // ⭐ NUEVO
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+    comment: 'Fecha de vencimiento del lote de cultivo'
   },
   cantidadLitros: {
     type: DataTypes.DECIMAL(10, 2),
-    allowNull: false,
-    comment: 'Cantidad de litros producidos'
+    allowNull: false
   },
   horaCultivo: {
     type: DataTypes.TIME,
-    allowNull: false,
-    comment: 'Hora en que se adiciona el cultivo'
+    allowNull: false
   },
   temperaturaCultivo: {
     type: DataTypes.DECIMAL(5, 2),
@@ -57,23 +64,21 @@ const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
   },
   horaFiltrado: {
     type: DataTypes.TIME,
-    allowNull: false,
-    comment: 'Hora de filtrado'
+    allowNull: false
   },
   fechaEnvasado: {
     type: DataTypes.DATEONLY,
     allowNull: false,
-    comment: 'Fecha de envasado (calculada según código 01, 02, 03)'
+    comment: 'Fecha de envasado calculada'
   },
   realizadoPor: {
     type: DataTypes.STRING(100),
     allowNull: true,
-    comment: 'Iniciales o nombre (PG = Paola Granco)'
+    comment: 'Iniciales (ej: PG)'
   },
   usuarioId: {
     type: DataTypes.INTEGER,
-    allowNull: true,
-    comment: 'Usuario que registró'
+    allowNull: true
   },
   empresaId: {
     type: DataTypes.INTEGER,
@@ -82,6 +87,21 @@ const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
   observaciones: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  finalizado: {  // ⭐ NUEVO: Control de edición
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    comment: 'Si es true, el registro no se puede editar'
+  },
+  fechaFinalizacion: {  // ⭐ NUEVO
+    type: DataTypes.DATE,
+    allowNull: true,
+    comment: 'Cuándo se finalizó el registro'
+  },
+  usuarioFinalizacionId: {  // ⭐ NUEVO
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    comment: 'Quién finalizó el registro'
   }
 }, {
   tableName: 'registros_elaboracion',
@@ -89,8 +109,9 @@ const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
   underscored: true,
   indexes: [
     { fields: ['fecha_elaboracion', 'empresa_id'] },
-    { fields: ['numero_lote_produccion'], unique: true },
-    { fields: ['tanque_fermentador_id'] }
+    //{ fields: ['numero_lote_produccion'], unique: true },
+    { fields: ['tanque_fermentador_id'] },
+    { fields: ['finalizado'] }
   ]
 });
 
@@ -99,19 +120,14 @@ RegistroElaboracion.belongsTo(TanqueFermentador, {
   foreignKey: 'tanqueFermentadorId', 
   as: 'tanque' 
 });
-
-RegistroElaboracion.belongsTo(LoteCultivo, { 
-  foreignKey: 'loteCultivoId', 
-  as: 'loteCultivo' 
+RegistroElaboracion.belongsTo(Cultivo, { 
+  foreignKey: 'cultivoId', 
+  as: 'cultivo' 
 });
-
-RegistroElaboracion.belongsTo(Empresa, { 
-  foreignKey: 'empresaId' 
-});
-
+RegistroElaboracion.belongsTo(Empresa, { foreignKey: 'empresaId' });
+RegistroElaboracion.belongsTo(Usuario, { foreignKey: 'usuarioId', as: 'usuario' });
 RegistroElaboracion.belongsTo(Usuario, { 
-  foreignKey: 'usuarioId', 
-  as: 'usuario' 
+  foreignKey: 'usuarioFinalizacionId', 
+  as: 'usuarioFinalizacion' 
 });
-
 module.exports = RegistroElaboracion;

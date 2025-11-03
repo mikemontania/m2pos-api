@@ -61,6 +61,12 @@ const Variante = sequelize.define(
       defaultValue: false,
       allowNull: false
     },
+    usaEsencia: { 
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
+      comment: 'true si requiere lote y vencimiento de esencia (Coco, Vainilla)'
+    },
     activo: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,

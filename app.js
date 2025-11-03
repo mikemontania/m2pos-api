@@ -63,10 +63,7 @@ app.use("/M2POS/pedidos", require("./src/routes/pedido-routes"));
 
 
 
-app.use('/M2POS/cultivo', require("./src/routes/cultivo.routes"));
-app.use('/M2POS/esencia', require("./src/routes/esencia.routes"));
-app.use('/M2POS/lote-esencia', require("./src/routes/loteEsencia.routes"));
-app.use('/M2POS/lote-cultivo', require("./src/routes/loteCultivo.routes"));
+app.use('/M2POS/cultivo', require("./src/routes/cultivo.routes")); 
 app.use('/M2POS/tanques-fermentadores', require("./src/routes/tanque-fermentador.routes"));
 
   
