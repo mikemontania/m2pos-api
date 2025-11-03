@@ -6,7 +6,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');
 const Usuario = require('./usuario.model'); 
-const TanqueFermentador = require('./tanqueFermentador.model');
+const Tanque = require('./tanque.model');
 const Cultivo = require('./cultivo.model');
 
 const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
@@ -25,7 +25,7 @@ const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
     allowNull: false,
     comment: 'Lote generado según formato LDDMMAAANNX'
   },
-  tanqueFermentadorId: {
+  tanqueId: {
     type: DataTypes.BIGINT,
     allowNull: false
   },
@@ -56,6 +56,16 @@ const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
     type: DataTypes.DECIMAL(5, 2),
     allowNull: false,
     comment: 'Temperatura en °C (41 a 44°C)'
+  },
+   temperaturaFermentacion: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: false,
+    comment: 'Temperatura en °C (0 a 80°C)'
+  },
+  temperaturaPasteurizacion: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: false,
+    comment: 'Temperatura en °C (0 a 80°C)'
   },
   phMaduracion: {
     type: DataTypes.DECIMAL(3, 2),
@@ -110,14 +120,14 @@ const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
   indexes: [
     { fields: ['fecha_elaboracion', 'empresa_id'] },
     //{ fields: ['numero_lote_produccion'], unique: true },
-    { fields: ['tanque_fermentador_id'] },
+    { fields: ['tanque_id'] },
     { fields: ['finalizado'] }
   ]
 });
 
 // Relaciones
-RegistroElaboracion.belongsTo(TanqueFermentador, { 
-  foreignKey: 'tanqueFermentadorId', 
+RegistroElaboracion.belongsTo(Tanque, { 
+  foreignKey: 'tanqueId', 
   as: 'tanque' 
 });
 RegistroElaboracion.belongsTo(Cultivo, { 

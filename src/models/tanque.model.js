@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../dbconfig');
 const Empresa = require('./empresa.model');
 
-const TanqueFermentador = sequelize.define('TanqueFermentador', {
+const Tanque = sequelize.define('Tanque', {
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -42,7 +42,7 @@ const TanqueFermentador = sequelize.define('TanqueFermentador', {
     allowNull: false
   },
 }, {
-  tableName: 'tanque_fermentador',
+  tableName: 'tanques',
   timestamps: true,
   underscored: true,
   indexes: [
@@ -57,9 +57,9 @@ const TanqueFermentador = sequelize.define('TanqueFermentador', {
   ]
 });
 
-TanqueFermentador.belongsTo(Empresa, {
+Tanque.belongsTo(Empresa, {
   foreignKey: 'empresaId',
   targetKey: 'id',
 });
 
-module.exports = TanqueFermentador;
+module.exports = Tanque;

@@ -29,7 +29,7 @@ const {
  * Registra nueva elaboración
  * Body: {
  *   fechaElaboracion: "2025-11-02",
- *   tanqueFermentadorId: 1,
+ *   tanqueId: 1,
  *   cultivoId: 2,                          // ⭐ CAMBIO
  *   numeroLoteCultivo: "4434821414",       // ⭐ NUEVO
  *   fechaVencimientoCultivo: "2026-01-15", // ⭐ NUEVO (opcional)

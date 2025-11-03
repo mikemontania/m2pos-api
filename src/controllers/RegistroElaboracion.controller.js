@@ -14,7 +14,7 @@ const Presentacion = require('../models/presentacion.model');
 const Producto = require('../models/producto.model');
 const Variedad = require('../models/variedad.model');
 const RegistroElaboracion = require('../models/RegistroElaboracion.model');
-const TanqueFermentador = require('../models/tanqueFermentador.model');
+const Tanque = require('../models/tanque.model');
 const Variante = require('../models/variante.model');
 const { crearPDFElaboracion } = require('../helpers/pdf-elaboracion.helper');
 const Empresa = require('../models/empresa.model');
@@ -253,7 +253,7 @@ const generarReportePDF = async (req, res) => {
       where: construirWhere(filtros),
       include: [
         {
-          model: TanqueFermentador,
+          model: Tanque,
           as: 'tanque',
           attributes: ['id', 'codigo', 'letraLote', 'descripcion']
         },
@@ -374,7 +374,7 @@ const obtenerDetalleElaboracion = async (req, res) => {
       where: { id, empresaId },
       include: [
         {
-          model: TanqueFermentador,
+          model: Tanque,
           as: 'tanque',
           attributes: ['id', 'codigo', 'letraLote', 'descripcion']
         },
@@ -492,7 +492,7 @@ const listarTanques = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
 
-    const tanques = await TanqueFermentador.findAll({
+    const tanques = await Tanque.findAll({
       where: { empresaId, activo: true },
       attributes: ['id', 'codigo', 'letraLote', 'descripcion', 'capacidadLitros'],
       order: [['codigo', 'ASC']]
@@ -614,7 +614,7 @@ const reporteDiario = async (req, res) => {
       },
       include: [
         {
-          model: TanqueFermentador,
+          model: Tanque,
           as: 'tanque',
           attributes: ['codigo', 'descripcion']
         },
@@ -695,7 +695,7 @@ const reportePendientes = async (req, res) => {
       },
       include: [
         {
-          model: TanqueFermentador,
+          model: Tanque,
           as: 'tanque',
           attributes: ['codigo']
         },

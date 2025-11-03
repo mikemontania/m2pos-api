@@ -82,7 +82,22 @@ function parsearNumeroLote(numeroLote) {
 function validarTemperaturaCultivo(temperatura) {
   return temperatura >= 41 && temperatura <= 44;
 }
-
+/**
+ * Valida rangos de temperatura Pasteurizacion
+ * @param {number} temperatura
+ * @returns {boolean}
+ */
+function validarTemperaturaPasteurizacion(temperatura) {
+  return temperatura >= 0 && temperatura <= 80;
+}
+/**
+ * Valida rangos de temperatura Fermentacion
+ * @param {number} temperatura
+ * @returns {boolean}
+ */
+function validarTemperaturaFermentacion(temperatura) {
+  return temperatura >= 0 && temperatura <= 80;
+}
 /**
  * Valida rango de pH
  * @param {number} ph
@@ -116,19 +131,20 @@ function calcularFechaVencimientoProducto(fechaEnvasado, diasVida = 30) {
  * @returns {Object}
  */
 async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
-  const TanqueFermentador = require('../models/tanqueFermentador.model');
+  const Tanque = require('../models/tanque.model');
   const Cultivo = require('../models/cultivo.model');
   const Variante = require('../models/variante.model');
   
   const {
     fechaElaboracion,
-    tanqueFermentadorId,
+    tanqueId,
     cultivoId,  // ⭐ CAMBIO: Ya no es loteCultivoId
     numeroLoteCultivo,  // ⭐ NUEVO: Campo texto
     fechaVencimientoCultivo,  // ⭐ NUEVO: Opcional
     cantidadLitros,
     horaCultivo,
     temperaturaCultivo,
+    temperaturaPasteurizacion,temperaturaFermentacion,
     phMaduracion,
     horaFiltrado,
     codigoEnvasado = '01',
@@ -140,6 +156,14 @@ async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
   // Validaciones
   if (!validarTemperaturaCultivo(temperaturaCultivo)) {
     throw new Error('Temperatura de cultivo debe estar entre 41°C y 44°C');
+  }
+    // Validaciones
+  if (!validarTemperaturaFermentacion(temperaturaFermentacion)) {
+    throw new Error('Temperatura de cultivo debe estar entre 0°C y 80°C');
+  }
+    // Validaciones
+  if (!validarTemperaturaPasteurizacion(temperaturaPasteurizacion)) {
+    throw new Error('Temperatura de cultivo debe estar entre 0°C y 80°C');
   }
   
   if (!validarPHMaduracion(phMaduracion)) {
@@ -158,7 +182,7 @@ async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
   }
   
   // Obtener tanque para obtener la letra
-  const tanque = await TanqueFermentador.findByPk(tanqueFermentadorId);
+  const tanque = await Tanque.findByPk(tanqueId);
   if (!tanque) {
     throw new Error('Tanque fermentador no encontrado');
   }
@@ -196,13 +220,13 @@ async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
   const registroElaboracion = {
     fechaElaboracion,
     numeroLoteProduccion,
-    tanqueFermentadorId,
+    tanqueId,
     cultivoId,  // ⭐ CAMBIO
     numeroLoteCultivo,  // ⭐ NUEVO
     fechaVencimientoCultivo: fechaVencimientoCultivo || null,  // ⭐ NUEVO
     cantidadLitros,
     horaCultivo,
-    temperaturaCultivo,
+    temperaturaCultivo,   temperaturaPasteurizacion,temperaturaFermentacion, 
     phMaduracion,
     horaFiltrado,
     fechaEnvasado,
@@ -402,7 +426,7 @@ async function obtenerRegistrosElaboracion(filtros) {
   const RegistroElaboracion = require('../models/RegistroElaboracion.model');
   const DetalleElaboracionVariante = require('../models/detalleElaboracion.model');
   const Cultivo = require('../models/cultivo.model');
-  const TanqueFermentador = require('../models/tanqueFermentador.model');
+  const Tanque = require('../models/tanque.model');
   const Variante = require('../models/variante.model');
   const Producto = require('../models/producto.model');
   const Presentacion = require('../models/presentacion.model');
@@ -430,7 +454,7 @@ async function obtenerRegistrosElaboracion(filtros) {
     where,
     include: [
       {
-        model: TanqueFermentador,
+        model: Tanque,
         as: 'tanque',
         attributes: ['id', 'codigo', 'letraLote', 'descripcion']
       },
@@ -466,6 +490,7 @@ module.exports = {
   calcularFechaEnvasado,
   parsearNumeroLote,
   validarTemperaturaCultivo,
+  validarTemperaturaPasteurizacion,  validarTemperaturaFermentacion,  
   validarPHMaduracion,
   calcularFechaVencimientoProducto,
   procesarCargaPlanilla,

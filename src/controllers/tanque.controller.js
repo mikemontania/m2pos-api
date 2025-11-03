@@ -1,7 +1,7 @@
 // controllers/tanque-fermentador.controller.js
-const TanqueFermentador = require('../models/tanqueFermentador.model');
+const Tanque = require('../models/tanque.model');
 
-class TanqueFermentadorController {
+class TanqueController {
   
   async crear(req, res) {
     try {
@@ -16,7 +16,7 @@ class TanqueFermentadorController {
         });
       }
 
-      const tanque = await TanqueFermentador.create({
+      const tanque = await Tanque.create({
         empresaId,
         codigo,
         letraLote: letraLote.toUpperCase(),
@@ -47,7 +47,7 @@ class TanqueFermentadorController {
         where.activo = activo === 'true';
       }
 
-      const tanques = await TanqueFermentador.findAll({
+      const tanques = await Tanque.findAll({
         where,
         order: [['codigo', 'ASC']]
       });
@@ -62,7 +62,7 @@ class TanqueFermentadorController {
     try {
       const { id } = req.params;
 
-      const tanque = await TanqueFermentador.findByPk(id);
+      const tanque = await Tanque.findByPk(id);
       if (!tanque) {
         return res.status(404).json({ error: 'Tanque no encontrado' });
       }
@@ -80,7 +80,7 @@ class TanqueFermentadorController {
 
       const { codigo, letraLote, descripcion, capacidadLitros, activo } = req.body;
 
-      const tanque = await TanqueFermentador.findByPk(id);
+      const tanque = await Tanque.findByPk(id);
       if (!tanque) {
         return res.status(404).json({ error: 'Tanque no encontrado' });
       }
@@ -108,7 +108,7 @@ class TanqueFermentadorController {
     try {
       const { id } = req.params;
 
-      const tanque = await TanqueFermentador.findByPk(id);
+      const tanque = await Tanque.findByPk(id);
       if (!tanque) {
         return res.status(404).json({ error: 'Tanque no encontrado' });
       }
@@ -123,4 +123,4 @@ class TanqueFermentadorController {
   }
 }
 
-module.exports = new TanqueFermentadorController();
+module.exports = new TanqueController();
