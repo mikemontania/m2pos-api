@@ -60,7 +60,7 @@ const RegistroElaboracion = sequelize.define('RegistroElaboracion', {
    temperaturaFermentacion: {
     type: DataTypes.DECIMAL(5, 2),
     allowNull: false,
-    comment: 'Temperatura en °C (0 a 80°C)'
+    comment: 'Temperatura en °C (0 a 43°C)'
   },
   temperaturaPasteurizacion: {
     type: DataTypes.DECIMAL(5, 2),

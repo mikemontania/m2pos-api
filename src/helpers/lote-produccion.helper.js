@@ -96,7 +96,7 @@ function validarTemperaturaPasteurizacion(temperatura) {
  * @returns {boolean}
  */
 function validarTemperaturaFermentacion(temperatura) {
-  return temperatura >= 0 && temperatura <= 80;
+  return temperatura >= 0 && temperatura <= 43;
 }
 /**
  * Valida rango de pH
@@ -159,7 +159,7 @@ async function procesarCargaPlanilla(datosFormulario, empresaId, usuarioId) {
   }
     // Validaciones
   if (!validarTemperaturaFermentacion(temperaturaFermentacion)) {
-    throw new Error('Temperatura de cultivo debe estar entre 0°C y 80°C');
+    throw new Error('Temperatura de cultivo debe estar entre 0°C y 43°C');
   }
     // Validaciones
   if (!validarTemperaturaPasteurizacion(temperaturaPasteurizacion)) {
