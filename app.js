@@ -64,7 +64,7 @@ app.use("/M2POS/pedidos", require("./src/routes/pedido-routes"));
 
 
 app.use('/M2POS/cultivo', require("./src/routes/cultivo.routes")); 
-app.use('/M2POS/tanques', require("./src/routes/tanque.routes"));
+app.use('/M2POS/tanque', require("./src/routes/tanque.routes"));
 
   
 app.use('/M2POS/elaboracion', require("./src/routes/elaboracion.routes"));

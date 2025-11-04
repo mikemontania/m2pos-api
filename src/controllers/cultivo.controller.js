@@ -1,24 +1,25 @@
 // controllers/cultivo.controller.js
 const Cultivo = require('../models/cultivo.model'); 
+
 /**
  * Crea un nuevo registro de cultivo bacteriano
  */
 const crear = async (req, res) => {
   try {
     const { empresaId } = req.usuario;
-    const { codigo, descripcion, proveedor } = req.body;
+    const { codigo, nombre, descripcion } = req.body;
 
-    if (!empresaId || !codigo || !descripcion) {
+    if (!empresaId || !codigo || !nombre) {
       return res.status(400).json({
-        error: 'Campos requeridos: codigo, descripcion'
+        error: 'Campos requeridos: codigo, nombre'
       });
     }
 
     const cultivo = await Cultivo.create({
       empresaId,
       codigo,
+      nombre,
       descripcion,
-      proveedor,
       activo: true
     });
 
@@ -63,8 +64,12 @@ const listar = async (req, res) => {
 const obtenerPorId = async (req, res) => {
   try {
     const { id } = req.params;
+    const { empresaId } = req.usuario;
 
-    const cultivo = await Cultivo.findByPk(id);
+    const cultivo = await Cultivo.findOne({
+      where: { id, empresaId }
+    });
+    
     if (!cultivo) {
       return res.status(404).json({ error: 'Cultivo no encontrado' });
     }
@@ -82,18 +87,20 @@ const actualizar = async (req, res) => {
   try {
     const { id } = req.params;
     const { empresaId } = req.usuario;
-    const { codigo, descripcion, proveedor, activo } = req.body;
+    const { codigo, nombre, descripcion, activo } = req.body;
 
-    const cultivo = await Cultivo.findByPk(id);
+    const cultivo = await Cultivo.findOne({
+      where: { id, empresaId }
+    });
+    
     if (!cultivo) {
       return res.status(404).json({ error: 'Cultivo no encontrado' });
     }
 
     await cultivo.update({
       codigo,
+      nombre,
       descripcion,
-      proveedor,
-      empresaId,
       activo
     });
 
@@ -114,8 +121,12 @@ const actualizar = async (req, res) => {
 const eliminar = async (req, res) => {
   try {
     const { id } = req.params;
+    const { empresaId } = req.usuario;
 
-    const cultivo = await Cultivo.findByPk(id);
+    const cultivo = await Cultivo.findOne({
+      where: { id, empresaId }
+    });
+    
     if (!cultivo) {
       return res.status(404).json({ error: 'Cultivo no encontrado' });
     }
@@ -128,7 +139,6 @@ const eliminar = async (req, res) => {
   }
 };
 
-// Exportar todas las funciones como un objeto
 module.exports = {
   crear,
   listar,
