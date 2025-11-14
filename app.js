@@ -32,6 +32,7 @@ app.use("/M2POS/certificados", require("./src/routes/certificado-routes"));
 app.use("/M2POS/ciudades", require("./src/routes/ciudad-routes"));
 app.use("/M2POS/constantes", require("./src/routes/constantes-routes"));
 app.use("/M2POS/departamentos", require("./src/routes/departamento-routes"));
+app.use("/M2POS/ecommerce", require("./src/routes/ecommerce-pedido-routes"));
 app.use("/M2POS/usuarios", require("./src/routes/usuario-routes"));
 app.use("/M2POS/categorias", require("./src/routes/categoria-routes"));
 app.use("/M2POS/presentaciones", require("./src/routes/presentacion-routes"));

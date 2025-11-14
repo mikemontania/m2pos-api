@@ -1,3 +1,9 @@
+const tiposDocumento = [
+  { codigo: 1, descripcion: 'RUC' },
+  { codigo: 2, descripcion: 'CI' },
+  { codigo: 3, descripcion: 'GUBERNAMENTAL' },
+  { codigo: 4, descripcion: 'EXTRANJERO' }
+];
 const tiposEmisiones = [
   {
     codigo: 1,
@@ -7904,7 +7910,7 @@ module.exports = {
   unidadesMedidas,
   notasCreditosMotivos,
   condicionesTiposPagos,
-  tipoContribuyente,
+  tipoContribuyente,tiposDocumento,
   tiposDocumentosReceptorInnominado,modalidadesTransportes,
   validateDepartamentoDistritoCiudad,tiposTransportes,
   tiposDocumentosIdentidadesTransportistas
