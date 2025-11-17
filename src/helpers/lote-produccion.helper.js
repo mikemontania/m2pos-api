@@ -88,7 +88,7 @@ function validarTemperaturaCultivo(temperatura) {
  * @returns {boolean}
  */
 function validarTemperaturaPasteurizacion(temperatura) {
-  return temperatura >= 0 && temperatura <= 80;
+  return temperatura >= 0 && temperatura <= 90;
 }
 /**
  * Valida rangos de temperatura Fermentacion
@@ -96,7 +96,7 @@ function validarTemperaturaPasteurizacion(temperatura) {
  * @returns {boolean}
  */
 function validarTemperaturaFermentacion(temperatura) {
-  return temperatura >= 0 && temperatura <= 43;
+  return temperatura >= 0 && temperatura <= 90;
 }
 /**
  * Valida rango de pH
