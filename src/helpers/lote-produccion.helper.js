@@ -90,7 +90,7 @@ function validarTemperaturaCultivo(temperatura) {
 function validarTemperaturaPasteurizacion(temperatura) {
   return temperatura >= 0 && temperatura <= 90;
 }
-/**
+/**  90
  * Valida rangos de temperatura Fermentacion
  * @param {number} temperatura
  * @returns {boolean}
